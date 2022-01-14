@@ -15,7 +15,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     }
 
-    private Object find() {
-        
+    public Object find() {
+        return new Object();
     }
 }
