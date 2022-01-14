@@ -11,7 +11,7 @@ public class DriveCommand extends InstantCommand {
 
     public void execute() {
         Robot.driveSubsystem.moveRobot(limitSwitch.get() ? 0 : Robot.oi.joystickLeft.getY(),
-                limitSwitch.get() ? 0 : Robot.oi.joysticRight.getY());
+                limitSwitch.get() ? 0 : Robot.oi.joystickRight.getY());
     }
 
 }
