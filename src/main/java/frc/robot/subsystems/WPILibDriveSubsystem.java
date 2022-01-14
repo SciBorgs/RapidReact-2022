@@ -7,27 +7,27 @@ import edu.wpi.first.wpilibj.Joystick;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+
 public class WPILibDriveSubsystem extends SubsystemBase {
-    public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
+    protected DifferentialDrive drive;
+    private MotorController lDrive, rDrive;
 
     public WPILibDriveSubsystem() {
-        this.lFront  = new CANSparkMax(PortMap.LEFT_FRONT_SPARK,  MotorType.kBrushless);
-        this.lMiddle = new CANSparkMax(PortMap.LEFT_MIDDLE_SPARK, MotorType.kBrushless);
-        this.lBack   = new CANSparkMax(PortMap.LEFT_BACK_SPARK,   MotorType.kBrushless);
-
-        this.rFront  = new CANSparkMax(PortMap.RIGHT_FRONT_SPARK,  MotorType.kBrushless);
-        this.rMiddle = new CANSparkMax(PortMap.RIGHT_MIDDLE_SPARK, MotorType.kBrushless);
-        this.rBack   = new CANSparkMax(PortMap.RIGHT_BACK_SPARK,   MotorType.kBrushless);
-
-        lMiddle.follow(lFront);
-        lBack.follow(lFront);
-        
-        rMiddle.follow(rFront);
-        rBack.follow(rFront);
+        this.lDrive = new SpeedControllerGroup(
+            new CANSparkMax(PortMap.LEFT_FRONT_SPARK),
+            new CANSparkMax(PortMap.LEFT_MIDDLE_SPARK),
+            new CANSparkMax(PortMap.LEFT_BACK_SPARK));
+        this.rDrive = new SpeedControllerGroup(
+            new CANSparkMax(PortMap.RIGHT_FRONT_SPARK),
+            new CANSparkMax(PortMap.RIGHT_MIDDLE_SPARK),
+            new CANSparkMax(PortMap.RIGHT_BACK_SPARK));
+        this.drive = new DifferentialDrive(lDrive, rDrive);
     }
 
-    public void moveRobot(double left, double right) {
-        lFront.set(left);
-        rFront.set(right);
+    public void teleopPeriodic() {
+        drive.tankDrive(m_leftStick.getY(), m_rightStick.getY());
     }
 }
