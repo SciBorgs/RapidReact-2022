@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -20,5 +19,15 @@ public class DriveSubsystem extends SubsystemBase {
         this.rMiddle = new CANSparkMax(PortMap.RIGHT_MIDDLE_SPARK, MotorType.kBrushless);
         this.rBack = new CANSparkMax(PortMap.RIGHT_BACK_SPARK, MotorType.kBrushless);
 
+        lMiddle.follow(lFront);
+        lBack.follow(lFront);
+        
+        rMiddle.follow(rFront);
+        rBack.follow(rFront);
+    }
+
+    public void moveRobot(double left, double right) {
+        lFront.set(left);
+        rFront.set(right);
     }
 }
