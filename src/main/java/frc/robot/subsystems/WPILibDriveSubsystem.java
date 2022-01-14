@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj.Joystick;
 
 import com.revrobotics.CANSparkMax;
@@ -28,6 +29,6 @@ public class WPILibDriveSubsystem extends SubsystemBase {
     }
 
     public void teleopPeriodic() {
-        drive.tankDrive(m_leftStick.getY(), m_rightStick.getY());
+        drive.tankDrive(Robot.oi.joystickLeft.getY(), Robot.oi.joystickRight.getY());
     }
 }
