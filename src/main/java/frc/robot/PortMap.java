@@ -17,4 +17,5 @@ public class PortMap {
   public static final int RIGHT_BACK_SPARK = 1;
 
   //*******************SWITCHES******************//
+  public static final int TOP_LIMIT_SWITCH = 3;
 }

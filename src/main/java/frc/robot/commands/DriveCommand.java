@@ -10,8 +10,8 @@ public class DriveCommand extends InstantCommand {
     private DigitalInput limitSwitch = new DigitalInput(PortMap.TOP_LIMIT_SWITCH);
 
     public void execute() {
-        Robot.driveSubsystem.moveRobot(limitSwitch.get() ? 0 : Robot.oi.JoystickLeft.getY(),
-                limitSwitch.get() ? 0 : Robot.oi.JoysticRight.getY());
+        Robot.driveSubsystem.moveRobot(limitSwitch.get() ? 0 : Robot.oi.joysticRight.getY(),
+                limitSwitch.get() ? 0 : Robot.oi.joysticRight.getY());
     }
 
 }
