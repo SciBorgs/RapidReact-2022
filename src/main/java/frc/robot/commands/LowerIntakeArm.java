@@ -2,21 +2,16 @@ package frc.robot.commands;
 
 import java.util.Set;
 
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
 
 //import static frc.robot.Subsystems.intake
 
-public class LowerIntakeArm extends WaitCommand{
+public class LowerIntakeArm implements Command {
 
     private final double speed = 0.9;
-
-    public LowerIntakeArm(double seconds) {
-        super(seconds);
-        //TODO Auto-generated constructor stub
-    }
 
     @Override
     public void initialize(){
@@ -30,10 +25,6 @@ public class LowerIntakeArm extends WaitCommand{
 
     @Override
     public boolean isFinished(){
-        return isTimedOut();
-    }
-
-    private boolean isTimedOut() {
         return false;
     }
 

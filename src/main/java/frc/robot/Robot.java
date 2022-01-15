@@ -21,6 +21,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   public static Intake intake = new Intake();
+  public static Hopper hopper = new Hopper();
 
   /**
    * This function is run when the robot is first started up and should be used for any

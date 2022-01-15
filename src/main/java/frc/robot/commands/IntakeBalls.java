@@ -15,6 +15,9 @@ public class IntakeBalls implements Command {
         Robot.intake.setSuckSpeed(speed);
     }
 
+    public void end() {
+        Robot.intake.setSuckSpeed(0);
+    }
     @Override
     public boolean isFinished(){
         return true;

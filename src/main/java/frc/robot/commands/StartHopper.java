@@ -6,13 +6,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class StopIntakeBalls implements Command {
+public class StartHopper implements Command {
+    private final double speed = 0.5;
 
     @Override
     public void execute() {
-        Robot.intake.setSuckSpeed(0);
+        Robot.hopper.setSuckSpeed(speed);
+        Robot.hopper.setElevatorSpeed(speed);
     }
-    
+
+    public void end() {
+        Robot.hopper.setSuckSpeed(0);
+        Robot.hopper.setElevatorSpeed(0);
+    }
     @Override
     public boolean isFinished(){
         return true;
@@ -23,4 +29,5 @@ public class StopIntakeBalls implements Command {
         // TODO Auto-generated method stub
         return null;
     }
+    
 }
