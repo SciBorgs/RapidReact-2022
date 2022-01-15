@@ -1,30 +1,32 @@
-package frc.robot.Subsystems;
-import edu.wpi.first.wpilibj.command.Subsystem;
+package frc.robot.subsystems;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import com.revrobotics.CANSparkMax;
 
-public class Hopper extends Subsystem {
+import frc.robot.PortMap;
 
-    CANSparkMax in;
-    CANSparkMax up;
+public class Hopper implements Subsystem {
 
-    public Hopper(CANSparkMax in, CANSparkMax up) {
-        this.in = in;
-        this.up = up;
+    private CANSparkMax suck;
+    private CANSparkMax elevator;
+
+    public Hopper() {
+        this.suck = new CANSparkMax(PortMap.HOPPER_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
+        this.elevator = new CANSparkMax(PortMap.HOPPER_ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
     }
 
-    public void setInSpeed(double speed) {
-        in.set(speed);
+    public void setSuckSpeed(double speed) {
+        suck.set(speed);
     }
 
-    public void setOutSpeed(double speed) {
-        out.set(speed);
+    public void setElevatorSpeed(double speed) {
+        elevator.set(speed);
     }
 
-    public double getInSpeed() {
-        return in.get();
+    public double getSuckSpeed() {
+        return suck.get();
     }
 
-    public double getOutSpeed() {
-        return out.get();
+    public double getElevatorSpeed() {
+        return elevator.get();
     }
 }

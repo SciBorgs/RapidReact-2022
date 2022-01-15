@@ -1,17 +1,17 @@
-package frc.robot.Subsystems;
-import edu.wpi.first.wpilibj.command.Subsystem;
+package frc.robot.subsystems;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import com.revrobotics.CANSparkMax;
 
+import frc.robot.PortMap;
 
+public class Intake implements Subsystem {
 
-public class Intake extends Subsystem {
-
-    CANSparkMax armSpark;
-    CANSparkMax suckSpark;
+    private CANSparkMax armSpark;
+    private CANSparkMax suckSpark;
 
     public Intake() {
-        this.armSpark = new CANSparkMax(1, CANSparkMax.MotorType.kBrushless);
-        this.suckSpark = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
+        this.armSpark = new CANSparkMax(PortMap.INTAKE_ARM_SPARK, CANSparkMax.MotorType.kBrushless);
+        this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
     }
 
     public void setArmSpeed(double speed) {
@@ -22,8 +22,9 @@ public class Intake extends Subsystem {
         suckSpark.set(speed);
     }
 
-    @Override
-    public void initDefaultCommand(){}
+    public void initDefaultCommand(){
+
+    }
 
 
 }
