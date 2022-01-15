@@ -1,40 +1,28 @@
 package frc.robot.subsystems;
+import frc.robot.PortMap;
 
-//import frc.robot.Utils;
-//import frc.robot.PortMap;
-import frc.robot.Robot;
-
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class ClimberSubsystem extends Subsystem {
-
-    private CANSparkMax fixedArm, secondArmMover, secondArm;
-    private final double FIXED_ARM_SPEED = 0.5;
-
-    //private somethingforcamera shadowLineCamera;
+public class ClimberSubsystem implements Subsystem {
+    private CANSparkMax climberArm;
+    private final double CLIMBER_ARM_SPEED = 0.5;
 
     public ClimberSubsystem() {
-        
-        this.fixedArm = new CANSparkMax();
-
-        this.secondArmMover = new CANSparkMax();
-        this.secondArm = new CANSparkMax();
-
-        //this.shadowLineCamera = new somethingforcamera();
-    
+        this.climberArm = new CANSparkMax(PortMap.CLIMBER_ARM, MotorType.kBrushless);
     }
 
-    public void extendFixedArm() {
-        this.fixedArm.set(this.FIXED_ARM_SPEED);
-    
+    public void setClimberArmSpeed() {
+        this.climberArm.set(this.CLIMBER_ARM_SPEED);
     }
 
+    public void stopClimberArm() {
+        this.climberArm.set(0);
+    }
 
-
-    public void extendSecondArm() {
+    public void initDefaultCommand(){
 
     }
 
-    
 }
