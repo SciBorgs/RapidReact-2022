@@ -19,7 +19,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     public void shoot(double speed) {
         rmotor.set(speed);
-        lmotor.set(speed);
+        lmotor.follow(rmotor);
     }
     public void moveVert(double speed){
         hood.set(speed);
