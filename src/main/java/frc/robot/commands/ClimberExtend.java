@@ -9,14 +9,20 @@ import frc.robot.Robot;
 public class ClimberExtend implements Command {
 
     @Override
-    public void execute() {
+    public void initialize() {
         Robot.climberArm.setClimberArmSpeed();
+    }
+
+    @Override
+    public void execute() {
+        
     }
     
     @Override
-    public void end(bool interrupted) {
+    public void end(boolean interrupted) {
         Robot.climberArm.stopClimberArm();
     }
+    
     @Override
     public boolean isFinished(){
         return false;
