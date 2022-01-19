@@ -30,4 +30,8 @@ public class DriveSubsystem extends SubsystemBase {
         lFront.set(left);
         rFront.set(right);
     }
+
+    public void setSpeedTankForwardAngle(double forward, double angularOffset){
+        
+    }
 }
