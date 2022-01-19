@@ -3,12 +3,13 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PortMap;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    public CANSparkMax hood = new CANSparkMax(0, MotorType.kBrushless);
-    public CANSparkMax lmotor = new CANSparkMax(1, MotorType.kBrushless);
-    public CANSparkMax rmotor = new CANSparkMax(2, MotorType.kBrushless);
+    public CANSparkMax hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
+    public CANSparkMax lmotor = new CANSparkMax(PortMap.SHOOTER_LEFT_SPARK, MotorType.kBrushless);
+    public CANSparkMax rmotor = new CANSparkMax(PortMap.SHOOTER_RIGHT_SPARK, MotorType.kBrushless);
     
     
     public final double HEIGHTDIFF = 9.8;
