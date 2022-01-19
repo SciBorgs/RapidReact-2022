@@ -7,21 +7,27 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
 public class StartHopper implements Command {
-    private final double speed = 0.5;
+
+    @Override
+    public void initialize() {
+        Robot.hopper.setSuckSpeed();
+        Robot.hopper.setElevatorSpeed();
+    }
 
     @Override
     public void execute() {
-        Robot.hopper.setSuckSpeed(speed);
-        Robot.hopper.setElevatorSpeed(speed);
+
     }
 
-    public void end() {
-        Robot.hopper.setSuckSpeed(0);
-        Robot.hopper.setElevatorSpeed(0);
-    }
     @Override
-    public boolean isFinished(){
-        return true;
+    public void end(boolean interrupted) {
+        Robot.hopper.setSuckSpeed();
+        Robot.hopper.setElevatorSpeed();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 
     @Override
