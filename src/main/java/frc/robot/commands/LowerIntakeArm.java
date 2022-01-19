@@ -11,24 +11,25 @@ import frc.robot.Robot;
 
 public class LowerIntakeArm implements Command {
 
-    private final double speed = 0.9;
+    private final double INTAKE_SPEED = 0.9;
 
     @Override
-    public void initialize(){
-        withTimeout(0.1);
+    public void initialize() {
+        Robot.intake.setArmSpeed(this.INTAKE_SPEED);
     }
 
     @Override
-    public void execute(){
-        Robot.intake.setArmSpeed(speed);
+    public void execute() {
+        
     }
 
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return false;
     }
-
-    public void end(){
+    
+    @Override
+    public void end(boolean interrupted) {
         Robot.intake.setArmSpeed(0);
     }
 
