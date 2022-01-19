@@ -4,11 +4,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PortMap;
 import frc.robot.Robot;
 import frc.robot.util.PID;
 
 public class TurretSubsystem extends SubsystemBase {
-    public CANSparkMax turretMotor = new CANSparkMax(3, MotorType.kBrushless);
+    public CANSparkMax turretMotor = new CANSparkMax(PortMap.TURRET_SPARK, MotorType.kBrushless);
     //Depends on how many motors there are on turret, but Im thinking there is only one for now.
     private PID pid = new PID(1, 1, 1);
 
