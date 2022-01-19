@@ -20,7 +20,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  public static ClimberSubsystem climberArm = new ClimberSubsystem();
+  public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
