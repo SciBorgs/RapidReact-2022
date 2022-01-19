@@ -8,19 +8,26 @@ import frc.robot.Robot;
 
 public class IntakeBalls implements Command {
     
-    private final double speed = 0.5;
+    private final double INTAKE_SPEED = 0.5;
+
+    @Override
+    public void initialize() {
+        Robot.intake.setSuckSpeed(this.INTAKE_SPEED);
+    }
 
     @Override
     public void execute() {
-        Robot.intake.setSuckSpeed(speed);
+
     }
 
-    public void end() {
+    @Override
+    public void end(boolean interrupted) {
         Robot.intake.setSuckSpeed(0);
     }
+
     @Override
-    public boolean isFinished(){
-        return true;
+    public boolean isFinished() {
+        return false;
     }
 
     @Override
