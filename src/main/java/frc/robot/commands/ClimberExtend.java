@@ -12,13 +12,14 @@ public class ClimberExtend implements Command {
     public void execute() {
         Robot.climberArm.setClimberArmSpeed();
     }
-
-    public void end() {
+    
+    @Override
+    public void end(bool interrupted) {
         Robot.climberArm.stopClimberArm();
     }
     @Override
     public boolean isFinished(){
-        return true;
+        return false;
     }
 
     @Override
