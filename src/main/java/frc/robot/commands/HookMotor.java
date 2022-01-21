@@ -14,7 +14,7 @@ public class HookMotor implements Command {
     
     @Override
     public void end(boolean interrupted) {
-        Robot.climberSubsystem.stopClimberArm();
+        Robot.climberSubsystem.stopHookMotor(); 
     }
 
     @Override
