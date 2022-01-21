@@ -26,8 +26,12 @@ public class DriveSubsystem extends SubsystemBase {
         rBack.follow(rFront);
     }
 
-    public void moveRobot(double left, double right) {
+    public void setSpeed(double left, double right) {
         lFront.set(left);
         rFront.set(right);
+    }
+
+    public void setSpeedForwardAngle(double forward, double angle) {
+        setSpeed(forward * (1 + angle), forward * (1 - angle)); // thank you zev
     }
 }
