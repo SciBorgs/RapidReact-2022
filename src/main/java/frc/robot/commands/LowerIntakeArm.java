@@ -5,7 +5,7 @@ import java.util.Set;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
-
+import com.revrobotics.CANSparkMax;
 
 //import static frc.robot.Subsystems.intake
 
@@ -31,6 +31,7 @@ public class LowerIntakeArm implements Command {
     @Override
     public void end(boolean interrupted) {
         Robot.intake.setArmSpeed(0);
+        Robot.intake.setIdle(CANSparkMax.IdleMode.kCoast);
     }
 
     @Override
