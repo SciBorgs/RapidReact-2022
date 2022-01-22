@@ -38,7 +38,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     //table = NetworkTableInstance.getDefault().getTable("limelight");
-    limeLightSubsystem.setCameraParams("pipeline", 2);
   }
 
   /**
@@ -55,6 +54,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    limeLightSubsystem.setCameraParams(limeLightSubsystem.getTable(), "pipeline", 2);
     double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "tx");
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
     //double data = table.getEntry("tx").getDouble(1.0);
