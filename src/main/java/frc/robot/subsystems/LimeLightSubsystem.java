@@ -11,18 +11,18 @@ public class LimeLightSubsystem extends SubsystemBase {
         return NetworkTableInstance.getDefault().getTable("limelight");
     }
     
-    // returns the value of an entry in the limelight network table
-    public double getTableData(String var) {
-        return getTable().getEntry(var).getDouble(0);
+    // returns the val`ue of an entry in the limelight network table
+    public double getTableData(NetworkTable table, String var) {
+        return table.getEntry(var).getDouble(0.0);
     }
 
     // sets a camera paramter
     public void setCameraParams(String param, int setting) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry(param).setNumber(setting);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry(param).setValue(setting);
     }
 
     public void setCameraParams(String param, double setting) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry(param).setNumber(setting);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry(param).setValue(setting);
     }
     
 }

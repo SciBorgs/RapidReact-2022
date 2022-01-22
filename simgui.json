@@ -1,7 +1,19 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [4]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/ShooterSubsystem": "Subsystem",
+      "/LiveWindow/TurretSubsystem": "Subsystem"
     }
   }
 }
