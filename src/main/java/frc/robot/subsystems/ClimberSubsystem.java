@@ -17,7 +17,7 @@ public class ClimberSubsystem implements Subsystem {
         this.hookMotor = new CANSparkMax(PortMap.HOOK_MOTOR, MotorType.kBrushless);
     }
 
-    public void setClimberArmSpeed() {
+    public void extendClimberArm() {
         this.climberArm.set(this.CLIMBER_ARM_SPEED);
     }
 
@@ -31,6 +31,10 @@ public class ClimberSubsystem implements Subsystem {
 
     public void stopHookMotor() {
         this.hookMotor.set(0);
+    }
+
+    public void retractClimberArm() {
+        this.climberArm.set(-(this.CLIMBER_ARM_SPEED));
     }
 
     public void initDefaultCommand(){
