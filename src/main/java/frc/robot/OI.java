@@ -12,7 +12,7 @@ public class OI {
                 this.intakeBalls.whenHeld(new IntakeBalls());
 
                 this.lowerIntakeArms = new Button();
-                this.lowerIntakeArms.whenPressed(new LowerIntakeArm().withTimeout(0.2));
+                this.lowerIntakeArms.whenPressed(new LowerIntakeArm());
 
                 this.StartHopper = new Button();
                 this.StartHopper.whenPressed(new StartHopper());
