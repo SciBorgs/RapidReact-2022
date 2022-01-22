@@ -5,11 +5,26 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+<<<<<<< HEAD
 import frc.robot.subsystems.DriveSubsystem;
 
 import frc.robot.commands.DriveCommand;
 import frc.robot.controllers.Following;
 
+=======
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
+
+/**
+ * The VM is configured to automatically run this class, and to call the functions corresponding to
+ * each mode, as described in the TimedRobot documentation. If you change the name of this class or
+ * the package after creating this project, you must also update the build.gradle file in the
+ * project.
+ */
+>>>>>>> origin/Limelight
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 

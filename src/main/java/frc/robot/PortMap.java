@@ -1,7 +1,7 @@
 package frc.robot;
 
 public class PortMap {
-    //*****************JOYSTICKS*****************//
+  //*****************JOYSTICKS*****************//
 
   public static final int JOYSTICK_LEFT = 1;
   public static final int JOYSTICK_RIGHT = 0;
