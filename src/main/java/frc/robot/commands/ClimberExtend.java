@@ -10,7 +10,7 @@ public class ClimberExtend implements Command {
 
     @Override
     public void initialize() {
-        Robot.climberSubsystem.setClimberArmSpeed();
+        Robot.climberSubsystem.extendClimberArm();
     }
 
     @Override
