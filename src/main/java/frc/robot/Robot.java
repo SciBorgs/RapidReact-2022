@@ -8,9 +8,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.subsystems.DriveSubsystem;
 
 import frc.robot.commands.DriveCommand;
+import frc.robot.controllers.Following;
 
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
+
+  public static Following following = new Following();
 
   public static OI oi = new OI();
 
