@@ -24,5 +24,4 @@ public class LimeLightSubsystem extends SubsystemBase {
     public void setCameraParams(String param, double setting) {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry(param).setNumber(setting);
     }
-    
 }
