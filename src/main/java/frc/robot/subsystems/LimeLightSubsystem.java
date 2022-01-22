@@ -16,6 +16,10 @@ public class LimeLightSubsystem extends SubsystemBase {
         return getTable().getEntry(var).getDouble(0);
     }
 
+    public boolean contourExists() {
+        return getTableData("tv") == 1;
+    }
+
     // sets a camera paramter
     public void setCameraParams(String param, int setting) {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry(param).setNumber(setting);
