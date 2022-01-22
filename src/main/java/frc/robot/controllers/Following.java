@@ -2,6 +2,8 @@ package frc.robot.controllers;
 
 import frc.robot.Robot;
 import frc.robot.util.PID;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Following {
     // public static final double K_TX = 1.;
@@ -9,18 +11,18 @@ public class Following {
     
     public static final double TX_P = 0.035;
 
-    public PID txPID;
+    public static PID txPID;
 
-    public Following() {
-        this.txPID = new PID(TX_P, 0, 0);
+    static {
+        txPID = new PID(TX_P, 0, 0);
     }
 
-    public void follow() {
-        double tx = Robot.limelightSubsystem.getTableData("tx");
-        double ta = Robot.limelightSubsystem.getTableData("ta");
+    public static void follow() {
+        NetworkTable table = Robot.limelightSubsystem.getTable();
+        double tx = Robot.limelightSubsystem.getTableData(table, "tx");
+        double ta = Robot.limelightSubsystem.getTableData(table, "ta");
 
         double distance = ta * K_TA;
-
         Robot.driveSubsystem.setSpeedForwardAngle(distance, txPID.getOutput(0, tx));
     }
 }

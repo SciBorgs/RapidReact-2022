@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.controllers.Following;
 
 public class FollowBallCommand extends CommandBase {
     public static final double LENIENCY = 1;
@@ -12,11 +13,12 @@ public class FollowBallCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.following.follow();
+        Following.follow();
     }
 
     @Override 
     public boolean isFinished() {
-        return Robot.limelightSubsystem.getTableData("tx") < LENIENCY;
+        return false;
+        //return Robot.limelightSubsystem.getTableData("tx") < LENIENCY;
     }
 }

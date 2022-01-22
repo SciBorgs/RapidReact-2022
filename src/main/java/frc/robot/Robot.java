@@ -7,7 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DriveCommand;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,22 +22,41 @@ import frc.robot.subsystems.LimeLightSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
-
-  public static LimeLightSubsystem  limeLightSubsystem  = new LimeLightSubsystem();
-
-  public static Following following = new Following();
-
   public static OI oi = new OI();
 
+  public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
+  public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
+  public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
+
+  public static DriveSubsystem      driveSubsystem      = new DriveSubsystem();
+
+  private RobotContainer m_robotContainer;
+
+
+  /**
+   * This function is run when the robot is first started up and should be used for any
+   * initialization code.
+   */
   @Override
   public void robotInit() {
-
+    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // autonomous chooser on the dashboard.
+    m_robotContainer = new RobotContainer();
+    //table = NetworkTableInstance.getDefault().getTable("limelight");
   }
 
   @Override
   public void robotPeriodic() {
-    System.out.println("This is robot periodic");
+    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+    // commands, running already-scheduled commands, removing finished or interrupted commands,
+    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().run();
+    limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
+    double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
+    //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
+    //double data = table.getEntry("tx").getDouble(1.0);
+    System.out.println(data);
   }
 
   @Override
