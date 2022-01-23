@@ -24,11 +24,11 @@ import frc.robot.subsystems.TurretSubsystem;
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
-  public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
-  public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
-  public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
+  public static LimeLightSubsystem limelightSubsystem  = new LimeLightSubsystem();
+  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
+  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
-  public static DriveSubsystem      driveSubsystem      = new DriveSubsystem();
+  public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 
   private RobotContainer m_robotContainer;
 
