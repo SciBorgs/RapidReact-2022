@@ -20,9 +20,12 @@ public class Following {
     public static void follow() {
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
-        double ta = Robot.limelightSubsystem.getTableData(table, "ta");
+        // double ta = Robot.limelightSubsystem.getTableData(table, "ta");
 
-        double distance = ta * K_TA;
+        // double distance = ta * K_TA;
+        // double forward = distance;
+        double forward = 0.5;
+
         Robot.driveSubsystem.setSpeedForwardAngle(distance, txPID.getOutput(0, tx));
     }
 }
