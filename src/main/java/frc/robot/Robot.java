@@ -24,9 +24,9 @@ import frc.robot.subsystems.TurretSubsystem;
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
-  public static LimeLightSubsystem limelightSubsystem  = new LimeLightSubsystem();
-  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
-  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
+  // public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
+  // public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
 
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    System.out.println("This is autonomous init");
+    // System.out.println("This is autonomous init");
   }
 
   /** This function is called periodically during autonomous. */
@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    System.out.println("This is teleop init");
+    // System.out.println("This is teleop init");
   }
 
   /** This function is called periodically during operator control. */
@@ -85,24 +85,24 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    System.out.println("This is disabled init");
+    // System.out.println("This is disabled init");
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-    System.out.println("This is disabled periodic");
+    // System.out.println("This is disabled periodic");
   }
 
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
-    System.out.println("This is test init");
+    // System.out.println("This is test init");
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    System.out.println("This is test periodic");
+    // System.out.println("This is test periodic");
   }
 }

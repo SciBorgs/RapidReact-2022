@@ -23,9 +23,6 @@ public class Following {
         // double ta = Robot.limelightSubsystem.getTableData(table, "ta");
 
         // double distance = ta * K_TA;
-        // double forward = distance;
-        double forward = 0.5;
-
-        Robot.driveSubsystem.setSpeedForwardAngle(distance, txPID.getOutput(0, tx));
+        Robot.driveSubsystem.setSpeedForwardAngle(0.5, txPID.getOutput(0, tx));
     }
 }

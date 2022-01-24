@@ -6,11 +6,11 @@ import frc.robot.PortMap;
 import frc.robot.Robot;
 
 public class DriveCommand extends InstantCommand {
-    private DigitalInput limitSwitch = new DigitalInput(PortMap.TOP_LIMIT_SWITCH);
+    // private DigitalInput limitSwitch = new DigitalInput(PortMap.TOP_LIMIT_SWITCH);
 
     public void execute() {
-        Robot.driveSubsystem.setSpeed(limitSwitch.get() ? 0 : Robot.oi.joystickLeft.getY(),
-                limitSwitch.get() ? 0 : Robot.oi.joystickRight.getY());
+        Robot.driveSubsystem.setSpeed(Robot.oi.joystickLeft.getY(),
+                Robot.oi.joystickRight.getY());
     }
 
 }

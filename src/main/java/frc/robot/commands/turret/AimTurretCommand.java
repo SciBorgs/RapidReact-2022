@@ -7,6 +7,6 @@ public class AimTurretCommand extends CommandBase {
     
     @Override
     public void execute() {
-        Robot.turretSubsystem.turn();
+        // Robot.turretSubsystem.turn();
     }
 }
