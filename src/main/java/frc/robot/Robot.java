@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.FollowBallCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
@@ -52,16 +53,17 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
-    double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
+    //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
+    //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
     //double data = table.getEntry("tx").getDouble(1.0);
-    System.out.println(data);
+    //System.out.println(data);
   }
 
   @Override
   public void autonomousInit() {
     // System.out.println("This is autonomous init");
+    new FollowBallCommand().execute();
   }
 
   /** This function is called periodically during autonomous. */
@@ -79,7 +81,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    new DriveCommand().execute();
+    // new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */
