@@ -26,6 +26,6 @@ public class Following {
         // double forward = distance;
         double forward = 0.5;
 
-        Robot.driveSubsystem.setSpeedForwardAngle(distance, txPID.getOutput(0, tx));
+        Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(0, tx));
     }
 }

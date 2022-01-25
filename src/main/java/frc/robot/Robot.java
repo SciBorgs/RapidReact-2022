@@ -12,8 +12,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,8 +23,6 @@ public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
   public static LimeLightSubsystem limelightSubsystem  = new LimeLightSubsystem();
-  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
-  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 
