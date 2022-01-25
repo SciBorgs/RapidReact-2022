@@ -2,14 +2,15 @@ package frc.robot.commands;
 
 import java.util.Set;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class ClimberExtend implements Command {
+public class ClimberExtend extends CommandBase {
 
     @Override
     public void initialize() {
+        this.addRequirements(Robot.climberSubsystem);
         Robot.climberSubsystem.extendClimberArm();
     }
 
