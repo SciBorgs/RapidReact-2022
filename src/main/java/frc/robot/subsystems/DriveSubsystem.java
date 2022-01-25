@@ -27,7 +27,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void setSpeed(double left, double right) {
         lFront.set(left);
-        rFront.set(right);
+        rFront.set(-right);
 
         // System.out.println(left + "\t" + right);
     }

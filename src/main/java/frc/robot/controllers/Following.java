@@ -9,29 +9,29 @@ public class Following {
     // public static final double K_TX = 1.;
     public static final double K_TA = 1.;
     
-    public static final double TX_P = 0.0035;
+    public static final double TX_P = 0.035;
+    public static final double TA_P = 0.4;
 
-    public static PID txPID;
+    public static PID txPID, taPID;
+
 
     static {
         txPID = new PID(TX_P, 0, 0);
+        taPID = new PID(TA_P, 0, 0);
     }
 
     public static void follow() {
         Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 2);
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
-        System.out.println(tv);
+        double tx = Robot.limelightSubsystem.getTableData(table, "tx");
+        double ta = Robot.limelightSubsystem.getTableData(table, "ta");
+        double forward = -taPID.getOutput(Math.exp(-ta), 0);
+        //System.out.println(tv);
         if (tv == 1) {
-            double tx = Robot.limelightSubsystem.getTableData(table, "tx");
-            System.out.println("tx: " + Double.toString(tx));
-            System.out.println("PID val: " + Double.toString(txPID.getOutput(tx, 0)));
-            Robot.driveSubsystem.setSpeedForwardAngle(0.1, txPID.getOutput(tx, 0));
+            Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
         } else {
-            Robot.driveSubsystem.setSpeed(0,0);
+            System.out.println("go nowhere");
         }
-        // double ta = Robot.limelightSubsystem.getTableData(table, "ta");
-
-        // double distance = ta * K_TA;
     }
 }

@@ -13,12 +13,12 @@ public class FollowBallCommand extends CommandBase {
 
     @Override
     public void execute() {
-        System.out.println("Executing command");
         Following.follow();
     }
 
     @Override 
     public boolean isFinished() {
-        return Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "tx") < LENIENCY;
+        //return Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "tx") < LENIENCY;
+        return false;
     }
 }

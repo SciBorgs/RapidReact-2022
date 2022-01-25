@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // System.out.println("This is autonomous init");
-    new FollowBallCommand().execute();
+    CommandScheduler.getInstance().schedule(new FollowBallCommand());
   }
 
   /** This function is called periodically during autonomous. */
@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // new DriveCommand().execute();
+     new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */
