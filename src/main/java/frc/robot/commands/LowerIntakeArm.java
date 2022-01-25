@@ -2,13 +2,15 @@ package frc.robot.commands;
 
 import java.util.Set;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class LowerIntakeArm implements Command {
+public class LowerIntakeArm extends CommandBase {
+    
     @Override
     public void initialize() {
+        this.addRequirements(Robot.intake);
         Robot.intake.extendArm();
     }
 
