@@ -1,6 +1,7 @@
 package frc.robot.controllers;
 
 import frc.robot.Robot;
+import frc.robot.util.Averager;
 import frc.robot.util.PID;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -17,6 +18,8 @@ public class Following {
 
     public static PID txPID, taPID;
 
+    public static Averager TA_Average = new Averager(5);
+
     static {
         txPID = new PID(TX_P, 0, 0);
         taPID = new PID(TA_P, 0, 0);
@@ -29,7 +32,7 @@ public class Following {
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
         double ta = Robot.limelightSubsystem.getTableData(table, "ta");
     
-        double forward = -taPID.getOutput(Math.exp(-ta), 0);
+        double forward = -taPID.getOutput(Math.exp(-TA_Average.getAverageTA(ta)), 0);
         //System.out.println(tv);
         if (tv == 1) {
             Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
