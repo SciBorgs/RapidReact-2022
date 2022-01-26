@@ -5,6 +5,9 @@ import frc.robot.util.PID;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 public class Following {
     // public static final double K_TX = 1.;
     public static final double K_TA = 1.;
@@ -14,6 +17,8 @@ public class Following {
 
     public static PID txPID, taPID;
 
+    public static Deque<Double> TA_Deque = new LinkedList<Double>();
+    public static double TA_sum = 0;
 
     static {
         txPID = new PID(TX_P, 0, 0);
@@ -26,7 +31,13 @@ public class Following {
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
         double ta = Robot.limelightSubsystem.getTableData(table, "ta");
-        double forward = -taPID.getOutput(Math.exp(-ta), 0);
+        TA_Deque.addFirst(ta);
+        TA_sum += ta;
+        if(TA_Deque.size() > 5) {
+            TA_sum -= TA_Deque.getLast();
+            TA_Deque.removeLast();
+        }
+        double forward = -taPID.getOutput(Math.exp(-TA_sum/TA_Deque.size()), 0);
         //System.out.println(tv);
         if (tv == 1) {
             Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
