@@ -1,9 +1,13 @@
 package frc.robot.controllers;
 
 import frc.robot.Robot;
+import frc.robot.util.Averager;
 import frc.robot.util.PID;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class Following {
     // public static final double K_TX = 1.;
@@ -16,6 +20,7 @@ public class Following {
     public static PID txPID, taPID;
     public static double taAvr;
 
+    public static Averager TA_Average = new Averager(5);
 
     static {
         txPID = new PID(TX_P, 0, 0);
@@ -27,10 +32,9 @@ public class Following {
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
-        taAvr += Robot.limelightSubsystem.getTableData(table, "ta") * TA_WEIGHT;
-        taAvr /= (1 + TA_WEIGHT);
-        System.out.println("TA average " + taAvr * 100);
-        double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
+        double ta = Robot.limelightSubsystem.getTableData(table, "ta");
+    
+        double forward = -taPID.getOutput(Math.exp(-TA_Average.getAverageTA(ta)), 0);
         //System.out.println(tv);
         if (tv == 1) {
             Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
