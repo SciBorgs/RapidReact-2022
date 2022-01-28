@@ -14,7 +14,7 @@ public class TurretSubsystem extends SubsystemBase {
     private PID pid = new PID(1, 1, 1);
 
     public void turn() {
-        double tx = Robot.limeLightSubsystem.getTableData(Robot.limeLightSubsystem.getTable(), "tx");
+        double tx = Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "tx");
         double speed = pid.getOutput(0, tx);
         setTurretSpeed(speed);
     }

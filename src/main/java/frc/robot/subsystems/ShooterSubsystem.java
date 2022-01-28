@@ -33,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
         hood.set(speed);
     }
     public void hoodangle(){
-        double ty = Robot.limeLightSubsystem.getTableData(Robot.limeLightSubsystem.getTable(), "ty");
+        double ty = Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "ty");
         double speed = pid.getOutput(0, ty);
         moveVert(speed);
     }
