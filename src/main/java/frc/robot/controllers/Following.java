@@ -15,12 +15,12 @@ public class Following {
     
     public static final double TX_P = 0.035;
     public static final double TA_P = 0.4;
-    public static final double TA_WEIGHT = 10;
+    public static final double TA_WEIGHT = 1/10;
 
     public static PID txPID, taPID;
     public static double taAvr;
 
-    public static Averager TA_Average = new Averager(5);
+    public static Averager TA_Average = new Averager(50);
 
     static {
         txPID = new PID(TX_P, 0, 0);
@@ -33,13 +33,13 @@ public class Following {
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
         double ta = Robot.limelightSubsystem.getTableData(table, "ta");
-    
-        double forward = -taPID.getOutput(Math.exp(-TA_Average.getAverageTA(ta)), 0);
-        //System.out.println(tv);
+        taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
+        double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
+        System.out.println(Math.abs(forward) * 100);
         if (tv == 1) {
             Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
         } else {
-            //System.out.println("go nowhere");
+            Robot.driveSubsystem.setSpeed(0, 0);
         }
     }
 }
