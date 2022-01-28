@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FollowBallCommand;
+import frc.robot.commands.FollowTapeCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -63,7 +64,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // System.out.println("This is autonomous init");
-    CommandScheduler.getInstance().schedule(new FollowBallCommand());
+    CommandScheduler.getInstance().schedule(new FollowTapeCommand());
   }
 
   /** This function is called periodically during autonomous. */

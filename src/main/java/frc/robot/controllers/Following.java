@@ -28,7 +28,7 @@ public class Following {
     }
 
     public static void follow() {
-        Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 2);
+        Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 0);
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
@@ -42,4 +42,5 @@ public class Following {
             Robot.driveSubsystem.setSpeed(0, 0);
         }
     }
+    
 }
