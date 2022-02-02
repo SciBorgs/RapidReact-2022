@@ -4,10 +4,6 @@ import frc.robot.Robot;
 import frc.robot.util.Averager;
 import frc.robot.util.PID;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-
-import java.util.Deque;
-import java.util.LinkedList;
 
 public class Following {
     // public static final double K_TX = 1.;
@@ -37,7 +33,7 @@ public class Following {
         double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
         System.out.println(Math.abs(forward) * 100);
         if (tv == 1) {
-            Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
+            Robot.driveSubsystem.setSpeedForwardAngle(1, txPID.getOutput(tx, 0));
         } else {
             Robot.driveSubsystem.setSpeed(0, 0);
         }
