@@ -19,6 +19,6 @@ public class SciPigeon extends PigeonIMU {
     public double getRoll() { return Math.toRadians(yawPitchRoll()[2]); }
 
     public void setAngle(double angle) {
-        super.setYaw(angle);
+        super.setYaw(Math.toDegrees(angle));
     }
 }
