@@ -12,10 +12,12 @@ public class ShooterSubsystem extends SubsystemBase {
     public CANSparkMax hood, lmotor, rmotor;
 
     public ShooterSubsystem() {
+        /*
         this.hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         this.lmotor = new CANSparkMax(PortMap.SHOOTER_LEFT_SPARK, MotorType.kBrushless);
         this.rmotor = new CANSparkMax(PortMap.SHOOTER_RIGHT_SPARK, MotorType.kBrushless);
-
+        */
+        
         lmotor.follow(rmotor);
     }
     

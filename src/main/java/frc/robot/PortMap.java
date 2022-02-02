@@ -17,8 +17,8 @@ public class PortMap {
 
   //*******************SWITCHES******************//
   public static final int TOP_LIMIT_SWITCH = 3;
-  public static final int HOOD_SPARK = 0;
-  public static final int SHOOTER_LEFT_SPARK = 0;
-  public static final int SHOOTER_RIGHT_SPARK = 0;
-  public static final int TURRET_SPARK = 0;
+  // public static final int HOOD_SPARK = 0;
+  // public static final int SHOOTER_LEFT_SPARK = 0;
+  // public static final int SHOOTER_RIGHT_SPARK = 0;
+  // public static final int TURRET_SPARK = 0;
 }
