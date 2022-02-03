@@ -4,10 +4,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciPigeon;
 
-public class PigeonSubsystem extends SubsystemBase {
+public class Localization extends SubsystemBase {
     public SciPigeon pigeon;
 
-    public PigeonSubsystem() {
-    
+    public Localization() {
+        pigeon = new SciPigeon(PortMap.PIGEON_ID);
     }
+
+    
 }

@@ -21,4 +21,7 @@ public class PortMap {
   public static final int SHOOTER_LEFT_SPARK = 0;
   public static final int SHOOTER_RIGHT_SPARK = 0;
   public static final int TURRET_SPARK = 0;
+
+  //*******************MISC******************//
+  public static final int PIGEON_ID = -1;
 }
