@@ -11,4 +11,8 @@ public class PortMap {
 
     public static final int HOPPER_SUCK_SPARK = -1;
     public static final int HOPPER_ELEVATOR_SPARK = -1;
+
+    // *******************PNEMUATICS******************//
+    public static final int COMPRESSOR = -1;
+
 }
