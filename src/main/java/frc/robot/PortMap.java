@@ -24,4 +24,6 @@ public class PortMap {
 
   //*******************MISC******************//
   public static final int PIGEON_ID = -1;
+  public static final int LEFT_ENCODER = -1;
+  public static final int RIGHT_ENCODER = -1;
 }
