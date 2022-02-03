@@ -20,8 +20,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  public static Intake intake = new Intake();
-  public static Hopper hopper = new Hopper();
+  public static IntakeSubsystem intake = new IntakeSubsystem();
+  public static HopperSubsystem hopper = new HopperSubsystem();
+  public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
 
   /**
    * This function is run when the robot is first started up and should be used for any
