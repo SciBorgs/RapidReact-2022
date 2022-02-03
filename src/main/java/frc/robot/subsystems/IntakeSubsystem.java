@@ -6,14 +6,14 @@ import com.revrobotics.CANSparkMax;
 
 import frc.robot.PortMap;
 
-public class Intake implements Subsystem {
+public class IntakeSubsystem implements Subsystem {
 
     private DoubleSolenoid armSolenoid;
     private CANSparkMax suckSpark;
 
     private final double INTAKE_SPEED = 0.5;
 
-    public Intake() {
+    public IntakeSubsystem() {
         this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL);
         this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
     }
@@ -33,5 +33,6 @@ public class Intake implements Subsystem {
     public void initDefaultCommand(){
 
     }
+
 
 }
