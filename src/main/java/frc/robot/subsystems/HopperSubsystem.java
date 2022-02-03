@@ -4,14 +4,14 @@ import com.revrobotics.CANSparkMax;
 
 import frc.robot.PortMap;
 
-public class Hopper implements Subsystem {
+public class HopperSubsystem implements Subsystem {
 
     private CANSparkMax suck;
     private CANSparkMax elevator;
 
     private final double HOOPER_SPEED = 0.5;
 
-    public Hopper() {
+    public HopperSubsystem() {
         this.suck = new CANSparkMax(PortMap.HOPPER_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
         this.elevator = new CANSparkMax(PortMap.HOPPER_ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
     }
