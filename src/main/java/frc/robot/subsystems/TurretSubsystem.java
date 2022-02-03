@@ -46,4 +46,8 @@ public class TurretSubsystem extends SubsystemBase {
         //System.out.println(forward * (1 + angle));
         setSpeed(forward * (1 + angle), forward * (1 - angle)); // thank you zev
     }
+
+    public void turn(double diff) {
+        setSpeed(diff, -diff);
+    }
 }
