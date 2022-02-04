@@ -6,12 +6,12 @@ import frc.robot.Robot;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
 
-public class TurnAngleCommand extends CommandBase {
+public class TurnToPointCommand extends CommandBase {
     private static final double EPSILON = 1E-6;
     private PID anglePid;
     private double targetAngle;
 
-    public TurnAngleCommand(Point p) {
+    public TurnToPointCommand(Point p) {
         double dx = p.getX() - Robot.localizationSubsystem.getX();
         double dy = p.getY() - Robot.localizationSubsystem.getY();
         this.targetAngle = Math.atan2(dy, dx);
