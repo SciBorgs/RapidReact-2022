@@ -8,6 +8,6 @@ public class PigeonSubsystem extends SubsystemBase {
     public SciPigeon pigeon;
 
     public PigeonSubsystem() {
-    
+        this.pigeon = new SciPigeon(PortMap.PIGEON);
     }
 }

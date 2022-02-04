@@ -7,9 +7,12 @@ import frc.robot.Robot;
 
 public class TurnAngleCommand extends InstantCommand {
     public void execute() {
-        Robot.driveSubsystem.setSpeed(Robot.oi.joystickLeft.getY(),
-                Robot.oi.joystickRight.getY());
+        double dx = 5, dy = 5;
+        double targetAngle = Math.atan2(dy, dx);
+
     }
+
+
 
     @Override
     public boolean isFinished() {

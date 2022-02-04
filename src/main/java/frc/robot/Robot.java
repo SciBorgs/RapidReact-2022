@@ -11,6 +11,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FollowBallCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.PigeonSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
   public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
+  public static PigeonSubsystem     pigeonSubsystem     = new PigeonSubsystem();
   // public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
   // public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
 
