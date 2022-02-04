@@ -29,7 +29,7 @@ public class FollowTape {
         if (tv == 1) {
             Robot.turretSubsystem.turn(txPID.getOutput(tx, 0));
         } else {
-            Robot.turretSubsystem.setSpeed(0, 0);
+            Robot.turretSubsystem.setSpeed(-0.5, 0.5);
         }
     }
     
