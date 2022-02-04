@@ -1,7 +1,7 @@
 package frc.robot.controllers;
 
 public class PointFollowing {
-    public static Waypoint[] { new }
+    public static Waypoint[] points = { };
 }
 
 class Waypoint {
