@@ -51,3 +51,27 @@ public class TurretSubsystem extends SubsystemBase {
         setSpeed(diff, -diff);
     }
 }
+
+
+//for later when we decide to use one motor for the actual turret
+
+/*
+public CANSparkMax susan;
+
+public TurretSubsystem() {
+    this.susan = new CANSparkMax(PortMap.TURRET_SPARK, MotorType.kBrushless);
+    //Depends on how many motors there are on turret, but Im thinking there is only one for now.
+    private PID pid = new PID(1, 1, 1);
+}
+
+public void turn() {
+        double tx = Robot.LimeLightSubsystem.getTableData(Robot.LimeLightSubsystem.getTable(), "tx");
+        double speed = pid.getOutput(0, tx);
+        setTurretSpeed(speed);
+}
+//this might not even be needed, considering we have the followTape controller
+
+public void setTurretSpeed(double speed) {
+        this.susan.set(speed);
+}
+*/
