@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class AimTurretCommand extends CommandBase {
     public AimTurretCommand() {
         super();
-        this.addRequirements(Robot.driveSubsystem, Robot.limelightSubsystem);
+        this.addRequirements(Robot.limelightSubsystem);
     }
 
     @Override

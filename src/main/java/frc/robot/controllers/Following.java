@@ -33,9 +33,7 @@ public class Following {
         double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
         System.out.println(Math.abs(forward) * 100);
         if (tv == 1) {
-            Robot.driveSubsystem.setSpeedForwardAngle(1, txPID.getOutput(tx, 0));
         } else {
-            Robot.driveSubsystem.setSpeed(0, 0);
         }
     }
     

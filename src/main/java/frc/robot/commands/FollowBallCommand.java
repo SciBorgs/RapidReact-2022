@@ -8,7 +8,7 @@ public class FollowBallCommand extends CommandBase {
     public static final double LENIENCY = 1;
     public FollowBallCommand() {
         super();
-        this.addRequirements(Robot.driveSubsystem, Robot.limelightSubsystem);
+        this.addRequirements(Robot.limelightSubsystem);
     }
 
     @Override

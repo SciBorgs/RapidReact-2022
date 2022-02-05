@@ -48,6 +48,6 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void turn(double diff) {
-        setSpeed(diff, -diff);
+        setSpeed(-diff, diff);
     }
 }
