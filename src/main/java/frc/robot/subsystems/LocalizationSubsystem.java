@@ -14,7 +14,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     private Point posL, posR, pos;
     private int countL, countR;
 
-    public Encoder leftEncoder, rightEncoder;
+    public SciEncoder leftEncoder, rightEncoder;
     public SciPigeon pigeon;
 
     public LocalizationSubsystem() {
@@ -41,23 +41,31 @@ public class LocalizationSubsystem extends SubsystemBase {
     // rookies can refactor this next year!!!!!!!
     // call in periodic
     public void updateLocation() {
-        int newCountL = this.leftEncoder.get();
-        int newCountR = this.rightEncoder.get();
-
-        int dCountL = newCountL - this.countL;
-        int dCountR = newCountR - this.countR;
-
-        double currHeading = this.getAngle();
-
-        this.posL.x += Constants.WHEEL_CIRCUMFERENCE * dCountL * Math.cos(currHeading);
-        this.posL.y += Constants.WHEEL_CIRCUMFERENCE * dCountL * Math.sin(currHeading);
-        this.posR.x += Constants.WHEEL_CIRCUMFERENCE * dCountR * Math.cos(currHeading);
-        this.posR.y += Constants.WHEEL_CIRCUMFERENCE * dCountR * Math.sin(currHeading);
-
-        this.countL += dCountL;
-        this.countR += dCountR;
+        updateSide(this.rightEncoder, Side.RIGHT);
+        updateSide(this.leftEncoder,  Side.LEFT);
 
         this.pos.x = (this.posL.x + this.posR.x) / 2;
         this.pos.y = (this.posL.y + this.posR.y) / 2;
+    }
+
+    private enum Side {
+        RIGHT,
+        LEFT
+    }
+
+    private void updateSide(SciEncoder encoder, Side side) {
+        Point posS = (side == Side.RIGHT) ? this.posR   : this.posL;
+        int count  = (side == Side.RIGHT) ? this.countR : this.countL;
+    
+        int newCount = encoder.get();
+        int dCount = newCount - count;
+
+        double currHeading = this.getAngle();
+        
+        posS.x += Constants.WHEEL_CIRCUMFERENCE * dCount * Math.cos(currHeading);
+        posS.y += Constants.WHEEL_CIRCUMFERENCE * dCount * Math.sin(currHeading);
+        
+        if (side == Side.RIGHT) this.countR += dCount; 
+        else                    this.countL += dCount;
     }
 }
