@@ -6,15 +6,11 @@ import frc.robot.util.PID;
 import edu.wpi.first.networktables.NetworkTable;
 
 public class FollowTape {
-    // public static final double K_TX = 1.;
-    public static final double K_TA = 1.;
-    
+
     public static final double TX_P = 0.035;
-    public static final double TA_P = 0.4;
-    public static final double TA_WEIGHT = 1/10;
+    public static final double TX_WEIGHT = 0.5;
 
     public static PID txPID;
-    public static double taAvr;
 
     static {
         txPID = new PID(TX_P, 0, 0);
@@ -27,9 +23,9 @@ public class FollowTape {
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
 
         if (tv == 1) {
-            Robot.turretSubsystem.turn(txPID.getOutput(tx, 0));
+            Robot.turretSubsystem.turn(TX_WEIGHT * txPID.getOutput(tx, 0));
         } else {
-            Robot.turretSubsystem.setSpeed(0, 0);
+            Robot.turretSubsystem.turn(0.5);
         }
     }
     
