@@ -17,12 +17,12 @@ public class MoveToPointCommand extends CommandBase {
     }
 
     public void execute() {
-        double output = this.distancePid.getOutput(targetPoint.getX(), Robot.localizationSubsystem.getX());
+        double output = this.distancePid.getOutput(targetPoint.x, Robot.localizationSubsystem.getPos().x);
         Robot.driveSubsystem.setSpeed(output, output);
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(targetPoint.getX() - Robot.localizationSubsystem.getX()) < EPSILON;
+        return Math.abs(targetPoint.x - Robot.localizationSubsystem.getPos().x) < EPSILON;
     }
 }
