@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.Encoder;
 
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciEncoder;
@@ -28,7 +27,7 @@ public class LocalizationSubsystem extends SubsystemBase {
 
         this.leftEncoder = new SciEncoder(0, 1, Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
         this.rightEncoder = new SciEncoder(0, 1, Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
-
+        
         this.countL = this.leftEncoder.get();
         this.countR = this.rightEncoder.get();
 
