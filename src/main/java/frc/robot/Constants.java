@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.util.Point;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -25,4 +27,10 @@ public final class Constants {
     //***************** GEAR RATIOS ***********************//
     public static final double LEFT_ENCODER_GEAR_RATIO = 1;
     public static final double RIGHT_ENCODER_GEAR_RATIO = 1;
+
+    //********************** POINTS ***********************//
+    public static final Point POINT_ALPHA = new Point(0, 0);
+    public static final Point POINT_BETA  = new Point(0, 0);
+    public static final Point POINT_GAMMA  = new Point(0, 0);
+
 }
