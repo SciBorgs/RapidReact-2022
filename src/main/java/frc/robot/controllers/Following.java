@@ -16,8 +16,6 @@ public class Following {
     public static PID txPID, taPID;
     public static double taAvr;
 
-    public static Averager TA_Average = new Averager(50);
-
     static {
         txPID = new PID(TX_P, 0, 0);
         taPID = new PID(TA_P, 0, 0);
