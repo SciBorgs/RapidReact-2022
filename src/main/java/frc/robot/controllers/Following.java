@@ -4,10 +4,6 @@ import frc.robot.Robot;
 import frc.robot.util.Averager;
 import frc.robot.util.PID;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-
-import java.util.Deque;
-import java.util.LinkedList;
 
 public class Following {
     // public static final double K_TX = 1.;
@@ -28,7 +24,7 @@ public class Following {
     }
 
     public static void follow() {
-        Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 2);
+        Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 1);
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
@@ -37,9 +33,8 @@ public class Following {
         double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
         System.out.println(Math.abs(forward) * 100);
         if (tv == 1) {
-            Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
-        } else {
-            Robot.driveSubsystem.setSpeed(0, 0);
-        }
+        } 
+        //else { Robot.driveSubsystem.setSpeed(0, 0); }
     }
+    
 }
