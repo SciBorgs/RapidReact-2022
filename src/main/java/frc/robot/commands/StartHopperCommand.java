@@ -6,12 +6,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class IntakeBalls extends CommandBase {
+public class StartHopperCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.addRequirements(Robot.intake);
-        Robot.intake.setSuckSpeed();
+        this.addRequirements(Robot.hopper);
+        Robot.hopper.setSuckSpeed();
+        Robot.hopper.setElevatorSpeed();
     }
 
     @Override
@@ -21,7 +22,8 @@ public class IntakeBalls extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        Robot.intake.setSuckSpeed();
+        Robot.hopper.setSuckSpeed();
+        Robot.hopper.setElevatorSpeed();
     }
 
     @Override
