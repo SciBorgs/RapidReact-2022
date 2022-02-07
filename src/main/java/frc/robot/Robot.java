@@ -8,9 +8,13 @@ import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FollowBallCommand;
+import frc.robot.commands.IntakeBallCommand;
+import frc.robot.commands.StartHopperCommand;
+import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
@@ -73,7 +77,18 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // System.out.println("This is autonomous init");
-    CommandScheduler.getInstance().schedule(new AimTurretCommand());
+    CommandScheduler.getInstance().schedule(
+      new SequentialCommandGroup(
+        new MoveToPointAlphaCommand(),
+        new ShootCommand(),
+        new MoveToPointBetaCommand(),
+        new FollowBallCommand(),
+        new IntakeBallCommand(),
+        new StartHopperCommand(),
+        new MoveToPointGammaCommand(),
+        new ShootCommand()
+      )
+    );
   }
 
   /** This function is called periodically during autonomous. */

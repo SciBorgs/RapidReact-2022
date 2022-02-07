@@ -13,13 +13,13 @@ public class OI {
 
         public OI() {
                 this.intakeBalls = new Button();
-                this.intakeBalls.whenHeld(new IntakeBalls());
+                this.intakeBalls.whenHeld(new IntakeBallCommand());
 
                 this.lowerIntakeArms = new Button();
                 this.lowerIntakeArms.whenPressed(new LowerIntakeArm());
 
                 this.StartHopper = new Button();
-                this.StartHopper.whenPressed(new StartHopper());
+                this.StartHopper.whenPressed(new StartHopperCommand());
 
                 this.togglePneumatics = new Button();
                 this.togglePneumatics.toggleWhenPressed(new TogglePneumatics());
