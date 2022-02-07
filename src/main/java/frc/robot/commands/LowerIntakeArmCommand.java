@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class LowerIntakeArm extends CommandBase {
+public class LowerIntakeArmCommand extends CommandBase {
     
     @Override
     public void initialize() {

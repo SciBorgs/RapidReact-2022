@@ -4,14 +4,14 @@ import frc.robot.Robot;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
 
-public class GoToPoint {
+public class MoveToPoint {
     private static final double EPSILON = 1E-6;
     private PID anglePid;
     private double targetAngle;
     private PID distancePid;
     private Point targetPoint;
 
-    public GoToPoint(Point p) {
+    public MoveToPoint(Point p) {
         double dx = p.x - Robot.localizationSubsystem.getPos().x;
         double dy = p.y - Robot.localizationSubsystem.getPos().y;
         this.targetAngle = Math.atan2(dy, dx);
@@ -26,7 +26,7 @@ public class GoToPoint {
         Robot.driveSubsystem.setSpeedForwardAngle(0.1, output);
     }
 
-    public boolean facingPoint() {
+    public boolean isFacingPoint() {
         double currentAngle = Robot.localizationSubsystem.getAngle();
         return Math.abs(targetAngle - currentAngle) < EPSILON;
     }
@@ -36,7 +36,7 @@ public class GoToPoint {
         Robot.driveSubsystem.setSpeed(output, output);
     }
 
-    public boolean finished() {
+    public boolean hasArrived() {
         return Math.abs(targetPoint.x - Robot.localizationSubsystem.getPos().x) < EPSILON;
 
     }

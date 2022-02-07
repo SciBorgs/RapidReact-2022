@@ -16,13 +16,13 @@ public class OI {
                 this.intakeBalls.whenHeld(new IntakeBallCommand());
 
                 this.lowerIntakeArms = new Button();
-                this.lowerIntakeArms.whenPressed(new LowerIntakeArm());
+                this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
 
                 this.StartHopper = new Button();
                 this.StartHopper.whenPressed(new StartHopperCommand());
 
                 this.togglePneumatics = new Button();
-                this.togglePneumatics.toggleWhenPressed(new TogglePneumatics());
+                this.togglePneumatics.toggleWhenPressed(new TogglePneumaticsCommand());
 
         }
 }
