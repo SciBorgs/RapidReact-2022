@@ -11,7 +11,6 @@ import frc.robot.util.PID;
 
 public class TurretSubsystem extends SubsystemBase {
     public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
-    private int turned;
     private int max;
 
     public TurretSubsystem() {
@@ -48,8 +47,8 @@ public class TurretSubsystem extends SubsystemBase {
         setSpeed(-diff, diff);
     }
 
-    public boolean tooFar() {
-        return turned > max;
+    public double getAngle() {
+        return 
     }
 }
 
