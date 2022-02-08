@@ -35,7 +35,11 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     public Point getPos() { return this.pos; }
-    public double getAngle() { return pigeon.getAngle(); }
+    public double getAngle() { 
+        // return pigeon.getAngle(); 
+        // Pigeon not working :(
+        return (rightEncoder.get() - leftEncoder.get()) / Constants.ROBOT_WIDTH;
+    }
 
     // rookies can refactor this next year!!!!!!!
     // call in periodic
