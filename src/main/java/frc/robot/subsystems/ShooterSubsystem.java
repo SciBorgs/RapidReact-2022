@@ -25,16 +25,16 @@ public class ShooterSubsystem extends SubsystemBase {
     public final double CAM_MOUNT_ANGLE = 34.523;
     //arbitrary numbers - expect changes after prototype created
 
-    public double getDistance(double angle){
+    public double getDistance(double angle) {
         return HEIGHTDIFF/Math.tan(Math.toRadians(+CAM_MOUNT_ANGLE));
     }
     public void shoot(double speed) {
         rmotor.set(speed);
     }
-    public void moveVert(double speed){
+    public void moveVert(double speed) {
         hood.set(speed);
     }
-    public void hoodangle(){
+    public void hoodangle() {
         double ty = Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "ty");
         double speed = pid.getOutput(0, ty);
         moveVert(speed);

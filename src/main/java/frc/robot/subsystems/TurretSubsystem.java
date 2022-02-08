@@ -11,6 +11,8 @@ import frc.robot.util.PID;
 
 public class TurretSubsystem extends SubsystemBase {
     public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
+    private int turned;
+    private int max;
 
     public TurretSubsystem() {
         this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
@@ -44,6 +46,10 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void turn(double diff) {
         setSpeed(-diff, diff);
+    }
+
+    public boolean tooFar() {
+        return turned > max;
     }
 }
 
