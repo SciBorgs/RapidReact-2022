@@ -97,9 +97,9 @@ public class Robot extends TimedRobot {
     );
     */
 
-    CommandSchedular.getInstance().schedule(
-      new MoveToPointCommand();
-    )
+    CommandScheduler.getInstance().schedule(
+      new MoveToPointCommand()
+    );
   }
 
   /** This function is called periodically during autonomous. */

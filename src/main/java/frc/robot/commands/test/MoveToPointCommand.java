@@ -2,9 +2,10 @@ package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controllers.MoveToPoint;
+import frc.robot.util.Point;
 import frc.robot.Constants;
 
-public class MoveToPointAlphaCommand  extends CommandBase{
+public class MoveToPointCommand extends CommandBase{
     private MoveToPoint controller;
 
     @Override
