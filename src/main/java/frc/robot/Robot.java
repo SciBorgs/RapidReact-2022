@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.test.MoveToPointCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FollowBallCommand;
 import frc.robot.commands.IntakeBallCommand;
@@ -80,6 +81,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // System.out.println("This is autonomous init");
+
+    /*
     CommandScheduler.getInstance().schedule(
       new SequentialCommandGroup(
         new MoveToPointAlphaCommand(),
@@ -92,6 +95,11 @@ public class Robot extends TimedRobot {
         new ShootCommand()
       )
     );
+    */
+
+    CommandSchedular.getInstance().schedule(
+      new MoveToPointCommand();
+    )
   }
 
   /** This function is called periodically during autonomous. */
