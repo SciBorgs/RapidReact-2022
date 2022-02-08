@@ -1,7 +1,6 @@
 package frc.robot.controllers;
 
 import frc.robot.Robot;
-import frc.robot.util.Averager;
 import frc.robot.util.PID;
 import edu.wpi.first.networktables.NetworkTable;
 
@@ -25,7 +24,7 @@ public class Following {
         Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 1);
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
-        double tx = Robot.limelightSubsystem.getTableData(table, "tx");
+        //double tx = Robot.limelightSubsystem.getTableData(table, "tx");
         double ta = Robot.limelightSubsystem.getTableData(table, "ta");
         taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
         double forward = -taPID.getOutput(Math.exp(-taAvr), 0);

@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+//import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.PortMap;
+//import frc.robot.PortMap;
 import frc.robot.Robot;
 import frc.robot.util.PID;
 
