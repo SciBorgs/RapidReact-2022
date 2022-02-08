@@ -14,10 +14,9 @@ public class LocalizationSubsystem extends SubsystemBase {
     private int countL, countR;
 
     public SciEncoder leftEncoder, rightEncoder;
-    public SciPigeon pigeon;
+    // public SciPigeon pigeon;
 
     public LocalizationSubsystem() {
-        this.pigeon.setAngle(Constants.STARTING_HEADING);
         double heading = Constants.STARTING_HEADING;
         double r = Constants.ROBOT_WIDTH / 2;
 
@@ -31,7 +30,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.countL = this.leftEncoder.get();
         this.countR = this.rightEncoder.get();
 
-        this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
+        // this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
+        // this.pigeon.setAngle(Constants.STARTING_HEADING);
     }
 
     public Point getPos() { return this.pos; }
