@@ -15,7 +15,7 @@ public class MoveToPoint {
         double dx = p.x - Robot.localizationSubsystem.getPos().x;
         double dy = p.y - Robot.localizationSubsystem.getPos().y;
         this.targetAngle = Math.atan2(dy, dx);
-        this.anglePid = new PID(0.005, 0, 0);
+        this.anglePid = new PID(0.00, 0, 0);
         this.targetPoint = p;
         this.distancePid = new PID(0.005, 0, 0);
     }

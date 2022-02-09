@@ -10,7 +10,7 @@ public class MoveToPointCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        this.controller = new MoveToPoint(new Point(10, 0));
+        this.controller = new MoveToPoint(new Point(0, 0));
     }
 
     @Override

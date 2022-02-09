@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.PortMap;
 import frc.robot.Robot;
 import frc.robot.sciSensorsActuators.SciEncoder;
-// import frc.robot.sciSensorsActuators.SciPigeon;
+import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.util.Point;
 
 import frc.robot.Constants;
@@ -18,7 +18,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     private int countL, countR;
 
     public SciEncoder leftEncoder, rightEncoder;
-    // public SciPigeon pigeon;
+    public SciPigeon pigeon;
 
     public LocalizationSubsystem() {
         double heading = Constants.STARTING_HEADING;
@@ -34,15 +34,15 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.countL = this.leftEncoder.get();
         this.countR = this.rightEncoder.get();
 
-        // this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
-        // this.pigeon.setAngle(Constants.STARTING_HEADING);
+        this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
+        this.pigeon.setAngle(Constants.STARTING_HEADING);
     }
 
     public Point getPos() { return this.pos; }
     public double getAngle() { 
-        // return pigeon.getAngle(); 
+        return pigeon.getAngle(); 
         // Pigeon not working :(
-        return (rightEncoder.getDistance() - leftEncoder.getDistance()) / Constants.ROBOT_WIDTH;
+        //return (rightEncoder.getDistance() - leftEncoder.getDistance()) / Constants.ROBOT_WIDTH;
     }
 
     // rookies can refactor this next year!!!!!!!

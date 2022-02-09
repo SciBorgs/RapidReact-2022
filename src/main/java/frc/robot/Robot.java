@@ -102,9 +102,11 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    System.out.printf("POS: (%f, %f)%n%tANGLE: %f%n",
-        localizationSubsystem.getPos().x,
-        localizationSubsystem.getPos().y,
+    localizationSubsystem.updateLocation();
+    System.out.println("POS: (" + localizationSubsystem.getPos().x
+          + ", "
+          + localizationSubsystem.getPos().y
+          + ")\t ANGLE: " + 
         localizationSubsystem.getAngle()
       );
   }
