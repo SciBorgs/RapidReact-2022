@@ -1,7 +1,8 @@
 package frc.robot.sciSensorsActuators;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
+//import com.ctre.phoenix.sensors.PigeonIMU;
 
+/*
 public class SciPigeon extends PigeonIMU {
     
     public SciPigeon(int id) {
@@ -22,3 +23,5 @@ public class SciPigeon extends PigeonIMU {
         super.setYaw(Math.toDegrees(angle));
     }
 }
+
+*/

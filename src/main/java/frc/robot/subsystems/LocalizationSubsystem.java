@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.SparkMaxRelativeEncoder.Type;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Encoder;
 
 import frc.robot.PortMap;
+import frc.robot.Robot;
 import frc.robot.sciSensorsActuators.SciEncoder;
-import frc.robot.sciSensorsActuators.SciPigeon;
+// import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.util.Point;
 
 import frc.robot.Constants;
@@ -24,8 +28,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.posL = new Point(pos.x + r * Math.cos(heading + Math.PI/2), pos.y + Math.sin(heading + Math.PI/2));
         this.posR = new Point(pos.x + r * Math.cos(heading - Math.PI/2), pos.y + Math.sin(heading - Math.PI/2));
 
-        this.leftEncoder = new SciEncoder(0, 1, Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
-        this.rightEncoder = new SciEncoder(0, 1, Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+        this.leftEncoder  = new SciEncoder((Encoder) Robot.driveSubsystem.lFront.getEncoder(Type.kQuadrature, 1), Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+        this.rightEncoder = new SciEncoder((Encoder) Robot.driveSubsystem.rFront.getEncoder(Type.kQuadrature, 1), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
         
         this.countL = this.leftEncoder.get();
         this.countR = this.rightEncoder.get();
