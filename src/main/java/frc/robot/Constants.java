@@ -16,8 +16,8 @@ import frc.robot.util.Point;
  */
 public final class Constants {
     //**************** ROBOT DIMENSIONS *******************//
-    public static final double ROBOT_WIDTH = 2; 
-    public static final double WHEEL_CIRCUMFERENCE = 10; //..... :)
+    public static final double ROBOT_WIDTH = 0.5588; 
+    public static final double WHEEL_CIRCUMFERENCE = 0.4787787204; //..... :)
 
     //**************** INITIAL ROBOT STATE ****************//
     public static final double STARTING_X = 0,
@@ -25,8 +25,8 @@ public final class Constants {
                                STARTING_HEADING = 0;
     
     //***************** GEAR RATIOS ***********************//
-    public static final double LEFT_ENCODER_GEAR_RATIO = 1;
-    public static final double RIGHT_ENCODER_GEAR_RATIO = 1;
+    public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
+    public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
 
     //********************** POINTS ***********************//
     public static final Point POINT_ALPHA = new Point(0, 0);

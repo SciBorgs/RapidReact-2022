@@ -12,19 +12,19 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.test.MoveToPointCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.FollowBallCommand;
-import frc.robot.commands.IntakeBallCommand;
-import frc.robot.commands.StartHopperCommand;
+// import frc.robot.commands.FollowBallCommand;
+// import frc.robot.commands.IntakeBallCommand;
+// import frc.robot.commands.StartHopperCommand;
 import frc.robot.commands.shooter.ShootCommand;
-import frc.robot.commands.turret.AimTurretCommand;
+// import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.commands.MoveToPointAlphaCommand;
 import frc.robot.commands.MoveToPointBetaCommand;
 import frc.robot.commands.MoveToPointGammaCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LimeLightSubsystem;
+// import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
+// import frc.robot.subsystems.ShooterSubsystem;
+// import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -37,16 +37,16 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
-  public static LimeLightSubsystem      limelightSubsystem      = new LimeLightSubsystem();
-  public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
-  public static TurretSubsystem         turretSubsystem         = new TurretSubsystem();
-  public static ShooterSubsystem        shooterSubsystem        = new ShooterSubsystem();
+  // public static LimeLightSubsystem      limelightSubsystem      = new LimeLightSubsystem();
+  // public static TurretSubsystem         turretSubsystem         = new TurretSubsystem();
+  // public static ShooterSubsystem        shooterSubsystem        = new ShooterSubsystem();
   public static DriveSubsystem          driveSubsystem = new DriveSubsystem();
+  public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
 
   private RobotContainer m_robotContainer;
-  public static IntakeSubsystem intake = new IntakeSubsystem();
-  public static HopperSubsystem hopper = new HopperSubsystem();
-  public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
+  // public static IntakeSubsystem intake = new IntakeSubsystem();
+  // public static HopperSubsystem hopper = new HopperSubsystem();
+  // public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
 
 
   /**
@@ -102,7 +102,11 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-
+    System.out.printf("POS: (%f, %f)%n%tANGLE: %f%n",
+        localizationSubsystem.getPos().x,
+        localizationSubsystem.getPos().y,
+        localizationSubsystem.getAngle()
+      );
   }
 
   /** This function is called once when teleop is enabled. */

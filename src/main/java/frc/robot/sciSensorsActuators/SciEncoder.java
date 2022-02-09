@@ -1,12 +1,12 @@
 package frc.robot.sciSensorsActuators;
 
-import edu.wpi.first.wpilibj.Encoder;
+import com.revrobotics.RelativeEncoder;
 
 public class SciEncoder {
 
     private final double gearRatio; 
     private final double wheelCircumference;
-    protected Encoder encoder;
+    protected RelativeEncoder encoder;
 
     // public SciEncoder(int channelA, int channelB, double gearRatio, double wheelCircumference) {
     //     super(channelA, channelB);
@@ -14,18 +14,20 @@ public class SciEncoder {
     //     this.wheelCircumference = wheelCircumference;
     // }
 
-    public SciEncoder(Encoder encoder, double gearRatio, double wheelCircumference) {
+    public SciEncoder(RelativeEncoder encoder, double gearRatio, double wheelCircumference) {
         this.encoder = encoder;
         this.gearRatio = gearRatio;
         this.wheelCircumference = wheelCircumference;
+
+        this.encoder.setPosition(0);
     }
 
     public int get() {
-        return (int) (encoder.get() * gearRatio);
+        return (int) (encoder.getPosition() * gearRatio);
     }
 
     public double getRate() {
-        return encoder.getRate() * gearRatio;
+        return encoder.getVelocity() * gearRatio;
     }
 
     // not sure if this is proper, someone fact check 
