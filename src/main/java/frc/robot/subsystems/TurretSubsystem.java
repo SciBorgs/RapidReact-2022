@@ -1,20 +1,18 @@
 package frc.robot.subsystems;
 
-import java.beans.Encoder;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
-import frc.robot.Robot;
-import frc.robot.util.PID;
 import frc.robot.sciSensorsActuators.SciEncoder;
 
 public class TurretSubsystem extends SubsystemBase {
     public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
     private SciEncoder encoder;
+    public static double MIN_DISTANCE = -180;
+    public static double MAX_DISTANCE = 180;
 
     public TurretSubsystem() {
         this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
@@ -38,14 +36,12 @@ public class TurretSubsystem extends SubsystemBase {
         // rMiddle.setIdleMode(IdleMode.kCoast);
         rBack.setIdleMode(IdleMode.kCoast);
 
-        encoder = new SciEncoder();
+        this.encoder = new SciEncoder(1, 1, 1, 1);
     }
 
     public void setSpeed(double left, double right) {
         lFront.set(left * 0.5);
         rFront.set(-right * 0.5);
-
-        // System.out.println(left + "\t" + right);
     }
 
     public void turn(double diff) {
@@ -54,7 +50,14 @@ public class TurretSubsystem extends SubsystemBase {
 
     // returns angle turned from the encoder
     public double getAngle() {
-        return encoder.
+        return encoder.getDistance();
+    }
+
+    // returns direction that the turret is spinning as an int, either 1 or -1
+    public int getDirection() {
+        if (encoder.getDirection())
+            return 1;
+        return -1;
     }
 }
 

@@ -12,18 +12,7 @@ public class AimTurretCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (Robot.turretSubsystem.tooFar())
-            reset();
-        else
-            follow();
-    }
-
-    private void follow() {
         FollowTape.follow();
-    }
-
-    private void reset() {
-        
     }
 
     @Override 

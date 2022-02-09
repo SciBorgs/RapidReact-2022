@@ -2,7 +2,7 @@ package frc.robot.sciSensorsActuators;
 
 import edu.wpi.first.wpilibj.Encoder;
 
-public class SciEncoder extends Encoder{
+public class SciEncoder extends Encoder {
 
     private final double gearRatio; 
     private final double wheelCircumference;
