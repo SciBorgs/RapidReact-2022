@@ -36,7 +36,7 @@ public class TurretSubsystem extends SubsystemBase {
         // rMiddle.setIdleMode(IdleMode.kCoast);
         rBack.setIdleMode(IdleMode.kCoast);
 
-        this.encoder = new SciEncoder(1, 1, 1, 1);
+        this.encoder = new SciEncoder(rBack.getEncoder(), 1, 1);
     }
 
     public void setSpeed(double left, double right) {
@@ -55,7 +55,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     // returns direction that the turret is spinning as an int, either 1 or -1
     public int getDirection() {
-        if (encoder.getDirection())
+        if (encoder.getRate() > 0)
             return 1;
         return -1;
     }
