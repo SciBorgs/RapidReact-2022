@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.beans.Encoder;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -8,10 +10,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.Robot;
 import frc.robot.util.PID;
+import frc.robot.sciSensorsActuators.SciEncoder;
 
 public class TurretSubsystem extends SubsystemBase {
     public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
-    private int max;
+    private SciEncoder encoder;
 
     public TurretSubsystem() {
         this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
@@ -34,6 +37,8 @@ public class TurretSubsystem extends SubsystemBase {
         rFront.setIdleMode(IdleMode.kCoast);
         // rMiddle.setIdleMode(IdleMode.kCoast);
         rBack.setIdleMode(IdleMode.kCoast);
+
+        encoder = new SciEncoder();
     }
 
     public void setSpeed(double left, double right) {
@@ -47,8 +52,9 @@ public class TurretSubsystem extends SubsystemBase {
         setSpeed(-diff, diff);
     }
 
+    // returns angle turned from the encoder
     public double getAngle() {
-        return 
+        return encoder.
     }
 }
 
