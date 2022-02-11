@@ -45,6 +45,8 @@ public class FollowTape {
     }
 
     private static double getReferenceAngle(double angle) {
+        if (angle > 180)
+            angle *= -1;
         return angle % 180;
     }
 }
