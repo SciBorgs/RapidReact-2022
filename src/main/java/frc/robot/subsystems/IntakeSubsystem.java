@@ -1,38 +1,42 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import com.revrobotics.CANSparkMax;
 
 import frc.robot.PortMap;
 
-public class IntakeSubsystem implements Subsystem {
+public class HopperSubsystem implements Subsystem {
 
-    private DoubleSolenoid armSolenoid;
-    private CANSparkMax suckSpark;
+    private CANSparkMax suck;
+    private CANSparkMax elevator;
 
-    private final double INTAKE_SPEED = 0.5;
+    private final double HOOPER_SPEED = 0.5;
 
-    public IntakeSubsystem() {
-        this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL);
-        this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
-    }
-
-    public void extendArm() {
-        this.armSolenoid.set(DoubleSolenoid.Value.kForward);
+    public HopperSubsystem() {
+        this.suck = new CANSparkMax(PortMap.HOPPER_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
+        this.elevator = new CANSparkMax(PortMap.HOPPER_ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
     }
 
     public void setSuckSpeed() {
-        this.suckSpark.set(this.INTAKE_SPEED);
+        this.suck.set(this.HOOPER_SPEED);
     }
 
-    public void retractArm() {
-        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+    public void setElevatorSpeed() {
+        this.elevator.set(this.HOOPER_SPEED);
     }
 
-    public void initDefaultCommand(){
-
+    public void stopSuck() {
+        this.suck.set(0);
     }
 
+    public void stopElevator() {
+        this.elevator.set(0);
+    }
 
+    public double getSuckSpeed() {
+        return suck.get();
+    }
+
+    public double getElevatorSpeed() {
+        return elevator.get();
+    }
 }
