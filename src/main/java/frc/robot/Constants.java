@@ -21,5 +21,5 @@ public final class Constants {
     //***************** GEAR RATIOS ***********************//
     public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
     public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
-
+    public static final double SMALL_TURRET_GEAR_RATIO = RIGHT_ENCODER_GEAR_RATIO / 10;
 }
