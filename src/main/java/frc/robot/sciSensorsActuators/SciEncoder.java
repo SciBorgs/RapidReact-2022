@@ -4,7 +4,7 @@ import com.revrobotics.RelativeEncoder;
 
 public class SciEncoder {
 
-    private final double gearRatio; 
+    private final double gearRatio;
     private final double wheelCircumference;
     protected RelativeEncoder encoder;
 
