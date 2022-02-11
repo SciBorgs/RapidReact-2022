@@ -31,6 +31,9 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.leftEncoder  = new SciEncoder(Robot.driveSubsystem.lFront.getEncoder(), Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
         this.rightEncoder = new SciEncoder(Robot.driveSubsystem.rFront.getEncoder(), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
         
+        this.leftEncoder.encoder.setPosition(0);
+        this.rightEncoder.encoder.setPosition(0);
+
         this.countL = this.leftEncoder.get();
         this.countR = this.rightEncoder.get();
 

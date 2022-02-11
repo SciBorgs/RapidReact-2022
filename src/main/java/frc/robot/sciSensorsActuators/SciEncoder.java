@@ -6,7 +6,7 @@ public class SciEncoder {
 
     private final double gearRatio; 
     private final double wheelCircumference;
-    protected RelativeEncoder encoder;
+    public RelativeEncoder encoder;
 
     // public SciEncoder(int channelA, int channelB, double gearRatio, double wheelCircumference) {
     //     super(channelA, channelB);
