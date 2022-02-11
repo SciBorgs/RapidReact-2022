@@ -103,12 +103,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     localizationSubsystem.updateLocation();
-    System.out.println("POS: (" + localizationSubsystem.getPos().x
-          + ", "
-          + localizationSubsystem.getPos().y
-          + ")\t ANGLE: " + 
-        localizationSubsystem.getAngle()
-      );
+    // System.out.println("POS: (" + localizationSubsystem.getPos().x
+    //       + ", "
+    //       + localizationSubsystem.getPos().y
+    //       + ")\t ANGLE: " + 
+    //     localizationSubsystem.getAngle()
+    //   );
   }
 
   /** This function is called once when teleop is enabled. */
