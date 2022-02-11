@@ -2,6 +2,7 @@ package frc.robot.controllers;
 
 import edu.wpi.first.networktables.NetworkTable;
 import frc.robot.Robot;
+import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.util.PID;
 
 public class FollowTape {
@@ -25,9 +26,10 @@ public class FollowTape {
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
+        double wrap = getReferenceAngle(totalAngle(tx)) - tx;
         
         if (tv == 1) {
-            txAvr = TX_WEIGHT * tx + (1 - TX_WEIGHT) * txAvr;
+            txAvr = TX_WEIGHT * wrap + (1 - TX_WEIGHT) * txAvr;
             double turn = TX_WEIGHT * txPID.getOutput(txAvr, 0);
             Robot.turretSubsystem.turn(turn);
             unknownCount = 0;
@@ -38,4 +40,11 @@ public class FollowTape {
         }
     }
     
+    private static double totalAngle(double newAngle) {
+        return Robot.turretSubsystem.getAngle() + newAngle;
+    }
+
+    private static double getReferenceAngle(double angle) {
+        return angle % 180;
+    }
 }

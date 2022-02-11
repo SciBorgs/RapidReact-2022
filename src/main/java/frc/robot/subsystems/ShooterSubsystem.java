@@ -8,9 +8,9 @@ import frc.robot.Robot;
 import frc.robot.util.PID;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private PID pid = new PID(1,1,1);
+    private static PID pid = new PID(0.04, 0, 0);
     public CANSparkMax hood, lmotor, rmotor;
-
+    
     public ShooterSubsystem() {
         /*
         this.hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
@@ -36,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     public void hoodangle() {
         double ty = Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "ty");
-        double speed = pid.getOutput(0, ty);
+        double speed = pid.getOutput(ty, 0);
         moveVert(speed);
     }
     
