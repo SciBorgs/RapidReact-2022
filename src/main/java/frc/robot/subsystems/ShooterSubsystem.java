@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
 import frc.robot.sciSensorsActuators.SciEncoder;
@@ -20,6 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
         */
         
         lmotor.follow(rmotor);
+        hoodencoder = new SciEncoder(hood.getEncoder(), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
     }
     
     public final double HEIGHTDIFF = 9.8;

@@ -1,9 +1,9 @@
 package frc.robot.sciSensorsActuators;
 
 import com.revrobotics.RelativeEncoder;
+import frc.robot.Constants;
 
 public class SciEncoder {
-
     private final double gearRatio;
     private final double wheelCircumference;
     protected RelativeEncoder encoder;
