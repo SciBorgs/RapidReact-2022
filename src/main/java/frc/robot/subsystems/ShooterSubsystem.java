@@ -41,7 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
         moveVert(speed);
     }
     public double getAngle(){
-        return encoder.getDistance();
+        return hoodencoder.getDistance();
     }
     
 }
