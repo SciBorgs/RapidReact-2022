@@ -8,6 +8,7 @@ import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -70,7 +71,14 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    if (intake.limitSwitch.get()) { 
+      CommandScheduler.getInstance().schedule(false, new IntakeBalls());
+    }
+    else {
+      CommandScheduler.getInstance().cancel(new IntakeBalls());
+    }
+  }
 
   @Override
   public void teleopInit() {
