@@ -12,6 +12,7 @@ import frc.robot.Constants;
 public class TurretSubsystem extends SubsystemBase {
     public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
     private SciEncoder encoder;
+    public final int LIMIT = 180;
 
     public TurretSubsystem() {
         this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
