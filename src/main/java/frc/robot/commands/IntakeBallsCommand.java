@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class IntakeBalls extends CommandBase {
+public class IntakeBallsCommand extends CommandBase {
 
     @Override
     public void initialize() {
@@ -14,7 +14,7 @@ public class IntakeBalls extends CommandBase {
         Robot.intake.setSuckSpeed();
         Robot.hopper.setSuckSpeed();
     }
-
+ 
     @Override
     public void execute() {
 
