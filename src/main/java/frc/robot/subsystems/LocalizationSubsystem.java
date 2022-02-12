@@ -28,8 +28,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.posL = new Point(pos.x + r * Math.cos(heading + Math.PI/2), pos.y + Math.sin(heading + Math.PI/2));
         this.posR = new Point(pos.x + r * Math.cos(heading - Math.PI/2), pos.y + Math.sin(heading - Math.PI/2));
 
-        this.leftEncoder  = new SciEncoder(Robot.driveSubsystem.lFront.getEncoder(), Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE / 2);
-        this.rightEncoder = new SciEncoder(Robot.driveSubsystem.rFront.getEncoder(), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE /2 );
+        this.leftEncoder  = new SciEncoder(Robot.driveSubsystem.lFront.getEncoder(), Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+        this.rightEncoder = new SciEncoder(Robot.driveSubsystem.rFront.getEncoder(), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
 
         this.leftEncoder.encoder.setPosition(0);
         this.rightEncoder.encoder.setPosition(0);

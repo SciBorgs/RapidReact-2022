@@ -98,9 +98,9 @@ public class Robot extends TimedRobot {
 
     localizationSubsystem.zero();
 
-    CommandScheduler.getInstance().schedule(
-      new MoveToPointCommand()
-    );
+    // CommandScheduler.getInstance().schedule(
+    //   new MoveToPointCommand()
+    // );
   }
 
   DelayedPrinter printer;
@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
     localizationSubsystem.updateLocation();
     printer.print("POS: " + localizationSubsystem.getPos() + " " + localizationSubsystem.getAngle());
 
-    //  new DriveCommand().execute();
+     new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */

@@ -14,26 +14,40 @@ public class MoveToPoint {
 
     public MoveToPoint(Point p) {
         this.targetPoint = p;
-        this.anglePid = new PID(0.09, 0, 0);
-        this.distancePid = new PID(0.08, 0, 0);
+        this.anglePid = new PID(0.7, 0, 0);
+        this.distancePid = new PID(0.09, 0, 0);
         this.printer = new DelayedPrinter(100);
     }
 
     public void move() {
+        Robot.localizationSubsystem.updateLocation();
+
         double dx = targetPoint.x - Robot.localizationSubsystem.getPos().x;
         double dy = targetPoint.y - Robot.localizationSubsystem.getPos().y;
 
         double targetAngle = Math.atan2(dy, dx);
+
+        Point displacementVector = Util.displacementVector(
+            Robot.localizationSubsystem.getPos(),
+            this.targetPoint);
+        
         double currentAngle = Robot.localizationSubsystem.getAngle();
 
-        double angleOutput = this.anglePid.getOutput(targetAngle, currentAngle);
-        double forwardOutput = this.distancePid.getOutput(Util.getDistance(targetPoint, Robot.localizationSubsystem.getPos()), 0);
+        Point headingVector = Util.unitVector(currentAngle);
 
-        printer.print("distance PID : " + forwardOutput
-                    + "\t\tangle    PID : " + angleOutput);
+        double signedDistance = Util.dot(displacementVector, headingVector);
+
+        double angleOutput = this.anglePid.getOutput(currentAngle, targetAngle); //values negated for testing
+
+        double forwardOutput = this.distancePid.getOutput(signedDistance, 0);
 
         forwardOutput = Util.normalize(forwardOutput);
         angleOutput = Util.normalize(angleOutput);
+
+        printer.print("Distance: " + signedDistance
+                    + "\nHeading: " + headingVector
+                    + "\ndistance PID output: " + forwardOutput
+                    + "\n\t\tangle PID output: " + angleOutput + "\n");
 
         Robot.driveSubsystem.setSpeedForwardAngle(forwardOutput, angleOutput);
     }
