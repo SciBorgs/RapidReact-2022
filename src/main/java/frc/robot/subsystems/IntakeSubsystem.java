@@ -28,9 +28,13 @@ public class IntakeSubsystem implements Subsystem {
         this.suckSpark.set(this.INTAKE_SPEED);
     }
 
-    public void retractArm() {
-        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+    public void stopSuck() {
+        this.suckSpark.set(0);
     }
+
+    /* public void retractArm() {
+        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+    } */
 
     public void initDefaultCommand(){
 
