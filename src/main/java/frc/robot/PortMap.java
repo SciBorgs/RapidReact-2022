@@ -15,10 +15,14 @@ public class PortMap {
   public static final int RIGHT_MIDDLE_SPARK = 15;
   public static final int RIGHT_BACK_SPARK = 20;
 
-  //*******************SWITCHES******************//
-  public static final int TOP_LIMIT_SWITCH = 3;
   // public static final int HOOD_SPARK = 0;
   // public static final int SHOOTER_LEFT_SPARK = 0;
   // public static final int SHOOTER_RIGHT_SPARK = 0;
   // public static final int TURRET_SPARK = 0;
+
+  //*******************SWITCHES******************//
+  public static final int TOP_LIMIT_SWITCH = 3;
+
+  //******************ENCODERS******************//
+  // public static final int THRUBORE_ENCODER = 0;
 }
