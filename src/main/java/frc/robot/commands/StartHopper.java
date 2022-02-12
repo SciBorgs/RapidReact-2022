@@ -6,13 +6,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class StartHopper extends CommandBase {
+public class StartHopperCommand extends CommandBase {
+    //Starts the hopper and elevator. Runs when held button, stops the hopper and elevator when released.
 
     @Override
     public void initialize() {
         this.addRequirements(Robot.hopper);
-        Robot.hopper.setSuckSpeed();
         Robot.hopper.setElevatorSpeed();
+        Robot.hopper.setSuckSpeed();
     }
 
     @Override
@@ -22,8 +23,8 @@ public class StartHopper extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        Robot.hopper.stopSuck();
         Robot.hopper.stopElevator();
+        Robot.hopper.stopSuck();
     }
 
     @Override
