@@ -12,6 +12,7 @@ public class IntakeSubsystem implements Subsystem {
     private DoubleSolenoid armSolenoid;
     private CANSparkMax suckSpark;
     public DigitalInput limitSwitch;
+
     private final double INTAKE_SPEED = 0.5;
 
     public IntakeSubsystem() {
