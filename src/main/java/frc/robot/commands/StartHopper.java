@@ -22,8 +22,8 @@ public class StartHopper extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        Robot.hopper.setSuckSpeed();
-        Robot.hopper.setElevatorSpeed();
+        Robot.hopper.stopSuck();
+        Robot.hopper.stopElevator();
     }
 
     @Override
