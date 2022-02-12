@@ -21,7 +21,7 @@ public class IntakeBalls extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        Robot.intake.setSuckSpeed();
+        Robot.intake.stopSuck();
     }
 
     @Override
