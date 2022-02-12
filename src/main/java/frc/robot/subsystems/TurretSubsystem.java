@@ -7,12 +7,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciEncoder;
+import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.Constants;
 
 public class TurretSubsystem extends SubsystemBase {
     public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
     private SciEncoder encoder;
-    public final int LIMIT = 180;
+    public final int LIMIT = 360;
+    private SciPigeon pigeon;
 
     public TurretSubsystem() {
         this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
@@ -37,6 +39,7 @@ public class TurretSubsystem extends SubsystemBase {
         rBack.setIdleMode(IdleMode.kCoast);
 
         this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+        pigeon = new SciPigeon(42);
     }
 
     public void setSpeed(double left, double right) {
@@ -48,16 +51,18 @@ public class TurretSubsystem extends SubsystemBase {
         setSpeed(-diff, diff);
     }
 
-    // returns angle turned from the encoder
+    // should returns angle turned from the encoder
+    // using pidgeon for now
     public double getAngle() {
-        return encoder.getDistance();
+        // return encoder.getDistance();
+        return Math.toDegrees(pigeon.getAngle());
     }
 
     // returns direction that the turret is spinning as an int, either 1 or -1
     public int getDirection() {
         if (encoder.getRate() > 0)
-            return 1;
-        return -1;
+            return -1;
+        return 1;
     }
 }
 
