@@ -26,7 +26,9 @@ public class FollowTape {
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
-        double wrap = getReferenceAngle(totalAngle(tx)) - tx;
+        double wrap = getTurnAngle(getTotalAngle(tx));
+        System.out.println("tx " + tx);
+        System.out.println("Wrap " + wrap);
         
         if (tv == 1) {
             txAvr = TX_WEIGHT * wrap + (1 - TX_WEIGHT) * txAvr;
@@ -40,11 +42,19 @@ public class FollowTape {
         }
     }
     
-    private static double totalAngle(double newAngle) {
+    private static double getTotalAngle(double newAngle) {
+        System.out.println("Total " + (Robot.turretSubsystem.getAngle() + newAngle));
         return Robot.turretSubsystem.getAngle() + newAngle;
     }
 
-    private static double getReferenceAngle(double angle) {
+    private static double getNormalizeAngle(double angle) {
+        System.out.println("Normalized " + angle);
         return angle % 180;
+    }
+
+    public static double getTurnAngle(double angle) {
+        if (angle > Robot.turretSubsystem.LIMIT)
+            angle = 360 - angle;
+        return angle;
     }
 }
