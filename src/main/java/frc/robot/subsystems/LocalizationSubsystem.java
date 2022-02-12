@@ -30,7 +30,7 @@ public class LocalizationSubsystem extends SubsystemBase {
 
         this.leftEncoder  = new SciEncoder(Robot.driveSubsystem.lFront.getEncoder(), Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
         this.rightEncoder = new SciEncoder(Robot.driveSubsystem.rFront.getEncoder(), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
-        
+
         this.leftEncoder.encoder.setPosition(0);
         this.rightEncoder.encoder.setPosition(0);
 
@@ -44,8 +44,6 @@ public class LocalizationSubsystem extends SubsystemBase {
     public Point getPos() { return this.pos; }
     public double getAngle() { 
         return pigeon.getAngle(); 
-        // Pigeon not working :(
-        //return (rightEncoder.getDistance() - leftEncoder.getDistance()) / Constants.ROBOT_WIDTH;
     }
 
     // rookies can refactor this next year!!!!!!!
@@ -77,5 +75,22 @@ public class LocalizationSubsystem extends SubsystemBase {
         
         if (side == Side.RIGHT) this.countR += dCount; 
         else                    this.countL += dCount;
+    }
+
+    public void zero() {
+        double heading = Constants.STARTING_HEADING;
+        double r = Constants.ROBOT_WIDTH / 2;
+
+        this.pos = new Point(0, 0);
+        this.posL = new Point(0, r);
+        this.posR = new Point(0, -r);
+
+        this.leftEncoder.encoder.setPosition(0);
+        this.rightEncoder.encoder.setPosition(0);
+
+        this.countL = this.leftEncoder.get();
+        this.countR = this.rightEncoder.get();
+
+        this.pigeon.setAngle(0);
     }
 }

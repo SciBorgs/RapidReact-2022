@@ -15,27 +15,16 @@ public class MoveToPointCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        this.controller = new MoveToPoint(new Point(1, 0));
+        this.controller = new MoveToPoint(new Point(5, 0));
     }
 
     @Override
     public void execute() {
-         if (controller.isFacingPoint()) { 
-             if (System.currentTimeMillis() % 1000 == 0)
-                 System.out.println("is facing point"); 
-             controller.move(); 
-         }
-         else { 
-            if (System.currentTimeMillis() % 1000 == 0)
-                System.out.println("turning"); 
-            controller.turn(); 
-         }
+        // this.controller.move();
     }
 
     @Override
     public boolean isFinished() {
-        return 
-            controller.isFacingPoint() && controller.hasArrived()
-            || (System.currentTimeMillis() - start) > 20000;
+        return controller.hasArrived() || System.currentTimeMillis() - start > 100000;
     }
 }

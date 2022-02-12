@@ -23,6 +23,7 @@ import frc.robot.commands.MoveToPointGammaCommand;
 import frc.robot.subsystems.DriveSubsystem;
 // import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
+import frc.robot.util.DelayedPrinter;
 // import frc.robot.subsystems.ShooterSubsystem;
 // import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     //table = NetworkTableInstance.getDefault().getTable("limelight");
+    this.printer = new DelayedPrinter(100);
   }
 
   @Override
@@ -77,7 +79,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // System.out.println("This is autonomous init");
+    System.out.println("This is autonomous init");
 
     /*
     CommandScheduler.getInstance().schedule(
@@ -99,16 +101,13 @@ public class Robot extends TimedRobot {
     );
   }
 
+  DelayedPrinter printer;
+
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
     localizationSubsystem.updateLocation();
-    // System.out.println("POS: (" + localizationSubsystem.getPos().x
-    //       + ", "
-    //       + localizationSubsystem.getPos().y
-    //       + ")\t ANGLE: " + 
-    //     localizationSubsystem.getAngle()
-    //   );
+    printer.print("POS: " + localizationSubsystem.getPos());
   }
 
   /** This function is called once when teleop is enabled. */

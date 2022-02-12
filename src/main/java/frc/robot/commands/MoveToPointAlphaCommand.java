@@ -14,12 +14,11 @@ public class MoveToPointAlphaCommand  extends CommandBase{
 
     @Override
     public void execute() {
-        if (controller.isFacingPoint()) { controller.move(); }
-        else { controller.turn(); }
+        this.controller.move();
     }
 
     @Override
     public boolean isFinished() {
-        return controller.isFacingPoint() && controller.hasArrived();
+        return controller.hasArrived();
     }
 }
