@@ -39,7 +39,7 @@ public class MoveToPoint {
     }
 
     public boolean hasArrived() {
-        return Math.abs(Util.getDistance(targetPoint, Robot.localizationSubsystem.getPos())) < 1;
+        return Math.abs(Util.getDistance(targetPoint, Robot.localizationSubsystem.getPos())) < 0.1;
     }
 
 }

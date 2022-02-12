@@ -16,12 +16,12 @@ public class MoveToPointCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        this.controller = new MoveToPoint(new Point(0, 0));
+        this.controller = new MoveToPoint(new Point(1, 0));
+        Robot.localizationSubsystem.zero();
     }
 
     @Override
     public void execute() {
-        System.out.println("RUNNING COMMAND!!!!!!!!!!!!!!");
         this.controller.move();
     }
 
