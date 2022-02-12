@@ -67,17 +67,16 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-  }
+    CommandScheduler.getInstance().schedule(new LowerIntakeArmCommand(), new IntakeBallsCommand().withTimeout(15.0));
+  }   
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
     if (intake.limitSwitch.get()) { 
-      CommandScheduler.getInstance().schedule(false, new IntakeBalls());
+      CommandScheduler.getInstance().schedule(false, new StartElevatorCommand().withTimeout(3.0));
     }
-    else {
-      CommandScheduler.getInstance().cancel(new IntakeBalls());
-    }
+
   }
 
   @Override
