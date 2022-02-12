@@ -16,6 +16,8 @@ public class FollowTape {
     public static final int UNKNOWN_LIMIT = 60;
     public static final double UNKNOWN_ANGLE = 5;
 
+    private static double targetAngle = 0;
+
     static {
         txPID = new PID(TX_P, 0, 0);
     }
@@ -27,27 +29,15 @@ public class FollowTape {
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
 
-        
-        double targetAngle = getNewAngle(Robot.turretSubsystem.getDirection() * UNKNOWN_ANGLE);
-        
         if (tv == 1) {
             txAvr = TX_WEIGHT * tx + (1 - TX_WEIGHT) * txAvr;
             targetAngle = getNewAngle(txAvr);
-            
-            // double turn = TX_WEIGHT * txPID.getOutput(targetAngle, Robot.turretSubsystem.getAngle());
-            // Robot.turretSubsystem.turn(turn);
-            
-            // unknownCount = 0;
-        } 
-        /*
-        else if (unknownCount > UNKNOWN_LIMIT) {
+            unknownCount = 0;
+        } else if (unknownCount > UNKNOWN_LIMIT) {
             targetAngle = getNewAngle(Robot.turretSubsystem.getDirection() * UNKNOWN_ANGLE);
-            Robot.turretSubsystem.turn(targetAngle - Robot.turretSubsystem.getAngle());
-        }
-        else {
+        } else {
             unknownCount++;
         }
-        */
         
         double turn = -txPID.getOutput(targetAngle, Robot.turretSubsystem.getAngle());
         System.out.println("Target Angle: " + targetAngle);
