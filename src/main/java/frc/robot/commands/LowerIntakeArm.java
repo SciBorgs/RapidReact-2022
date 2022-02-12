@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class LowerIntakeArm extends CommandBase {
-    
+public class LowerIntakeArmCommand extends CommandBase {
+    //Extends the intake arm. Runs when pressed button, instant command
     @Override
     public void initialize() {
-        this.addRequirements(Robot.intake);
+        //this.addRequirements(Robot.intake);
         Robot.intake.extendArm();
     }
 
