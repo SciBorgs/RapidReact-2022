@@ -15,7 +15,7 @@ import frc.robot.Constants;
 
 public class LocalizationSubsystem extends SubsystemBase {
     private Point posL, posR, pos;
-    private int countL, countR;
+    private double distL, distR;
 
     public SciEncoder leftEncoder, rightEncoder;
     public SciPigeon pigeon;
@@ -28,14 +28,17 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.posL = new Point(pos.x + r * Math.cos(heading + Math.PI/2), pos.y + Math.sin(heading + Math.PI/2));
         this.posR = new Point(pos.x + r * Math.cos(heading - Math.PI/2), pos.y + Math.sin(heading - Math.PI/2));
 
-        this.leftEncoder  = new SciEncoder(Robot.driveSubsystem.lFront.getEncoder(), Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
-        this.rightEncoder = new SciEncoder(Robot.driveSubsystem.rFront.getEncoder(), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+        this.leftEncoder  = new SciEncoder(Robot.driveSubsystem.lFront.getEncoder(), Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE / 2);
+        this.rightEncoder = new SciEncoder(Robot.driveSubsystem.rFront.getEncoder(), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE /2 );
 
         this.leftEncoder.encoder.setPosition(0);
         this.rightEncoder.encoder.setPosition(0);
 
-        this.countL = this.leftEncoder.get();
-        this.countR = this.rightEncoder.get();
+        this.leftEncoder.setInverted(true);
+        this.rightEncoder.setInverted(true);
+
+        this.distL = this.leftEncoder.getDistance();
+        this.distR = this.rightEncoder.getDistance();
 
         this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
         this.pigeon.setAngle(Constants.STARTING_HEADING);
@@ -63,18 +66,18 @@ public class LocalizationSubsystem extends SubsystemBase {
 
     private void updateSide(SciEncoder encoder, Side side) {
         Point posS = (side == Side.RIGHT) ? this.posR   : this.posL;
-        int count  = (side == Side.RIGHT) ? this.countR : this.countL;
+        double dist  = (side == Side.RIGHT) ? this.distR : this.distL;
     
-        int newCount = encoder.get();
-        int dCount = newCount - count;
+        double newDist = encoder.getDistance();
+        double dDist = newDist - dist;
 
         double currHeading = this.getAngle();
         
-        posS.x += Constants.WHEEL_CIRCUMFERENCE * dCount * Math.cos(currHeading);
-        posS.y += Constants.WHEEL_CIRCUMFERENCE * dCount * Math.sin(currHeading);
+        posS.x += dDist * Math.cos(currHeading);
+        posS.y += dDist * Math.sin(currHeading);
         
-        if (side == Side.RIGHT) this.countR += dCount; 
-        else                    this.countL += dCount;
+        if (side == Side.RIGHT) this.distR += dDist; 
+        else                    this.distL += dDist;
     }
 
     public void zero() {
@@ -88,8 +91,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.leftEncoder.encoder.setPosition(0);
         this.rightEncoder.encoder.setPosition(0);
 
-        this.countL = this.leftEncoder.get();
-        this.countR = this.rightEncoder.get();
+        this.distL = this.leftEncoder.get();
+        this.distR = this.rightEncoder.get();
 
         this.pigeon.setAngle(0);
     }

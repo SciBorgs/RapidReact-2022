@@ -96,6 +96,8 @@ public class Robot extends TimedRobot {
     );
     */
 
+    localizationSubsystem.zero();
+
     CommandScheduler.getInstance().schedule(
       new MoveToPointCommand()
     );
@@ -113,13 +115,19 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    localizationSubsystem.zero();
     // System.out.println("This is teleop init");
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-     new DriveCommand().execute();
+    localizationSubsystem.zero();
+
+    localizationSubsystem.updateLocation();
+    printer.print("POS: " + localizationSubsystem.getPos() + " " + localizationSubsystem.getAngle());
+
+    //  new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */

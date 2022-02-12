@@ -7,6 +7,7 @@ public class SciEncoder {
     private final double gearRatio; 
     private final double wheelCircumference;
     public RelativeEncoder encoder;
+    private boolean inverted;
 
     // public SciEncoder(int channelA, int channelB, double gearRatio, double wheelCircumference) {
     //     super(channelA, channelB);
@@ -19,15 +20,17 @@ public class SciEncoder {
         this.gearRatio = gearRatio;
         this.wheelCircumference = wheelCircumference;
 
+        this.inverted = false;
+
         this.encoder.setPosition(0);
     }
 
     public int get() {
-        return (int) (encoder.getPosition() * gearRatio);
+        return (int) (encoder.getPosition() * gearRatio * (inverted ? -1 : 1));
     }
 
     public double getRate() {
-        return encoder.getVelocity() * gearRatio;
+        return encoder.getVelocity() * gearRatio * (inverted ? -1 : 1);
     }
 
     // not sure if this is proper, someone fact check 
@@ -36,5 +39,7 @@ public class SciEncoder {
         
     }
 
-
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
+    }
 }
