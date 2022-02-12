@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class TogglePneumatics extends CommandBase {
+public class TogglePneumaticsCommand extends CommandBase {
+    //Toggles the pneumatics. Runs when toggled button
     
     @Override
     public void initialize() {
