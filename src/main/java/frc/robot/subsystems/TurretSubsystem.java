@@ -61,8 +61,8 @@ public class TurretSubsystem extends SubsystemBase {
     // returns direction that the turret is spinning as an int, either 1 or -1
     public int getDirection() {
         if (encoder.getRate() > 0)
-            return -1;
-        return 1;
+            return 1;
+        return -1;
     }
 }
 

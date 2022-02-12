@@ -21,12 +21,15 @@ public class FollowTape {
     }
 
     public static void follow() {
-        /*
+        
         Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 0);
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
 
+        
+        double targetAngle = getNewAngle(Robot.turretSubsystem.getDirection() * UNKNOWN_ANGLE);
+        
         if (tv == 1) {
             txAvr = TX_WEIGHT * tx + (1 - TX_WEIGHT) * txAvr;
             targetAngle = getNewAngle(txAvr);
@@ -36,6 +39,7 @@ public class FollowTape {
             
             // unknownCount = 0;
         } 
+        /*
         else if (unknownCount > UNKNOWN_LIMIT) {
             targetAngle = getNewAngle(Robot.turretSubsystem.getDirection() * UNKNOWN_ANGLE);
             Robot.turretSubsystem.turn(targetAngle - Robot.turretSubsystem.getAngle());
@@ -45,12 +49,11 @@ public class FollowTape {
         }
         */
         
-        double targetAngle = getNewAngle(-Robot.turretSubsystem.getDirection() * UNKNOWN_ANGLE);
-        double turn = txPID.getOutput(targetAngle, Robot.turretSubsystem.getAngle());
+        double turn = -txPID.getOutput(targetAngle, Robot.turretSubsystem.getAngle());
         System.out.println("Target Angle: " + targetAngle);
         System.out.println("Traveled: " + Robot.turretSubsystem.getAngle());
-        System.out.println(-turn + "\n---");
-        Robot.turretSubsystem.turn(-turn);
+        System.out.println(turn + "\n---");
+        Robot.turretSubsystem.turn(turn);
         
     }
     
