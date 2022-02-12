@@ -5,8 +5,8 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 
 public class OI {
-        public Joystick joystickLeft = new Joystick(PortMap.JOYSTICK_LEFT);
-        public Joystick joystickRight = new Joystick(PortMap.JOYSTICK_RIGHT);
+        public Joystick joystickLeft = new Joystick(PortMap.JOYSTICK_RIGHT);
+        public Joystick joystickRight = new Joystick(PortMap.JOYSTICK_LEFT);
 
         // public Button intakeBalls, lowerIntakeArms, StartHopper, togglePneumatics;
 
@@ -22,7 +22,6 @@ public class OI {
 
                 // this.togglePneumatics = new Button();
                 // this.togglePneumatics.toggleWhenPressed(new TogglePneumaticsCommand());
-
         }
 }
 

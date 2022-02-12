@@ -122,10 +122,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    localizationSubsystem.zero();
-
     localizationSubsystem.updateLocation();
-    printer.print("POS: " + localizationSubsystem.getPos() + " " + localizationSubsystem.getAngle());
+    printer.print("POS: " + localizationSubsystem.getPos() + " " + localizationSubsystem.getAngle()
+              + "\nVEL: " + localizationSubsystem.getVelocity()
+    );
 
      new DriveCommand().execute();
   }

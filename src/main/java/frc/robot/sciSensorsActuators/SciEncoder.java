@@ -6,7 +6,7 @@ public class SciEncoder {
 
     private final double gearRatio; 
     private final double wheelCircumference;
-    public RelativeEncoder encoder;
+    public RelativeEncoder[] encoders;
     private boolean inverted;
 
     // public SciEncoder(int channelA, int channelB, double gearRatio, double wheelCircumference) {
@@ -15,31 +15,43 @@ public class SciEncoder {
     //     this.wheelCircumference = wheelCircumference;
     // }
 
-    public SciEncoder(RelativeEncoder encoder, double gearRatio, double wheelCircumference) {
-        this.encoder = encoder;
+    public SciEncoder(double gearRatio, double wheelCircumference, RelativeEncoder... encoders) {
+        this.encoders = encoders;
         this.gearRatio = gearRatio;
         this.wheelCircumference = wheelCircumference;
 
         this.inverted = false;
 
-        this.encoder.setPosition(0);
+        for (RelativeEncoder encoder : this.encoders) {
+            encoder.setPosition(0);
+        }
     }
 
     public int get() {
-        return (int) (encoder.getPosition() * gearRatio * (inverted ? -1 : 1));
+        double val = 0;
+        for (RelativeEncoder encoder : this.encoders)
+            val += encoder.getPosition() * gearRatio;
+        return (int) val * (inverted ? -1 : 1);
     }
 
     public double getRate() {
-        return encoder.getVelocity() * gearRatio * (inverted ? -1 : 1);
+        double val = 0;
+        for (RelativeEncoder encoder : this.encoders)
+            val += encoder.getVelocity() * gearRatio;
+        return (int) val * (inverted ? -1 : 1);
     }
 
     // not sure if this is proper, someone fact check 
     public double getDistance() {
         return get() * wheelCircumference;
-        
     }
 
     public void setInverted(boolean inverted) {
         this.inverted = inverted;
+    }
+
+    public void setPosition(double d) {
+        for (RelativeEncoder encoder : this.encoders)
+            encoder.setPosition(d);
     }
 }

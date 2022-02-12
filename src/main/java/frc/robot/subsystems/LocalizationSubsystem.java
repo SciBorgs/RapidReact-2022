@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,15 +25,25 @@ public class LocalizationSubsystem extends SubsystemBase {
         double heading = Constants.STARTING_HEADING;
         double r = Constants.ROBOT_WIDTH / 2;
 
-        this.pos = new Point(Constants.STARTING_X, Constants.STARTING_Y);
+        this.pos = Constants.STARTING_POINT;
         this.posL = new Point(pos.x + r * Math.cos(heading + Math.PI/2), pos.y + Math.sin(heading + Math.PI/2));
         this.posR = new Point(pos.x + r * Math.cos(heading - Math.PI/2), pos.y + Math.sin(heading - Math.PI/2));
 
-        this.leftEncoder  = new SciEncoder(Robot.driveSubsystem.lFront.getEncoder(), Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
-        this.rightEncoder = new SciEncoder(Robot.driveSubsystem.rFront.getEncoder(), Constants.RIGHT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+        this.leftEncoder = new SciEncoder(
+            Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
+            Robot.driveSubsystem.lFront.getEncoder(),
+            // Robot.driveSubsystem.lMiddle.getEncoder(),
+            Robot.driveSubsystem.lBack.getEncoder()
+        );
+        this.rightEncoder  = new SciEncoder(
+            Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
+            Robot.driveSubsystem.rFront.getEncoder(),
+            // Robot.driveSubsystem.rMiddle.getEncoder(),
+            Robot.driveSubsystem.rBack.getEncoder()
+        );
 
-        this.leftEncoder.encoder.setPosition(0);
-        this.rightEncoder.encoder.setPosition(0);
+        this.leftEncoder.setPosition(0);
+        this.rightEncoder.setPosition(0);
 
         this.leftEncoder.setInverted(true);
         this.rightEncoder.setInverted(true);
@@ -80,6 +91,10 @@ public class LocalizationSubsystem extends SubsystemBase {
         else                    this.distL += dDist;
     }
 
+    public double getVelocity() {
+        return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2;
+    }
+
     public void zero() {
         double heading = Constants.STARTING_HEADING;
         double r = Constants.ROBOT_WIDTH / 2;
@@ -88,8 +103,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.posL = new Point(0, r);
         this.posR = new Point(0, -r);
 
-        this.leftEncoder.encoder.setPosition(0);
-        this.rightEncoder.encoder.setPosition(0);
+        this.leftEncoder.setPosition(0);
+        this.rightEncoder.setPosition(0);
 
         this.distL = this.leftEncoder.get();
         this.distR = this.rightEncoder.get();
