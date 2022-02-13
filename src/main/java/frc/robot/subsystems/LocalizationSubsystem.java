@@ -15,98 +15,59 @@ import frc.robot.util.Point;
 import frc.robot.Constants;
 
 public class LocalizationSubsystem extends SubsystemBase {
-    private Point posL, posR, pos;
-    private double distL, distR;
-
-    public SciEncoder leftEncoder, rightEncoder;
+    private Point pos;
+    private double dist;
+    public SciEncoder totalEncoder;
     public SciPigeon pigeon;
 
     public LocalizationSubsystem() {
-        double heading = Constants.STARTING_HEADING;
-        double r = Constants.ROBOT_WIDTH / 2;
-
         this.pos = Constants.STARTING_POINT;
 
-        this.leftEncoder = new SciEncoder(
+        this.totalEncoder = new SciEncoder(
             Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
             Robot.driveSubsystem.lFront.getEncoder(),
             // Robot.driveSubsystem.lMiddle.getEncoder(),
-            Robot.driveSubsystem.lBack.getEncoder()
-        );
-        this.rightEncoder  = new SciEncoder(
-            Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
+            Robot.driveSubsystem.lBack.getEncoder(),
+
             Robot.driveSubsystem.rFront.getEncoder(),
             // Robot.driveSubsystem.rMiddle.getEncoder(),
             Robot.driveSubsystem.rBack.getEncoder()
         );
 
-        this.leftEncoder.setPosition(0);
-        this.rightEncoder.setPosition(0);
+        this.totalEncoder.setPosition(0);
+        this.totalEncoder.setInverted(true, true, true, true);
 
-        this.leftEncoder.setInverted(true);
-        this.rightEncoder.setInverted(true);
-
-        this.distL = this.leftEncoder.getDistance();
-        this.distR = this.rightEncoder.getDistance();
+        this.dist = this.totalEncoder.getDistance();
 
         this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
         this.pigeon.setAngle(Constants.STARTING_HEADING);
     }
 
-    public Point getPos() { return this.pos; }
-    public double getAngle() { 
-        return pigeon.getAngle(); 
-    }
+    public Point  getPos()   { return this.pos; }
+    public double getVel()   { return this.totalEncoder.getRate(); }
+    public double getAngle() { return this.pigeon.getAngle(); }
 
-    // rookies can refactor this next year!!!!!!!
     // call in periodic
     public void updateLocation() {
-        updateSide(this.rightEncoder, Side.RIGHT);
-        updateSide(this.leftEncoder,  Side.LEFT);
-
-        this.pos.x = (this.posL.x + this.posR.x) / 2;
-        this.pos.y = (this.posL.y + this.posR.y) / 2;
-    }
-
-    private enum Side {
-        RIGHT,
-        LEFT
-    }
-
-    private void updateSide(SciEncoder encoder, Side side) {
-        Point posS = (side == Side.RIGHT) ? this.posR   : this.posL;
-        double dist  = (side == Side.RIGHT) ? this.distR : this.distL;
-    
-        double newDist = encoder.getDistance();
+        double newDist = totalEncoder.getDistance();
         double dDist = newDist - dist;
 
         double currHeading = this.getAngle();
+        pos.x += dDist * Math.cos(currHeading);
+        pos.y += dDist * Math.sin(currHeading);
         
-        posS.x += dDist * Math.cos(currHeading);
-        posS.y += dDist * Math.sin(currHeading);
-        
-        if (side == Side.RIGHT) this.distR += dDist; 
-        else                    this.distL += dDist;
-    }
-
-    public double getVelocity() {
-        return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2;
+        this.dist = newDist;
     }
 
     // zeroes position and angle - this does not actually move the robot
     public void zero() {
-        double r = Constants.ROBOT_WIDTH / 2;
-
         this.pos = new Point(0, 0);
-        this.posL = new Point(0, r);
-        this.posR = new Point(0, -r);
-
-        this.leftEncoder.setPosition(0);
-        this.rightEncoder.setPosition(0);
-
-        this.distL = this.leftEncoder.get();
-        this.distR = this.rightEncoder.get();
-
+        this.totalEncoder.setPosition(0);
+        this.dist = this.totalEncoder.get();;
         this.pigeon.setAngle(0);
+    }
+
+    public String getInfoString() {
+        return "POS: " + this.getPos() + " " + this.getAngle() + "\nVEL: " + this.getVel();
     }
 }

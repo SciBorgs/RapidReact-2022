@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
   // public static HopperSubsystem hopper = new HopperSubsystem();
   // public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
 
+  private DelayedPrinter printer;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -103,13 +105,11 @@ public class Robot extends TimedRobot {
     // );
   }
 
-  DelayedPrinter printer;
-
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
     localizationSubsystem.updateLocation();
-    printer.print("POS: " + localizationSubsystem.getPos());
+    printer.print(localizationSubsystem.getInfoString());
   }
 
   /** This function is called once when teleop is enabled. */
@@ -123,11 +123,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     localizationSubsystem.updateLocation();
-    printer.print("POS: " + localizationSubsystem.getPos() + " " + localizationSubsystem.getAngle()
-              + "\nVEL: " + localizationSubsystem.getVelocity()
-    );
+    printer.print(localizationSubsystem.getInfoString());
 
-     new DriveCommand().execute();
+    new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */
