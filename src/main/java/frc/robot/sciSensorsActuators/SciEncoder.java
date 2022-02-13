@@ -3,18 +3,12 @@ package frc.robot.sciSensorsActuators;
 import com.revrobotics.RelativeEncoder;
 
 public class SciEncoder {
-
     private final double gearRatio; 
     private final double wheelCircumference;
     public RelativeEncoder[] encoders;
     private boolean inverted;
 
-    // public SciEncoder(int channelA, int channelB, double gearRatio, double wheelCircumference) {
-    //     super(channelA, channelB);
-    //     this.gearRatio = gearRatio;
-    //     this.wheelCircumference = wheelCircumference;
-    // }
-
+    // allows us to pass in several encoders to be averaged (i.e. w/ drivetrain encoders)
     public SciEncoder(double gearRatio, double wheelCircumference, RelativeEncoder... encoders) {
         this.encoders = encoders;
         this.gearRatio = gearRatio;

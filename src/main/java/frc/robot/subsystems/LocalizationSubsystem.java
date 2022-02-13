@@ -95,8 +95,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2;
     }
 
+    // zeroes position and angle - this does not actually move the robot
     public void zero() {
-        double heading = Constants.STARTING_HEADING;
         double r = Constants.ROBOT_WIDTH / 2;
 
         this.pos = new Point(0, 0);

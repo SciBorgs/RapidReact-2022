@@ -30,6 +30,7 @@ public final class Constants {
     //********************** POINTS ***********************//
     public static final Point POINT_ALPHA = new Point(0, 0);
     public static final Point POINT_BETA  = new Point(0, 0);
-    public static final Point POINT_GAMMA  = new Point(0, 0);
+    public static final Point POINT_GAMMA = new Point(0, 0);
+    public static final Point POINT_TEST  = new Point(5, 0);
 
 }

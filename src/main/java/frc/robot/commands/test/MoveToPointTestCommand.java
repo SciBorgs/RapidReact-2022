@@ -1,17 +1,17 @@
 package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.controllers.MoveToPoint;
-import frc.robot.util.Point;
 import frc.robot.util.DelayedPrinter;
 
-public class MoveToPointCommand extends CommandBase{
+public class MoveToPointTestCommand extends CommandBase{
     private MoveToPoint controller;
     private final long start;
     private DelayedPrinter printer;
 
-    public MoveToPointCommand() {
+    public MoveToPointTestCommand() {
         super();
         start = System.currentTimeMillis();
         this.printer = new DelayedPrinter(1000);
@@ -19,7 +19,7 @@ public class MoveToPointCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        this.controller = new MoveToPoint(new Point(-5, 0));
+        this.controller = new MoveToPoint(Constants.POINT_TEST);
         Robot.localizationSubsystem.zero();
     }
 

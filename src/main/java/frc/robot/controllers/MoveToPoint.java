@@ -7,10 +7,11 @@ import frc.robot.util.Point;
 import frc.robot.util.Util;
 
 public class MoveToPoint {
-    private static final double EPSILON = 1E-2;
     private PID anglePid, distancePid;
     private Point targetPoint;
     private DelayedPrinter printer;
+
+    private static final double DISTANCE_TOLERANCE = 0.1;
 
     public MoveToPoint(Point p) {
         this.targetPoint = p;
@@ -26,34 +27,34 @@ public class MoveToPoint {
         double dy = targetPoint.y - Robot.localizationSubsystem.getPos().y;
 
         double targetAngle = Math.atan2(dy, dx);
+        double currentAngle = Robot.localizationSubsystem.getAngle();
 
+        // We take the dot product of the displacement vector and heading
+        // vector to get a kind of "signed distance". This is necessary so that
+        // the robot will move backwards if it is facing away from where it 
+        // should be facing
         Point displacementVector = Util.displacementVector(
             Robot.localizationSubsystem.getPos(),
             this.targetPoint);
         
-        double currentAngle = Robot.localizationSubsystem.getAngle();
-
         Point headingVector = Util.unitVector(currentAngle);
-
         double signedDistance = Util.dot(displacementVector, headingVector);
 
         double angleOutput = this.anglePid.getOutput(currentAngle, targetAngle); //values negated for testing
-
         double forwardOutput = this.distancePid.getOutput(signedDistance, 0);
 
         forwardOutput = Util.normalize(forwardOutput);
         angleOutput = Util.normalize(angleOutput);
 
-        printer.print("Distance: " + signedDistance
-                    + "\nHeading: " + headingVector
-                    + "\ndistance PID output: " + forwardOutput
-                    + "\n\t\tangle PID output: " + angleOutput + "\n");
+        printer.print("\nDistance  : " + signedDistance
+                    + "\nHeading   : " + headingVector
+                    + "\nDist PID  : " + forwardOutput
+                    + "\nAngle PID : " + angleOutput);
 
         Robot.driveSubsystem.setSpeedForwardAngle(forwardOutput, angleOutput);
     }
 
     public boolean hasArrived() {
-        return Math.abs(Util.getDistance(targetPoint, Robot.localizationSubsystem.getPos())) < 0.1;
+        return Util.getDistance(targetPoint, Robot.localizationSubsystem.getPos()) < DISTANCE_TOLERANCE;
     }
-
 }

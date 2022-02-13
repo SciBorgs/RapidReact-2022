@@ -13,8 +13,8 @@ public class Util {
         return new Point(Math.cos(theta), Math.sin(theta));
     }
 
-    public static Point displacementVector(Point current, Point desired) {
-        return new Point(desired.x - current.x, desired.y - current.y);
+    public static Point displacementVector(Point from, Point to) {
+        return new Point(from.x - to.x, to.y - from.y);
     }
 
     public static double dot(Point a, Point b) {
