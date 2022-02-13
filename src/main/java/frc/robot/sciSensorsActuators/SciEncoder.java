@@ -5,8 +5,8 @@ import com.revrobotics.RelativeEncoder;
 public class SciEncoder {
     private final double gearRatio; 
     private final double wheelCircumference;
-    public RelativeEncoder[] encoders;
-    private boolean inverted;
+    private RelativeEncoder[] encoders;
+    private boolean[] inverted;
 
     // allows us to pass in several encoders to be averaged (i.e. w/ drivetrain encoders)
     public SciEncoder(double gearRatio, double wheelCircumference, RelativeEncoder... encoders) {
@@ -14,34 +14,47 @@ public class SciEncoder {
         this.gearRatio = gearRatio;
         this.wheelCircumference = wheelCircumference;
 
-        this.inverted = false;
+        this.inverted = new boolean[this.encoders.length];
 
-        for (RelativeEncoder encoder : this.encoders) {
+        for (RelativeEncoder encoder : this.encoders)
             encoder.setPosition(0);
-        }
     }
 
     public int get() {
         double val = 0;
-        for (RelativeEncoder encoder : this.encoders)
-            val += encoder.getPosition() * gearRatio;
-        return (int) val * (inverted ? -1 : 1);
+        for (int i = 0; i < this.encoders.length; i++) {
+            RelativeEncoder encoder = this.encoders[i];
+            val += encoder.getPosition() * (this.inverted[i] ? -1.0 : 1.0);
+        }
+        return (int) (val * gearRatio / this.encoders.length);
     }
 
     public double getRate() {
         double val = 0;
-        for (RelativeEncoder encoder : this.encoders)
-            val += encoder.getVelocity() * gearRatio;
-        return (int) val * (inverted ? -1 : 1);
+        for (int i = 0; i < this.encoders.length; i++) {
+            RelativeEncoder encoder = this.encoders[i];
+            val += encoder.getVelocity() * (this.inverted[i] ? -1.0 : 1.0);
+        }
+        return val * gearRatio * wheelCircumference / this.encoders.length;
     }
 
-    // not sure if this is proper, someone fact check 
     public double getDistance() {
-        return get() * wheelCircumference;
+        double val = 0;
+        for (int i = 0; i < this.encoders.length; i++) {
+            RelativeEncoder encoder = this.encoders[i];
+            val += encoder.getPosition() * (this.inverted[i] ? -1.0 : 1.0);
+        }
+        return val * gearRatio * wheelCircumference / this.encoders.length;
     }
 
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
+    public int getNumEncoders() {
+        return this.encoders.length;
+    }
+
+    // set individual encoders to be read in reverse
+    public void setInverted(boolean... inverted) {
+        if (inverted.length != this.inverted.length) throw new IllegalArgumentException();
+        System.arraycopy(inverted, 0, this.inverted, 0, inverted.length);
     }
 
     public void setPosition(double d) {

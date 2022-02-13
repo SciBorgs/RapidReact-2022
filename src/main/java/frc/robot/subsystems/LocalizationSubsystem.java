@@ -26,8 +26,6 @@ public class LocalizationSubsystem extends SubsystemBase {
         double r = Constants.ROBOT_WIDTH / 2;
 
         this.pos = Constants.STARTING_POINT;
-        this.posL = new Point(pos.x + r * Math.cos(heading + Math.PI/2), pos.y + Math.sin(heading + Math.PI/2));
-        this.posR = new Point(pos.x + r * Math.cos(heading - Math.PI/2), pos.y + Math.sin(heading - Math.PI/2));
 
         this.leftEncoder = new SciEncoder(
             Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
