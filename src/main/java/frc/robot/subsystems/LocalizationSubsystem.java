@@ -53,8 +53,9 @@ public class LocalizationSubsystem extends SubsystemBase {
         double dDist = newDist - dist;
 
         double currHeading = this.getAngle();
-        pos.x += dDist * Math.cos(currHeading);
-        pos.y += dDist * Math.sin(currHeading);
+        this.pos = new Point(
+            this.pos.x + dDist * Math.cos(currHeading),
+            this.pos.y + dDist * Math.sin(currHeading));
         
         this.dist = newDist;
     }
