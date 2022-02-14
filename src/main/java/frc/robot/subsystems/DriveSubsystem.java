@@ -51,7 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
         double rightValue = -rightJoystick.getY();
 
         double thresholdToMove = 0.05;
-        boolean invertForChassisBot = true;
+        boolean invertForChassisBot = false;
 
         if (invertForChassisBot) {
             leftValue *= -1.0;

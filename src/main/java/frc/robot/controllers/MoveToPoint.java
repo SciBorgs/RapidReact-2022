@@ -15,7 +15,7 @@ public class MoveToPoint {
 
     public MoveToPoint(Point p) {
         this.targetPoint = p;
-        this.headingPID = new PID(0.7, 0, 0);
+        this.headingPID = new PID(0.9, 0, 0);
         this.distancePID = new PID(0.09, 0, 0);
         this.printer = new DelayedPrinter(100);
     }

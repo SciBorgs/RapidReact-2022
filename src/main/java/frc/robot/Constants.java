@@ -33,7 +33,7 @@ public final class Constants {
     public static final Point POINT_ALPHA = new Point(0, 0);
     public static final Point POINT_BETA  = new Point(0, 0);
     public static final Point POINT_GAMMA = new Point(0, 0);
-    public static final Point POINT_TEST  = new Point(4, 0);    
+    public static final Point POINT_TEST  = new Point(2, 0);    
 
         // Adjust radii here for desired shooting/searching distances.
     public static final Ring RING_ALPHA = new Ring(POINT_ALPHA, 1.25);

@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     //table = NetworkTableInstance.getDefault().getTable("limelight");
     this.printer = new DelayedPrinter(100);
+    Robot.localizationSubsystem.reset();
   }
 
   @Override
@@ -116,7 +117,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    localizationSubsystem.reset();
     // System.out.println("This is teleop init");
   }
 
