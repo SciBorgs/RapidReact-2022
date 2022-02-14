@@ -9,6 +9,11 @@ public class Util {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
     }
 
+    public static double getDistance(Point p, Ring c) {
+        double distance = getDistance(p, c.center);
+        return Math.abs(distance - c.radius);
+    }
+
     public static Point unitVector(double theta) {
         return new Point(Math.cos(theta), Math.sin(theta));
     }

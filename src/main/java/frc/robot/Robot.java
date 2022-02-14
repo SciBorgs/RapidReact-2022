@@ -77,6 +77,9 @@ public class Robot extends TimedRobot {
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
     //double data = table.getEntry("tx").getDouble(1.0);
     //System.out.println(data);
+
+    localizationSubsystem.update();
+    printer.print(localizationSubsystem.getInfoString());
   }
 
   @Override
@@ -98,7 +101,7 @@ public class Robot extends TimedRobot {
     );
     */
 
-    localizationSubsystem.zero();
+    localizationSubsystem.reset();
 
     // CommandScheduler.getInstance().schedule(
     //   new MoveToPointTestCommand()
@@ -108,23 +111,17 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    localizationSubsystem.updateLocation();
-    printer.print(localizationSubsystem.getInfoString());
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {
-    localizationSubsystem.zero();
+  public void teleopInit() {;
     // System.out.println("This is teleop init");
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    localizationSubsystem.updateLocation();
-    printer.print(localizationSubsystem.getInfoString());
-
     new DriveCommand().execute();
   }
 

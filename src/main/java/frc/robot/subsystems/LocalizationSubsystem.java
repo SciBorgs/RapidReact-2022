@@ -1,10 +1,6 @@
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase;
-import com.revrobotics.SparkMaxRelativeEncoder.Type;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.Encoder;
 
 import frc.robot.PortMap;
 import frc.robot.Robot;
@@ -16,7 +12,7 @@ import frc.robot.Constants;
 
 public class LocalizationSubsystem extends SubsystemBase {
     private Point pos;
-    private double dist;
+    private double prevDistance, prevHeading;
     public SciEncoder totalEncoder;
     public SciPigeon pigeon;
 
@@ -34,41 +30,44 @@ public class LocalizationSubsystem extends SubsystemBase {
             Robot.driveSubsystem.rBack.getEncoder()
         );
 
-        this.totalEncoder.setPosition(0);
+        this.totalEncoder.setDistance(0);
         this.totalEncoder.setInverted(true, true, true, true);
 
-        this.dist = this.totalEncoder.getDistance();
+        this.prevDistance = this.totalEncoder.getDistance();
 
         this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
         this.pigeon.setAngle(Constants.STARTING_HEADING);
     }
 
-    public Point  getPos()   { return this.pos; }
-    public double getVel()   { return this.totalEncoder.getRate(); }
-    public double getAngle() { return this.pigeon.getAngle(); }
+    public Point  getPos()     { return this.pos; }
+    public double getVel()     { return this.totalEncoder.getRate(); }
+    public double getHeading() { return this.prevHeading; }
 
     // call in periodic
-    public void updateLocation() {
-        double newDist = totalEncoder.getDistance();
-        double dDist = newDist - dist;
+    public void update() {
+        double currDistance = totalEncoder.getDistance();
+        double diffDistance = currDistance - prevDistance;
 
-        double currHeading = this.getAngle();
+        double currHeading = this.getHeading();
+        double avgHeading = (currHeading + this.prevHeading) / 2;
+        this.prevHeading = currHeading;
+
         this.pos = new Point(
-            this.pos.x + dDist * Math.cos(currHeading),
-            this.pos.y + dDist * Math.sin(currHeading));
+            this.pos.x + diffDistance * Math.cos(avgHeading),
+            this.pos.y + diffDistance * Math.sin(avgHeading));
         
-        this.dist = newDist;
+        this.prevDistance = currDistance;
     }
 
-    // zeroes position and angle - this does not actually move the robot
-    public void zero() {
-        this.pos = new Point(0, 0);
-        this.totalEncoder.setPosition(0);
-        this.dist = this.totalEncoder.get();;
-        this.pigeon.setAngle(0);
+    // resets position and angle - this does not actually move the robot
+    public void reset() {
+        this.pos = Constants.STARTING_POINT;
+        this.pigeon.setAngle(Constants.STARTING_HEADING);
+        this.totalEncoder.setDistance(0);
+        this.prevDistance = this.totalEncoder.getDistance();
     }
 
     public String getInfoString() {
-        return "POS: " + this.getPos() + " " + this.getAngle() + "\nVEL: " + this.getVel();
+        return "POS: " + this.getPos() + " " + this.getHeading() + "\nVEL: " + this.getVel();
     }
 }

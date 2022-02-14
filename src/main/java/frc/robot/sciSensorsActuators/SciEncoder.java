@@ -57,7 +57,7 @@ public class SciEncoder {
         System.arraycopy(inverted, 0, this.inverted, 0, inverted.length);
     }
 
-    public void setPosition(double d) {
+    public void setDistance(double d) {
         for (RelativeEncoder encoder : this.encoders)
             encoder.setPosition(d);
     }

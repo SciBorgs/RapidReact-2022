@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.util.Point;
+import frc.robot.util.Ring;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -28,9 +29,14 @@ public final class Constants {
     public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
 
     //********************** POINTS ***********************//
+        // Note: The origin is the center of the hub.
     public static final Point POINT_ALPHA = new Point(0, 0);
     public static final Point POINT_BETA  = new Point(0, 0);
     public static final Point POINT_GAMMA = new Point(0, 0);
-    public static final Point POINT_TEST  = new Point(5, 0);
+    public static final Point POINT_TEST  = new Point(5, 0);    
 
+        // Adjust radii here for desired shooting/searching distances.
+    public static final Ring RING_ALPHA = new Ring(POINT_ALPHA, 1.25);
+    public static final Ring RING_BETA  = new Ring(POINT_BETA, 3.0);
+    public static final Ring RING_GAMMA = new Ring(POINT_GAMMA, 3.3);
 }

@@ -20,7 +20,6 @@ public class MoveToPointTestCommand extends CommandBase{
     @Override
     public void initialize() {
         this.controller = new MoveToPoint(Constants.POINT_TEST);
-        Robot.localizationSubsystem.zero();
     }
 
     @Override
