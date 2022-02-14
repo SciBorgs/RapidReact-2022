@@ -24,7 +24,7 @@ public class ShooterSubsystem extends SubsystemBase {
         */
         
         lmotor.follow(rmotor);
-        //thruBoreEncoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, 0.03);
+    //  thruBoreEncoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
     }
     
     public final double HEIGHTDIFF = 9.8;
@@ -39,13 +39,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public void moveVert(double speed) {
         hood.set(speed);
     }
-    /*
-    public void hoodangle() {
-        double ty = Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "ty");
-        double speed = pid.getOutput(ty, 0);
-        moveVert(speed);
-    }
-    */
     public void moveHood(double angle) {
         moveVert(pid.getOutput(angle, thruBoreEncoder.getAngle()));
     }
