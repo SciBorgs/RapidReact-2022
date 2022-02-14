@@ -48,7 +48,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         double currDistance = totalEncoder.getDistance();
         double diffDistance = currDistance - prevDistance;
 
-        double currHeading = this.getHeading();
+        double currHeading = this.pigeon.getAngle();
         double avgHeading = (currHeading + this.prevHeading) / 2;
         this.prevHeading = currHeading;
 
