@@ -8,6 +8,8 @@ public class SciEncoder {
     private RelativeEncoder[] encoders;
     private boolean[] inverted;
 
+    private static final double ROYS_CONSTANT = 113.08662; //conversion between whatever unit it gives and meters
+
     // allows us to pass in several encoders to be averaged (i.e. w/ drivetrain encoders)
     public SciEncoder(double gearRatio, double wheelCircumference, RelativeEncoder... encoders) {
         this.encoders = encoders;
@@ -44,7 +46,7 @@ public class SciEncoder {
             RelativeEncoder encoder = this.encoders[i];
             val += encoder.getPosition() * (this.inverted[i] ? -1.0 : 1.0);
         }
-        return val * gearRatio * wheelCircumference / this.encoders.length;
+        return val * gearRatio * wheelCircumference / this.encoders.length / ROYS_CONSTANT;
     }
 
     public int getNumEncoders() {
@@ -64,9 +66,15 @@ public class SciEncoder {
 
     public String getInfoString() {
         StringBuilder sb = new StringBuilder();
+        sb.append('\n');
         for (int i = 0; i < this.encoders.length; i++) {
-            sb.append("\n + Encoder " + i + " : " + this.encoders[i].getPosition());
+            sb.append("\nEncoder " + i + " : " 
+                + this.encoders[i].getPosition() 
+                  * gearRatio * wheelCircumference
+                  * (this.inverted[i] ? -1.0 : 1.0)
+            );
         }
+        sb.append("\nTotal : " + this.getDistance());
         return sb.toString();
     }
 }

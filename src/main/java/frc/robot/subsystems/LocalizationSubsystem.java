@@ -31,7 +31,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         );
 
         this.totalEncoder.setDistance(0);
-        this.totalEncoder.setInverted(true, true, true, true);
+        this.totalEncoder.setInverted(true, true, false, false);
 
         this.prevDistance = this.totalEncoder.getDistance();
 
@@ -68,6 +68,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     public String getInfoString() {
-        return "POS: " + this.getPos() + " " + this.getHeading() + "\nVEL: " + this.getVel();
+        
+        return "POSITION : " + this.getPos();
     }
 }

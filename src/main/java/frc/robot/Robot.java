@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
     //System.out.println(data);
 
     localizationSubsystem.update();
-    printer.print(localizationSubsystem.totalEncoder.getInfoString());
+    printer.print(localizationSubsystem.getInfoString());
   }
 
   @Override
@@ -103,9 +103,9 @@ public class Robot extends TimedRobot {
 
     localizationSubsystem.reset();
 
-    // CommandScheduler.getInstance().schedule(
-    //   new MoveToPointTestCommand()
-    // );
+     CommandScheduler.getInstance().schedule(
+       new MoveToPointTestCommand()
+     );
   }
 
   /** This function is called periodically during autonomous. */
@@ -115,7 +115,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {;
+  public void teleopInit() {
+    localizationSubsystem.reset();
     // System.out.println("This is teleop init");
   }
 
