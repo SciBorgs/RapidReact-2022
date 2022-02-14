@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
     //System.out.println(data);
 
     localizationSubsystem.update();
-    printer.print(localizationSubsystem.getInfoString());
+    printer.print(localizationSubsystem.totalEncoder.getInfoString());
   }
 
   @Override

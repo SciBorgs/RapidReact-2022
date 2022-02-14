@@ -61,4 +61,12 @@ public class SciEncoder {
         for (RelativeEncoder encoder : this.encoders)
             encoder.setPosition(d);
     }
+
+    public String getInfoString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.encoders.length; i++) {
+            sb.append("\n + Encoder " + i + " : " + this.encoders[i].getPosition());
+        }
+        return sb.toString();
+    }
 }
