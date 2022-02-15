@@ -41,5 +41,13 @@ public class IntakeSubsystem implements Subsystem {
 
     }
 
+    public double getIntakeSpeed() {
+        return this.suckSpark.get();
+    }
+
+    public boolean getSwitchStatus() {
+        return this.limitSwitch.get();
+    }
+
 
 }
