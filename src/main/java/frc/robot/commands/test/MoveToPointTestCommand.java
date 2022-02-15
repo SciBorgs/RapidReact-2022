@@ -3,11 +3,11 @@ package frc.robot.commands.test;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.controllers.MoveToPoint;
+import frc.robot.controllers.MoveToPointController;
 import frc.robot.util.DelayedPrinter;
 
 public class MoveToPointTestCommand extends CommandBase{
-    private MoveToPoint controller;
+    private MoveToPointController controller;
     private final long start;
     private DelayedPrinter printer;
 
@@ -19,7 +19,7 @@ public class MoveToPointTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        this.controller = new MoveToPoint(Constants.POINT_TEST);
+        this.controller = new MoveToPointController(Constants.POINT_TEST);
     }
 
     @Override

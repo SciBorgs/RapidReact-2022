@@ -1,15 +1,15 @@
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.controllers.MoveToPoint;
+import frc.robot.controllers.MoveToRingController;
 import frc.robot.Constants;
 
-public class MoveToPointAlphaCommand  extends CommandBase{
-    private MoveToPoint controller;
+public class MoveToPointAlphaCommand extends CommandBase {
+    private MoveToRingController controller;
 
     @Override
     public void initialize() {
-        this.controller = new MoveToPoint(Constants.POINT_ALPHA);
+        this.controller = new MoveToRingController(Constants.RING_ALPHA, 0.9);
     }
 
     @Override

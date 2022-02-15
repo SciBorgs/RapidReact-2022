@@ -6,14 +6,14 @@ import frc.robot.util.PID;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
 
-public class MoveToPoint {
+public class MoveToPointController {
     private PID headingPID, distancePID;
     private Point targetPoint;
     private DelayedPrinter printer;
 
     private static final double DISTANCE_TOLERANCE = 0.1;
 
-    public MoveToPoint(Point p) {
+    public MoveToPointController(Point p) {
         this.targetPoint = p;
         this.headingPID = new PID(0.9, 0, 0);
         this.distancePID = new PID(0.09, 0, 0);
@@ -27,6 +27,7 @@ public class MoveToPoint {
 
         double targetHeading = Math.atan2(dy, dx);
         double currHeading = Robot.localizationSubsystem.getHeading();
+        double diffHeading = Util.travelledAngle(currHeading, targetHeading);
 
         // We take the dot product of the displacement vector and heading
         // vector to get a kind of "signed distance". This is necessary so that
@@ -39,7 +40,7 @@ public class MoveToPoint {
         Point headingVector = Util.unitVector(currHeading);
         double signedDistance = Util.dot(displacementVector, headingVector);
 
-        double angleOutput = this.headingPID.getOutput(currHeading, targetHeading); //values negated for testing
+        double angleOutput = this.headingPID.getOutput(diffHeading, 0); //values negated for testing
         double forwardOutput = this.distancePID.getOutput(signedDistance, 0);
 
         forwardOutput = Util.normalize(forwardOutput);
@@ -54,6 +55,6 @@ public class MoveToPoint {
     }
 
     public boolean hasArrived() {
-        return Util.getDistance(targetPoint, Robot.localizationSubsystem.getPos()) < DISTANCE_TOLERANCE;
+        return Util.distance(targetPoint, Robot.localizationSubsystem.getPos()) < DISTANCE_TOLERANCE;
     }
 }

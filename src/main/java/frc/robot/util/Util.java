@@ -5,12 +5,12 @@ public class Util {
         return Math.min(Math.max(-1, v), 1);
     }
 
-    public static double getDistance(Point a, Point b) {
+    public static double distance(Point a, Point b) {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
     }
 
-    public static double getDistance(Point p, Ring c) {
-        double distance = getDistance(p, c.center);
+    public static double distance(Point p, Ring c) {
+        double distance = distance(p, c.center);
         return Math.abs(distance - c.radius);
     }
 
@@ -22,7 +22,18 @@ public class Util {
         return new Point(from.x - to.x, to.y - from.y);
     }
 
+    public static double angle(Point p) {
+        return Math.atan2(p.y, p.x);
+    }
+
     public static double dot(Point a, Point b) {
         return a.x * b.x + a.y * b.y;
+    }
+
+    public static double travelledAngle(double from, double to) {
+        double raw = to - from;
+        while (raw > Math.PI) raw -= 2 * Math.PI;
+        while (raw < - Math.PI) raw += 2 * Math.PI;
+        return raw;
     }
 }

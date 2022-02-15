@@ -46,6 +46,13 @@ public class DriveSubsystem extends SubsystemBase {
         setSpeed(forward * (1 + angle), forward * (1 - angle)); // thank you zev
     }
 
+    // setSpeedForwardAngle controls dTheta/dx. this controls dTheta/dt (but
+    // the robot doesn't move lol)
+    public static final double SPIN_CONSTANT = 0.1;
+    public void spinRobot(double omega) {
+        setSpeed(SPIN_CONSTANT * omega, SPIN_CONSTANT * -omega);
+    }
+
     public void moveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {
         double leftValue = leftJoystick.getY();
         double rightValue = -rightJoystick.getY();

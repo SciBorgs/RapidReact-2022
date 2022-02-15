@@ -20,7 +20,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.pos = Constants.STARTING_POINT;
 
         this.totalEncoder = new SciEncoder(
-            Constants.LEFT_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
+            Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
             Robot.driveSubsystem.lFront.getEncoder(),
             // Robot.driveSubsystem.lMiddle.getEncoder(),
             Robot.driveSubsystem.lBack.getEncoder(),
@@ -49,6 +49,10 @@ public class LocalizationSubsystem extends SubsystemBase {
         double diffDistance = currDistance - prevDistance;
 
         double currHeading = this.pigeon.getAngle();
+        // This method of averaging angles is valid because pigeon angle is
+        // continuous. If we were to normalize the angle between 0 and 2pi (or
+        // some other limited range) then this wouldn't work.
+        // See: https://en.wikipedia.org/wiki/Circular_mean
         double avgHeading = (currHeading + this.prevHeading) / 2;
         this.prevHeading = currHeading;
 
@@ -84,7 +88,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.totalEncoder.setDistance(0);
         this.prevDistance = this.totalEncoder.getDistance();
         this.prevHeading = this.pigeon.getAngle();
-        
+
         throw new RuntimeException("DONT CALL THIS METHOD.");
     }
 

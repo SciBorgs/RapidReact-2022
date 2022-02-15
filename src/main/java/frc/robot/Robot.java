@@ -17,9 +17,9 @@ import frc.robot.commands.DriveCommand;
 // import frc.robot.commands.StartHopperCommand;
 import frc.robot.commands.shooter.ShootCommand;
 // import frc.robot.commands.turret.AimTurretCommand;
-import frc.robot.commands.MoveToPointAlphaCommand;
-import frc.robot.commands.MoveToPointBetaCommand;
-import frc.robot.commands.MoveToPointGammaCommand;
+import frc.robot.commands.auto.MoveToPointAlphaCommand;
+import frc.robot.commands.auto.MoveToPointBetaCommand;
+import frc.robot.commands.auto.MoveToPointGammaCommand;
 import frc.robot.subsystems.DriveSubsystem;
 // import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
@@ -63,7 +63,6 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     //table = NetworkTableInstance.getDefault().getTable("limelight");
     this.printer = new DelayedPrinter(100);
-    Robot.localizationSubsystem.reset();
   }
 
   @Override
@@ -101,8 +100,6 @@ public class Robot extends TimedRobot {
       )
     );
     */
-
-    localizationSubsystem.reset();
 
      CommandScheduler.getInstance().schedule(
        new MoveToPointTestCommand()
