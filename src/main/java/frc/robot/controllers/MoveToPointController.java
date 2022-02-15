@@ -57,4 +57,9 @@ public class MoveToPointController {
     public boolean hasArrived() {
         return Util.distance(targetPoint, Robot.localizationSubsystem.getPos()) < DISTANCE_TOLERANCE;
     }
+
+    public void resetPIDs() {
+        this.headingPID.reset();
+        this.distancePID.reset();
+    }
 }

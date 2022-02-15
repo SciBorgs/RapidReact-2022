@@ -38,8 +38,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double left, double right) {
-        lFront.set(Util.normalize(left, 0.1) * 0.8);
-        rFront.set(-Util.normalize(right, 0.1) * 0.8);
+        lFront.set(Util.normalize(left, 0.4) * 0.8);
+        rFront.set(-Util.normalize(right, 0.4) * 0.8);
     }
 
     public void setSpeedForwardAngle(double forward, double angle) {
@@ -49,9 +49,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     // setSpeedForwardAngle controls dTheta/dx. this controls dTheta/dt (but
     // the robot doesn't move lol)
-    public static final double SPIN_CONSTANT = 0.35;
     public void spinRobot(double omega) {
-        setSpeed(SPIN_CONSTANT * omega, SPIN_CONSTANT * -omega);
+        setSpeed(omega, -omega);
     }
 
     public void moveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {

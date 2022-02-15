@@ -42,4 +42,9 @@ public class MoveToRingController {
     public boolean hasArrived() {
         return Math.abs(Util.distance(Robot.localizationSubsystem.getPos(), targetRing)) < DISTANCE_TOLERANCE;
     }
+
+    public void resetPIDs() {
+        this.headingPID.reset();
+        this.distancePID.reset();
+    }
 }

@@ -8,26 +8,32 @@ import frc.robot.Constants;
 public class PatrolPointUnoTestCommand extends CommandBase {
     private SpinController spinController;
     private MoveToPointController pointController;
-    private int stage;
+    private boolean startedPIDs = false;
 
-    private static final double HEADING_TOLERANCE = 0.3;
+    private static final double HEADING_TOLERANCE = 0.2;
 
     @Override
     public void initialize() {
         this.spinController = new SpinController(HEADING_TOLERANCE);
         this.pointController = new MoveToPointController(Constants.POINT_PATROL_UNO);
-        this.stage = 1;
     }
 
     @Override
     public void execute() {
-        if (this.stage == 1 && spinController.facingPoint(Constants.POINT_PATROL_UNO))
-            this.stage++;
-        
-        if (stage == 1) {
+        if (!startedPIDs) {
+            this.pointController.resetPIDs();
+            this.spinController.resetPIDs();
+            startedPIDs = true;
+        }
+
+        if (!spinController.facingPoint(Constants.POINT_PATROL_UNO)) {
+            System.out.println("SPINNING TOWARDS PATROL POINT UNO");
             this.spinController.facePoint(Constants.POINT_PATROL_UNO);
+            this.pointController.resetPIDs();
         } else {
+            System.out.println("APPROACHING PATROL POINT UNO");
             this.pointController.move();
+            this.spinController.resetPIDs();
         }
     }
 

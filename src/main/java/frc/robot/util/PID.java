@@ -40,4 +40,9 @@ public class PID {
 
     return p * err + i * integrator + d * der;
   }
+
+  public void reset() {
+    this.integrator = this.prevErr = this.prevTime = 0;
+    this.timer.reset();
+  }
 }

@@ -47,4 +47,8 @@ public class SpinController {
     public boolean facingAwayFromPoint(Point p) {
         return facing(Util.angle(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
     }
+
+    public void resetPIDs() {
+        this.headingPID.reset();
+    }
 }

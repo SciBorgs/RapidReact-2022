@@ -8,12 +8,10 @@ import frc.robot.util.DelayedPrinter;
 
 public class MoveToPointTestCommand extends CommandBase{
     private MoveToPointController controller;
-    private final long start;
     private DelayedPrinter printer;
 
     public MoveToPointTestCommand() {
         super();
-        start = System.currentTimeMillis();
         this.printer = new DelayedPrinter(1000);
     }
 
@@ -30,7 +28,7 @@ public class MoveToPointTestCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return controller.hasArrived() || System.currentTimeMillis() - start > 100000;
+        return controller.hasArrived();
     }
 
     @Override
