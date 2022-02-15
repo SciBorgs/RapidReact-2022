@@ -42,8 +42,8 @@ public class Following {
         //     Robot.driveSubsystem.setSpeed(0, 0);
         // }
         NetworkTable table = Robot.photonVisionSubsystem.getTable();
-        double tv = Robot.photonVisionSubsystem.getTableData(table, "target");
-        double tx = Robot.photonVisionSubsystem.getTableData(table, "pitch");
+        double tv = Robot.photonVisionSubsystem.getTableData(table, "hasTarget");
+        double tx = Robot.photonVisionSubsystem.getTableData(table, "targetYaw");
         System.out.println("tx: " + tx);
     }
 }
