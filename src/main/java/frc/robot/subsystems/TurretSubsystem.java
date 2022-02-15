@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
+import frc.robot.util.SciMath;
 import frc.robot.Constants;
 
 public class TurretSubsystem extends SubsystemBase {
@@ -48,7 +49,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void turn(double diff) {
-        setSpeed(-diff, diff);
+        setSpeed(diff, -diff);
     }
 
     // should returns angle turned from the encoder
@@ -59,10 +60,17 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     // returns direction that the turret is spinning as an int, either 1 or -1
+    // 1 is clockwise
     public int getDirection() {
-        if (encoder.getRate() > 0)
+        System.out.println("rate: " + encoder.getRate());
+        if (encoder.getRate() >= 0)
             return 1;
         return -1;
+    }
+
+    // temporary
+    public void resetPigeon() {
+        pigeon.setAngle(0);
     }
 }
 
