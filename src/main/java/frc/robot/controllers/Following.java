@@ -9,6 +9,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import org.photonvision.targeting.PhotonPipelineResult;
+
 public class Following {
     // public static final double K_TX = 1.;
     public static final double K_TA = 1.;
@@ -22,21 +24,25 @@ public class Following {
 
     public static Averager TA_Average = new Averager(50);
 
+    public static double tx;
+    public static double ta;
+
     static {
         txPID = new PID(TX_P, 0, 0);
         taPID = new PID(TA_P, 0, 0);
     }
 
     public static void follow() {
-        Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 2);
-        NetworkTable table = Robot.limelightSubsystem.getTable();
-        double tv = Robot.limelightSubsystem.getTableData(table, "tv");
-        double tx = Robot.limelightSubsystem.getTableData(table, "tx");
-        double ta = Robot.limelightSubsystem.getTableData(table, "ta");
-        taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
-        double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
-        System.out.println(Math.abs(forward) * 100);
-        if (tv == 1) {
+        PhotonPipelineResult result = Robot.photonVisionSubsystem.getResult();
+    
+        if (result.hasTargets()) {
+            ta = Robot.photonVisionSubsystem.getTarget().getArea();
+            tx = Robot.photonVisionSubsystem.getTarget().getYaw();
+
+            taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
+            double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
+
+            System.out.println(Math.abs(forward) * 100);
             Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
         } else {
             Robot.driveSubsystem.setSpeed(0, 0);
