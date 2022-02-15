@@ -28,22 +28,19 @@ public class Following {
     }
 
     public static void follow() {
-        // Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 2);
-        // NetworkTable table = Robot.limelightSubsystem.getTable();
-        // double tv = Robot.limelightSubsystem.getTableData(table, "tv");
-        // double tx = Robot.limelightSubsystem.getTableData(table, "tx");
-        // double ta = Robot.limelightSubsystem.getTableData(table, "ta");
-        // taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
-        // double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
-        // System.out.println(Math.abs(forward) * 100);
-        // if (tv == 1) {
-        //     Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
-        // } else {
-        //     Robot.driveSubsystem.setSpeed(0, 0);
-        // }
-        NetworkTable table = Robot.photonVisionSubsystem.getTable();
-        double tv = Robot.photonVisionSubsystem.getTableData(table, "hasTarget");
-        double tx = Robot.photonVisionSubsystem.getTableData(table, "targetYaw");
-        System.out.println("tx: " + tx);
+        Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 2);
+        NetworkTable table = Robot.limelightSubsystem.getTable();
+        double tv = Robot.limelightSubsystem.getTableData(table, "tv");
+        double tx = Robot.limelightSubsystem.getTableData(table, "tx");
+        double ta = Robot.limelightSubsystem.getTableData(table, "ta");
+        taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
+        double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
+        System.out.println(Math.abs(forward) * 100);
+        if (tv == 1) {
+            Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
+        } else {
+            Robot.driveSubsystem.setSpeed(0, 0);
+        }
+
     }
 }
