@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -49,6 +50,13 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    SmartDashboard.putBoolean("Pneumatics status", pneumatics.getStatus());
+    SmartDashboard.putNumber("Elevator sped", hopper.getElevatorSpeed());
+    SmartDashboard.putNumber("Hopper suck sped", hopper.getSuckSpeed());
+    SmartDashboard.putBoolean("Intake status", intake.getSwitchStatus());
+    SmartDashboard.putNumber("Intake speed", intake.getIntakeSpeed());
+
+    
     CommandScheduler.getInstance().run();
   }
 
