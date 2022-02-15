@@ -11,6 +11,6 @@ public class SciAbsoluteEncoder {
     }
     //returns the angle the hood is currently at:
     public double getAngle() {
-        return absEncoder.getDistancePerRotation() * absEncoder.get();
+        return absEncoder.getDistance();
     }
 }
