@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
-import frc.robot.util.SciMath;
 import frc.robot.Constants;
 
 public class TurretSubsystem extends SubsystemBase {
