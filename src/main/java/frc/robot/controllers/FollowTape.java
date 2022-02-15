@@ -59,7 +59,7 @@ public class FollowTape {
     private static double getNewAngle(double newAngle) {
         return SciMath.normalizeInRange(
             SciMath.normalizeAngle(Robot.turretSubsystem.getAngle() + newAngle),
-            -360,
+            0,
             360
         );
     }
