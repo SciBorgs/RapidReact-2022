@@ -89,7 +89,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.prevDistance = this.totalEncoder.getDistance();
         this.prevHeading = this.pigeon.getAngle();
 
-        throw new RuntimeException("DONT CALL THIS METHOD.");
+        // throw new RuntimeException("DONT CALL THIS METHOD.");
     }
 
     public String getInfoString() {

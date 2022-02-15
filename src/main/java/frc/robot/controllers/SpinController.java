@@ -13,7 +13,7 @@ public class SpinController {
 
     public SpinController(double headingTolerance) {
         this.headingTolerance = headingTolerance;
-        this.headingPID = new PID(0.9, 0, 0);
+        this.headingPID = new PID(0.5, 0, 0);
         this.printer = new DelayedPrinter(100);
     }
 

@@ -1,11 +1,11 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controllers.MoveToPointController;
 import frc.robot.controllers.SpinController;
 import frc.robot.Constants;
 
-public class MoveToPointBetaCommand extends CommandBase {
+public class PatrolPointUnoTestCommand extends CommandBase {
     private SpinController spinController;
     private MoveToPointController pointController;
     private int stage;
@@ -15,17 +15,17 @@ public class MoveToPointBetaCommand extends CommandBase {
     @Override
     public void initialize() {
         this.spinController = new SpinController(HEADING_TOLERANCE);
-        this.pointController = new MoveToPointController(Constants.POINT_BETA);
+        this.pointController = new MoveToPointController(Constants.POINT_PATROL_UNO);
         this.stage = 1;
     }
 
     @Override
     public void execute() {
-        if (this.stage == 1 && spinController.facingAwayFromPoint(Constants.POINT_HUB))
+        if (this.stage == 1 && spinController.facingPoint(Constants.POINT_PATROL_UNO))
             this.stage++;
         
         if (stage == 1) {
-            this.spinController.faceAwayFromPoint(Constants.POINT_HUB);
+            this.spinController.facePoint(Constants.POINT_PATROL_UNO);
         } else {
             this.pointController.move();
         }

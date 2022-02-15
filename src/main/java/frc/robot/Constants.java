@@ -37,4 +37,7 @@ public final class Constants {
     public static final Ring RING_ALPHA = new Ring(POINT_HUB,  1.25);
     public static final Ring RING_BETA  = new Ring(POINT_BETA, 3.0);
     public static final Ring RING_GAMMA = new Ring(POINT_HUB,  3.3);
+
+    public static final Point POINT_PATROL_UNO = new Point(2, 0);
+    public static final Point POINT_PATROL_DOS = new Point(-2, 0);
 }
