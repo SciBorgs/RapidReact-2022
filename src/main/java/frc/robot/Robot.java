@@ -12,6 +12,9 @@ import frc.robot.commands.FollowBallCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
+
+import org.opencv.photo.Photo;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 

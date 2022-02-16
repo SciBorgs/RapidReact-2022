@@ -25,4 +25,9 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     public PhotonTrackedTarget getSpecificTarget(int index) {
         return getResult().getTargets().get(index);
     }
+
+    public void setPipeline(int index){
+        camera.setPipelineIndex(index);
+    }
+
 }
