@@ -3,11 +3,6 @@ package frc.robot.controllers;
 import frc.robot.Robot;
 import frc.robot.util.Averager;
 import frc.robot.util.PID;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-
-import java.util.Deque;
-import java.util.LinkedList;
 
 import org.photonvision.targeting.PhotonPipelineResult;
 
@@ -37,7 +32,7 @@ public class Following {
     
         if (result.hasTargets()) {
             ta = Robot.photonVisionSubsystem.getTarget().getArea();
-            tx = Robot.photonVisionSubsystem.getTarget().getYaw();
+            tx = Robot.photonVisionSubsystem.getTarget().getYaw();  
 
             taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
             double forward = -taPID.getOutput(Math.exp(-taAvr), 0);

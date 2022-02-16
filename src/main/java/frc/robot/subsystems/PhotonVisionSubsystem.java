@@ -8,7 +8,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 
 public class PhotonVisionSubsystem extends SubsystemBase {
-    public PhotonCamera camera;
+    private PhotonCamera camera;
 
     public PhotonVisionSubsystem() {
         camera = new PhotonCamera("photonvision");
@@ -20,5 +20,9 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
     public PhotonTrackedTarget getTarget() {
         return getResult().getBestTarget();
+    }
+
+    public PhotonTrackedTarget getSpecificTarget(int index) {
+        return getResult().getTargets().get(index);
     }
 }
