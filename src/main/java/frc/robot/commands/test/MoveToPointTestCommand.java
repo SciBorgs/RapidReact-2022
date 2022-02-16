@@ -3,12 +3,14 @@ package frc.robot.commands.test;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.controllers.MoveToPointController;
+import frc.robot.controllers.FollowPointController;
 import frc.robot.util.DelayedPrinter;
 
 public class MoveToPointTestCommand extends CommandBase{
-    private MoveToPointController controller;
+    private FollowPointController controller;
     private DelayedPrinter printer;
+
+    private static final double DISTANCE_TOLERANCE = 0.05;
 
     public MoveToPointTestCommand() {
         super();
@@ -17,18 +19,18 @@ public class MoveToPointTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        this.controller = new MoveToPointController(Constants.POINT_TEST);
+        this.controller = new FollowPointController(DISTANCE_TOLERANCE);
     }
 
     @Override
     public void execute() {
-        this.controller.move();
+        this.controller.move(Constants.POINT_TEST);
         this.printer.print("RUNNING COMMAND!!!!!!!!!!");
     }
 
     @Override
     public boolean isFinished() {
-        return controller.hasArrived();
+        return controller.hasArrived(Constants.POINT_TEST);
     }
 
     @Override

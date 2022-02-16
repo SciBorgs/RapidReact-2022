@@ -6,6 +6,10 @@ import frc.robot.util.PID;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
 
+/**
+ * Provides several methods for orienting a robot in a certain direction or
+ * towards a certain point.
+ */
 public class SpinController {
     private PID headingPID;
     private DelayedPrinter printer;
@@ -46,6 +50,10 @@ public class SpinController {
 
     public boolean facingAwayFromPoint(Point p) {
         return facing(Util.angle(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
+    }
+
+    public boolean facingParallelToPoint(Point p) {
+        return facing(Util.angle(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)) % Math.PI);
     }
 
     public void resetPIDs() {

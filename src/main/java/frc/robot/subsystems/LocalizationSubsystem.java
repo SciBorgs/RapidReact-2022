@@ -7,7 +7,6 @@ import frc.robot.Robot;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.util.Point;
-import frc.robot.util.Util;
 import frc.robot.Constants;
 
 public class LocalizationSubsystem extends SubsystemBase {
@@ -64,32 +63,19 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     /**
-     * Don't call this method.
+     * Resets the localization of this robot, returning readings to the robot's
+     * initial state defined in Constants.java.
+     * 
      * <p>
-     * Don't call this method, or your position will be reversed and if you
-     * have any auto commands running they will see that the position of the
-     * robot has moved rapidly and this will mess everything up and cause
-     * the robot to go Sicko Mode and quite possibly break the robot or, more
-     * likely, a student.
+     * <b>Note: This method is jank and should only be used for testing.</b>
+     * 
      * <p>
-     * Don't call this method or you will be INCREDIBLY confused as to why the
-     * robot goes ham when you "reset" the robot and then your robot rams into
-     * the nearest wall.
-     * <p>
-     * PLEASE DON'T CALL THIS METHOD. I DON'T EVEN KNOW WHY IT DOESN'T WORK
-     * <p>
-     * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-     * @deprecated as of Feb 14 2022
+     * Undeprecated as of Feb 15 2022
      */
-    @Deprecated
     public void reset() {
         this.pos = Constants.STARTING_POINT;
         this.pigeon.setAngle(Constants.STARTING_HEADING);
-        this.totalEncoder.setDistance(0);
-        this.prevDistance = this.totalEncoder.getDistance();
         this.prevHeading = this.pigeon.getAngle();
-
-        // throw new RuntimeException("DONT CALL THIS METHOD.");
     }
 
     public String getInfoString() {

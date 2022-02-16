@@ -7,6 +7,10 @@ import frc.robot.util.Point;
 import frc.robot.util.Ring;
 import frc.robot.util.Util;
 
+/**
+ * Controls the robot so that it moves to some distance from a certain fixed
+ * point (ex. optimal shooting distance from hub).
+ */
 public class MoveToRingController {
     private PID headingPID, distancePID;
     private Ring targetRing;

@@ -6,21 +6,24 @@ import frc.robot.util.PID;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
 
-public class MoveToPointController {
+/**
+ * Controls the robot so that it follows a point that may change with time.
+ * Think of it like flashing a laser pointer at a point and having the robot
+ * go to that point.
+ */
+public class FollowPointController {
     private PID headingPID, distancePID;
-    private Point targetPoint;
+    private final double distanceTolerance;
     private DelayedPrinter printer;
 
-    private static final double DISTANCE_TOLERANCE = 0.05;
-
-    public MoveToPointController(Point p) {
-        this.targetPoint = p;
+    public FollowPointController(double distanceTolerance) {
         this.headingPID = new PID(0.02, 0, 0);
         this.distancePID = new PID(0.09, 0.02, 0.01);
+        this.distanceTolerance = distanceTolerance;
         this.printer = new DelayedPrinter(100);
     }
 
-    public void move() {
+    public void move(Point targetPoint) {
         Point currPos = Robot.localizationSubsystem.getPos();
         double dx = targetPoint.x - currPos.x;
         double dy = targetPoint.y - currPos.y;
@@ -35,7 +38,7 @@ public class MoveToPointController {
         // should be facing
         Point displacementVector = Util.displacementVector(
             Robot.localizationSubsystem.getPos(),
-            this.targetPoint);
+            targetPoint);
         
         Point headingVector = Util.unitVector(currHeading);
         double signedDistance = Util.dot(displacementVector, headingVector);
@@ -54,8 +57,8 @@ public class MoveToPointController {
         Robot.driveSubsystem.setSpeedForwardAngle(forwardOutput, angleOutput);
     }
 
-    public boolean hasArrived() {
-        return Util.distance(targetPoint, Robot.localizationSubsystem.getPos()) < DISTANCE_TOLERANCE;
+    public boolean hasArrived(Point targetPoint) {
+        return Util.distance(targetPoint, Robot.localizationSubsystem.getPos()) < distanceTolerance;
     }
 
     public void resetPIDs() {
