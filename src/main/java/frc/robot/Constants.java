@@ -32,7 +32,7 @@ public final class Constants {
         // Note: The origin is the center of the hub.
     public static final Point POINT_HUB  = new Point(0, 0);
     public static final Point POINT_BETA = new Point(0, 0);
-    public static final Point POINT_TEST = new Point(2, 0);    
+    public static final Point POINT_TEST = new Point(-2, 0);    
 
         // Adjust radii here for desired shooting/searching distances.
     public static final Ring RING_ALPHA = new Ring(POINT_HUB,  1.25);

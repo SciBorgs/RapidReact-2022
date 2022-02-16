@@ -10,7 +10,7 @@ public class MoveToPointBetaCommand extends CommandBase {
     private FollowPointController pointController;
     private int stage;
 
-    private static final double HEADING_TOLERANCE = 0.3;
+    private static final double HEADING_TOLERANCE = 0.2;
     private static final double DISTANCE_TOLERANCE = 0.05;
 
     @Override
@@ -22,12 +22,14 @@ public class MoveToPointBetaCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (this.stage == 1 && spinController.facingAwayFromPoint(Constants.POINT_HUB))
-            this.stage++;
+        // if (this.stage == 1 && spinController.facingAwayFromPoint(Constants.POINT_HUB))
+        //     this.stage++;
         
-        if (stage == 1) {
+        if (!spinController.facingAwayFromPoint(Constants.POINT_HUB)) {
+            System.out.println("FACING POINT");
             this.spinController.faceAwayFromPoint(Constants.POINT_HUB);
         } else {
+            System.out.println("MOVING FORWARD");
             this.pointController.move(Constants.POINT_BETA);
         }
     }

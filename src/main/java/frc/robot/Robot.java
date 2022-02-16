@@ -103,8 +103,8 @@ public class Robot extends TimedRobot {
     */
 
      CommandScheduler.getInstance().schedule(
-      //  new MoveToPointBetaCommand()
-      new PatrolTestCommand()
+       new MoveToPointBetaCommand()
+      // new PatrolTestCommand()
      );
   }
 
