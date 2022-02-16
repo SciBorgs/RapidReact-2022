@@ -63,8 +63,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    turretSubsystem.resetPigeon();
-    CommandScheduler.getInstance().schedule(new AimTurretCommand());
+    // turretSubsystem.resetPigeon();
+    // CommandScheduler.getInstance().schedule(new AimTurretCommand());
   }
 
   /** This function is called periodically during autonomous. */

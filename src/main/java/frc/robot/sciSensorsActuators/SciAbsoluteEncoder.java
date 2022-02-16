@@ -7,10 +7,10 @@ public class SciAbsoluteEncoder {
 
     public SciAbsoluteEncoder(int port, double gearRatio) {
         this.absEncoder = new DutyCycleEncoder(port);
-        this.absEncoder.setDistancePerRotation(gearRatio * 2 * Math.PI);
+        this.absEncoder.setDistancePerRotation(gearRatio * 360);
     }
     //returns the angle the hood is currently at:
     public double getAngle() {
-        return absEncoder.getDistancePerRotation() * absEncoder.get();
+        return absEncoder.getDistance();
     }
 }

@@ -2,29 +2,27 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
-import frc.robot.Robot;
-import frc.robot.util.PID;
-import edu.wpi.first.wpilibj.Encoder;
-
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
-import frc.robot.sciSensorsActuators.SciEncoder;
+import frc.robot.util.PID;
 
 public class ShooterSubsystem extends SubsystemBase {
     private static PID pid = new PID(0.04, 0, 0);
     public CANSparkMax hood, lmotor, rmotor;
     private SciAbsoluteEncoder thruBoreEncoder;
     public ShooterSubsystem() {
-        /*
+
         this.hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
+        /*
         this.lmotor = new CANSparkMax(PortMap.SHOOTER_LEFT_SPARK, MotorType.kBrushless);
         this.rmotor = new CANSparkMax(PortMap.SHOOTER_RIGHT_SPARK, MotorType.kBrushless);
         */
         
         lmotor.follow(rmotor);
-    //  thruBoreEncoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
+         thruBoreEncoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
     }
     
     public final double HEIGHTDIFF = 9.8;
