@@ -26,7 +26,7 @@ public class Util {
         return new Point(from.x - to.x, to.y - from.y);
     }
 
-    public static double angle(Point p) {
+    public static double angleToPoint(Point p) {
         return Math.atan2(p.y, p.x);
     }
 
