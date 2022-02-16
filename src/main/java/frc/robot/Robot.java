@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.test.MoveToPointTestCommand;
 import frc.robot.commands.test.PatrolTestCommand;
+import frc.robot.commands.test.SpinTestCommand;
 import frc.robot.commands.DriveCommand;
 // import frc.robot.commands.FollowBallCommand;
 // import frc.robot.commands.IntakeBallCommand;
@@ -103,8 +104,9 @@ public class Robot extends TimedRobot {
     */
 
      CommandScheduler.getInstance().schedule(
-       new MoveToPointBetaCommand()
+      //  new MoveToPointBetaCommand()
       // new PatrolTestCommand()
+      new SpinTestCommand()
      );
   }
 
