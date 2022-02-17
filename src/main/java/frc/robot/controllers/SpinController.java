@@ -1,7 +1,6 @@
 package frc.robot.controllers;
 
 import frc.robot.Robot;
-import frc.robot.util.DelayedPrinter;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
@@ -12,13 +11,11 @@ import frc.robot.util.Util;
  */
 public class SpinController {
     private PID headingPID;
-    private DelayedPrinter printer;
     private double headingTolerance;
 
     public SpinController(double headingTolerance) {
         this.headingTolerance = headingTolerance;
         this.headingPID = new PID(0.5, 0, 0);
-        this.printer = new DelayedPrinter(100);
     }
 
     public void reachHeading(double targetHeading) {
@@ -58,5 +55,10 @@ public class SpinController {
 
     public void resetPIDs() {
         this.headingPID.reset();
+    }
+
+    public String getInfoString() {
+        return "SpinController : "
+             + "\n\tSpin PID : " + this.headingPID.getOutput();
     }
 }

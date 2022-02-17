@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import frc.robot.util.Path;
 import frc.robot.util.Point;
+import frc.robot.util.Util;
 
 /**
  * Controls the robot so that it follows a path (closed or with endpoints).
@@ -15,7 +16,10 @@ public class FollowPathController {
     private SpinController spinController;
     private FollowPointController pointController;
     private Point trackingPoint;
-    private boolean terminateAfterNext, completed;
+    private boolean terminateAfterNext;
+
+    private enum ControllerState { NONE, SPINNING, MOVING, FINISHED };
+    private ControllerState state;
 
     public FollowPathController(Path path, double proceedAngle, double proceedDistance, boolean closed) {
         this.pathIterator = closed ? path.closedIterator() : path.openIterator();
@@ -25,20 +29,26 @@ public class FollowPathController {
         this.trackingPoint = this.pathIterator.next();
 
         this.terminateAfterNext = false;
-        this.completed = false;
+        this.state = ControllerState.NONE;
     }
 
     public void move() {
-        if (!this.spinController.facingPoint(trackingPoint)) 
+        if (!this.spinController.facingPoint(trackingPoint)) {
             this.spinController.facePoint(trackingPoint);
+            this.state = ControllerState.SPINNING;
+        }
         
-        else if (!this.pointController.hasArrived(trackingPoint)) 
+        else if (!this.pointController.hasArrived(trackingPoint)) {
             this.pointController.move(trackingPoint);
+            this.state = ControllerState.MOVING;
+        }
 
-        else if (!terminateAfterNext && this.pathIterator.hasNext()) 
+        else if (!terminateAfterNext && this.pathIterator.hasNext()) {
             this.trackingPoint = this.pathIterator.next();
+            this.state = ControllerState.NONE;
+        }
         
-        else completed = true;
+        else this.state = ControllerState.FINISHED;
     }
 
     public void terminateAfterNext() {
@@ -50,6 +60,14 @@ public class FollowPathController {
     }
 
     public boolean arrived() {
-        return completed;
+        return this.state == ControllerState.FINISHED;
+    }
+
+    public String getInfoString() {
+        return "FollowPathController : "
+             + "\n\tTarget Point : " + this.currentPoint()
+             + "\n\tController State : " + this.state
+             + "\n" + Util.indent(this.spinController.getInfoString())
+             + "\n" + Util.indent(this.pointController.getInfoString());
     }
 }

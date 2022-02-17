@@ -5,16 +5,17 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.controllers.FollowPointController;
 import frc.robot.util.DelayedPrinter;
+import frc.robot.util.Util;
 
-public class MoveToPointTestCommand extends CommandBase{
+public class FollowPointTestCommand extends CommandBase{
     private FollowPointController controller;
     private DelayedPrinter printer;
 
     private static final double DISTANCE_TOLERANCE = 0.05;
 
-    public MoveToPointTestCommand() {
+    public FollowPointTestCommand() {
         super();
-        this.printer = new DelayedPrinter(1000);
+        this.printer = new DelayedPrinter(500);
     }
 
     @Override
@@ -25,7 +26,8 @@ public class MoveToPointTestCommand extends CommandBase{
     @Override
     public void execute() {
         this.controller.move(Constants.POINT_TEST);
-        this.printer.print("RUNNING COMMAND!!!!!!!!!!");
+        printer.print("FollowPointTestCommand : "
+                    + "\n" + Util.indent(this.controller.getInfoString()));
     }
 
     @Override

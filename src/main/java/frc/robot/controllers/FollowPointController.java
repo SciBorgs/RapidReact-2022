@@ -1,7 +1,6 @@
 package frc.robot.controllers;
 
 import frc.robot.Robot;
-import frc.robot.util.DelayedPrinter;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
@@ -14,13 +13,11 @@ import frc.robot.util.Util;
 public class FollowPointController {
     private PID headingPID, distancePID;
     private final double distanceTolerance;
-    private DelayedPrinter printer;
 
     public FollowPointController(double distanceTolerance) {
         this.headingPID = new PID(0.02, 0, 0);
         this.distancePID = new PID(0.09, 0.02, 0.01);
         this.distanceTolerance = distanceTolerance;
-        this.printer = new DelayedPrinter(100);
     }
 
     public void move(Point targetPoint) {
@@ -49,11 +46,6 @@ public class FollowPointController {
         forwardOutput = Util.normalize(forwardOutput);
         angleOutput = Util.normalize(angleOutput);
 
-        // printer.print("\nDistance  : " + signedDistance
-        //             + "\nHeading   : " + headingVector
-        //             + "\nDist PID  : " + forwardOutput
-        //             + "\nAngle PID : " + angleOutput);
-
         Robot.driveSubsystem.setSpeedForwardAngle(forwardOutput, angleOutput);
     }
 
@@ -64,5 +56,11 @@ public class FollowPointController {
     public void resetPIDs() {
         this.headingPID.reset();
         this.distancePID.reset();
+    }
+
+    public String getInfoString() {
+        return "FollowPointController : "
+             + "\n\tDist  PID : " + this.distancePID.getOutput()
+             + "\n\tAngle PID : " + this.headingPID.getOutput();
     }
 }

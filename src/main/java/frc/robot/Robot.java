@@ -4,32 +4,21 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.*;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.test.MoveToPointTestCommand;
-import frc.robot.commands.test.PatrolTestCommand;
-import frc.robot.commands.test.SpinTestCommand;
+
+import frc.robot.commands.test.*;
+import frc.robot.commands.auto.*;
 import frc.robot.commands.DriveCommand;
-// import frc.robot.commands.FollowBallCommand;
-// import frc.robot.commands.IntakeBallCommand;
-// import frc.robot.commands.StartHopperCommand;
-import frc.robot.commands.shooter.ShootCommand;
-// import frc.robot.commands.turret.AimTurretCommand;
-import frc.robot.commands.auto.MoveToPointAlphaCommand;
-import frc.robot.commands.auto.MoveToPointBetaCommand;
-import frc.robot.commands.auto.MoveToPointGammaCommand;
+
 import frc.robot.subsystems.DriveSubsystem;
-// import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
-import frc.robot.util.DelayedPrinter;
 // import frc.robot.subsystems.ShooterSubsystem;
 // import frc.robot.subsystems.TurretSubsystem;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+
+import frc.robot.util.DelayedPrinter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -40,19 +29,17 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
-  // public static LimeLightSubsystem      limelightSubsystem      = new LimeLightSubsystem();
   // public static TurretSubsystem         turretSubsystem         = new TurretSubsystem();
   // public static ShooterSubsystem        shooterSubsystem        = new ShooterSubsystem();
-  public static DriveSubsystem          driveSubsystem = new DriveSubsystem();
+  public static DriveSubsystem          driveSubsystem          = new DriveSubsystem();
   public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
+  // public static PneumaticsSubsystem     pneumaticsSubsystem     = new PneumaticsSubsystem();
+  // public static IntakeSubsystem         intakeSubsytem          = new IntakeSubsystem();
+  // public static HopperSubsystem         hopperSubsystem         = new HopperSubsystem();
 
   private RobotContainer m_robotContainer;
-  // public static IntakeSubsystem intake = new IntakeSubsystem();
-  // public static HopperSubsystem hopper = new HopperSubsystem();
-  // public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
 
   private DelayedPrinter printer;
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -64,7 +51,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     //table = NetworkTableInstance.getDefault().getTable("limelight");
-    this.printer = new DelayedPrinter(100);
+    this.printer = new DelayedPrinter(1000);
   }
 
   @Override
@@ -88,26 +75,22 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     System.out.println("This is autonomous init");
 
-    /*
     CommandScheduler.getInstance().schedule(
-      new SequentialCommandGroup(
-        new MoveToPointAlphaCommand(),
-        new ShootCommand(),
-        new MoveToPointBetaCommand(),
-        new FollowBallCommand(),
-        new IntakeBallCommand(),
-        new StartHopperCommand(),
-        new MoveToPointGammaCommand(),
-        new ShootCommand()
-      )
-    );
-    */
-
-     CommandScheduler.getInstance().schedule(
-      //  new MoveToPointBetaCommand()
+      // new MoveToPointBetaCommand()
       // new PatrolTestCommand()
       new SpinTestCommand()
-     );
+
+      // new SequentialCommandGroup(
+      //   new MoveToPointAlphaCommand(),
+      //   new ShootCommand(),
+      //   new MoveToPointBetaCommand(),
+      //   new FollowBallCommand(),
+      //   new IntakeBallCommand(),
+      //   new StartHopperCommand(),
+      //   new MoveToPointGammaCommand(),
+      //   new ShootCommand()
+      // )
+    );
   }
 
   /** This function is called periodically during autonomous. */
@@ -124,15 +107,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    Robot.localizationSubsystem.reset();
-    Robot.localizationSubsystem.update();
-    // new DriveCommand().execute();
+    new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    // System.out.println("This is disabled init");
+    System.out.println("This is disabled init");
+    Robot.driveSubsystem.setSpeed(0, 0);
   }
 
   /** This function is called periodically when disabled. */

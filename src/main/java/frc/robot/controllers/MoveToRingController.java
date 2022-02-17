@@ -1,7 +1,6 @@
 package frc.robot.controllers;
 
 import frc.robot.Robot;
-import frc.robot.util.DelayedPrinter;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
 import frc.robot.util.Ring;
@@ -14,7 +13,6 @@ import frc.robot.util.Util;
 public class MoveToRingController {
     private PID headingPID, distancePID;
     private Ring targetRing;
-    private DelayedPrinter printer;
 
     private static final double DISTANCE_TOLERANCE = 0.1;
 
@@ -22,7 +20,6 @@ public class MoveToRingController {
         this.targetRing = targetRing;
         this.headingPID = new PID(1.0 * convergenceFactor, 0, 0);
         this.distancePID = new PID(0.1 * convergenceFactor, 0, 0);
-        this.printer = new DelayedPrinter(100);
     }
 
     public void move() {
@@ -50,5 +47,11 @@ public class MoveToRingController {
     public void resetPIDs() {
         this.headingPID.reset();
         this.distancePID.reset();
+    }
+
+    public String getInfoString() {
+        return "MoveToRingController : "
+             + "\n\tDist  PID : " + this.distancePID.getOutput()
+             + "\n\tAngle PID : " + this.headingPID.getOutput();
     }
 }
