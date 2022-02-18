@@ -44,7 +44,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
     public void moveHood(double angle) {
-        moveVert(pid.getOutput(angle, thruBoreEncoder.getAngle()));
+        moveVert(-pid.getOutput(angle, thruBoreEncoder.getAngle()));
     }
 
 }
