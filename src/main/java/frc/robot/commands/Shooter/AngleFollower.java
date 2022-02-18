@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Shooter;
 
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
