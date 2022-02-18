@@ -49,6 +49,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
         pigeon = new SciPigeon(42);
+        pid = new PID(TX_P, 0, 0);
     }
 
     public void setSpeed(double left, double right) {
@@ -68,12 +69,10 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     // returns direction that the turret is spinning as an int, either 1 or -1
-    // 1 is clockwise
     public int getDirection() {
-        System.out.println("rate: " + encoder.getRate());
-        if (encoder.getRate() >= 0)
-            return 1;
-        return -1;
+        if (encoder.getRate() > 0)
+            return -1;
+        return 1;
     }
 
     // temporary

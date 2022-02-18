@@ -14,7 +14,7 @@ public class AimTurretCommand extends CommandBase {
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
-
+    
         if (tv == 1) {
             unknownCount = 0;
             Robot.turretSubsystem.pointTowardsTarget(tx);
