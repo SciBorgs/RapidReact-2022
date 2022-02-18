@@ -11,7 +11,7 @@ public class LimeLightSubsystem extends SubsystemBase {
         return NetworkTableInstance.getDefault().getTable("limelight");
     }
     
-    // returns the val`ue of an entry in the limelight network table
+    // returns the value of an entry in the limelight network table
     public double getTableData(NetworkTable table, String var) {
         return table.getEntry(var).getDouble(0.0);
     }
