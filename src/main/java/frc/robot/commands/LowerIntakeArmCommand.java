@@ -11,7 +11,7 @@ public class LowerIntakeArmCommand extends CommandBase {
     @Override
     public void initialize() {
         //this.addRequirements(Robot.intake);
-        Robot.intake.extendArm();
+        //Robot.intake.extendArm();
     }
 
     @Override

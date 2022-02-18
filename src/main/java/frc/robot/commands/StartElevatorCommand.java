@@ -12,7 +12,7 @@ public class StartElevatorCommand extends CommandBase {
     @Override
     public void initialize() {
         this.addRequirements(Robot.hopper);
-        Robot.hopper.setElevatorSpeed();
+        //Robot.hopper.setElevatorSpeed();
     }
 
     @Override
@@ -22,7 +22,7 @@ public class StartElevatorCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        Robot.hopper.stopElevator();
+        //Robot.hopper.stopElevator();
     }
 
     @Override

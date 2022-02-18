@@ -8,7 +8,7 @@ public class OI {
         public Button intakeBalls, lowerIntakeArms, StartHopper, togglePneumatics;
 
         public OI() {
-                this.intakeBalls = new Button();
+               /*this.intakeBalls = new Button();
                 this.intakeBalls.whenPressed(new IntakeBallsCommand());
 
                 this.lowerIntakeArms = new Button();
@@ -18,7 +18,7 @@ public class OI {
                 this.StartHopper.whenPressed(new StartHopperCommand());
 
                 this.togglePneumatics = new Button();
-                this.togglePneumatics.toggleWhenPressed(new TogglePneumaticsCommand());
+                this.togglePneumatics.toggleWhenPressed(new TogglePneumaticsCommand()); */
 
         }
 }

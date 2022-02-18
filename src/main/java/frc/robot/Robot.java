@@ -23,9 +23,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  public static IntakeSubsystem intake = new IntakeSubsystem();
+  //public static IntakeSubsystem intake = new IntakeSubsystem();
   public static HopperSubsystem hopper = new HopperSubsystem();
-  public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
+  //public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,8 +37,9 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     //probaby works
-    CameraServer.addServer("limelight");
-    CameraServer.startAutomaticCapture("Limelight Camera",0);
+    // CameraServer.addServer("limelight");
+    // CameraServer.startAutomaticCapture("Limelight Camera",0);
+    
   }
 
   /**
@@ -54,11 +55,11 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    SmartDashboard.putBoolean("Pneumatics status", pneumatics.getStatus());
-    SmartDashboard.putNumber("Elevator sped", hopper.getElevatorSpeed());
+    // SmartDashboard.putBoolean("Pneumatics status", pneumatics.getStatus());
+    // SmartDashboard.putNumber("Elevator sped", hopper.getElevatorSpeed());
     SmartDashboard.putNumber("Hopper suck sped", hopper.getSuckSpeed());
-    SmartDashboard.putBoolean("Intake status", intake.getSwitchStatus());
-    SmartDashboard.putNumber("Intake speed", intake.getIntakeSpeed());
+    // SmartDashboard.putBoolean("Intake status", intake.getSwitchStatus());
+    // SmartDashboard.putNumber("Intake speed", intake.getIntakeSpeed());
 
     
     CommandScheduler.getInstance().run();
@@ -76,18 +77,19 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-    CommandScheduler.getInstance().schedule(new LowerIntakeArmCommand(), new IntakeBallsCommand().withTimeout(15.0));
-  }   
+  //   if (m_autonomousCommand != null) {
+  //     m_autonomousCommand.schedule();
+  //   }
+  //   CommandScheduler.getInstance().schedule(new LowerIntakeArmCommand(), new IntakeBallsCommand().withTimeout(15.0));
+  CommandScheduler.getInstance().schedule(new StartHopperCommand().withTimeout(5));
+   }   
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    if (intake.limitSwitch.get()) { 
-      CommandScheduler.getInstance().schedule(false, new StartElevatorCommand().withTimeout(3.0));
-    }
+    // if (intake.limitSwitch.get()) { 
+    //   CommandScheduler.getInstance().schedule(false, new StartElevatorCommand().withTimeout(3.0));
+    // }
 
   }
 
@@ -97,9 +99,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    // if (m_autonomousCommand != null) {
+    //   m_autonomousCommand.cancel();
+    // }
   }
 
   /** This function is called periodically during operator control. */
@@ -109,7 +111,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */

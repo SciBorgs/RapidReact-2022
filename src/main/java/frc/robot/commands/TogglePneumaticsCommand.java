@@ -11,8 +11,8 @@ public class TogglePneumaticsCommand extends CommandBase {
     
     @Override
     public void initialize() {
-        this.addRequirements(Robot.pneumatics);
-        Robot.pneumatics.start();
+        //this.addRequirements(Robot.pneumatics);
+        //Robot.pneumatics.start();
     }
 
     @Override
@@ -22,7 +22,7 @@ public class TogglePneumaticsCommand extends CommandBase {
     
     @Override
     public void end(boolean interruted) { 
-        Robot.pneumatics.stop();
+        //Robot.pneumatics.stop();
     }
 
     @Override
