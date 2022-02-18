@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
+import frc.robot.util.PID;
 import frc.robot.Constants;
 
 public class TurretSubsystem extends SubsystemBase {
@@ -15,6 +16,14 @@ public class TurretSubsystem extends SubsystemBase {
     private SciEncoder encoder;
     public final int LIMIT = 360;
     private SciPigeon pigeon;
+
+    public static final double TX_P = 6.0 / 360;
+    private PID pid;
+
+    private static double avr;
+    private static final double TX_WEIGHT = 0.1;
+
+    public static final double DEFAULT_ANGLE = 10;
 
     public TurretSubsystem() {
         this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
@@ -70,6 +79,25 @@ public class TurretSubsystem extends SubsystemBase {
     // temporary
     public void resetPigeon() {
         pigeon.setAngle(0);
+    }
+
+    public void pointTowardsTarget(double angle) {
+        avr = TX_WEIGHT * -angle + (1 - TX_WEIGHT) * avr;
+        double targetAngle = getAngle() + avr;
+        targetAngle %= LIMIT;
+        double turn = pid.getOutput(targetAngle, getAngle());
+        if (turn > 0.5) {
+            turn = 0.5;
+            System.out.println("turn > 0.5");
+        } else if (turn < -0.5) {
+            turn = -0.5;
+            System.out.println("turn < -0.5");
+        }
+        turn(turn);
+    }
+
+    public void pointTowardsTarget() {
+        pointTowardsTarget(getDirection() * DEFAULT_ANGLE);
     }
 }
 
