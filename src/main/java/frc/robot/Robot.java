@@ -77,8 +77,8 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().schedule(
       // new MoveToPointBetaCommand()
-      // new PatrolTestCommand()
-      new SpinTestCommand()
+      new PatrolTestCommand()
+      // new SpinTestCommand()
 
       // new SequentialCommandGroup(
       //   new MoveToPointAlphaCommand(),
@@ -132,6 +132,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+    Robot.localizationSubsystem.reset();
     // System.out.println("This is test periodic");
   }
 }

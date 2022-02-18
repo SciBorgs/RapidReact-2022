@@ -45,4 +45,12 @@ public final class Constants {
 
     public static final Path PATH_PATROL 
         = new Path(POINT_PATROL_UNO, POINT_PATROL_DOS);
+
+    // public static final Path PATH_PATROL = new Path(
+    //     new Point(5, 0),
+    //     new Point(0, 0),
+    //     new Point(2, 0),
+    //     new Point(1, 0),
+    //     new Point(4, 0)
+    // );
 }

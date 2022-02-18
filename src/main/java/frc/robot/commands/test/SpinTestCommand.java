@@ -11,7 +11,7 @@ public class SpinTestCommand extends CommandBase {
     private SpinController spinController;
     private DelayedPrinter printer;
 
-    private static final double HEADING_TOLERANCE = Math.PI / 8;
+    private static final double HEADING_TOLERANCE = Math.PI / 6;
 
     @Override
     public void initialize() {
@@ -21,7 +21,7 @@ public class SpinTestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        this.spinController.facePoint(Constants.POINT_HUB);
+        this.spinController.faceAwayFromPoint(Constants.POINT_HUB);
         // this.spinController.faceAwayFromPoint(Constants.POINT_HUB);
         printer.print("SpinTestCommand : "
                     + "\n" + Util.indent(this.spinController.getInfoString()));
@@ -29,7 +29,7 @@ public class SpinTestCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return this.spinController.facingPoint(Constants.POINT_HUB);
+        return this.spinController.facingAwayFromPoint(Constants.POINT_HUB);
     }
 
     @Override

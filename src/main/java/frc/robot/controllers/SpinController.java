@@ -15,14 +15,14 @@ public class SpinController {
 
     public SpinController(double headingTolerance) {
         this.headingTolerance = headingTolerance;
-        this.headingPID = new PID(0.5, 0, 0);
+        this.headingPID = new PID(0.55, 0, 0);
     }
 
     public void reachHeading(double targetHeading) {
         double currHeading = Robot.localizationSubsystem.getHeading();
         double diffHeading = Util.travelledAngle(currHeading, targetHeading);
 
-        double angleOutput = this.headingPID.getOutput(diffHeading, 0); //values negated for testing
+        double angleOutput = this.headingPID.getOutput(-diffHeading); //values negated for testing
 
         angleOutput = Util.normalize(angleOutput);
 
