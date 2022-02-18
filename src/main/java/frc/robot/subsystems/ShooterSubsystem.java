@@ -32,6 +32,11 @@ public class ShooterSubsystem extends SubsystemBase {
     public double getDistance(double angle) {
         return HEIGHTDIFF/Math.tan(Math.toRadians(+CAM_MOUNT_ANGLE));
     }
+
+    public double getHoodAngle() {
+        return thruBoreEncoder.getAngle();
+    }
+
     /*
     public void shoot(double speed) {
         rmotor.set(speed);
