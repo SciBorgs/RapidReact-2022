@@ -11,26 +11,26 @@ public class DriveSubsystem extends SubsystemBase {
     public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
 
     public DriveSubsystem() {
-        this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
+      //  this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
         // this.lMiddle = new CANSparkMax(PortMap.LEFT_MIDDLE_SPARK, MotorType.kBrushless);
-        this.lBack = new CANSparkMax(PortMap.LEFT_BACK_SPARK, MotorType.kBrushless);
+      //  this.lBack = new CANSparkMax(PortMap.LEFT_BACK_SPARK, MotorType.kBrushless);
 
-        this.rFront = new CANSparkMax(PortMap.RIGHT_FRONT_SPARK, MotorType.kBrushless);
+    //    this.rFront = new CANSparkMax(PortMap.RIGHT_FRONT_SPARK, MotorType.kBrushless);
         // this.rMiddle = new CANSparkMax(PortMap.RIGHT_MIDDLE_SPARK, MotorType.kBrushless);
-        this.rBack = new CANSparkMax(PortMap.RIGHT_BACK_SPARK, MotorType.kBrushless);
+        //this.rBack = new CANSparkMax(PortMap.RIGHT_BACK_SPARK, MotorType.kBrushless);
 
         // lMiddle.follow(lFront);
-        lBack.follow(lFront);
+    //    lBack.follow(lFront);
         
         // rMiddle.follow(rFront);
-        rBack.follow(rFront);
+  //      rBack.follow(rFront);
 
-        lFront.setIdleMode(IdleMode.kCoast);
+  //      lFront.setIdleMode(IdleMode.kCoast);
         // lMiddle.setIdleMode(IdleMode.kCoast);
-        lBack.setIdleMode(IdleMode.kCoast);
-        rFront.setIdleMode(IdleMode.kCoast);
+    //    lBack.setIdleMode(IdleMode.kCoast);
+  //      rFront.setIdleMode(IdleMode.kCoast);
         // rMiddle.setIdleMode(IdleMode.kCoast);
-        rBack.setIdleMode(IdleMode.kCoast);
+    //    rBack.setIdleMode(IdleMode.kCoast);
     }
 
     public void setSpeed(double left, double right) {

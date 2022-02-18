@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
-import frc.robot.util.SciMath;
+import frc.robot.util.PID;
 import frc.robot.Constants;
 
 public class TurretSubsystem extends SubsystemBase {
@@ -18,29 +18,29 @@ public class TurretSubsystem extends SubsystemBase {
     private SciPigeon pigeon;
 
     public TurretSubsystem() {
-        this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
+       // this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
         // this.lMiddle = new CANSparkMax(PortMap.LEFT_MIDDLE_SPARK, MotorType.kBrushless);
-        this.lBack = new CANSparkMax(PortMap.LEFT_BACK_SPARK, MotorType.kBrushless);
+      //  this.lBack = new CANSparkMax(PortMap.LEFT_BACK_SPARK, MotorType.kBrushless);
 
-        this.rFront = new CANSparkMax(PortMap.RIGHT_FRONT_SPARK, MotorType.kBrushless);
+       // this.rFront = new CANSparkMax(PortMap.RIGHT_FRONT_SPARK, MotorType.kBrushless);
         // this.rMiddle = new CANSparkMax(PortMap.RIGHT_MIDDLE_SPARK, MotorType.kBrushless);
-        this.rBack = new CANSparkMax(PortMap.RIGHT_BACK_SPARK, MotorType.kBrushless);
+      //  this.rBack = new CANSparkMax(PortMap.RIGHT_BACK_SPARK, MotorType.kBrushless);
 
         // lMiddle.follow(lFront);
-        lBack.follow(lFront);
+      //  lBack.follow(lFront);
         
         // rMiddle.follow(rFront);
-        rBack.follow(rFront);
+      //  rBack.follow(rFront);
 
-        lFront.setIdleMode(IdleMode.kCoast);
+       // lFront.setIdleMode(IdleMode.kCoast);
         // lMiddle.setIdleMode(IdleMode.kCoast);
-        lBack.setIdleMode(IdleMode.kCoast);
-        rFront.setIdleMode(IdleMode.kCoast);
-        // rMiddle.setIdleMode(IdleMode.kCoast);
-        rBack.setIdleMode(IdleMode.kCoast);
+       // lBack.setIdleMode(IdleMode.kCoast);
+     //   rFront.setIdleMode(IdleMode.kCoast);
+       // // rMiddle.setIdleMode(IdleMode.kCoast);
+      //  rBack.setIdleMode(IdleMode.kCoast);
 
-        this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
-        pigeon = new SciPigeon(42);
+        //this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+       // pigeon = new SciPigeon(42);
     }
 
     public void setSpeed(double left, double right) {
