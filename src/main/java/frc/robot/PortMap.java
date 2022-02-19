@@ -31,7 +31,7 @@ public class PortMap {
   public static final int TURRET_SPARK = 0;
 
   //*******************MISC******************//
-  public static final int PIGEON_ID = 42;
+  public static final int PIGEON_ID = 9;
   public static final int LEFT_ENCODER = -1;
   public static final int RIGHT_ENCODER = -1;
 

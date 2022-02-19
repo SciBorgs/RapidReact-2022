@@ -21,17 +21,18 @@ public class DriveSubsystem extends SubsystemBase {
         this.rMiddle = new CANSparkMax(PortMap.RIGHT_MIDDLE_SPARK, MotorType.kBrushless);
         this.rBack   = new CANSparkMax(PortMap.RIGHT_BACK_SPARK,   MotorType.kBrushless);
 
-        // lMiddle.follow(lFront);
+        lMiddle.follow(lFront);
         lBack.follow(lFront);
 
-        // rMiddle.follow(rFront);
+        rMiddle.follow(rFront);
         rBack.follow(rFront);
 
         lFront.setIdleMode(IdleMode.kCoast);
-        // lMiddle.setIdleMode(IdleMode.kCoast);
+        lMiddle.setIdleMode(IdleMode.kCoast);
         lBack.setIdleMode(IdleMode.kCoast);
+
         rFront.setIdleMode(IdleMode.kCoast);
-        // rMiddle.setIdleMode(IdleMode.kCoast);
+        rMiddle.setIdleMode(IdleMode.kCoast);
         rBack.setIdleMode(IdleMode.kCoast);
     }
 
@@ -52,16 +53,10 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void moveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {
-        double leftValue = leftJoystick.getY();
-        double rightValue = -rightJoystick.getY();
+        double leftValue = -leftJoystick.getY();
+        double rightValue = rightJoystick.getY();
 
         double thresholdToMove = 0.05;
-        boolean invertForChassisBot = false;
-
-        if (invertForChassisBot) {
-            leftValue *= -1.0;
-            rightValue *= -1.0;
-        }
 
         lFront.set(Math.abs(leftValue) > thresholdToMove ? leftValue : 0);
         rFront.set(Math.abs(rightValue) > thresholdToMove ? rightValue : 0);

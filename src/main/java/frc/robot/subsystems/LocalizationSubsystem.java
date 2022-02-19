@@ -30,7 +30,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         );
 
         this.totalEncoder.setDistance(0);
-        this.totalEncoder.setInverted(true, true, false, false);
+        this.totalEncoder.setInverted(false, false, false, true, true, true);
 
         this.prevDistance = this.totalEncoder.getDistance();
 
