@@ -10,7 +10,7 @@ public class Following {
     public static final double K_TA = 1.;
     
     public static final double TX_P = 0.035;
-    public static final double TA_P = 0.4;
+    public static final double TA_P = 0.8;
     public static final double TA_WEIGHT = 1./10.;
     public static PID txPID, taPID;
     public static double taAvr;
@@ -30,14 +30,14 @@ public class Following {
             ta = Robot.photonVisionSubsystem.getTarget().getArea();
             tx = Robot.photonVisionSubsystem.getTarget().getYaw();  
             taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
-            double forward = -taPID.getOutput(Math.exp(-taAvr), 0);
+            double forward = -taPID.getOutput(Math.exp(-0.7 * taAvr), 0);
 
-            System.out.println("Forward: " + Math.abs(forward) * 100);
+            System.out.println("Forward: " + forward * 100);
             System.out.println("tx: " + tx);
             System.out.println("taAvg: " + taAvr);
-            //Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
+            Robot.driveSubsystem.setSpeedForwardAngle(forward, txPID.getOutput(tx, 0));
         } else {
-            //Robot.driveSubsystem.setSpeed(0, 0);
+            Robot.driveSubsystem.setSpeed(0, 0);
         }
 
     }
