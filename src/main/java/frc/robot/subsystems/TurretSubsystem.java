@@ -47,8 +47,8 @@ public class TurretSubsystem extends SubsystemBase {
        // // rMiddle.setIdleMode(IdleMode.kCoast);
       //  rBack.setIdleMode(IdleMode.kCoast);
 
-        this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
-        pigeon = new SciPigeon(42);
+        //this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+       // pigeon = new SciPigeon(42);
         pid = new PID(TX_P, 0, 0);
     }
 

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Shooter.AngleFollower;
+import frc.robot.commands.Shooter.ManualHoodCommand;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
@@ -63,13 +64,18 @@ public class Robot extends TimedRobot {
     // turretSubsystem.resetPigeon();
     // CommandScheduler.getInstance().schedule(new AimTurretCommand());
     
+    // shooterSubsystem.hood_Encoder.setPosition(0);
+    
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
     angle.execute();
+    //System.out.println(shooterSubsystem.hood_Encoder.isConnected());
+    //\shooterSubsystem.hood.set(-0.2);
   }
+  
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -80,6 +86,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    new ManualHoodCommand().execute();
+    System.out.println("Angle: " + shooterSubsystem.getHoodAngle());
     // new DriveCommand().execute();
   }
 

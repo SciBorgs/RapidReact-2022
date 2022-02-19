@@ -10,7 +10,9 @@ import frc.robot.Robot;
 public class AngleFollower extends CommandBase {
     @Override
     public void execute(){
-        Robot.shooterSubsystem.moveHood(21.5);
+        Robot.shooterSubsystem.moveHood(5);
+        double angle = Robot.shooterSubsystem.getHoodAngle();
+        System.out.println("Angle: " + angle);
     }
     @Override
     public boolean isFinished(){

@@ -24,5 +24,5 @@ public class PortMap {
   //public static final int TOP_LIMIT_SWITCH = 3;
 
   //******************ENCODERS******************//
-   public static final int THRUBORE_ENCODER = 1;
+   public static final int THRUBORE_ENCODER = 9;
 }
