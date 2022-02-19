@@ -21,11 +21,11 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.totalEncoder = new SciEncoder(
             Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
             Robot.driveSubsystem.lFront.getEncoder(),
-            // Robot.driveSubsystem.lMiddle.getEncoder(),
+            Robot.driveSubsystem.lMiddle.getEncoder(),
             Robot.driveSubsystem.lBack.getEncoder(),
 
             Robot.driveSubsystem.rFront.getEncoder(),
-            // Robot.driveSubsystem.rMiddle.getEncoder(),
+            Robot.driveSubsystem.rMiddle.getEncoder(),
             Robot.driveSubsystem.rBack.getEncoder()
         );
 
