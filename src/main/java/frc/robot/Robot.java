@@ -7,11 +7,21 @@ package frc.robot;
 import frc.robot.subsystems.*;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.VideoSource;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+//for list
+import java.util.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,19 +37,25 @@ public class Robot extends TimedRobot {
   public static HopperSubsystem hopper = new HopperSubsystem();
   //public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
 
+  private ShuffleboardTab mainTab;
+  private NetworkTableEntry hopperGetSuck;
+  private NetworkTableEntry hopperSetSuck;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
     //probaby works
     // CameraServer.addServer("limelight");
     // CameraServer.startAutomaticCapture("Limelight Camera",0);
-    
+    this.mainTab = Shuffleboard.getTab("Hopper");
+    this.hopperGetSuck = this.mainTab.add("Hopper Get Suck", 0).getEntry();
+    //this.mainTabSmartDashboard.putNumber("Hopper suck speed", hopper.getSuckSpeed());
+    this.hopperSetSuck = this.mainTab.add("Hopper Set Absolute Suck", 0).getEntry();
+    //SmartDashboard.putNumber("Hopper suck sped", hopper.getSuckSpeed());
+
   }
 
   /**
@@ -57,11 +73,13 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     // SmartDashboard.putBoolean("Pneumatics status", pneumatics.getStatus());
     // SmartDashboard.putNumber("Elevator sped", hopper.getElevatorSpeed());
-    SmartDashboard.putNumber("Hopper suck sped", hopper.getSuckSpeed());
+    // SmartDashboard.putNumber("Hopper suck sped", hopper.getSuckSpeed());
+    //So to get data we just do:
+    
     // SmartDashboard.putBoolean("Intake status", intake.getSwitchStatus());
     // SmartDashboard.putNumber("Intake speed", intake.getIntakeSpeed());
 
-    
+    hopperGetSuck.setDouble(hopper.getSuckSpeed());
     CommandScheduler.getInstance().run();
   }
 
@@ -75,18 +93,27 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-
     // schedule the autonomous command (example)
   //   if (m_autonomousCommand != null) {
   //     m_autonomousCommand.schedule();
   //   }
   //   CommandScheduler.getInstance().schedule(new LowerIntakeArmCommand(), new IntakeBallsCommand().withTimeout(15.0));
-  CommandScheduler.getInstance().schedule(new StartHopperCommand().withTimeout(5));
+    new StartHopperCommand().execute();
    }   
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    // System.out.println("Test");
+    // System.out.println(hopperSetSuck.getDouble(0.01));
+    // hopper.setSuckSpeed(hopperSetSuck.getDouble(0.01));
+    // double speed = Math.abs(hopperSetSuck.getDouble(0.0));
+    // double shuffleboardSetSpeed = goForward ? speed : -speed;
+
+    double shuffleboardSetSpeed = hopperSetSuck.getDouble(0.0);
+    //System.out.println("Suffleboard Set Speed: " + shuffleboardSetSpeed);
+    hopper.setSuckSpeed(shuffleboardSetSpeed);
+
     // if (intake.limitSwitch.get()) { 
     //   CommandScheduler.getInstance().schedule(false, new StartElevatorCommand().withTimeout(3.0));
     // }

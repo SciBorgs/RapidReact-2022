@@ -13,12 +13,11 @@ public class StartHopperCommand extends CommandBase {
     public void initialize() {
         this.addRequirements(Robot.hopper);
         //Robot.hopper.setElevatorSpeed();
-        Robot.hopper.setSuckSpeed();
     }
 
     @Override
     public void execute() {
-
+        Robot.hopper.setSuckSpeed();
     }
 
     @Override
