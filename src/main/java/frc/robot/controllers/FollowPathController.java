@@ -33,10 +33,8 @@ public class FollowPathController {
     }
 
     public void move() {
-        // Note: It should be facingPoint and facePoint, but for some reason its 
-        // inverted. lol. otherwise it kind of works
-        if (!this.spinController.facingAwayFromPoint(trackingPoint)) {
-            this.spinController.faceAwayFromPoint(trackingPoint);
+        if (!this.spinController.facingPoint(trackingPoint)) {
+            this.spinController.facePoint(trackingPoint);
             this.state = ControllerState.SPINNING;
         }
         

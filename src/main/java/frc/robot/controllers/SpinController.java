@@ -29,11 +29,11 @@ public class SpinController {
         Robot.driveSubsystem.spinRobot(angleOutput);
     }
 
-    public void facePoint(Point p) {
+    public void faceAwayFromPoint(Point p) {
         reachHeading(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
     }
 
-    public void faceAwayFromPoint(Point p) {
+    public void facePoint(Point p) {
         reachHeading(Util.angleToPoint(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
     }
 
@@ -41,11 +41,11 @@ public class SpinController {
         return Math.abs(Util.travelledAngle(Robot.localizationSubsystem.getHeading(), heading)) < headingTolerance;
     }
 
-    public boolean facingPoint(Point p) {
+    public boolean facingAwayFromPoint(Point p) {
         return facing(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
     }
 
-    public boolean facingAwayFromPoint(Point p) {
+    public boolean facingPoint(Point p) {
         return facing(Util.angleToPoint(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
     }
 
