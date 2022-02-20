@@ -8,7 +8,9 @@ public class SciEncoder {
     private RelativeEncoder[] encoders;
     private boolean[] inverted;
 
-    private static final double ROYS_CONSTANT = 113.08662 * 4.696466 * 1.377619 * 0.5; //conversion between whatever unit it gives and meters
+    //conversion between whatever unit it gives and meters
+    // gotta love hardcoding!
+    private static final double ROYS_CONSTANT = 113.08662 * 4.696466 * 1.377619 * 0.5;
 
     // allows us to pass in several encoders to be averaged (i.e. w/ drivetrain encoders)
     public SciEncoder(double gearRatio, double wheelCircumference, RelativeEncoder... encoders) {

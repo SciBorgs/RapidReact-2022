@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -15,8 +14,6 @@ import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
-// import frc.robot.subsystems.ShooterSubsystem;
-// import frc.robot.subsystems.TurretSubsystem;
 
 import frc.robot.util.DelayedPrinter;
 
@@ -29,13 +26,8 @@ import frc.robot.util.DelayedPrinter;
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
-  // public static TurretSubsystem         turretSubsystem         = new TurretSubsystem();
-  // public static ShooterSubsystem        shooterSubsystem        = new ShooterSubsystem();
   public static DriveSubsystem          driveSubsystem          = new DriveSubsystem();
   public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
-  // public static PneumaticsSubsystem     pneumaticsSubsystem     = new PneumaticsSubsystem();
-  // public static IntakeSubsystem         intakeSubsytem          = new IntakeSubsystem();
-  // public static HopperSubsystem         hopperSubsystem         = new HopperSubsystem();
 
   private RobotContainer m_robotContainer;
 
@@ -50,7 +42,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    //table = NetworkTableInstance.getDefault().getTable("limelight");
     this.printer = new DelayedPrinter(1000);
   }
 
@@ -61,12 +52,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
-    //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
-    //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
-    //double data = table.getEntry("tx").getDouble(1.0);
-    //System.out.println(data);
-
     localizationSubsystem.update();
     printer.print(localizationSubsystem.getInfoString());
   }
@@ -75,21 +60,18 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     System.out.println("This is autonomous init");
 
+    // TODO: Merge shooter, intake, hopper, ball follow into auto
     CommandScheduler.getInstance().schedule(
-      // new MoveToPointBetaCommand()
-      new PatrolTestCommand()
-      // new SpinTestCommand()
-
-      // new SequentialCommandGroup(
-      //   new MoveToPointAlphaCommand(),
-      //   new ShootCommand(),
-      //   new MoveToPointBetaCommand(),
-      //   new FollowBallCommand(),
-      //   new IntakeBallCommand(),
-      //   new StartHopperCommand(),
-      //   new MoveToPointGammaCommand(),
-      //   new ShootCommand()
-      // )
+      new SequentialCommandGroup(
+        new MoveToPointAlphaCommand(),
+        // new ShootCommand(),
+        new MoveToPointBetaCommand(),
+        // new FollowBallCommand(),
+        // new IntakeBallCommand(),
+        // new StartHopperCommand(),
+        new MoveToPointGammaCommand()//,
+        // new ShootCommand()
+      )
     );
   }
 

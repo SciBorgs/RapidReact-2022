@@ -22,7 +22,6 @@ public class SpinTestCommand extends CommandBase {
     @Override
     public void execute() {
         this.spinController.faceAwayFromPoint(Constants.POINT_HUB);
-        // this.spinController.faceAwayFromPoint(Constants.POINT_HUB);
         printer.print("SpinTestCommand : "
                     + "\n" + Util.indent(this.spinController.getInfoString()));
     }
