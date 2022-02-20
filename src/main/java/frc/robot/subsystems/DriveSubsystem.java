@@ -37,8 +37,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double left, double right) {
-        lFront.set(Util.normalize(left, 0.4) * 0.8);
-        rFront.set(-Util.normalize(right, 0.4) * 0.8);
+        lFront.set(Util.normalize(left, 0.7) * 0.8);
+        rFront.set(-Util.normalize(right, 0.7) * 0.8);
     }
 
     public void setSpeedForwardAngle(double forward, double angle) {

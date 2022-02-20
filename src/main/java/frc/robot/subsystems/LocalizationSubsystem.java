@@ -57,7 +57,7 @@ public class LocalizationSubsystem extends SubsystemBase {
 
         this.pos = new Point(
             this.pos.x + diffDistance * Math.cos(avgHeading),
-            this.pos.y + diffDistance * Math.sin(avgHeading));
+            this.pos.y + diffDistance * Math.sin(-avgHeading));
         
         this.prevDistance = currDistance;
     }

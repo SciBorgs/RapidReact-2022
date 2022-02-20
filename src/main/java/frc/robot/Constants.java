@@ -23,7 +23,7 @@ public final class Constants {
 
     //**************** INITIAL ROBOT STATE ****************//
     public static final Point  STARTING_POINT = new Point(0, 0);
-    public static final double STARTING_HEADING = 0;
+    public static final double STARTING_HEADING = Math.PI / 2;
     
     //***************** GEAR RATIOS ***********************//
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
@@ -39,9 +39,13 @@ public final class Constants {
     public static final Ring RING_BETA  = new Ring(POINT_BETA, 3.0);
     public static final Ring RING_GAMMA = new Ring(POINT_HUB,  3.3);
 
+    // public static final Point POINT_PATROL_UNO  = new Point(2, 0.5);
+    // public static final Point POINT_PATROL_DOS  = new Point(-2, 0.5);
+    // public static final Point POINT_PATROL_TRES = new Point(-2, -0.5);
+    // public static final Point POINT_PATROL_QUAT = new Point(2, -0.5);
+
     public static final Point POINT_PATROL_UNO  = new Point(2, 0);
     public static final Point POINT_PATROL_DOS  = new Point(-2, 0);
-    public static final Point POINT_PATROL_TRES = new Point(0, -3.74);
 
     public static final Path PATH_PATROL 
         = new Path(POINT_PATROL_UNO, POINT_PATROL_DOS);

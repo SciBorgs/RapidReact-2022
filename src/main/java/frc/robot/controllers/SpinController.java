@@ -22,7 +22,7 @@ public class SpinController {
         double currHeading = Robot.localizationSubsystem.getHeading();
         double diffHeading = Util.travelledAngle(currHeading, targetHeading);
 
-        double angleOutput = this.headingPID.getOutput(-diffHeading); //values negated for testing
+        double angleOutput = this.headingPID.getOutput(diffHeading); //values negated for testing
 
         angleOutput = Util.normalize(angleOutput);
 

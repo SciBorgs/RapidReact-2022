@@ -11,9 +11,9 @@ public class PatrolTestCommand extends CommandBase {
     private DelayedPrinter printer;
     private long startingTime;
 
-    private static final double PROCEED_HEADING = Math.PI / 5;
-    private static final double PROCEED_DISTANCE = 0.2;
-    private static final double TIME_LIMIT = 15000;
+    private static final double PROCEED_HEADING = Math.PI / 10;
+    private static final double PROCEED_DISTANCE = 0.23;
+    private static final double TIME_LIMIT = 75000;
 
     @Override
     public void initialize() {
