@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.test.*;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.DriveCommand;
@@ -63,12 +63,14 @@ public class Robot extends TimedRobot {
     // TODO: Merge shooter, intake, hopper, ball follow into auto
     CommandScheduler.getInstance().schedule(
       new SequentialCommandGroup(
-        new MoveToPointAlphaCommand(),
+        new ParallelCommandGroup(
+          // new StartHopperCommand(),
+          new MoveToPointAlphaCommand()
+        ),
         // new ShootCommand(),
         new MoveToPointBetaCommand(),
         // new FollowBallCommand(),
         // new IntakeBallCommand(),
-        // new StartHopperCommand(),
         new MoveToPointGammaCommand()//,
         // new ShootCommand()
       )
