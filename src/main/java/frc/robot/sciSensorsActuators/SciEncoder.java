@@ -3,20 +3,17 @@ package frc.robot.sciSensorsActuators;
 import com.revrobotics.RelativeEncoder;
 
 public class SciEncoder {
-    private final double gearRatio; 
-    private final double wheelCircumference;
     private RelativeEncoder[] encoders;
     private boolean[] inverted;
 
-    //conversion between whatever unit it gives and meters
-    // gotta love hardcoding!
-    private static final double ROYS_CONSTANT = 113.08662 * 4.696466 * 1.377619 * 0.5;
+    // this number is suspiciously close to 360
+    // imagine if it really is 360...
+    private static final double ROYS_CONSTANT = 365.831868022;
+    private double factor;
 
     // allows us to pass in several encoders to be averaged (i.e. w/ drivetrain encoders)
     public SciEncoder(double gearRatio, double wheelCircumference, RelativeEncoder... encoders) {
-        this.encoders = encoders;
-        this.gearRatio = gearRatio;
-        this.wheelCircumference = wheelCircumference;
+        this.factor = gearRatio * wheelCircumference / ROYS_CONSTANT;
 
         this.inverted = new boolean[this.encoders.length];
 
@@ -24,31 +21,32 @@ public class SciEncoder {
             encoder.setPosition(0);
     }
 
-    public int get() {
+    // encoder units
+    private double getRawDistance() {
         double val = 0;
         for (int i = 0; i < this.encoders.length; i++) {
             RelativeEncoder encoder = this.encoders[i];
             val += encoder.getPosition() * (this.inverted[i] ? -1.0 : 1.0);
         }
-        return (int) (val * gearRatio / this.encoders.length);
+        return val / this.encoders.length;
     }
 
-    public double getRate() {
+    // encoder units
+    private double getRawSpeed() {
         double val = 0;
         for (int i = 0; i < this.encoders.length; i++) {
             RelativeEncoder encoder = this.encoders[i];
             val += encoder.getVelocity() * (this.inverted[i] ? -1.0 : 1.0);
         }
-        return val * gearRatio * wheelCircumference / this.encoders.length;
+        return val / this.encoders.length;
     }
 
     public double getDistance() {
-        double val = 0;
-        for (int i = 0; i < this.encoders.length; i++) {
-            RelativeEncoder encoder = this.encoders[i];
-            val += encoder.getPosition() * (this.inverted[i] ? -1.0 : 1.0);
-        }
-        return val * gearRatio * wheelCircumference / this.encoders.length / ROYS_CONSTANT;
+        return this.getRawDistance() * this.factor;
+    }
+
+    public double getSpeed() {
+        return this.getRawSpeed() * this.factor;
     }
 
     public int getNumEncoders() {
@@ -72,8 +70,8 @@ public class SciEncoder {
         for (int i = 0; i < this.encoders.length; i++) {
             sb.append("\nEncoder " + i + " : " 
                 + this.encoders[i].getPosition() 
-                  * gearRatio * wheelCircumference
                   * (this.inverted[i] ? -1.0 : 1.0)
+                  / ROYS_CONSTANT
             );
         }
         sb.append("\nTotal : " + this.getDistance());

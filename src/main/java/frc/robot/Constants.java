@@ -39,22 +39,9 @@ public final class Constants {
     public static final Ring RING_BETA  = new Ring(POINT_BETA, 3.0);
     public static final Ring RING_GAMMA = new Ring(POINT_HUB,  3.3);
 
-    // public static final Point POINT_PATROL_UNO  = new Point(2, 0.5);
-    // public static final Point POINT_PATROL_DOS  = new Point(-2, 0.5);
-    // public static final Point POINT_PATROL_TRES = new Point(-2, -0.5);
-    // public static final Point POINT_PATROL_QUAT = new Point(2, -0.5);
-
     public static final Point POINT_PATROL_UNO  = new Point(2, 0);
     public static final Point POINT_PATROL_DOS  = new Point(-2, 0);
 
     public static final Path PATH_PATROL 
         = new Path(POINT_PATROL_UNO, POINT_PATROL_DOS);
-
-    // public static final Path PATH_PATROL = new Path(
-    //     new Point(5, 0),
-    //     new Point(0, 0),
-    //     new Point(2, 0),
-    //     new Point(1, 0),
-    //     new Point(4, 0)
-    // );
 }

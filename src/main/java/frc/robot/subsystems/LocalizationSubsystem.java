@@ -39,7 +39,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     public Point  getPos()     { return this.pos; }
-    public double getVel()     { return this.totalEncoder.getRate(); }
+    public double getVel()     { return this.totalEncoder.getSpeed(); }
     public double getHeading() { return this.prevHeading; }
 
     // call in periodic
@@ -62,16 +62,6 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.prevDistance = currDistance;
     }
 
-    /**
-     * Resets the localization of this robot, returning readings to the robot's
-     * initial state defined in Constants.java.
-     * 
-     * <p>
-     * <b>Note: This method is jank and should only be used for testing.</b>
-     * 
-     * <p>
-     * Undeprecated as of Feb 15 2022
-     */
     public void reset() {
         this.pos = Constants.STARTING_POINT;
         this.pigeon.setAngle(Constants.STARTING_HEADING);

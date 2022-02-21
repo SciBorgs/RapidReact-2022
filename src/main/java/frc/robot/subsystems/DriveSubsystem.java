@@ -46,8 +46,6 @@ public class DriveSubsystem extends SubsystemBase {
         setSpeed(forward * (1 + angle), forward * (1 - angle)); // thank you zev
     }
 
-    // setSpeedForwardAngle controls dTheta/dx. this controls dTheta/dt (but
-    // the robot doesn't move lol)
     public void spinRobot(double omega) {
         setSpeed(-omega, omega);
     }
