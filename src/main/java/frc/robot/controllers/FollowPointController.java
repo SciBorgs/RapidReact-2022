@@ -57,10 +57,4 @@ public class FollowPointController {
         this.headingPID.reset();
         this.distancePID.reset();
     }
-
-    public String getInfoString() {
-        return "FollowPointController : "
-             + "\n\tDist  PID : " + this.distancePID.getOutput()
-             + "\n\tAngle PID : " + this.headingPID.getOutput();
-    }
 }

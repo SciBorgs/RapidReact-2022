@@ -40,12 +40,4 @@ public class Util {
         while (raw < - Math.PI) raw += 2 * Math.PI;
         return raw;
     }
-
-    public static String indent(String multilineString) {
-        String[] lines = multilineString.split("\n");
-        StringBuilder sb = new StringBuilder();
-        for (String line : lines)
-            sb.append("\n\t" + line);
-        return sb.toString();
-    }
 }

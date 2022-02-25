@@ -56,9 +56,4 @@ public class SpinController {
     public void resetPIDs() {
         this.headingPID.reset();
     }
-
-    public String getInfoString() {
-        return "SpinController : "
-             + "\n\tSpin PID : " + this.headingPID.getOutput();
-    }
 }

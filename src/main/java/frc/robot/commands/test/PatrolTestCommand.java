@@ -27,8 +27,6 @@ public class PatrolTestCommand extends CommandBase {
     @Override
     public void execute() {
         this.pathController.move();
-        printer.print("PatrolTestCommand : "
-                    + "\n" + Util.indent(this.pathController.getInfoString()));
     }
 
     @Override

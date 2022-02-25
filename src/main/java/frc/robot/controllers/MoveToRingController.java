@@ -48,10 +48,4 @@ public class MoveToRingController {
         this.headingPID.reset();
         this.distancePID.reset();
     }
-
-    public String getInfoString() {
-        return "MoveToRingController : "
-             + "\n\tDist  PID : " + this.distancePID.getOutput()
-             + "\n\tAngle PID : " + this.headingPID.getOutput();
-    }
 }

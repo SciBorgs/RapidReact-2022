@@ -62,12 +62,4 @@ public class FollowPathController {
     public boolean arrived() {
         return this.state == ControllerState.FINISHED;
     }
-
-    public String getInfoString() {
-        return "FollowPathController : "
-             + "\n\tTarget Point : " + this.currentPoint()
-             + "\n\tController State : " + this.state
-             + "\n" + Util.indent(this.spinController.getInfoString())
-             + "\n" + Util.indent(this.pointController.getInfoString());
-    }
 }

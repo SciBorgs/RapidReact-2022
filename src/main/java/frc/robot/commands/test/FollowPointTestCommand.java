@@ -26,8 +26,6 @@ public class FollowPointTestCommand extends CommandBase{
     @Override
     public void execute() {
         this.controller.move(Constants.POINT_TEST);
-        printer.print("FollowPointTestCommand : "
-                    + "\n" + Util.indent(this.controller.getInfoString()));
     }
 
     @Override
