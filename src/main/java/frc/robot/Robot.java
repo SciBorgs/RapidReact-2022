@@ -48,9 +48,14 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     this.printer = new DelayedPrinter(1000);
 
-    shuffleboardSubsystem.bind("test", "test key", dummySubsystem::get4, 0.0);
-    shuffleboardSubsystem.bind("test", "set this value", dummySubsystem::setNumber, 0.0);
-    shuffleboardSubsystem.bind("test", "and this value will be changed", dummySubsystem::getNumber, 0.0);
+    shuffleboardSubsystem.bind("test", "This value should be 4.", dummySubsystem::get4, 0.0);
+    shuffleboardSubsystem.bind("test", "Set this value,", dummySubsystem::setNumber, 0.0);
+    shuffleboardSubsystem.bind("test", "and this value will be changed.", dummySubsystem::getNumber, 0.0);
+    shuffleboardSubsystem.bind("test", "This should be a word.", dummySubsystem::getWord, "Not the word!");
+
+    shuffleboardSubsystem.bind("Calculator", "addend1", dummySubsystem::setAddend1, 0.0);
+    shuffleboardSubsystem.bind("Calculator", "addend2", dummySubsystem::setAddend2, 0.0);
+    shuffleboardSubsystem.bind("Calculator", "sum", dummySubsystem::getSum, 0.0);
   }
 
   @Override

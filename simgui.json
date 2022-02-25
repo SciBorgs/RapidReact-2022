@@ -19,10 +19,10 @@
   },
   "NetworkTables": {
     "Shuffleboard": {
-      "open": true,
-      "test": {
+      "Calculator": {
         "open": true
-      }
+      },
+      "open": true
     }
   }
 }

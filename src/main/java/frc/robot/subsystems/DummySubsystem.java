@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 public class DummySubsystem {
     public DummySubsystem() {
         this.number = -1.0;
+        this.a = this.b = 0.0;
     }
 
     private double number;
@@ -11,11 +12,21 @@ public class DummySubsystem {
         return this.number;
     }
 
-    public void setNumber(Object val) {
-        this.number = (Double) val;
+    public String getWord() {
+        return "sciborgs";
+    }
+
+    public void setNumber(double val) {
+        this.number = val;
     }
 
     public double get4() {
         return 4.0;
     }
+
+    private double a, b;
+
+    public void setAddend1(double a) { this.a = a; }
+    public void setAddend2(double b) { this.b = b; }
+    public double getSum() { return a + b; }
 }

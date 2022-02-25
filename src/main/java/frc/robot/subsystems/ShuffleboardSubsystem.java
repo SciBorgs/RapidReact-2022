@@ -41,7 +41,7 @@ public class ShuffleboardSubsystem {
         this.networkTable = new HashMap<>();
         this.types = new HashMap<>();
     }
-
+    
     @SuppressWarnings("unchecked")
     public <T> void bind(String tab, String key, Consumer<T> getter, T defaultValue) {
         this.registerTab(tab);
@@ -56,6 +56,13 @@ public class ShuffleboardSubsystem {
         setterBindings.get(tab).put(key, (Supplier<Object>) setter);
         networkTable  .get(tab).put(key, Shuffleboard.getTab(tab).add(key, defaultValue).getEntry());
         types         .get(tab).put(key, defaultValue.getClass());
+    }
+
+    public void removeBindings(String tab, String key) {
+        setterBindings.get(tab).remove(key);
+        getterBindings.get(tab).remove(key);
+        networkTable  .get(tab).remove(key);
+        types         .get(tab).remove(key);
     }
 
     private void registerTab(String tab) {
@@ -109,5 +116,12 @@ public class ShuffleboardSubsystem {
                 );
             }
         );
+    }
+
+    public static Supplier<Object> defaultSupplier(Object val) {
+        return () -> val;
+    }
+    public static Consumer<Object> defaultConsumer() {
+        return (val) -> {};
     }
 }
