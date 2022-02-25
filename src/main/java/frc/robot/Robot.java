@@ -13,8 +13,9 @@ import frc.robot.commands.auto.*;
 import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
+// import frc.robot.subsystems.DummySubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
-
+// import frc.robot.subsystems.ShuffleboardSubsystem;
 import frc.robot.util.DelayedPrinter;
 
 /**
@@ -28,6 +29,9 @@ public class Robot extends TimedRobot {
 
   public static DriveSubsystem          driveSubsystem          = new DriveSubsystem();
   public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
+
+  // public static DummySubsystem          dummySubsystem          = new DummySubsystem();
+  // public static ShuffleboardSubsystem   shuffleboardSubsystem   = new ShuffleboardSubsystem();
 
   private RobotContainer m_robotContainer;
 
@@ -43,6 +47,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     this.printer = new DelayedPrinter(1000);
+
+    // shuffleboardSubsystem.bind("test", "test key", dummySubsystem::get4, 0.0);
   }
 
   @Override
@@ -52,29 +58,38 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    localizationSubsystem.update();
-    printer.print(localizationSubsystem.getInfoString());
+    // localizationSubsystem.update();
+    // printer.print(localizationSubsystem.getInfoString());
+    // shuffleboardSubsystem.update();
+  }
+
+  @Override
+  public void simulationInit() {
+
+  }
+
+  @Override
+  public void simulationPeriodic() {
+
   }
 
   @Override
   public void autonomousInit() {
-    System.out.println("This is autonomous init");
-
     // TODO: Merge shooter, intake, hopper, ball follow into auto
-    CommandScheduler.getInstance().schedule(
-      new SequentialCommandGroup(
-        new ParallelCommandGroup(
-          // new StartHopperCommand(),
-          new MoveToPointAlphaCommand()
-        ),
-        // new ShootCommand(),
-        new MoveToPointBetaCommand(),
-        // new FollowBallCommand(),
-        // new IntakeBallCommand(),
-        new MoveToPointGammaCommand()//,
-        // new ShootCommand()
-      )
-    );
+    // CommandScheduler.getInstance().schedule(
+    //   new SequentialCommandGroup(
+    //     new ParallelCommandGroup(
+    //       // new StartHopperCommand(),
+    //       new MoveToPointAlphaCommand()
+    //     ),
+    //     // new ShootCommand(),
+    //     new MoveToPointBetaCommand(),
+    //     // new FollowBallCommand(),
+    //     // new IntakeBallCommand(),
+    //     new MoveToPointGammaCommand()//,
+    //     // new ShootCommand()
+    //   )
+    // );
   }
 
   /** This function is called periodically during autonomous. */
@@ -85,7 +100,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    // System.out.println("This is teleop init");
   }
 
   /** This function is called periodically during operator control. */
@@ -97,26 +111,22 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    System.out.println("This is disabled init");
-    Robot.driveSubsystem.setSpeed(0, 0);
+    // Robot.driveSubsystem.setSpeed(0, 0);
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-    // System.out.println("This is disabled periodic");
   }
 
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
-    // System.out.println("This is test init");
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    Robot.localizationSubsystem.reset();
-    // System.out.println("This is test periodic");
+    // Robot.localizationSubsystem.reset();
   }
 }

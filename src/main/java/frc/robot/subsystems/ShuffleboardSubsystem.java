@@ -1,22 +1,19 @@
 package frc.robot.subsystems;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShuffleboardSubsystem {
 
     // Name convention here is that 'getting' refers to 'getting' something
     // from the Shuffleboard, and 'setting' refers to 'setting' something on
-    // the Shuffleboard. Of course, this doesn't matter if you use the regular
-    // bind(...) function.
+    // the Shuffleboard. Of course, this doesn't matter beacuse of the
+    // overloaded bind(...) methods.
     private HashMap<String, HashMap<String, Consumer<Object>>> getterBindings;
     private HashMap<String, HashMap<String, Supplier<Object>>> setterBindings;
     private HashMap<String, HashMap<String, NetworkTableEntry>> networkTable;
@@ -27,7 +24,7 @@ public class ShuffleboardSubsystem {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> void bindGetter(String tab, String key, Consumer<T> getter, Object defaultValue) {
+    public <T> void bind(String tab, String key, Consumer<T> getter, Object defaultValue) {
         HashMap<String, Consumer<Object>> getterBindingsForTab = getterBindings.get(tab);
         HashMap<String, NetworkTableEntry> networkTableForTab = networkTable.get(tab);
         if (getterBindingsForTab == null) {
@@ -41,7 +38,7 @@ public class ShuffleboardSubsystem {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> void bindSetter(String tab, String key, Supplier<T> setter, Object defaultValue) {
+    public <T> void bind(String tab, String key, Supplier<T> setter, Object defaultValue) {
         HashMap<String, Supplier<Object>> setterBindingsForTab = setterBindings.get(tab);
         HashMap<String, NetworkTableEntry> networkTableForTab = networkTable.get(tab);
         if (setterBindingsForTab == null) {
@@ -57,9 +54,9 @@ public class ShuffleboardSubsystem {
     @SuppressWarnings("unchecked")
     public <T, U> void bind(String tab, String key, Function<T, U> function, Object defaultValue) {
         if (function instanceof Consumer<?>) {
-            this.bindGetter(tab, key, (Consumer<U>) function, defaultValue);
+            this.bind(tab, key, (Consumer<U>) function, defaultValue);
         } else if (function instanceof Supplier<?>) {
-            this.bindSetter(tab, key, (Supplier<U>) function, defaultValue);
+            this.bind(tab, key, (Supplier<U>) function, defaultValue);
         } else {
             throw new IllegalArgumentException("Function is neither a Supplier or Consumer!");
         }
