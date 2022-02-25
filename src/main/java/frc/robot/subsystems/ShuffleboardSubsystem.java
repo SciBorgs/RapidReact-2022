@@ -21,6 +21,7 @@ public class ShuffleboardSubsystem {
     public ShuffleboardSubsystem() {
         this.getterBindings = new HashMap<>();
         this.setterBindings = new HashMap<>();
+        this.networkTable = new HashMap<>();
     }
 
     @SuppressWarnings("unchecked")
@@ -33,7 +34,7 @@ public class ShuffleboardSubsystem {
             this.getterBindings.put(tab, getterBindingsForTab);
             this.networkTable.put(tab, networkTableForTab);
         }
-        getterBindingsForTab.put(tab, (Consumer<Object>) getter);
+        getterBindingsForTab.put(key, (Consumer<Object>) getter);
         networkTableForTab.put(key, Shuffleboard.getTab(tab).add(key, defaultValue).getEntry());
     }
 
@@ -47,7 +48,7 @@ public class ShuffleboardSubsystem {
             this.setterBindings.put(tab, setterBindingsForTab);
             this.networkTable.put(tab, networkTableForTab);
         }
-        setterBindingsForTab.put(tab, (Supplier<Object>) setter);
+        setterBindingsForTab.put(key, (Supplier<Object>) setter);
         networkTableForTab.put(key, Shuffleboard.getTab(tab).add(key, defaultValue).getEntry());
     }
 
@@ -94,7 +95,10 @@ public class ShuffleboardSubsystem {
                 setterBindingsForTab.forEach(
                     (key, supplier) -> {
                         Object value = supplier.get();
-                        networkTable.get(tabName).get(key).setValue(value);
+                        System.out.printf("(%s, %s), %s%n", tabName, key, value);
+                        NetworkTableEntry entry = networkTable.get(tabName).get(key);
+                        if (entry != null)
+                            entry.setValue(value);
                     }
                 );
             }

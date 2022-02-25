@@ -5,17 +5,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.test.*;
-import frc.robot.commands.auto.*;
-import frc.robot.commands.DriveCommand;
+// import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+// import frc.robot.commands.test.*;
+// import frc.robot.commands.auto.*;
+// import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
-// import frc.robot.subsystems.DummySubsystem;
+import frc.robot.subsystems.DummySubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
-// import frc.robot.subsystems.ShuffleboardSubsystem;
+import frc.robot.subsystems.ShuffleboardSubsystem;
 import frc.robot.util.DelayedPrinter;
 
 /**
@@ -30,8 +30,8 @@ public class Robot extends TimedRobot {
   public static DriveSubsystem          driveSubsystem          = new DriveSubsystem();
   public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
 
-  // public static DummySubsystem          dummySubsystem          = new DummySubsystem();
-  // public static ShuffleboardSubsystem   shuffleboardSubsystem   = new ShuffleboardSubsystem();
+  public static DummySubsystem          dummySubsystem          = new DummySubsystem();
+  public static ShuffleboardSubsystem   shuffleboardSubsystem   = new ShuffleboardSubsystem();
 
   private RobotContainer m_robotContainer;
 
@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     this.printer = new DelayedPrinter(1000);
 
-    // shuffleboardSubsystem.bind("test", "test key", dummySubsystem::get4, 0.0);
+    shuffleboardSubsystem.bind("test", "test key", dummySubsystem::get4, 0.0);
   }
 
   @Override
@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
     // localizationSubsystem.update();
     // printer.print(localizationSubsystem.getInfoString());
     // shuffleboardSubsystem.update();
+    shuffleboardSubsystem.update();
   }
 
   @Override
@@ -105,7 +106,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    new DriveCommand().execute();
+    // new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */

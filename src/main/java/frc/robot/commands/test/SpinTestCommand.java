@@ -34,6 +34,5 @@ public class SpinTestCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         System.out.println("Robot Stopped");
-        Robot.driveSubsystem.setSpeed(0, 0);
     }
 }

@@ -12,8 +12,17 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/LocalizationSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
       "/LiveWindow/TurretSubsystem": "Subsystem"
+    }
+  },
+  "NetworkTables": {
+    "Shuffleboard": {
+      "open": true,
+      "test": {
+        "open": true
+      }
     }
   }
 }
