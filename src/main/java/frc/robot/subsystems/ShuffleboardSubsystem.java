@@ -59,8 +59,8 @@ public class ShuffleboardSubsystem {
     }
 
     private void registerTab(String tab) {
-        boolean getterNull = getterBindings.containsKey(tab);
-        boolean setterNull = getterBindings.containsKey(tab);
+        boolean getterNull = !getterBindings.containsKey(tab);
+        boolean setterNull = !getterBindings.containsKey(tab);
         if (getterNull) this.getterBindings.put(tab, new HashMap<>());
         if (setterNull) this.setterBindings.put(tab, new HashMap<>());
         if (getterNull && setterNull) {
@@ -77,7 +77,6 @@ public class ShuffleboardSubsystem {
 
     public boolean hasSetterBinding(String tab, String key) {
         HashMap<String, Supplier<Object>> setterBindingsForTab = setterBindings.get(tab);
-        if (setterBindingsForTab == null) return false;
         return setterBindingsForTab.containsKey(key);
     }
 
