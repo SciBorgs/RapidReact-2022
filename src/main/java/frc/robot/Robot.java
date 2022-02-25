@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
     this.printer = new DelayedPrinter(1000);
 
     shuffleboardSubsystem.bind("test", "test key", dummySubsystem::get4, 0.0);
+    shuffleboardSubsystem.bind("test", "set this value", dummySubsystem::setNumber, 0.0);
+    shuffleboardSubsystem.bind("test", "and this value will be changed", dummySubsystem::getNumber, 0.0);
   }
 
   @Override
