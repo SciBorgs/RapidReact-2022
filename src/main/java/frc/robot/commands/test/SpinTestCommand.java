@@ -2,21 +2,17 @@ package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controllers.SpinController;
-import frc.robot.util.DelayedPrinter;
-import frc.robot.util.Util;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class SpinTestCommand extends CommandBase {
     private SpinController spinController;
-    private DelayedPrinter printer;
 
     private static final double HEADING_TOLERANCE = Math.PI / 6;
 
     @Override
     public void initialize() {
         this.spinController = new SpinController(HEADING_TOLERANCE);
-        this.printer = new DelayedPrinter(500);
     }
 
     @Override

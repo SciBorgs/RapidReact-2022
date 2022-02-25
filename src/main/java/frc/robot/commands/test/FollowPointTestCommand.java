@@ -4,18 +4,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.controllers.FollowPointController;
-import frc.robot.util.DelayedPrinter;
-import frc.robot.util.Util;
 
 public class FollowPointTestCommand extends CommandBase{
     private FollowPointController controller;
-    private DelayedPrinter printer;
 
     private static final double DISTANCE_TOLERANCE = 0.05;
 
     public FollowPointTestCommand() {
         super();
-        this.printer = new DelayedPrinter(500);
     }
 
     @Override
