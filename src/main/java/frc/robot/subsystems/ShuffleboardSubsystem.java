@@ -44,50 +44,30 @@ public class ShuffleboardSubsystem {
 
     @SuppressWarnings("unchecked")
     public <T> void bind(String tab, String key, Consumer<T> getter, T defaultValue) {
-        HashMap<String, Consumer<Object>> getterBindingsForTab = getterBindings.get(tab);
-        HashMap<String, NetworkTableEntry> networkTableForTab = networkTable.get(tab);
-        HashMap<String, Class<?>> typesForTab = types.get(tab);
-        if (getterBindingsForTab == null) {
-            getterBindingsForTab = new HashMap<>();
-            networkTableForTab = new HashMap<>();
-            typesForTab = new HashMap<>();
-            this.getterBindings.put(tab, getterBindingsForTab);
-            this.networkTable.put(tab, networkTableForTab);
-            this.types.put(tab, typesForTab);
-        }
-        getterBindingsForTab.put(key, (Consumer<Object>) getter);
-        networkTableForTab.put(key, Shuffleboard.getTab(tab).add(key, defaultValue).getEntry());
-        typesForTab.put(key, defaultValue.getClass());
+        this.registerTab(tab);
+        getterBindings.get(tab).put(key, (Consumer<Object>) getter);
+        networkTable  .get(tab).put(key, Shuffleboard.getTab(tab).add(key, defaultValue).getEntry());
+        types         .get(tab).put(key, defaultValue.getClass());
     }
 
     @SuppressWarnings("unchecked")
     public <T> void bind(String tab, String key, Supplier<T> setter, T defaultValue) {
-        HashMap<String, Supplier<Object>> setterBindingsForTab = setterBindings.get(tab);
-        HashMap<String, NetworkTableEntry> networkTableForTab = networkTable.get(tab);
-        HashMap<String, Class<?>> typesForTab = types.get(tab);
-        if (setterBindingsForTab == null) {
-            setterBindingsForTab = new HashMap<>();
-            networkTableForTab = new HashMap<>();
-            typesForTab = new HashMap<>();
-            this.setterBindings.put(tab, setterBindingsForTab);
-            this.networkTable.put(tab, networkTableForTab);
-            this.types.put(tab, typesForTab);
-        }
-        setterBindingsForTab.put(key, (Supplier<Object>) setter);
-        networkTableForTab.put(key, Shuffleboard.getTab(tab).add(key, defaultValue).getEntry());
-        typesForTab.put(key, defaultValue.getClass());
+        this.registerTab(tab);
+        setterBindings.get(tab).put(key, (Supplier<Object>) setter);
+        networkTable  .get(tab).put(key, Shuffleboard.getTab(tab).add(key, defaultValue).getEntry());
+        types         .get(tab).put(key, defaultValue.getClass());
     }
 
-    // @SuppressWarnings("unchecked")
-    // public <T, U> void bind(String tab, String key, Function<T, U> function, Object defaultValue) {
-    //     if (function instanceof Consumer<?>) {
-    //         this.bind(tab, key, (Consumer<T>) function, (T) defaultValue);
-    //     } else if (function instanceof Supplier<?>) {
-    //         this.bind(tab, key, (Supplier<U>) function, (U) defaultValue);
-    //     } else {
-    //         throw new IllegalArgumentException("Function is neither a Supplier or Consumer!");
-    //     }
-    // }
+    private void registerTab(String tab) {
+        boolean getterNull = getterBindings.containsKey(tab);
+        boolean setterNull = getterBindings.containsKey(tab);
+        if (getterNull) this.getterBindings.put(tab, new HashMap<>());
+        if (setterNull) this.setterBindings.put(tab, new HashMap<>());
+        if (getterNull && setterNull) {
+            this.networkTable.put(tab, new HashMap<>());
+            this.types.put(tab, new HashMap<>());
+        }
+    }
 
     public boolean hasGetterBinding(String tab, String key) {
         HashMap<String, Consumer<Object>> getterBindingsForTab = getterBindings.get(tab);
@@ -123,9 +103,9 @@ public class ShuffleboardSubsystem {
                     (key, supplier) -> {
                         Object value = supplier.get();
                         NetworkTableEntry entry = networkTable.get(tabName).get(key);
-                        System.out.printf("Accessing (%s, %s), %s%n", tabName, key, value);
                         if (entry != null)
                             entry.setValue(value);
+                        // else System.out.print("AYO WTF?????????????");
                     }
                 );
             }
