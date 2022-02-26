@@ -79,6 +79,8 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("util test", "travelledang", () -> Util.travelledAngle(localizationSubsystem.getHeading(), Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), Constants.POINT_HUB))), 0.0);
 
     SmartDashboard.putData("Field", field2d);
+
+    System.out.println(networkTableSubsystem);
   }
 
   @Override
