@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.PortMap;
 import frc.robot.Robot;
+import frc.robot.sciSensorsActuators.DummyGyro;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.util.Point;
@@ -13,34 +14,42 @@ public class LocalizationSubsystem extends SubsystemBase {
     private Point pos;
     private double prevDistance, prevHeading;
     public SciEncoder totalEncoder;
-    public SciPigeon pigeon;
+    // public SciPigeon pigeon;
+    public DummyGyro pigeon;
 
     public LocalizationSubsystem() {
         this.pos = Constants.STARTING_POINT;
 
-        if (Robot.isReal()) {
-            this.totalEncoder = new SciEncoder(
-                Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
-                Robot.driveSubsystem.lFront.getEncoder(),
-                Robot.driveSubsystem.lMiddle.getEncoder(),
-                Robot.driveSubsystem.lBack.getEncoder(),
+        this.totalEncoder = new SciEncoder(
+            Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
+            Robot.driveSubsystem.lFront.getEncoder(),
+            Robot.driveSubsystem.lMiddle.getEncoder(),
+            Robot.driveSubsystem.lBack.getEncoder(),
 
-                Robot.driveSubsystem.rFront.getEncoder(),
-                Robot.driveSubsystem.rMiddle.getEncoder(),
-                Robot.driveSubsystem.rBack.getEncoder()
-            );
+            Robot.driveSubsystem.rFront.getEncoder(),
+            Robot.driveSubsystem.rMiddle.getEncoder(),
+            Robot.driveSubsystem.rBack.getEncoder()
+        );
 
-            this.totalEncoder.setDistance(0);
-            this.totalEncoder.setInverted(false, false, false, true, true, true);
+        this.totalEncoder.setDistance(0);
+        this.totalEncoder.setInverted(false, false, false, true, true, true);
 
-            this.prevDistance = this.totalEncoder.getDistance();
+        this.prevDistance = this.totalEncoder.getDistance();
 
-            this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
-            this.pigeon.setAngle(Constants.STARTING_HEADING);
-        }
+        // this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
+
+        // Simulation [ no pigeon :( ]
+        this.pigeon = new DummyGyro(
+            new SciEncoder(Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, Robot.driveSubsystem.lFront.getEncoder()),
+            new SciEncoder(Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, Robot.driveSubsystem.rFront.getEncoder())
+        );
+
+        this.pigeon.setAngle(Constants.STARTING_HEADING);
     }
 
     public Point  getPos()     { return this.pos; }
+    public double getX()       { return this.pos.x; }
+    public double getY()       { return this.pos.y; }
     public double getVel()     { return this.totalEncoder.getSpeed(); }
     public double getHeading() { return this.prevHeading; }
 
@@ -49,8 +58,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         double currDistance = totalEncoder.getDistance();
         double diffDistance = currDistance - prevDistance;
 
-        // double currHeading = this.pigeon.getAngle();
-        double currHeading = 0;
+        double currHeading = this.pigeon.getAngle();
+        // double currHeading = 0;
         // This method of averaging angles is valid because pigeon angle is
         // continuous. If we were to normalize the angle between 0 and 2pi (or
         // some other limited range) then this wouldn't work.
@@ -60,15 +69,15 @@ public class LocalizationSubsystem extends SubsystemBase {
 
         this.pos = new Point(
             this.pos.x + diffDistance * Math.cos(avgHeading),
-            this.pos.y + diffDistance * Math.sin(-avgHeading));
+            this.pos.y + diffDistance * Math.sin(avgHeading));
         
         this.prevDistance = currDistance;
     }
 
     public void reset() {
         this.pos = Constants.STARTING_POINT;
-        // this.pigeon.setAngle(Constants.STARTING_HEADING);
-        // this.prevHeading = this.pigeon.getAngle();
+        this.pigeon.setAngle(Constants.STARTING_HEADING);
+        this.prevHeading = this.pigeon.getAngle();
     }
 
     public String getInfoString() {

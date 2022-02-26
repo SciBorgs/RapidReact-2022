@@ -4,19 +4,28 @@
 
 package frc.robot;
 
+import com.revrobotics.REVPhysicsSim;
+import com.revrobotics.CANSparkMax.ControlType;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.TimedRobot;
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-// import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-// import frc.robot.commands.test.*;
-// import frc.robot.commands.auto.*;
-// import frc.robot.commands.DriveCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.test.*;
+import frc.robot.commands.auto.*;
+import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DummySubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
-import frc.robot.subsystems.ShuffleboardSubsystem;
+import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.util.DelayedPrinter;
+import frc.robot.util.Util;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -31,11 +40,12 @@ public class Robot extends TimedRobot {
   public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
 
   public static DummySubsystem          dummySubsystem          = new DummySubsystem();
-  public static ShuffleboardSubsystem   shuffleboardSubsystem   = new ShuffleboardSubsystem();
+  public static NetworkTableSubsystem   networkTableSubsystem   = new NetworkTableSubsystem();
 
   private RobotContainer m_robotContainer;
 
-  private DelayedPrinter printer;
+  private Field2d field2d = new Field2d();
+  private double[] speeds = {0.0, 0.0};
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -46,16 +56,29 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    this.printer = new DelayedPrinter(1000);
 
-    shuffleboardSubsystem.bind("test", "This value should be 4.", dummySubsystem::get4, 0.0);
-    shuffleboardSubsystem.bind("test", "Set this value,", dummySubsystem::setNumber, 0.0);
-    shuffleboardSubsystem.bind("test", "and this value will be changed.", dummySubsystem::getNumber, 0.0);
-    shuffleboardSubsystem.bind("test", "This should be a word.", dummySubsystem::getWord, "Not the word!");
+    // networkTableSubsystem.bind("test", "This value should be 4.", dummySubsystem::get4, 0.0);
+    // networkTableSubsystem.bind("test", "Set this value,", dummySubsystem::setNumber, 0.0);
+    // networkTableSubsystem.bind("test", "and this value will be changed.", dummySubsystem::getNumber, 0.0);
+    // networkTableSubsystem.bind("test", "This should be a word.", dummySubsystem::getWord, "Not the word!");
 
-    shuffleboardSubsystem.bind("Calculator", "addend1", dummySubsystem::setAddend1, 0.0);
-    shuffleboardSubsystem.bind("Calculator", "addend2", dummySubsystem::setAddend2, 0.0);
-    shuffleboardSubsystem.bind("Calculator", "sum", dummySubsystem::getSum, 0.0);
+    // networkTableSubsystem.bind("Calculator", "addend1", dummySubsystem::setAddend1, 0.0);
+    // networkTableSubsystem.bind("Calculator", "addend2", dummySubsystem::setAddend2, 0.0);
+    // networkTableSubsystem.bind("Calculator", "sum", dummySubsystem::getSum, 0.0);
+
+    networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
+    networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
+    networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
+    networkTableSubsystem.bind("localization", "encoderDistanceLeft", localizationSubsystem.pigeon.left::getDistance, 0.0);
+    networkTableSubsystem.bind("localization", "encoderDistanceRight", localizationSubsystem.pigeon.right::getDistance, 0.0);
+
+    networkTableSubsystem.bind("drive", "vL", v -> {speeds[0] = v;}, 0.0);
+    networkTableSubsystem.bind("drive", "vR", v -> {speeds[1] = v;}, 0.0);
+
+    networkTableSubsystem.bind("util test", "displacement", () -> Util.displacementVector(Constants.POINT_HUB, localizationSubsystem.getPos()).toArray(), new double[] {0, 0});
+    networkTableSubsystem.bind("util test", "travelledang", () -> Util.travelledAngle(localizationSubsystem.getHeading(), Util.angleToPoint(Util.displacementVector(Constants.POINT_HUB, Robot.localizationSubsystem.getPos()))), 0.0);
+
+    SmartDashboard.putData("Field", field2d);
   }
 
   @Override
@@ -65,20 +88,24 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    // localizationSubsystem.update();
-    // printer.print(localizationSubsystem.getInfoString());
-    // shuffleboardSubsystem.update();
-    shuffleboardSubsystem.update();
+    localizationSubsystem.update();
+    networkTableSubsystem.update();
+    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }
 
   @Override
   public void simulationInit() {
-
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lFront,  DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lMiddle, DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lBack,   DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rFront,  DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rMiddle, DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rBack,   DCMotor.getNEO(1));
   }
 
   @Override
   public void simulationPeriodic() {
-
+    REVPhysicsSim.getInstance().run();
   }
 
   @Override
@@ -98,6 +125,10 @@ public class Robot extends TimedRobot {
     //     // new ShootCommand()
     //   )
     // );
+
+    CommandScheduler.getInstance().schedule(
+      new SpinTestCommand()
+    );
   }
 
   /** This function is called periodically during autonomous. */
@@ -113,13 +144,15 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // new DriveCommand().execute();
+    if (Robot.isReal())
+      new DriveCommand().execute();
+    else driveSubsystem.setSpeed(speeds[0], speeds[1]);
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    // Robot.driveSubsystem.setSpeed(0, 0);
+    driveSubsystem.setSpeed(0.0, 0.0);
   }
 
   /** This function is called periodically when disabled. */
@@ -135,6 +168,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    // Robot.localizationSubsystem.reset();
+    Robot.localizationSubsystem.reset();
   }
 }

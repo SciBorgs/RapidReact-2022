@@ -22,7 +22,7 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE = 0.4787787204; //..... :)
 
     //**************** INITIAL ROBOT STATE ****************//
-    public static final Point  STARTING_POINT = new Point(0, 0);
+    public static final Point  STARTING_POINT = new Point(8, 4);
     public static final double STARTING_HEADING = Math.PI / 2;
     
     //***************** GEAR RATIOS ***********************//

@@ -8,7 +8,7 @@ import frc.robot.Robot;
 public class SpinTestCommand extends CommandBase {
     private SpinController spinController;
 
-    private static final double HEADING_TOLERANCE = Math.PI / 6;
+    private static final double HEADING_TOLERANCE = Math.PI / 16;
 
     @Override
     public void initialize() {
@@ -17,16 +17,17 @@ public class SpinTestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        this.spinController.faceAwayFromPoint(Constants.POINT_HUB);
+        this.spinController.facePoint(Constants.POINT_HUB);
     }
 
     @Override
     public boolean isFinished() {
-        return this.spinController.facingAwayFromPoint(Constants.POINT_HUB);
+        return this.spinController.facingPoint(Constants.POINT_HUB);
     }
 
     @Override
     public void end(boolean interrupted) {
+        Robot.driveSubsystem.setSpeed(0.0, 0.0);
         System.out.println("Robot Stopped");
     }
 }

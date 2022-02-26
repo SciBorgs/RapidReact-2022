@@ -31,6 +31,7 @@ public class FollowPointTestCommand extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
+        Robot.driveSubsystem.setSpeed(0.0, 0.0);
         System.out.println("Robot Stopped");
     }
 }

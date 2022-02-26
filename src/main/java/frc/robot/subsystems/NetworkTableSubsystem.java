@@ -9,7 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
-public class ShuffleboardSubsystem {
+public class NetworkTableSubsystem {
 
     // Name convention here is that 'getting' refers to 'getting' something
     // from the Shuffleboard, and 'setting' refers to 'setting' something on
@@ -35,13 +35,13 @@ public class ShuffleboardSubsystem {
         CASTING_TABLE.put(String[].class,  NetworkTableValue::getStringArray);
     }
 
-    public ShuffleboardSubsystem() {
+    public NetworkTableSubsystem() {
         this.getterBindings = new HashMap<>();
         this.setterBindings = new HashMap<>();
         this.networkTable = new HashMap<>();
         this.types = new HashMap<>();
     }
-    
+
     @SuppressWarnings("unchecked")
     public <T> void bind(String tab, String key, Consumer<T> getter, T defaultValue) {
         this.registerTab(tab);

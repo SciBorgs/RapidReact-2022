@@ -15,6 +15,7 @@ public class SciEncoder {
     public SciEncoder(double gearRatio, double wheelCircumference, RelativeEncoder... encoders) {
         this.factor = gearRatio * wheelCircumference / ROYS_CONSTANT;
 
+        this.encoders = encoders;
         this.inverted = new boolean[this.encoders.length];
 
         for (RelativeEncoder encoder : this.encoders)

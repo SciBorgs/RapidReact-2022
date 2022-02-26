@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
+import frc.robot.Robot;
 import frc.robot.util.Util;
 
 import com.revrobotics.CANSparkMax;
@@ -36,9 +37,22 @@ public class DriveSubsystem extends SubsystemBase {
         rBack.setIdleMode(IdleMode.kCoast);
     }
 
+    private void setSpeedRaw(double left, double right) {
+        if (Robot.isReal()) {
+            lFront.set(left);
+            rFront.set(right);
+        } else {
+            lFront.setVoltage(left);
+            lMiddle.setVoltage(left);
+            lBack.setVoltage(left);
+            rFront.setVoltage(right);
+            rMiddle.setVoltage(right);
+            rBack.setVoltage(right);
+        }
+    }
+
     public void setSpeed(double left, double right) {
-        lFront.set(Util.normalize(left, 0.7) * 0.8);
-        rFront.set(-Util.normalize(right, 0.7) * 0.8);
+        setSpeedRaw(Util.normalize(left, 0.7) * 0.8, -Util.normalize(right, 0.7) * 0.8);
     }
 
     public void setSpeedForwardAngle(double forward, double angle) {
