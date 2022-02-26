@@ -20,6 +20,18 @@ public class PID {
     timer.start();
   }
 
+  public double getP() { return this.p; }
+  public double getI() { return this.i; }
+  public double getD() { return this.d; }
+
+  public double getError() { return this.prevErr; }
+  public double getIntegral() { return this.integrator; }
+  public double getDerivative() { return this.prevDer; }
+
+  public void setP(double p) { this.p = p; }
+  public void setI(double i) { this.i = i; }
+  public void setD(double d) { this.d = d; }
+
   public double getOutput(double err) {
     double der = 0;
     if (prevErr != Double.POSITIVE_INFINITY) {

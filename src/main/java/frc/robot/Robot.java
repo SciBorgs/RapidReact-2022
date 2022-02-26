@@ -14,6 +14,7 @@ import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
+import frc.robot.subsystems.NetworkTableSubsystem;
 
 import frc.robot.util.DelayedPrinter;
 
@@ -28,6 +29,8 @@ public class Robot extends TimedRobot {
 
   public static DriveSubsystem          driveSubsystem          = new DriveSubsystem();
   public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
+
+  NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
 
   private RobotContainer m_robotContainer;
 
@@ -53,7 +56,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     localizationSubsystem.update();
-    printer.print(localizationSubsystem.getInfoString());
+    networkTableSubsystem.update();
   }
 
   @Override
