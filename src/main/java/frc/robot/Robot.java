@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.test.*;
+import frc.robot.controllers.FollowPointController;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.DriveCommand;
 
@@ -66,17 +67,21 @@ public class Robot extends TimedRobot {
     // networkTableSubsystem.bind("Calculator", "addend2", dummySubsystem::setAddend2, 0.0);
     // networkTableSubsystem.bind("Calculator", "sum", dummySubsystem::getSum, 0.0);
 
+    // localization
     networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
     networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
     networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
-    networkTableSubsystem.bind("localization", "encoderDistanceLeft", localizationSubsystem.pigeon.left::getDistance, 0.0);
-    networkTableSubsystem.bind("localization", "encoderDistanceRight", localizationSubsystem.pigeon.right::getDistance, 0.0);
+    // networkTableSubsystem.bind("localization", "encoderDistanceLeft", localizationSubsystem.pigeon.left::getDistance, 0.0);
+    // networkTableSubsystem.bind("localization", "encoderDistanceRight", localizationSubsystem.pigeon.right::getDistance, 0.0);
 
+    // teleop sim
     networkTableSubsystem.bind("drive", "vL", v -> {speeds[0] = v;}, 0.0);
     networkTableSubsystem.bind("drive", "vR", v -> {speeds[1] = v;}, 0.0);
 
-    networkTableSubsystem.bind("util test", "displacement", () -> Util.displacementVector(localizationSubsystem.getPos(), Constants.POINT_HUB).toArray(), new double[] {0, 0});
-    networkTableSubsystem.bind("util test", "travelledang", () -> Util.travelledAngle(localizationSubsystem.getHeading(), Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), Constants.POINT_HUB))), 0.0);
+    // controller pids
+    networkTableSubsystem.createPIDCoeffBindings("FollowPoint Distance PID", "PID", FollowPointController.DISTANCE_COEFFS);
+    networkTableSubsystem.createPIDCoeffBindings("FollowPoint Heading PID",  "PID", FollowPointController.HEADING_COEFFS);
+    networkTableSubsystem.createPIDCoeffBindings("Spin Heading PID",         "PID", FollowPointController.HEADING_COEFFS);
 
     SmartDashboard.putData("Field", field2d);
 

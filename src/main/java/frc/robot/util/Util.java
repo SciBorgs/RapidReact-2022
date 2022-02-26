@@ -44,4 +44,19 @@ public class Util {
         while (raw < - Math.PI) raw += 2 * Math.PI;
         return raw;
     }
+
+    public static double map(double v, double a1, double b1, double a2, double b2) {
+        return a2 + (b2 - a2) * (v - a1) / (b1 - a1);
+    }
+
+    public static Path generateRandomPath(int n, double x1, double y1, double x2, double y2) {
+        Point[] points = new Point[n];
+        for (int i = 0; i < n; i++) {
+            points[i] = new Point(
+                map(Math.random(), 0.0, 1.0, x1, x2),
+                map(Math.random(), 0.0, 1.0, y1, y2)
+            );
+        }
+        return new Path(points);
+    }
 }

@@ -6,6 +6,8 @@ public class DummySubsystem {
         this.a = this.b = 0.0;
     }
 
+    // Testing getting and setting
+
     private double number;
 
     public double getNumber() {
@@ -23,6 +25,8 @@ public class DummySubsystem {
     public double get4() {
         return 4.0;
     }
+
+    // calculator
 
     private double a, b;
 

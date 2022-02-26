@@ -11,6 +11,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableType;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.util.PID;
+import frc.robot.util.PIDCoeffs;
 
 /**
  * Class for allowing values to be continuously shared between the robot (i.e.
@@ -26,7 +28,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
  * NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
  *  ...
  * public void robotInit() {
- *      networkTableSubsystem.bind("demo", "speed", dummySubsystem::getSpeed, 0.0);
+ *      networkTableSubsystem.bind("demo", "set speed", dummySubsystem::getSpeed, 0.0);
  *      networkTableSubsystem.bind("demo", "speed", dummySubsystem::setSpeed, 0.0);
  * }
  *  ...
@@ -34,6 +36,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
  *      networkTableSubsystem.update();
  * }
  * </pre>
+ * Note that two different keys are provided for getting and setting. <b>Binding 
+ * a Consumer and Supplier to the same network table entry will result in 
+ * unexpected behavior.</b>
+ * <p>
  * You can only create such bindings for network table entries in the Shuffleboard.
  * However you can still access values from across the entire NetworkTableInstance
  * with {@code Object getFromAddress(String address, Object defaultValue)}. To get
@@ -71,8 +77,6 @@ public class NetworkTableSubsystem {
     // cast to Double, Boolean, etc. directly (or at least conveniently). This
     // allows us to cast with ease.
     private static final HashMap<NetworkTableType, Function<NetworkTableValue, Object>> CASTING_TABLE;
-    // essential addresses for getting alliance, match number, etc.
-    private static final HashMap<String, String> ADDRESSES;
     static {
         CASTING_TABLE = new HashMap<>();
         CASTING_TABLE.put(NetworkTableType.kDouble,       NetworkTableValue::getDouble);
@@ -81,15 +85,6 @@ public class NetworkTableSubsystem {
         CASTING_TABLE.put(NetworkTableType.kDoubleArray,  NetworkTableValue::getDoubleArray);
         CASTING_TABLE.put(NetworkTableType.kBooleanArray, NetworkTableValue::getBooleanArray);
         CASTING_TABLE.put(NetworkTableType.kStringArray,  NetworkTableValue::getStringArray);
-
-        ADDRESSES = new HashMap<>();
-        ADDRESSES.put("Match Type",            "/FMSInfo/MatchType");
-        ADDRESSES.put("Match Number",          "/FMSInfo/MatchNumber");
-        ADDRESSES.put("Station Number",        "/FMSInfo/StationNumber");
-        ADDRESSES.put("Event Name",            "/FMSInfo/EventName");
-        ADDRESSES.put("Is Red Alliance",       "/FMSInfo/IsRedAlliance");
-        ADDRESSES.put("Game Specific Message", "/FMSInfo/GameSpecificMessage");
-        ADDRESSES.put("Replay Number",         "/FMSInfo/ReplayNumber");
     }
 
     /**
@@ -219,6 +214,11 @@ public class NetworkTableSubsystem {
      * Call this method periodically in order to update all of the bindings.
      */
     public void update() {
+        updateSetters();
+        updateGetters();
+    }
+
+    private void updateGetters() {
         getterBindings.forEach(
             (tabName, getterBindingsForTab) -> {
                 getterBindingsForTab.forEach(
@@ -232,6 +232,9 @@ public class NetworkTableSubsystem {
                 );
             }
         );
+    }
+
+    private void updateSetters() {
         setterBindings.forEach(
             (tabName, setterBindingsForTab) -> {
                 setterBindingsForTab.forEach(
@@ -283,5 +286,44 @@ public class NetworkTableSubsystem {
 
     public static Consumer<Object> defaultConsumer() {
         return (val) -> {};
+    }
+
+    // convenience methods
+
+    /**
+     * Creates bindings in this NetworkTableSubsystem to track output, and,
+     * optionally, track other info (error, integral, derivative) and set
+     * coefficients.
+     * @param tab the tab to use
+     * @param name the prefix to use when naming the network table entries
+     * @param pid the PID controller
+     * @param getInfo whether to track error, integral, and derivative
+     * @param setCoeff whether to add entries to set coefficients
+     */
+    public void createPIDBindings(String tab, String name, PID pid, boolean getInfo, boolean setCoeff) {
+        this.bind(tab, name + " output", () -> pid.getOutput(), 0.0);
+        if (getInfo) {
+            this.bind(tab, name + " err", pid::getError, 0.0);
+            this.bind(tab, name + " int", pid::getIntegral, 0.0);
+            this.bind(tab, name + " der", pid::getDerivative, 0.0);
+        }
+        if (setCoeff) {
+            this.bind(tab, name + " set kP", pid::setP, pid.getP());
+            this.bind(tab, name + " set kI", pid::setI, pid.getI());
+            this.bind(tab, name + " set kD", pid::setD, pid.getD());
+        }
+    }
+    
+    /**
+     * Creates bindings in this NetworkTableSubsystem to change PID coefficients
+     * through the PIDCoeffs class.
+     * @param tab the tab to use
+     * @param name the prefix to use when naming the network table entries
+     * @param pidCoeffs the PID coefficients
+     */
+    public void createPIDCoeffBindings(String tab, String name, PIDCoeffs pidCoeffs) {
+        this.bind(tab, name + " set kP", pidCoeffs::setP, pidCoeffs.getP());
+        this.bind(tab, name + " set kI", pidCoeffs::setI, pidCoeffs.getI());
+        this.bind(tab, name + " set kD", pidCoeffs::setD, pidCoeffs.getD());
     }
 }

@@ -11,8 +11,8 @@ import frc.robot.util.Util;
  * point (ex. optimal shooting distance from hub).
  */
 public class MoveToRingController {
-    private PID headingPID, distancePID;
-    private Ring targetRing;
+    protected PID headingPID, distancePID;
+    protected Ring targetRing;
 
     private static final double DISTANCE_TOLERANCE = 0.1;
 

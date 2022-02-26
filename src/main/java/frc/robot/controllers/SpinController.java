@@ -2,6 +2,7 @@ package frc.robot.controllers;
 
 import frc.robot.Robot;
 import frc.robot.util.PID;
+import frc.robot.util.PIDCoeffs;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
 
@@ -10,12 +11,14 @@ import frc.robot.util.Util;
  * towards a certain point.
  */
 public class SpinController {
-    private PID headingPID;
-    private double headingTolerance;
+    protected PID headingPID;
+    protected double headingTolerance;
+
+    public static final PIDCoeffs HEADING_COEFFS = new PIDCoeffs(0.55, 0, 0);
 
     public SpinController(double headingTolerance) {
         this.headingTolerance = headingTolerance;
-        this.headingPID = new PID(0.55, 0, 0);
+        this.headingPID = new PID(HEADING_COEFFS);
     }
 
     public void reachHeading(double targetHeading) {

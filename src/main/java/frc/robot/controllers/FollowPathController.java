@@ -2,9 +2,10 @@ package frc.robot.controllers;
 
 import java.util.Iterator;
 
+import frc.robot.Robot;
+import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.util.Path;
 import frc.robot.util.Point;
-import frc.robot.util.Util;
 
 /**
  * Controls the robot so that it follows a path (closed or with endpoints).
@@ -30,6 +31,8 @@ public class FollowPathController {
 
         this.terminateAfterNext = false;
         this.state = ControllerState.NONE;
+
+        this.setBindings(Robot.networkTableSubsystem);
     }
 
     public void move() {
@@ -61,5 +64,16 @@ public class FollowPathController {
 
     public boolean arrived() {
         return this.state == ControllerState.FINISHED;
+    }
+
+    public void setBindings(NetworkTableSubsystem binder) {
+        binder.bind("FollowPathController", "state", () -> this.state.toString(), "NONE");
+        binder.bind("FollowPathController", "arrived", this::arrived, false);
+        binder.bind("FollowPathController", "termnext", () -> this.terminateAfterNext, false);
+        binder.bind("FollowPathController", "point", () -> this.currentPoint().toArray(), new double[] {0, 0});
+
+        binder.createPIDBindings("FollowPath PID", "spin", this.spinController.headingPID, true, false);
+        binder.createPIDBindings("FollowPath PID", "dist", this.pointController.distancePID, true, false);
+        binder.createPIDBindings("FollowPath PID", "head", this.pointController.headingPID, true, false);
     }
 }
