@@ -28,6 +28,12 @@
   },
   "NetworkTables": {
     "Shuffleboard": {
+      "drive": {
+        "open": true
+      },
+      "localization": {
+        "open": true
+      },
       "open": true,
       "util test": {
         "open": true
