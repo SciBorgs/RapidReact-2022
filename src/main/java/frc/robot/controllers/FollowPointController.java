@@ -6,11 +6,6 @@ import frc.robot.util.PIDCoeffs;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
 
-/**
- * Controls the robot so that it follows a point that may change with time.
- * Think of it like flashing a laser pointer at a point and having the robot
- * go to that point.
- */
 public class FollowPointController {
     protected PID headingPID, distancePID;
     protected final double distanceTolerance;
@@ -22,13 +17,14 @@ public class FollowPointController {
         this.headingPID = new PID(HEADING_COEFFS);
         this.distancePID = new PID(DISTANCE_COEFFS);
         this.distanceTolerance = distanceTolerance;
+
+        Robot.networkTableSubsystem.createPIDBindings("Dist PID", "dist", this.distancePID, true, true);
+        Robot.networkTableSubsystem.createPIDBindings("Head PID", "head", this.headingPID, true, true);
     }
 
     public void move(Point targetPoint) {
         Point currPos = Robot.localizationSubsystem.getPos();
-        Point displacementVector = Util.displacementVector(
-            currPos,
-            targetPoint);
+        Point displacementVector = Util.displacementVector(currPos, targetPoint);
 
         double targetHeading = Util.angleToPoint(displacementVector);
         double currHeading = Robot.localizationSubsystem.getHeading();

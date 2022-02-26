@@ -2,6 +2,7 @@ package frc.robot.sciSensorsActuators;
 
 import frc.robot.Constants;
 
+// For simulation purposes only.
 public class DummyGyro {
     public SciEncoder left, right;
     private double offset;
@@ -19,5 +20,9 @@ public class DummyGyro {
 
     public double getAngle() {
         return this.offset + (right.getDistance() - left.getDistance()) / Constants.ROBOT_WIDTH;
+    }
+
+    public double getAngularVelocity() {
+        return (right.getSpeed() - left.getSpeed()) / Constants.ROBOT_WIDTH / 60 / -10;
     }
 }

@@ -8,8 +8,7 @@ import frc.robot.util.Path;
 import frc.robot.util.Point;
 
 /**
- * Controls the robot so that it follows a path (closed or with endpoints).
- * No complicated math here, it's literally just spinning and moving.
+ * Controller for discrete path following (read "turn move turn").
  */
 public class FollowPathController {
     private final Iterator<Point> pathIterator;
@@ -72,8 +71,8 @@ public class FollowPathController {
         binder.bind("FollowPathController", "termnext", () -> this.terminateAfterNext, false);
         binder.bind("FollowPathController", "point", () -> this.currentPoint().toArray(), new double[] {0, 0});
 
-        binder.createPIDBindings("FollowPath PID", "spin", this.spinController.headingPID, true, false);
-        binder.createPIDBindings("FollowPath PID", "dist", this.pointController.distancePID, true, false);
-        binder.createPIDBindings("FollowPath PID", "head", this.pointController.headingPID, true, false);
+        binder.createPIDBindings("Spin PID", "spin", this.spinController.headingPID, true, true);
+        binder.createPIDBindings("Dist PID", "dist", this.pointController.distancePID, true, true);
+        binder.createPIDBindings("Head PID", "head", this.pointController.headingPID, true, true);
     }
 }

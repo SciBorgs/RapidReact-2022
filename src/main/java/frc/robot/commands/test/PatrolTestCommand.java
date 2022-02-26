@@ -2,6 +2,7 @@ package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.controllers.FollowPathController;
 
 public class PatrolTestCommand extends CommandBase {
@@ -10,7 +11,8 @@ public class PatrolTestCommand extends CommandBase {
 
     private static final double PROCEED_HEADING = Math.PI / 10;
     private static final double PROCEED_DISTANCE = 0.23;
-    private static final double TIME_LIMIT = 75000;
+    private static final long TIME_LIMIT = 75000;
+    private static final long TIME_START = 5000; 
 
     @Override
     public void initialize() {
@@ -22,12 +24,13 @@ public class PatrolTestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        this.pathController.move();
+        if (System.currentTimeMillis() - this.startingTime > TIME_START)
+            this.pathController.move();
     }
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - this.startingTime > TIME_LIMIT;
+        return Robot.isReal() && System.currentTimeMillis() - this.startingTime > TIME_LIMIT;
     }
 
     @Override 

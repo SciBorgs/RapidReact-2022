@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.util.Path;
 import frc.robot.util.Point;
 import frc.robot.util.Ring;
+import frc.robot.util.Util;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -39,12 +40,5 @@ public final class Constants {
     public static final Ring RING_BETA  = new Ring(POINT_BETA, 3.0);
     public static final Ring RING_GAMMA = new Ring(POINT_HUB,  3.3);
 
-    public static final Path PATH_PATROL 
-        = new Path(
-            new Point(2, 7),
-            new Point(5, 3),
-            new Point(3, 6),
-            new Point(10, 2),
-            new Point(7, 4)
-        );
+    public static final Path PATH_PATROL = Util.generateRandomPath(100, 0, 0, 16, 8);
 }

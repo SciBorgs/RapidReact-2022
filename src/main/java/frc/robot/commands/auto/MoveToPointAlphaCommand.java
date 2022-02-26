@@ -1,24 +1,39 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.controllers.MoveToRingController;
+import frc.robot.controllers.FollowPointController;
+import frc.robot.controllers.SpinController;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class MoveToPointAlphaCommand extends CommandBase {
-    private MoveToRingController controller;
+    private SpinController spinController;
+    private FollowPointController pointController;
+
+    private static final double HEADING_TOLERANCE = Math.PI / 8;
 
     @Override
     public void initialize() {
-        this.controller = new MoveToRingController(Constants.RING_ALPHA, 0.9);
+        this.spinController = new SpinController(HEADING_TOLERANCE);
+        this.pointController = new FollowPointController(Constants.RING_ALPHA.radius + 0.2);
     }
 
     @Override
     public void execute() {
-        this.controller.move();
+        if (!spinController.facingPoint(Constants.POINT_HUB)) {
+            this.spinController.facePoint(Constants.POINT_HUB);
+        } else {
+            this.pointController.move(Constants.POINT_HUB);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return controller.hasArrived();
+        return pointController.hasArrived(Constants.POINT_HUB);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        Robot.driveSubsystem.setSpeed(0.0, 0.0);
     }
 }

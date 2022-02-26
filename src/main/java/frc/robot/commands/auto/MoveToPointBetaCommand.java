@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controllers.FollowPointController;
 import frc.robot.controllers.SpinController;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class MoveToPointBetaCommand extends CommandBase {
     private SpinController spinController;
@@ -20,8 +21,8 @@ public class MoveToPointBetaCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (!spinController.facingAwayFromPoint(Constants.POINT_HUB)) {
-            this.spinController.faceAwayFromPoint(Constants.POINT_HUB);
+        if (!spinController.facingPoint(Constants.POINT_BETA)) {
+            this.spinController.facePoint(Constants.POINT_BETA);
         } else {
             this.pointController.move(Constants.POINT_BETA);
         }
@@ -30,5 +31,10 @@ public class MoveToPointBetaCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return this.pointController.hasArrived(Constants.POINT_BETA);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        Robot.driveSubsystem.setSpeed(0.0, 0.0);
     }
 }

@@ -52,7 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double left, double right) {
-        setSpeedRaw(Util.normalize(left, 0.7) * 0.8, -Util.normalize(right, 0.7) * 0.8);
+        setSpeedRaw(Util.normalize(left, 1.0), -Util.normalize(right, 1.0));
     }
 
     public void setSpeedForwardAngle(double forward, double angle) {

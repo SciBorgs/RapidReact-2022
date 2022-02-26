@@ -9,8 +9,12 @@ public class Util {
         return Math.min(Math.max(-absmax, v), absmax);
     }
 
+    public static double distanceSquared(Point a, Point b) {
+        return Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2);
+    }
+
     public static double distance(Point a, Point b) {
-        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+        return Math.sqrt(distanceSquared(a, b));
     }
 
     public static double norm(Point v) {
@@ -49,6 +53,7 @@ public class Util {
         return a2 + (b2 - a2) * (v - a1) / (b1 - a1);
     }
 
+    // Generates a path to be used for testing discrete path following
     public static Path generateRandomPath(int n, double x1, double y1, double x2, double y2) {
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
