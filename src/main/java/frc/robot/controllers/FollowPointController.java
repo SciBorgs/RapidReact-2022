@@ -2,7 +2,6 @@ package frc.robot.controllers;
 
 import frc.robot.Robot;
 import frc.robot.util.PID;
-import frc.robot.util.PIDCoeffs;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
 
@@ -10,12 +9,9 @@ public class FollowPointController {
     protected PID headingPID, distancePID;
     protected final double distanceTolerance;
 
-    public static final PIDCoeffs HEADING_COEFFS = new PIDCoeffs(5.72, 0, 0);
-    public static final PIDCoeffs DISTANCE_COEFFS = new PIDCoeffs(9.04, 0.22, 0.31);
-
     public FollowPointController(double distanceTolerance) {
-        this.headingPID = new PID(HEADING_COEFFS);
-        this.distancePID = new PID(DISTANCE_COEFFS);
+        this.headingPID = new PID(5.72, 0, 0);
+        this.distancePID = new PID(9.04, 0.22, 0.31);
         this.distanceTolerance = distanceTolerance;
 
         Robot.networkTableSubsystem.createPIDBindings("Dist PID", "dist", this.distancePID, true, true);

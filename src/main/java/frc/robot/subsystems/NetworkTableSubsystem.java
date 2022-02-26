@@ -12,7 +12,6 @@ import edu.wpi.first.networktables.NetworkTableType;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.util.PID;
-import frc.robot.util.PIDCoeffs;
 
 /**
  * Class for allowing values to be continuously shared between the robot (i.e.
@@ -312,18 +311,5 @@ public class NetworkTableSubsystem {
             this.bind(tab, name + " set kI", pid::setI, pid.getI());
             this.bind(tab, name + " set kD", pid::setD, pid.getD());
         }
-    }
-    
-    /**
-     * Creates bindings in this NetworkTableSubsystem to change PID coefficients
-     * through the PIDCoeffs class.
-     * @param tab the tab to use
-     * @param name the prefix to use when naming the network table entries
-     * @param pidCoeffs the PID coefficients
-     */
-    public void createPIDCoeffBindings(String tab, String name, PIDCoeffs pidCoeffs) {
-        this.bind(tab, name + " set kP", pidCoeffs::setP, pidCoeffs.getP());
-        this.bind(tab, name + " set kI", pidCoeffs::setI, pidCoeffs.getI());
-        this.bind(tab, name + " set kD", pidCoeffs::setD, pidCoeffs.getD());
     }
 }

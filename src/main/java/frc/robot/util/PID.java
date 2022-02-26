@@ -20,10 +20,6 @@ public class PID {
     timer.start();
   }
 
-  public PID(PIDCoeffs pidCoeffs) {
-    this(pidCoeffs.getP(), pidCoeffs.getI(), pidCoeffs.getD());
-  }
-
   public double getP() { return this.p; }
   public double getI() { return this.i; }
   public double getD() { return this.d; }

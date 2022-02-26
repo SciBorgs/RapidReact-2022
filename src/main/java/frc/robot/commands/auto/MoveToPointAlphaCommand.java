@@ -15,7 +15,7 @@ public class MoveToPointAlphaCommand extends CommandBase {
     @Override
     public void initialize() {
         this.spinController = new SpinController(HEADING_TOLERANCE);
-        this.pointController = new FollowPointController(Constants.RING_ALPHA.radius + 0.2);
+        this.pointController = new FollowPointController(Constants.SHOOTING_RADIUS_NEAR + 0.2);
     }
 
     @Override

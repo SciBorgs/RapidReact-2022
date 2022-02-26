@@ -1,6 +1,5 @@
 package frc.robot.controllers;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import frc.robot.Robot;
@@ -18,19 +17,16 @@ import frc.robot.util.Util;
  * https://www.ri.cmu.edu/pub_files/pub1/kelly_alonzo_1994_4/kelly_alonzo_1994_4.pdf
  */
 public class PurePursuitController {
-    private static final double ERROR = 1E-6;
-
-    private LinkedList<Point> waypoints;
-    private Point close, next;
+    private List<Point> waypoints;
+    private Point next;
 
     private double lookahead;
     private int index;
 
     private PID turnPID = new PID(1, 0, 0);
 
-    public PurePursuitController(LinkedList<Point> waypoints, double lookahead) {
+    public PurePursuitController(List<Point> waypoints, double lookahead) {
         this.waypoints = waypoints;
-        this.close = this.waypoints.get(0);
         this.next = null;
         this.index = 0;
     }
@@ -84,7 +80,6 @@ public class PurePursuitController {
     }
 
     public void update(Point currPos, double currHeading, Point finalPos, double finalHeading) {
-        this.close = this.closestWaypoint();
         this.next = this.nextWaypoint();
         double error = Util.travelledAngle(currHeading, Util.angleToPoint(Util.displacementVector(currPos, this.next)));
         turnPID.getOutput(error);

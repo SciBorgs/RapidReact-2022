@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.util.Path;
 import frc.robot.util.Point;
-import frc.robot.util.Ring;
 import frc.robot.util.Util;
 
 /**
@@ -29,16 +28,15 @@ public final class Constants {
     //***************** GEAR RATIOS ***********************//
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
 
-    //********************** POINTS ***********************//
+    //********************** FIELD ***********************//
         // Note: The origin is the center of the hub.
     public static final Point POINT_HUB  = new Point(0, 0);
     public static final Point POINT_BETA = new Point(0, 0);
-    public static final Point POINT_TEST = new Point(-2, 0);    
+    public static final Point POINT_TEST = new Point(-2, 0);
 
         // Adjust radii here for desired shooting/searching distances.
-    public static final Ring RING_ALPHA = new Ring(POINT_HUB,  1.25);
-    public static final Ring RING_BETA  = new Ring(POINT_BETA, 3.0);
-    public static final Ring RING_GAMMA = new Ring(POINT_HUB,  3.3);
+    public static final double SHOOTING_RADIUS_NEAR = 1.25;
+    public static final double SHOOTING_RADIUS_FAR  = 3.3;
 
     public static final Path PATH_PATROL = Util.generateRandomPath(100, 0, 0, 16, 8);
 }

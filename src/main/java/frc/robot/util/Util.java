@@ -20,12 +20,7 @@ public class Util {
     public static double norm(Point v) {
         return Math.sqrt(v.x * v.x + v.y * v.y);
     }
-
-    public static double distance(Point p, Ring c) {
-        double distance = distance(p, c.center);
-        return Math.abs(distance - c.radius);
-    }
-
+    
     public static Point unitVector(double theta) {
         return new Point(Math.cos(theta), Math.sin(theta));
     }
