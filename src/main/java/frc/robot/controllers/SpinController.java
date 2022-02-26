@@ -30,11 +30,11 @@ public class SpinController {
     }
 
     public void faceAwayFromPoint(Point p) {
-        reachHeading(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
+        reachHeading(Util.angleToPoint(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
     }
 
     public void facePoint(Point p) {
-        reachHeading(Util.angleToPoint(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
+        reachHeading(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
     }
 
     public boolean facing(double heading) {
@@ -42,15 +42,15 @@ public class SpinController {
     }
 
     public boolean facingAwayFromPoint(Point p) {
-        return facing(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
-    }
-
-    public boolean facingPoint(Point p) {
         return facing(Util.angleToPoint(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
     }
 
+    public boolean facingPoint(Point p) {
+        return facing(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
+    }
+
     public boolean facingParallelToPoint(Point p) {
-        return facing(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)) % Math.PI);
+        return this.facingPoint(p) || this.facingAwayFromPoint(p);
     }
 
     public void resetPIDs() {

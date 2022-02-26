@@ -21,12 +21,12 @@ public class FollowPointTestCommand extends CommandBase{
 
     @Override
     public void execute() {
-        this.controller.move(Constants.POINT_TEST);
+        this.controller.move(Constants.POINT_HUB);
     }
 
     @Override
     public boolean isFinished() {
-        return controller.hasArrived(Constants.POINT_TEST);
+        return controller.hasArrived(Constants.POINT_HUB);
     }
 
     @Override

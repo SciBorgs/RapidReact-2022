@@ -22,26 +22,16 @@ public class FollowPointController {
 
     public void move(Point targetPoint) {
         Point currPos = Robot.localizationSubsystem.getPos();
-        double dx = targetPoint.x - currPos.x;
-        double dy = targetPoint.y - currPos.y;
+        Point displacementVector = Util.displacementVector(
+            currPos,
+            targetPoint);
 
-        double targetHeading = Math.atan2(dy, dx);
+        double targetHeading = Util.angleToPoint(displacementVector);
         double currHeading = Robot.localizationSubsystem.getHeading();
         double diffHeading = Util.travelledAngle(currHeading, targetHeading);
 
-        // We take the dot product of the displacement vector and heading
-        // vector to get a kind of "signed distance". This is necessary so that
-        // the robot will move backwards if it is facing away from where it 
-        // should be facing
-        Point displacementVector = Util.displacementVector(
-            Robot.localizationSubsystem.getPos(),
-            targetPoint);
-        
-        Point headingVector = Util.unitVector(currHeading);
-        double signedDistance = Util.dot(displacementVector, headingVector);
-
         double angleOutput = this.headingPID.getOutput(0, diffHeading); //values negated for testing
-        double forwardOutput = this.distancePID.getOutput(-signedDistance, 0);
+        double forwardOutput = this.distancePID.getOutput(Util.norm(displacementVector), 0);
 
         forwardOutput = Util.normalize(forwardOutput);
         angleOutput = Util.normalize(angleOutput);

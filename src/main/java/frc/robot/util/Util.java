@@ -13,6 +13,10 @@ public class Util {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
     }
 
+    public static double norm(Point v) {
+        return Math.sqrt(v.x * v.x + v.y * v.y);
+    }
+
     public static double distance(Point p, Ring c) {
         double distance = distance(p, c.center);
         return Math.abs(distance - c.radius);
@@ -23,7 +27,7 @@ public class Util {
     }
 
     public static Point displacementVector(Point from, Point to) {
-        return new Point(from.x - to.x, to.y - from.y);
+        return new Point(to.x - from.x, to.y - from.y);
     }
 
     public static double angleToPoint(Point p) {

@@ -75,8 +75,8 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("drive", "vL", v -> {speeds[0] = v;}, 0.0);
     networkTableSubsystem.bind("drive", "vR", v -> {speeds[1] = v;}, 0.0);
 
-    networkTableSubsystem.bind("util test", "displacement", () -> Util.displacementVector(Constants.POINT_HUB, localizationSubsystem.getPos()).toArray(), new double[] {0, 0});
-    networkTableSubsystem.bind("util test", "travelledang", () -> Util.travelledAngle(localizationSubsystem.getHeading(), Util.angleToPoint(Util.displacementVector(Constants.POINT_HUB, Robot.localizationSubsystem.getPos()))), 0.0);
+    networkTableSubsystem.bind("util test", "displacement", () -> Util.displacementVector(localizationSubsystem.getPos(), Constants.POINT_HUB).toArray(), new double[] {0, 0});
+    networkTableSubsystem.bind("util test", "travelledang", () -> Util.travelledAngle(localizationSubsystem.getHeading(), Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), Constants.POINT_HUB))), 0.0);
 
     SmartDashboard.putData("Field", field2d);
   }
@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
     // );
 
     CommandScheduler.getInstance().schedule(
-      new SpinTestCommand()
+      new PatrolTestCommand()
     );
   }
 
