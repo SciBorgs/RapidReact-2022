@@ -4,16 +4,16 @@ import frc.robot.Robot;
 import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
-import frc.robot.util.Util;
 
 import static frc.robot.util.Util.*;
 
 public class AlongAxisController implements MovementController<Double, AlongAxisController.State> {
-    protected static enum State { NONE, MOVING_UP, MOVING_DOWN, FINISHED }
+    protected static enum State { NONE, MOVING_NEG, MOVING_POS, FINISHED }
     private State state;
     private final PID headPID, distPID;
 
     private final Point origin, direction;
+    private double directionAngle;
     private Point targetPoint;
     private double targetDistance;
     private double distanceTolerance;
@@ -21,6 +21,7 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
     public AlongAxisController(Point origin, double positiveHeading, double distanceTolerance) {
         this.origin = origin;
         this.direction = unitVector(positiveHeading);
+        this.directionAngle = positiveHeading;
 
         this.distanceTolerance = distanceTolerance;
         this.headPID = new PID(2.0, 0.3, 0.2);
@@ -28,14 +29,6 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
         this.targetDistance = 0.0;
         this.targetPoint = null;
         this.state = State.NONE;
-
-        NetworkTableSubsystem binder = Robot.networkTableSubsystem;
-        binder.bind("axis test", "target dist",   () -> this.targetDistance, 0.1156);
-        binder.bind("axis test", "target point",  () -> this.targetPoint.toArray(), new double[] {0.0, 0.0});
-        binder.bind("axis test", "init origin", () -> this.origin.toArray(), new double[] {0.0, 0.0});
-        binder.bind("axis test", "init direct", () -> Util.angleToPoint(this.direction), 0.1156);
-        binder.bind("axis test", "run finished", () -> this.atTargetDistance(), true);
-        binder.bind("axis test", "run distance", this::distanceAlongAxis, 0.0);
     }
 
     public AlongAxisController(Point origin, double distanceTolerance) {
@@ -59,7 +52,6 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
     public void move() {
         if (this.targetPoint == null) return;
         if (!this.atTarget()) {
-            this.state = State.MOVING_UP;
             this.reachTargetDistance();
         } else {
             this.state = State.FINISHED;
@@ -92,19 +84,40 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
         return Math.abs(this.targetDistance - this.distanceAlongAxis()) < this.distanceTolerance;
     }
 
+    protected boolean backwards() {
+        return Math.abs(travelledAngle(Robot.localizationSubsystem.getHeading(), this.directionAngle)) > Math.PI / 2;
+    }
+
+    protected boolean isBehindRobot(Point p) {
+        Point currPos = Robot.localizationSubsystem.getPos();
+        double currHeading = Robot.localizationSubsystem.getHeading();
+        Point d = displacementVector(currPos, p);
+        return Math.abs(travelledAngle(angleToPoint(d), currHeading)) > Math.PI / 2;
+    }
+
     // controller-specific methods | control
 
     protected void reachTargetDistance() {
         Point currPos = Robot.localizationSubsystem.getPos();
         Point displacementVector = displacementVector(currPos, targetPoint);
-
         double targetHeading = angleToPoint(displacementVector);
-        double currHeading = Robot.localizationSubsystem.getHeading();
-        double headingError = travelledAngle(targetHeading, currHeading);
-
         double forward = distPID.getOutput(targetDistance, distanceAlongAxis());
-        double angle   = -headPID.getOutput(0, headingError);
-        Robot.driveSubsystem.setSpeedForwardAngle(forward, angle);
+
+        if (isBehindRobot(this.targetPoint)) {
+            double currHeading = Robot.localizationSubsystem.getBackwardsHeading();
+            double headingError = travelledAngle(targetHeading, currHeading);
+            double angle   = headPID.getOutput(0, headingError);
+
+            this.state = State.MOVING_NEG;
+            Robot.driveSubsystem.setSpeedForwardAngle(forward, angle);
+        } else {
+            double currHeading = Robot.localizationSubsystem.getHeading();
+            double headingError = travelledAngle(targetHeading, currHeading);
+            double angle   = -headPID.getOutput(0, headingError);
+
+            this.state = State.MOVING_POS;
+            Robot.driveSubsystem.setSpeedForwardAngle(forward, angle);
+        }
     }
 
     // MovementController methods

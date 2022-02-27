@@ -68,6 +68,9 @@
       "Spin Heading PID": {
         "open": true
       },
+      "axis test": {
+        "open": true
+      },
       "axis test [dist pid]": {
         "open": true
       },

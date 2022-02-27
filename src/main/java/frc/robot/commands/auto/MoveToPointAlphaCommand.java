@@ -19,7 +19,6 @@ public class MoveToPointAlphaCommand extends CommandBase {
     @Override
     public void execute() {
         this.axisController.move();
-        Robot.localizationSubsystem.setInverted(true);
     }
 
     @Override
@@ -30,6 +29,5 @@ public class MoveToPointAlphaCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         Robot.driveSubsystem.setSpeed(0.0, 0.0);
-        Robot.localizationSubsystem.setInverted(false);
     }
 }
