@@ -1,24 +1,33 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.controllers.MoveToRingController;
+import frc.robot.controllers.AlongAxisController;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class MoveToPointAlphaCommand extends CommandBase {
-    private MoveToRingController controller;
+    private AlongAxisController axisController;
+
+    private static final double DISTANCE_TOLERANCE = 0.1;
 
     @Override
     public void initialize() {
-        this.controller = new MoveToRingController(Constants.RING_ALPHA, 0.9);
+        this.axisController = new AlongAxisController(Constants.POINT_HUB);
+        this.axisController.setTargetDistance(Constants.SHOOTING_RADIUS_NEAR);
     }
 
     @Override
     public void execute() {
-        this.controller.move();
+        this.axisController.move();
     }
 
     @Override
     public boolean isFinished() {
-        return controller.hasArrived();
+        return this.axisController.atTargetDistance(DISTANCE_TOLERANCE);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        Robot.driveSubsystem.setSpeed(0.0, 0.0);
     }
 }

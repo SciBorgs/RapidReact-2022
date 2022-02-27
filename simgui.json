@@ -1,7 +1,17 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "SPARK MAX [4]": {
+      "SPARK MAX [3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [6]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [9]": {
         "header": {
           "open": true
         }
@@ -12,8 +22,189 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/LocalizationSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
-      "/LiveWindow/TurretSubsystem": "Subsystem"
+      "/LiveWindow/TurretSubsystem": "Subsystem",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "Shuffleboard": {
+      "FollowPath PID": {
+        "open": true
+      },
+      "FollowPoint Distance PID": {
+        "open": true
+      },
+      "FollowPoint Heading PID": {
+        "open": true
+      },
+      "Head PID": {
+        "open": true
+      },
+      "Spin Heading PID": {
+        "open": true
+      },
+      "drive": {
+        "open": true
+      },
+      "localization": {
+        "open": true
+      },
+      "open": true,
+      "test": {
+        "open": true
+      }
+    },
+    "SmartDashboard": {
+      "Field": {
+        "open": true
+      }
+    }
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": 332,
+          "series": [
+            {
+              "color": [
+                0.9282700419425964,
+                0.011750263161957264,
+                0.011750263161957264,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/FollowPath PID/spin err"
+            },
+            {
+              "color": [
+                0.3333333432674408,
+                0.658823549747467,
+                0.4078431725502014,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/FollowPath PID/spin int"
+            },
+            {
+              "color": [
+                0.22657033801078796,
+                0.1904965341091156,
+                0.902953565120697,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/FollowPath PID/spin der"
+            },
+            {
+              "color": [
+                0.9873417615890503,
+                0.9873417615890503,
+                0.9873417615890503,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/FollowPath PID/spin output"
+            }
+          ]
+        }
+      ],
+      "window": {
+        "visible": false
+      }
+    },
+    "Plot <1>": {
+      "plots": [
+        {
+          "height": 332,
+          "series": [
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/localization/vH"
+            },
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/drive/v"
+            }
+          ]
+        }
+      ],
+      "window": {
+        "visible": false
+      }
+    },
+    "Plot <2>": {
+      "plots": [
+        {
+          "height": 332,
+          "series": [
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/localization/encoderRateight"
+            },
+            {
+              "color": [
+                0.5058823823928833,
+                0.44705885648727417,
+                0.7019608020782471,
+                1.0
+              ],
+              "id": "SPARK MAX [6]-Applied Output"
+            },
+            {
+              "color": [
+                0.7686275243759155,
+                0.30588236451148987,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "SPARK MAX [3]-Velocity Pre-Conversion"
+            },
+            {
+              "color": [
+                0.5058823823928833,
+                0.44705885648727417,
+                0.7019608020782471,
+                1.0
+              ],
+              "id": "SPARK MAX [6]-Velocity Pre-Conversion"
+            },
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/localization/encoderRateLeft"
+            }
+          ]
+        }
+      ],
+      "window": {
+        "visible": false
+      }
     }
   }
 }

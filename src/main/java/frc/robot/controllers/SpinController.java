@@ -10,8 +10,8 @@ import frc.robot.util.Util;
  * towards a certain point.
  */
 public class SpinController {
-    private PID headingPID;
-    private double headingTolerance;
+    protected PID headingPID;
+    protected double headingTolerance;
 
     public SpinController(double headingTolerance) {
         this.headingTolerance = headingTolerance;
@@ -30,11 +30,11 @@ public class SpinController {
     }
 
     public void faceAwayFromPoint(Point p) {
-        reachHeading(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
+        reachHeading(Util.angleToPoint(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
     }
 
     public void facePoint(Point p) {
-        reachHeading(Util.angleToPoint(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
+        reachHeading(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
     }
 
     public boolean facing(double heading) {
@@ -42,23 +42,18 @@ public class SpinController {
     }
 
     public boolean facingAwayFromPoint(Point p) {
-        return facing(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
-    }
-
-    public boolean facingPoint(Point p) {
         return facing(Util.angleToPoint(Util.displacementVector(p, Robot.localizationSubsystem.getPos())));
     }
 
+    public boolean facingPoint(Point p) {
+        return facing(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)));
+    }
+
     public boolean facingParallelToPoint(Point p) {
-        return facing(Util.angleToPoint(Util.displacementVector(Robot.localizationSubsystem.getPos(), p)) % Math.PI);
+        return this.facingPoint(p) || this.facingAwayFromPoint(p);
     }
 
     public void resetPIDs() {
         this.headingPID.reset();
-    }
-
-    public String getInfoString() {
-        return "SpinController : "
-             + "\n\tSpin PID : " + this.headingPID.getOutput();
     }
 }

@@ -12,6 +12,7 @@ import frc.robot.Constants;
 public class LocalizationSubsystem extends SubsystemBase {
     private Point pos;
     private double prevDistance, prevHeading;
+    private boolean invertedRead; // true if heading vector should be behind the robot
     public SciEncoder totalEncoder;
     public SciPigeon pigeon;
 
@@ -36,11 +37,19 @@ public class LocalizationSubsystem extends SubsystemBase {
 
         this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
         this.pigeon.setAngle(Constants.STARTING_HEADING);
+        this.invertedRead = false;
     }
 
     public Point  getPos()     { return this.pos; }
+    public double getX()       { return this.pos.x; }
+    public double getY()       { return this.pos.y; }
     public double getVel()     { return this.totalEncoder.getSpeed(); }
-    public double getHeading() { return this.prevHeading; }
+    public double getHeading() { return this.invertedRead ? this.prevHeading + Math.PI : this.prevHeading; }
+
+    public boolean getInverted() { return this.invertedRead; }
+    public void setInverted(boolean inverted) {
+        this.invertedRead = inverted;
+    }
 
     // call in periodic
     public void update() {
@@ -48,6 +57,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         double diffDistance = currDistance - prevDistance;
 
         double currHeading = this.pigeon.getAngle();
+        // double currHeading = 0;
         // This method of averaging angles is valid because pigeon angle is
         // continuous. If we were to normalize the angle between 0 and 2pi (or
         // some other limited range) then this wouldn't work.
@@ -57,7 +67,7 @@ public class LocalizationSubsystem extends SubsystemBase {
 
         this.pos = new Point(
             this.pos.x + diffDistance * Math.cos(avgHeading),
-            this.pos.y + diffDistance * Math.sin(-avgHeading));
+            this.pos.y + diffDistance * Math.sin(avgHeading));
         
         this.prevDistance = currDistance;
     }

@@ -2,13 +2,13 @@ package frc.robot.controllers;
 
 import java.util.Iterator;
 
+import frc.robot.Robot;
+import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.util.Path;
 import frc.robot.util.Point;
-import frc.robot.util.Util;
 
 /**
- * Controls the robot so that it follows a path (closed or with endpoints).
- * No complicated math here, it's literally just spinning and moving.
+ * Controller for discrete path following (read "turn move turn").
  */
 public class FollowPathController {
     private final Iterator<Point> pathIterator;
@@ -30,6 +30,8 @@ public class FollowPathController {
 
         this.terminateAfterNext = false;
         this.state = ControllerState.NONE;
+
+        this.setBindings(Robot.networkTableSubsystem);
     }
 
     public void move() {
@@ -63,11 +65,14 @@ public class FollowPathController {
         return this.state == ControllerState.FINISHED;
     }
 
-    public String getInfoString() {
-        return "FollowPathController : "
-             + "\n\tTarget Point : " + this.currentPoint()
-             + "\n\tController State : " + this.state
-             + "\n" + Util.indent(this.spinController.getInfoString())
-             + "\n" + Util.indent(this.pointController.getInfoString());
+    public void setBindings(NetworkTableSubsystem binder) {
+        binder.bind("FollowPathController", "state", () -> this.state.toString(), "NONE");
+        binder.bind("FollowPathController", "arrived", this::arrived, false);
+        binder.bind("FollowPathController", "termnext", () -> this.terminateAfterNext, false);
+        binder.bind("FollowPathController", "point", () -> this.currentPoint().toArray(), new double[] {0, 0});
+
+        binder.createPIDBindings("Spin PID", "spin", this.spinController.headingPID, true, true);
+        binder.createPIDBindings("Dist PID", "dist", this.pointController.distancePID, true, true);
+        binder.createPIDBindings("Head PID", "head", this.pointController.headingPID, true, true);
     }
 }

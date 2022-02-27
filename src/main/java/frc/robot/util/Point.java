@@ -12,4 +12,8 @@ public class Point {
     public String toString() {
         return String.format("(%f, %f)", this.x, this.y);
     }
+
+    public double[] toArray() {
+        return new double[] {this.x, this.y};
+    }
 }

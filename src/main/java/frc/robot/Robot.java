@@ -4,7 +4,13 @@
 
 package frc.robot;
 
+import com.revrobotics.REVPhysicsSim;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -15,8 +21,6 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.NetworkTableSubsystem;
-
-import frc.robot.util.DelayedPrinter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,11 +34,11 @@ public class Robot extends TimedRobot {
   public static DriveSubsystem          driveSubsystem          = new DriveSubsystem();
   public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
 
-  NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
+  public static NetworkTableSubsystem   networkTableSubsystem   = new NetworkTableSubsystem();
 
   private RobotContainer m_robotContainer;
 
-  private DelayedPrinter printer;
+  private Field2d field2d = new Field2d();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -45,7 +49,15 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    this.printer = new DelayedPrinter(1000);
+
+    // localization
+    networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
+    networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
+    networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
+
+    SmartDashboard.putData("Field", field2d);
+
+    System.out.println(networkTableSubsystem);
   }
 
   @Override
@@ -57,26 +69,46 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     localizationSubsystem.update();
     networkTableSubsystem.update();
+    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
+  }
+
+  @Override
+  public void simulationInit() {
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lFront,  DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lMiddle, DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lBack,   DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rFront,  DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rMiddle, DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rBack,   DCMotor.getNEO(1));
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    REVPhysicsSim.getInstance().run();
   }
 
   @Override
   public void autonomousInit() {
-    System.out.println("This is autonomous init");
-
     // TODO: Merge shooter, intake, hopper, ball follow into auto
+    // CommandScheduler.getInstance().schedule(
+    //   new SequentialCommandGroup(
+    //     new ParallelCommandGroup(
+    //       // new StartHopperCommand(),
+    //       new MoveToPointAlphaCommand()
+    //     ),
+    //     // new ShootCommand(),
+    //     new MoveToPointBetaCommand(),
+    //     // new FollowBallCommand(),
+    //     // new IntakeBallCommand(),
+    //     new MoveToPointGammaCommand()//,
+    //     // new ShootCommand()
+    //   )
+    // );
+
     CommandScheduler.getInstance().schedule(
-      new SequentialCommandGroup(
-        new ParallelCommandGroup(
-          // new StartHopperCommand(),
-          new MoveToPointAlphaCommand()
-        ),
-        // new ShootCommand(),
-        new MoveToPointBetaCommand(),
-        // new FollowBallCommand(),
-        // new IntakeBallCommand(),
-        new MoveToPointGammaCommand()//,
-        // new ShootCommand()
-      )
+      // new PatrolTestCommand()
+      // new MoveToPointBetaCommand()
+      new MoveToPointAlphaCommand()
     );
   }
 
@@ -88,38 +120,34 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    // System.out.println("This is teleop init");
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    new DriveCommand().execute();
+    if (Robot.isReal())
+      new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    System.out.println("This is disabled init");
-    Robot.driveSubsystem.setSpeed(0, 0);
+    driveSubsystem.setSpeed(0.0, 0.0);
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-    // System.out.println("This is disabled periodic");
   }
 
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
-    // System.out.println("This is test init");
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
     Robot.localizationSubsystem.reset();
-    // System.out.println("This is test periodic");
   }
 }
