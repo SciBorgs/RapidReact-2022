@@ -35,7 +35,7 @@ public class AlongAxisController {
     }
 
     public AlongAxisController(Point origin) {
-        this(origin, angleToPoint(subtract(origin, Robot.localizationSubsystem.getPos())));
+        this(origin, angleToPoint(displacementVector(origin, Robot.localizationSubsystem.getPos())));
     }
 
     public double distanceAlongAxis() {

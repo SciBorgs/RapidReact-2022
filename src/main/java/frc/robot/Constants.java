@@ -22,8 +22,8 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE = 0.4787787204; //..... :)
 
     //**************** INITIAL ROBOT STATE ****************//
-    public static final Point  STARTING_POINT = new Point(8, 4);
-    public static final double STARTING_HEADING = 0 * Math.PI / 2;
+    public static final Point  STARTING_POINT = new Point(4, 4);
+    public static final double STARTING_HEADING = Math.PI / 4;
     
     //***************** GEAR RATIOS ***********************//
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
@@ -31,11 +31,11 @@ public final class Constants {
     //********************** FIELD ***********************//
         // Note: The origin is the center of the hub.
     public static final Point POINT_HUB  = new Point(0, 0);
-    public static final Point POINT_BETA = new Point(0, 0);
+    public static final Point POINT_BETA = new Point(7, 7);
     public static final Point POINT_TEST = new Point(-2, 0);
 
         // Adjust radii here for desired shooting/searching distances.
-    public static final double SHOOTING_RADIUS_NEAR = 1.25;
+    public static final double SHOOTING_RADIUS_NEAR = 1.0;
     public static final double SHOOTING_RADIUS_FAR  = 3.3;
 
     public static final Path PATH_PATROL = Util.generateRandomPath(100, 0, 0, 16, 8);

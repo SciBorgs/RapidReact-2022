@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.test.*;
@@ -117,26 +119,29 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // TODO: Merge shooter, intake, hopper, ball follow into auto
-    // CommandScheduler.getInstance().schedule(
-    //   new SequentialCommandGroup(
-    //     new ParallelCommandGroup(
-    //       // new StartHopperCommand(),
-    //       new MoveToPointAlphaCommand()
-    //     ),
-    //     // new ShootCommand(),
-    //     new MoveToPointBetaCommand(),
-    //     // new FollowBallCommand(),
-    //     // new IntakeBallCommand(),
-    //     new MoveToPointGammaCommand()//,
-    //     // new ShootCommand()
-    //   )
-    // );
-
     CommandScheduler.getInstance().schedule(
-      // new PatrolTestCommand()
-      // new MoveToPointAlphaCommand()
-      new AlongAxisTestCommand()
+      new SequentialCommandGroup(
+        new MoveToPointAlphaCommand(),
+        new MoveToPointBetaCommand(),
+        new CommandBase() {
+          @Override
+          public boolean isFinished() {
+            return true;
+          }
+          @Override
+          public void end(boolean i) {
+            System.out.println("Auto Sequence Completed!");
+          }
+        },
+        new PatrolTestCommand()
+      )
     );
+
+    // CommandScheduler.getInstance().schedule(
+    //   // new PatrolTestCommand()
+    //   // new MoveToPointAlphaCommand()
+    //   new AlongAxisTestCommand()
+    // );
   }
 
   /** This function is called periodically during autonomous. */
