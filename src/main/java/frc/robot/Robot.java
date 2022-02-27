@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     localizationSubsystem.update();
     networkTableSubsystem.update();
-    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getRawHeading()));
+    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }
 
   @Override

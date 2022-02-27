@@ -17,20 +17,23 @@ public class MoveToPointBetaCommand extends CommandBase {
     public void initialize() {
         this.spinController = new SpinController(HEADING_TOLERANCE);
         this.pointController = new FollowPointController(DISTANCE_TOLERANCE);
+
+        this.spinController.setTarget(Constants.POINT_BETA);
+        this.pointController.setTarget(Constants.POINT_BETA);
     }
 
     @Override
     public void execute() {
-        if (!spinController.facingPoint(Constants.POINT_BETA)) {
-            this.spinController.facePoint(Constants.POINT_BETA);
+        if (!spinController.atTarget()) {
+            this.spinController.move();
         } else {
-            this.pointController.move(Constants.POINT_BETA);
+            this.pointController.move();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return this.pointController.hasArrived(Constants.POINT_BETA);
+        return this.pointController.isFinished();
     }
 
     @Override

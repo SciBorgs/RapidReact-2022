@@ -12,24 +12,22 @@ public class MoveToPointAlphaCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.axisController = new AlongAxisController(Constants.POINT_HUB);
-        this.axisController.setTargetDistance(Constants.SHOOTING_RADIUS_NEAR);
+        this.axisController = new AlongAxisController(Constants.POINT_HUB, DISTANCE_TOLERANCE);
+        this.axisController.setTarget(Constants.SHOOTING_RADIUS_NEAR);
     }
 
     @Override
     public void execute() {
         this.axisController.move();
-        Robot.localizationSubsystem.setInverted(true);
     }
 
     @Override
     public boolean isFinished() {
-        return this.axisController.atTargetDistance(DISTANCE_TOLERANCE);
+        return this.axisController.isFinished();
     }
 
     @Override
     public void end(boolean interrupted) {
         Robot.driveSubsystem.setSpeed(0.0, 0.0);
-        Robot.localizationSubsystem.setInverted(false);
     }
 }

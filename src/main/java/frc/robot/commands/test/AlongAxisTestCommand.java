@@ -15,23 +15,21 @@ public class AlongAxisTestCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.axisController = new AlongAxisController(Constants.STARTING_POINT, 0);
+        this.axisController = new AlongAxisController(Constants.STARTING_POINT, 0, DISTANCE_TOLERANCE);
+        this.axisController.setTarget(far);
         this.out = false;
     }
 
     @Override
     public void execute() {
-        if (this.axisController.atTargetDistance(DISTANCE_TOLERANCE)) {
-            Robot.driveSubsystem.setSpeed(0, 0);
+        if (this.axisController.atTarget()) {
             if (out) {
-                this.axisController.setTargetDistance(close);
+                this.axisController.setTarget(close);
                 // Robot.driveSubsystem.setInvertedControl(false);
-                Robot.localizationSubsystem.setInverted(true);
                 out = false;
             } else {
-                this.axisController.setTargetDistance(far);
+                this.axisController.setTarget(far);
                 // Robot.driveSubsystem.setInvertedControl(true);
-                Robot.localizationSubsystem.setInverted(false);
                 out = true;
             }
         }

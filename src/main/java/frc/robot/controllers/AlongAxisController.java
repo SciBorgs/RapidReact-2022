@@ -4,74 +4,131 @@ import frc.robot.Robot;
 import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
-import frc.robot.util.Util;
 
 import static frc.robot.util.Util.*;
 
-public class AlongAxisController {
-    private final Point origin, direction;
+public class AlongAxisController implements MovementController<Double, AlongAxisController.State> {
+    protected static enum State { NONE, MOVING_NEG, MOVING_POS, FINISHED }
+    private State state;
     private final PID headPID, distPID;
 
+    private final Point origin, direction;
+    private double directionAngle;
     private Point targetPoint;
     private double targetDistance;
+    private double distanceTolerance;
 
-    public AlongAxisController(Point origin, double positiveHeading) {
+    public AlongAxisController(Point origin, double positiveHeading, double distanceTolerance) {
         this.origin = origin;
         this.direction = unitVector(positiveHeading);
-        this.targetPoint = origin;
-        this.targetDistance = 0.0;
+        this.directionAngle = positiveHeading;
+
+        this.distanceTolerance = distanceTolerance;
         this.headPID = new PID(2.0, 0.3, 0.2);
         this.distPID = new PID(1.04, 0, 0);
-
-        NetworkTableSubsystem binder = Robot.networkTableSubsystem;
-        binder.bind("axis test", "target dist",   () -> this.targetDistance, 0.1156);
-        binder.bind("axis test", "target point",  () -> this.targetPoint.toArray(), new double[] {0.0, 0.0});
-        binder.bind("axis test", "init origin", () -> this.origin.toArray(), new double[] {0.0, 0.0});
-        binder.bind("axis test", "init direct", () -> Util.angleToPoint(this.direction), 0.1156);
-        binder.bind("axis test", "run finished", () -> this.atTargetDistance(), true);
-        binder.bind("axis test", "run distance", this::distanceAlongAxis, 0.0);
-        binder.createPIDBindings("axis test [head pid]", "pid", this.headPID, true, true);
-        binder.createPIDBindings("axis test [dist pid]", "pid", this.distPID, true, true);
+        this.targetDistance = 0.0;
+        this.targetPoint = null;
+        this.state = State.NONE;
     }
 
-    public AlongAxisController(Point origin) {
-        this(origin, angleToPoint(displacementVector(origin, Robot.localizationSubsystem.getPos())));
+    public AlongAxisController(Point origin, double distanceTolerance) {
+        this(origin, angleToPoint(displacementVector(origin, Robot.localizationSubsystem.getPos())), distanceTolerance);
     }
 
-    public double distanceAlongAxis() {
+    // MovementController methods
+
+    public Double getTarget() { return this.targetDistance; }
+    public Double getCurrentValue() { return this.distanceAlongAxis(); }
+    public void setTarget(Double target) {
+        this.setTargetDistance(target);
+    }
+    public boolean atTarget() { return this.atTargetDistance(); }
+
+    public State getCurrentState() { return this.state; }
+    public boolean isFinished() {
+        return this.state == State.FINISHED;
+    }
+
+    public void move() {
+        if (this.targetPoint == null) return;
+        if (!this.atTarget()) {
+            this.reachTargetDistance();
+        } else {
+            this.state = State.FINISHED;
+            this.stop();
+        }
+    }
+
+    public void stop() {
+        Robot.driveSubsystem.setSpeed(0.0, 0.0);
+    }
+
+    // controller-specific methods | math
+
+    protected double distanceAlongAxis() {
         Point currPos = Robot.localizationSubsystem.getPos();
         Point displacementVector = displacementVector(origin, currPos);
         return dot(displacementVector, this.direction);
     }
 
-    public Point getPointAlongAxis(double distance) {
+    protected Point getPointAlongAxis(double distance) {
         return add(this.origin, scale(direction, distance));
     }
 
-    public void setTargetDistance(double targetDistance) {
+    protected void setTargetDistance(double targetDistance) {
         this.targetDistance = targetDistance;
         this.targetPoint = this.getPointAlongAxis(targetDistance);
     }
 
-    public boolean atTargetDistance(double tolerance) {
-        return Math.abs(this.targetDistance - this.distanceAlongAxis()) < tolerance;
+    protected boolean atTargetDistance() {
+        return Math.abs(this.targetDistance - this.distanceAlongAxis()) < this.distanceTolerance;
     }
 
-    public boolean atTargetDistance() {
-        return this.atTargetDistance(5.0E-2);
+    protected boolean backwards() {
+        return Math.abs(travelledAngle(Robot.localizationSubsystem.getHeading(), this.directionAngle)) > Math.PI / 2;
     }
 
-    public void move() {
+    protected boolean isBehindRobot(Point p) {
+        Point currPos = Robot.localizationSubsystem.getPos();
+        double currHeading = Robot.localizationSubsystem.getHeading();
+        Point d = displacementVector(currPos, p);
+        return Math.abs(travelledAngle(angleToPoint(d), currHeading)) > Math.PI / 2;
+    }
+
+    // controller-specific methods | control
+
+    protected void reachTargetDistance() {
         Point currPos = Robot.localizationSubsystem.getPos();
         Point displacementVector = displacementVector(currPos, targetPoint);
-
         double targetHeading = angleToPoint(displacementVector);
-        double currHeading = Robot.localizationSubsystem.getHeading();
-        double headingError = travelledAngle(targetHeading, currHeading);
-
         double forward = distPID.getOutput(targetDistance, distanceAlongAxis());
-        double angle   = -headPID.getOutput(0, headingError);
-        if (Robot.localizationSubsystem.getInverted()) angle *= -1.0;
-        Robot.driveSubsystem.setSpeedForwardAngle(forward, angle);
+
+        if (isBehindRobot(this.targetPoint)) {
+            double currHeading = Robot.localizationSubsystem.getBackwardsHeading();
+            double headingError = travelledAngle(targetHeading, currHeading);
+            double angle   = headPID.getOutput(0, headingError);
+
+            this.state = State.MOVING_NEG;
+            Robot.driveSubsystem.setSpeedForwardAngle(forward, angle);
+        } else {
+            double currHeading = Robot.localizationSubsystem.getHeading();
+            double headingError = travelledAngle(targetHeading, currHeading);
+            double angle   = -headPID.getOutput(0, headingError);
+
+            this.state = State.MOVING_POS;
+            Robot.driveSubsystem.setSpeedForwardAngle(forward, angle);
+        }
+    }
+
+    // MovementController methods
+
+    public void setBindings(NetworkTableSubsystem ntsubsystem) {
+        ntsubsystem.createPIDBindings("axis dist PID", "dist", this.distPID, true, true);
+        ntsubsystem.createPIDBindings("axis head PID", "head", this.headPID, true, true);
+    }
+
+    public void resetPIDs() {
+        this.headPID.reset();
+        this.distPID.reset();
     }
 }

@@ -13,16 +13,17 @@ public class SpinTestCommand extends CommandBase {
     @Override
     public void initialize() {
         this.spinController = new SpinController(HEADING_TOLERANCE);
+        this.spinController.setTarget(Constants.POINT_HUB);
     }
 
     @Override
     public void execute() {
-        this.spinController.facePoint(Constants.POINT_HUB);
+        this.spinController.move();
     }
 
     @Override
     public boolean isFinished() {
-        return this.spinController.facingPoint(Constants.POINT_HUB);
+        return this.spinController.isFinished();
     }
 
     @Override
