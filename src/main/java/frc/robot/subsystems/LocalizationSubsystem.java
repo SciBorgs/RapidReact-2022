@@ -43,6 +43,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.pigeon.setAngle(Constants.STARTING_HEADING);
     }
 
+    public double[] get()      { return new double[] {this.pos.x, this.pos.y, this.pigeon.getAngle()}; }
     public Point  getPos()     { return this.pos; }
     public double getX()       { return this.pos.x; }
     public double getY()       { return this.pos.y; }
