@@ -23,7 +23,7 @@ public final class Constants {
 
     //**************** INITIAL ROBOT STATE ****************//
     public static final Point  STARTING_POINT = new Point(8, 4);
-    public static final double STARTING_HEADING = Math.PI / 2;
+    public static final double STARTING_HEADING = 0 * Math.PI / 2;
     
     //***************** GEAR RATIOS ***********************//
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;

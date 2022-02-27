@@ -12,6 +12,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class DriveSubsystem extends SubsystemBase {
     public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
+    private boolean invertedControl;
+    private double speedLimit;
 
     public DriveSubsystem() {
         this.lFront  = new CANSparkMax(PortMap.LEFT_FRONT_SPARK,  MotorType.kBrushless);
@@ -35,24 +37,37 @@ public class DriveSubsystem extends SubsystemBase {
         rFront.setIdleMode(IdleMode.kCoast);
         rMiddle.setIdleMode(IdleMode.kCoast);
         rBack.setIdleMode(IdleMode.kCoast);
+
+        this.speedLimit = 0.95;
+        this.invertedControl = false;
     }
+
+    public double getSpeedLimit() { return this.speedLimit; }
+    public boolean getInvertedControl() { return this.invertedControl; }
+
+    public void setSpeedLimit(double speedLimit) { this.speedLimit = speedLimit; }
+    public void setInvertedControl(boolean inverted) { this.invertedControl = inverted; }
 
     private void setSpeedRaw(double left, double right) {
         if (Robot.isReal()) {
             lFront.set(left);
             rFront.set(right);
         } else {
-            lFront.setVoltage(left);
+            lFront .setVoltage(left);
             lMiddle.setVoltage(left);
-            lBack.setVoltage(left);
-            rFront.setVoltage(right);
+            lBack  .setVoltage(left);
+            rFront .setVoltage(right);
             rMiddle.setVoltage(right);
-            rBack.setVoltage(right);
+            rBack  .setVoltage(right);
         }
     }
 
     public void setSpeed(double left, double right) {
-        setSpeedRaw(Util.normalize(left, 1.0), -Util.normalize(right, 1.0));
+        if (invertedControl) {
+            left *= -1.0;
+            right *= -1.0;
+        }
+        setSpeedRaw(Util.normalize(left, this.speedLimit), -Util.normalize(right, this.speedLimit));
     }
 
     public void setSpeedForwardAngle(double forward, double angle) {
@@ -60,11 +75,11 @@ public class DriveSubsystem extends SubsystemBase {
         setSpeed(forward * (1 + angle), forward * (1 - angle)); // thank you zev
     }
 
-    public void spinRobot(double omega) {
-        setSpeed(-omega, omega);
+    public void spinRobot(double speed) {
+        setSpeed(-speed, speed);
     }
 
-    public void moveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {
+    public void driveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {
         double leftValue = -leftJoystick.getY();
         double rightValue = rightJoystick.getY();
 

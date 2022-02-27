@@ -53,6 +53,12 @@
       "Spin Heading PID": {
         "open": true
       },
+      "axis test": {
+        "open": true
+      },
+      "axis test [head pid]": {
+        "open": true
+      },
       "drive": {
         "open": true
       },

@@ -5,19 +5,16 @@
 package frc.robot;
 
 import com.revrobotics.REVPhysicsSim;
-import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.test.*;
-import frc.robot.controllers.FollowPointController;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.DriveCommand;
 
@@ -25,8 +22,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DummySubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.NetworkTableSubsystem;
-import frc.robot.util.DelayedPrinter;
-import frc.robot.util.Util;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -71,6 +66,7 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
     networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
     networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
+    networkTableSubsystem.bind("localization", "rInverted", localizationSubsystem::getInverted, true);
     // networkTableSubsystem.bind("localization", "encoderRateLeft", localizationSubsystem.pigeon.left::getSpeed, 0.0);
     // networkTableSubsystem.bind("localization", "encoderRateight", localizationSubsystem.pigeon.right::getSpeed, 0.0);
     networkTableSubsystem.bind("localization", "vH", localizationSubsystem.pigeon::getAngularVelocity, 0.0);
@@ -79,6 +75,7 @@ public class Robot extends TimedRobot {
     // networkTableSubsystem.bind("drive", "vL", v -> {speeds[0] = v;}, 0.0);
     // networkTableSubsystem.bind("drive", "vR", v -> {speeds[1] = v;}, 0.0);
     networkTableSubsystem.bind("drive", "v", v -> {speeds[0] = v; speeds[1] = v;}, 0.0);
+    networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 1.0);
 
     // controller pids
     // networkTableSubsystem.createPIDCoeffBindings("FollowPoint Distance PID", "PID", FollowPointController.DISTANCE_COEFFS);
@@ -99,7 +96,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     localizationSubsystem.update();
     networkTableSubsystem.update();
-    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
+    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getRawHeading()));
   }
 
   @Override
@@ -137,8 +134,8 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().schedule(
       // new PatrolTestCommand()
-      // new MoveToPointBetaCommand()
-      new MoveToPointAlphaCommand()
+      // new MoveToPointAlphaCommand()
+      new AlongAxisTestCommand()
     );
   }
 

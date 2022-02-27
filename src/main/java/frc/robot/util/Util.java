@@ -29,6 +29,24 @@ public class Util {
         return new Point(to.x - from.x, to.y - from.y);
     }
 
+    public static Point add(Point... ps) {
+        double x = 0;
+        double y = 0;
+        for (Point p : ps) {
+            x += p.x;
+            y += p.y;
+        }
+        return new Point(x, y);
+    }
+
+    public static Point subtract(Point p1, Point p2) {
+        return displacementVector(p2, p1);
+    }
+
+    public static Point scale(Point p, double k) {
+        return new Point(k * p.x, k * p.y);
+    }
+
     public static double angleToPoint(Point p) {
         return Math.atan2(p.y, p.x);
     }
