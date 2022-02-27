@@ -104,7 +104,6 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
 
         double forward = distPID.getOutput(targetDistance, distanceAlongAxis());
         double angle   = -headPID.getOutput(0, headingError);
-        if (Robot.localizationSubsystem.getInverted()) angle *= -1.0;
         Robot.driveSubsystem.setSpeedForwardAngle(forward, angle);
     }
 

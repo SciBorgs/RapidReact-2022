@@ -16,7 +16,6 @@ public class LocalizationSubsystem extends SubsystemBase {
     public SciEncoder totalEncoder;
     // public SciPigeon pigeon;
     public DummyGyro pigeon;
-    private boolean invertedRead;
 
     public LocalizationSubsystem() {
         this.pos = Constants.STARTING_POINT;
@@ -42,20 +41,14 @@ public class LocalizationSubsystem extends SubsystemBase {
             new SciEncoder(Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, Robot.driveSubsystem.lFront.getEncoder()), 
             new SciEncoder(Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, Robot.driveSubsystem.rFront.getEncoder()));
         this.pigeon.setAngle(Constants.STARTING_HEADING);
-        this.invertedRead = false;
     }
 
     public Point  getPos()     { return this.pos; }
     public double getX()       { return this.pos.x; }
     public double getY()       { return this.pos.y; }
     public double getVel()     { return this.totalEncoder.getSpeed(); }
-    public double getHeading() { return this.invertedRead ? this.prevHeading + Math.PI : this.prevHeading; }
-    public double getRawHeading() { return this.prevHeading; }
-
-    public boolean getInverted() { return this.invertedRead; }
-    public void setInverted(boolean inverted) {
-        this.invertedRead = inverted;
-    }
+    public double getHeading() { return this.prevHeading; }
+    public double getBackwardsHeading() { return this.prevHeading + Math.PI; }
 
     // call in periodic
     public void update() {

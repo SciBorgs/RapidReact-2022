@@ -26,12 +26,10 @@ public class AlongAxisTestCommand extends CommandBase {
             if (out) {
                 this.axisController.setTarget(close);
                 // Robot.driveSubsystem.setInvertedControl(false);
-                Robot.localizationSubsystem.setInverted(true);
                 out = false;
             } else {
                 this.axisController.setTarget(far);
                 // Robot.driveSubsystem.setInvertedControl(true);
-                Robot.localizationSubsystem.setInverted(false);
                 out = true;
             }
         }

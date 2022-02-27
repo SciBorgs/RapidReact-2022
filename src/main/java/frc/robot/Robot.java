@@ -68,7 +68,6 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
     networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
     networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
-    networkTableSubsystem.bind("localization", "rInverted", localizationSubsystem::getInverted, true);
     // networkTableSubsystem.bind("localization", "encoderRateLeft", localizationSubsystem.pigeon.left::getSpeed, 0.0);
     // networkTableSubsystem.bind("localization", "encoderRateight", localizationSubsystem.pigeon.right::getSpeed, 0.0);
     networkTableSubsystem.bind("localization", "vH", localizationSubsystem.pigeon::getAngularVelocity, 0.0);
@@ -93,7 +92,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     localizationSubsystem.update();
     networkTableSubsystem.update();
-    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getRawHeading()));
+    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }
 
   @Override
