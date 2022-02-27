@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableType;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.controllers.MovementController;
 import frc.robot.util.PID;
 
 /**
@@ -292,7 +293,13 @@ public class NetworkTableSubsystem {
     /**
      * Creates bindings in this NetworkTableSubsystem to track output, and,
      * optionally, track other info (error, integral, derivative) and set
-     * coefficients.
+     * PID coefficients.
+     * <pre>
+     * // Example use
+     *  ntsubsystem.createControllerBindings(
+     *      "test", "controller",
+     *      pointController,
+     *      0.0);
      * @param tab the tab to use
      * @param name the prefix to use when naming the network table entries
      * @param pid the PID controller
@@ -311,5 +318,53 @@ public class NetworkTableSubsystem {
             this.bind(tab, name + " set kI", pid::setI, pid.getI());
             this.bind(tab, name + " set kD", pid::setD, pid.getD());
         }
+    }
+
+    /**
+     * Create bindings in this NetworkTableSubsystem to track data and state
+     * from a controller.
+     * @param <T> the target type of the controller
+     * @param <U> the type of the state enum of the controller
+     * @param @param tab the tab to use
+     * @param name the prefix to use when naming the network table entries
+     * @param controller the controller
+     * @param defaultValue the default value to use
+     */
+    public <T, U extends Enum<U>> void createControllerBindings(String tab, String name, MovementController<T, U> controller, U defaultValue) {
+        this.bind(tab, name + " target value",  controller::getTarget, defaultValue);
+        this.bind(tab, name + " current value", controller::getCurrentValue, defaultValue);
+        this.bind(tab, name + " reached value", controller::atTarget, false);
+        this.bind(tab, name + " controller state", () -> controller.getCurrentState().toString(), "");
+        this.bind(tab, name + " controller fin",   controller::isFinished, false);
+    }
+
+    /**
+     * Create bindings in this NetworkTableSubsystem to track data and state
+     * from a controller. This method is overloaded to account for different
+     * target types that cannot be sent through network tables (ex. Point) and
+     * should be cast to a different type.
+     * <pre>
+     * // Example use
+     *  ntsubsystem.createControllerBindings(
+     *      "test", "controller",
+     *      pathController,
+     *      Point::toArray,
+     *      new double[] {0.0, 0.0});
+     * </pre>
+     * @param <T> the target type of the controller
+     * @param <U> the type of the state enum of the controller
+     * @param <V> the type to cast the target type to
+     * @param @param tab the tab to use
+     * @param name the prefix to use when naming the network table entries
+     * @param controller the controller
+     * @param castingFunction the function to be used to cast from the target type to the network table type
+     * @param defaultValue the default value to use
+     */
+    public <T, U extends Enum<U>, V> void createControllerBindings(String tab, String name, MovementController<T, U> controller, Function<T, V> castingFunction, V defaultValue) {
+        this.bind(tab, name + " target value",  () -> castingFunction.apply(controller.getTarget()), defaultValue);
+        this.bind(tab, name + " current value", () -> castingFunction.apply(controller.getCurrentValue()), defaultValue);
+        this.bind(tab, name + " reached value", controller::atTarget, false);
+        this.bind(tab, name + " controller state", () -> controller.getCurrentState().toString(), "");
+        this.bind(tab, name + " controller fin",   controller::isFinished, false);
     }
 }
