@@ -12,7 +12,6 @@ import frc.robot.Constants;
 public class LocalizationSubsystem extends SubsystemBase {
     private Point pos;
     private double prevDistance, prevHeading;
-    private boolean invertedRead; // true if heading vector should be behind the robot
     public SciEncoder totalEncoder;
     public SciPigeon pigeon;
 

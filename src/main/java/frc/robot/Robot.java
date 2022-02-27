@@ -108,15 +108,14 @@ public class Robot extends TimedRobot {
           public void end(boolean i) {
             System.out.println("Auto Sequence Completed!");
           }
-        },
-        new PatrolTestCommand()
+        }
       )
     );
 
     // CommandScheduler.getInstance().schedule(
-    //   // new PatrolTestCommand()
-    //   // new MoveToPointAlphaCommand()
-    //   new AlongAxisTestCommand()
+    //   // new SpinTestCommand()
+    //   // new FollowPointTestCommand()
+    //   // new AlongAxisTestCommand()
     // );
   }
 

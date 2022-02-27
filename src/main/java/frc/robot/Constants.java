@@ -37,6 +37,4 @@ public final class Constants {
         // Adjust radii here for desired shooting/searching distances.
     public static final double SHOOTING_RADIUS_NEAR = 1.25;
     public static final double SHOOTING_RADIUS_FAR  = 3.3;
-
-    public static final Path PATH_PATROL = Util.generateRandomPath(100, 0, 0, 16, 8);
 }
