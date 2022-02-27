@@ -45,6 +45,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     public double getY()       { return this.pos.y; }
     public double getVel()     { return this.totalEncoder.getSpeed(); }
     public double getHeading() { return this.invertedRead ? this.prevHeading + Math.PI : this.prevHeading; }
+    public double getRawHeading() { return this.prevHeading; }
 
     public boolean getInverted() { return this.invertedRead; }
     public void setInverted(boolean inverted) {
