@@ -330,7 +330,7 @@ public class NetworkTableSubsystem {
      * @param controller the controller
      * @param defaultValue the default value to use
      */
-    public <T, U extends Enum<U>> void createControllerBindings(String tab, String name, MovementController<T, U> controller, U defaultValue) {
+    public <T, U extends Enum<U>> void createControllerBindings(String tab, String name, MovementController<T, U> controller, T defaultValue) {
         this.bind(tab, name + " target value",  controller::getTarget, defaultValue);
         this.bind(tab, name + " current value", controller::getCurrentValue, defaultValue);
         this.bind(tab, name + " reached value", controller::atTarget, false);
@@ -348,7 +348,7 @@ public class NetworkTableSubsystem {
      *  ntsubsystem.createControllerBindings(
      *      "test", "controller",
      *      pathController,
-     *      Point::toArray,
+     *      p -> p.toArray(),
      *      new double[] {0.0, 0.0});
      * </pre>
      * @param <T> the target type of the controller
