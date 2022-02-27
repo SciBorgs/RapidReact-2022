@@ -79,11 +79,6 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("drive", "v", v -> {speeds[0] = v; speeds[1] = v;}, 0.0);
     networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 1.0);
 
-    // controller pids
-    // networkTableSubsystem.createPIDCoeffBindings("FollowPoint Distance PID", "PID", FollowPointController.DISTANCE_COEFFS);
-    // networkTableSubsystem.createPIDCoeffBindings("FollowPoint Heading PID",  "PID", FollowPointController.HEADING_COEFFS);
-    // networkTableSubsystem.createPIDCoeffBindings("Spin Heading PID",         "PID", FollowPointController.HEADING_COEFFS);
-
     SmartDashboard.putData("Field", field2d);
 
     System.out.println(networkTableSubsystem);

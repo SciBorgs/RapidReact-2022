@@ -5,28 +5,25 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.controllers.FollowPointController;
 
-public class FollowPointTestCommand extends CommandBase{
+public class FollowPointTestCommand extends CommandBase {
     private FollowPointController controller;
 
     private static final double DISTANCE_TOLERANCE = 0.05;
 
-    public FollowPointTestCommand() {
-        super();
-    }
-
     @Override
     public void initialize() {
         this.controller = new FollowPointController(DISTANCE_TOLERANCE);
+        this.controller.setTarget(Constants.POINT_TEST);
     }
 
     @Override
     public void execute() {
-        this.controller.move(Constants.POINT_HUB);
+        this.controller.move();
     }
 
     @Override
     public boolean isFinished() {
-        return controller.hasArrived(Constants.POINT_HUB);
+        return controller.isFinished();
     }
 
     @Override

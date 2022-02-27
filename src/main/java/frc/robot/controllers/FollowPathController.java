@@ -9,6 +9,7 @@ import frc.robot.util.Point;
 
 /**
  * Controller for discrete path following (read "turn move turn").
+ * Unlikely to be used in real auto.
  */
 public class FollowPathController {
     private final Iterator<Point> pathIterator;
@@ -36,17 +37,19 @@ public class FollowPathController {
 
     public void move() {
         if (!this.spinController.facingPoint(trackingPoint)) {
-            this.spinController.facePoint(trackingPoint);
+            this.spinController.move();
             this.state = ControllerState.SPINNING;
         }
         
         else if (!this.pointController.hasArrived(trackingPoint)) {
-            this.pointController.move(trackingPoint);
+            this.pointController.move();
             this.state = ControllerState.MOVING;
         }
 
         else if (!terminateAfterNext && this.pathIterator.hasNext()) {
             this.trackingPoint = this.pathIterator.next();
+            this.spinController.setTarget(this.trackingPoint);
+            this.pointController.setTarget(this.trackingPoint);
             this.state = ControllerState.NONE;
         }
         
@@ -65,14 +68,13 @@ public class FollowPathController {
         return this.state == ControllerState.FINISHED;
     }
 
-    public void setBindings(NetworkTableSubsystem binder) {
-        binder.bind("FollowPathController", "state", () -> this.state.toString(), "NONE");
-        binder.bind("FollowPathController", "arrived", this::arrived, false);
-        binder.bind("FollowPathController", "termnext", () -> this.terminateAfterNext, false);
-        binder.bind("FollowPathController", "point", () -> this.currentPoint().toArray(), new double[] {0, 0});
+    public void setBindings(NetworkTableSubsystem ntsubsystem) {
+        ntsubsystem.bind("FollowPathController", "state", () -> this.state.toString(), "NONE");
+        ntsubsystem.bind("FollowPathController", "arrived", this::arrived, false);
+        ntsubsystem.bind("FollowPathController", "termnext", () -> this.terminateAfterNext, false);
+        ntsubsystem.bind("FollowPathController", "point", () -> this.currentPoint().toArray(), new double[] {0, 0});
 
-        binder.createPIDBindings("Spin PID", "spin", this.spinController.headingPID, true, true);
-        binder.createPIDBindings("Dist PID", "dist", this.pointController.distancePID, true, true);
-        binder.createPIDBindings("Head PID", "head", this.pointController.headingPID, true, true);
+        this.spinController.setBindings(ntsubsystem);
+        this.pointController.setBindings(ntsubsystem);
     }
 }
