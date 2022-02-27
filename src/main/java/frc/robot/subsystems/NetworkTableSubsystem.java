@@ -348,7 +348,7 @@ public class NetworkTableSubsystem {
      *  ntsubsystem.createControllerBindings(
      *      "test", "controller",
      *      pathController,
-     *      Point::toArray,
+     *      p -> p.toArray(),
      *      new double[] {0.0, 0.0});
      * </pre>
      * @param <T> the target type of the controller
