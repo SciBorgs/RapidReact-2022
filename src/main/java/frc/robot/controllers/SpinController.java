@@ -25,7 +25,7 @@ public class SpinController implements MovementController<Point, SpinController.
 
     // MovementController methods
 
-    public Point getTarget() { return this.targetPoint; }
+    public Point getTargetValue() { return this.targetPoint; }
     public Point getCurrentValue() { return Robot.localizationSubsystem.getPos(); }
     public void setTarget(Point targetPoint) {
         this.targetPoint = targetPoint;
@@ -92,8 +92,8 @@ public class SpinController implements MovementController<Point, SpinController.
 
     // MovementController methods
 
-    public void setBindings(NetworkTableSubsystem ntsubsystem) {
-        ntsubsystem.createPIDBindings("spin spin pid", "pid", this.headingPID, true, true);
+    public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
+        ntsubsystem.createPIDBindings(tab + " spin pid", "pid", this.headingPID, true, true);
     }
 
     public void resetPIDs() {

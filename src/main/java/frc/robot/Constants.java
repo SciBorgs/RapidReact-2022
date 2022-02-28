@@ -4,9 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.util.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import frc.robot.controllers.PathSmoother;
 import frc.robot.util.Point;
-import frc.robot.util.Util;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -37,4 +39,14 @@ public final class Constants {
         // Adjust radii here for desired shooting/searching distances.
     public static final double SHOOTING_RADIUS_NEAR = 1.25;
     public static final double SHOOTING_RADIUS_FAR  = 3.3;
+
+    public static final List<Point> PATH_TEST_RAW = new ArrayList<>();
+    static {
+        PATH_TEST_RAW.add(STARTING_POINT);
+        PATH_TEST_RAW.add(new Point(12, 6));
+        PATH_TEST_RAW.add(new Point(12, 2));
+        PATH_TEST_RAW.add(new Point(4, 2));
+        PATH_TEST_RAW.add(new Point(4, 6));
+    }
+    public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 100).getFinalPath();
 }

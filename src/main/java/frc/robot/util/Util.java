@@ -1,5 +1,8 @@
 package frc.robot.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Util {
     public static double normalize(double v) {
         return Math.min(Math.max(-1, v), 1);
@@ -66,15 +69,29 @@ public class Util {
         return a2 + (b2 - a2) * (v - a1) / (b1 - a1);
     }
 
-    // Generates a path to be used for testing discrete path following
-    public static Path generateRandomPath(int n, double x1, double y1, double x2, double y2) {
-        Point[] points = new Point[n];
-        for (int i = 0; i < n; i++) {
-            points[i] = new Point(
-                map(Math.random(), 0.0, 1.0, x1, x2),
-                map(Math.random(), 0.0, 1.0, y1, y2)
-            );
+    public static double length(List<Point> curve, int skip) {
+        double length = 0;
+        int n = curve.size();
+        Point prevPoint = curve.get(0);
+        for (int i = skip; i < n; i += skip) {
+            Point currPoint = curve.get(i);
+            length += distance(prevPoint, currPoint);
+            prevPoint = currPoint;
         }
-        return new Path(points);
+        length += distance(prevPoint, curve.get(n - 1));
+        return length;
+    }
+
+    // Generates a path to be used for testing discrete path following
+    public static List<Point> generateRandomPath(int n, double x1, double y1, double x2, double y2) {
+        List<Point> points = new ArrayList<>();
+        for (int i = 0; i < n; i++)
+            points.add(generateRandomPoint(x1, y1, x2, y2));
+        return points;
+    }
+
+    public static Point generateRandomPoint(double x1, double y1, double x2, double y2) {
+        return new Point(map(Math.random(), 0.0, 1.0, x1, x2),
+                         map(Math.random(), 0.0, 1.0, y1, y2));
     }
 }

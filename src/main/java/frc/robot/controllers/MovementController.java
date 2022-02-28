@@ -8,7 +8,7 @@ import frc.robot.subsystems.NetworkTableSubsystem;
  * @param <T> State an enum representing the state of the controller
  */
 public interface MovementController<TargetType, State extends Enum<State>> {
-    TargetType getTarget();
+    TargetType getTargetValue();
     TargetType getCurrentValue();
     void setTarget(TargetType target);
     boolean atTarget();
@@ -19,6 +19,6 @@ public interface MovementController<TargetType, State extends Enum<State>> {
     void move();
     void stop();
     
-    void setBindings(NetworkTableSubsystem ntsubsystem);
+    void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name);
     void resetPIDs();
 }

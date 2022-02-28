@@ -26,7 +26,7 @@ public class FollowPointController implements MovementController<Point, FollowPo
 
     // MovementController methods
 
-    public Point getTarget() { return this.targetPoint; }
+    public Point getTargetValue() { return this.targetPoint; }
     public Point getCurrentValue() { return Robot.localizationSubsystem.getPos(); }
     public void setTarget(Point targetPoint) {
         this.targetPoint = targetPoint;
@@ -78,9 +78,9 @@ public class FollowPointController implements MovementController<Point, FollowPo
 
     // MovementController methods
 
-    public void setBindings(NetworkTableSubsystem ntsubsystem) {
-        ntsubsystem.createPIDBindings("point dist PID", "dist", this.distancePID, true, true);
-        ntsubsystem.createPIDBindings("point head PID", "head", this.headingPID, true, true);
+    public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
+        ntsubsystem.createPIDBindings(tab + " dist pid", "pid", this.distancePID, true, true);
+        ntsubsystem.createPIDBindings(tab + " head pid", "pid", this.headingPID, true, true);
     }
 
     public void resetPIDs() {

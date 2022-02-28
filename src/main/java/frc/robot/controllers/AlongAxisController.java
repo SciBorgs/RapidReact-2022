@@ -37,7 +37,7 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
 
     // MovementController methods
 
-    public Double getTarget() { return this.targetDistance; }
+    public Double getTargetValue() { return this.targetDistance; }
     public Double getCurrentValue() { return this.distanceAlongAxis(); }
     public void setTarget(Double target) {
         this.setTargetDistance(target);
@@ -122,9 +122,9 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
 
     // MovementController methods
 
-    public void setBindings(NetworkTableSubsystem ntsubsystem) {
-        ntsubsystem.createPIDBindings("axis dist PID", "dist", this.distPID, true, true);
-        ntsubsystem.createPIDBindings("axis head PID", "head", this.headPID, true, true);
+    public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
+        ntsubsystem.createPIDBindings(tab + " dist pid", "dist", this.distPID, true, true);
+        ntsubsystem.createPIDBindings(tab + " head pid", "head", this.headPID, true, true);
     }
 
     public void resetPIDs() {

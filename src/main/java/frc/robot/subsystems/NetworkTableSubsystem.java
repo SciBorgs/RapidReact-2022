@@ -300,6 +300,7 @@ public class NetworkTableSubsystem {
      *      "test", "controller",
      *      pointController,
      *      0.0);
+     * </pre>
      * @param tab the tab to use
      * @param name the prefix to use when naming the network table entries
      * @param pid the PID controller
@@ -331,7 +332,8 @@ public class NetworkTableSubsystem {
      * @param defaultValue the default value to use
      */
     public <T, U extends Enum<U>> void createControllerBindings(String tab, String name, MovementController<T, U> controller, T defaultValue) {
-        this.bind(tab, name + " target value",  controller::getTarget, defaultValue);
+        controller.setBindings(this, tab, name);
+        this.bind(tab, name + " target value",  controller::getTargetValue, defaultValue);
         this.bind(tab, name + " current value", controller::getCurrentValue, defaultValue);
         this.bind(tab, name + " reached value", controller::atTarget, false);
         this.bind(tab, name + " controller state", () -> controller.getCurrentState().toString(), "");
@@ -361,7 +363,8 @@ public class NetworkTableSubsystem {
      * @param defaultValue the default value to use
      */
     public <T, U extends Enum<U>, V> void createControllerBindings(String tab, String name, MovementController<T, U> controller, Function<T, V> castingFunction, V defaultValue) {
-        this.bind(tab, name + " target value",  () -> castingFunction.apply(controller.getTarget()), defaultValue);
+        controller.setBindings(this, tab, name);
+        this.bind(tab, name + " target value",  () -> castingFunction.apply(controller.getTargetValue()), defaultValue);
         this.bind(tab, name + " current value", () -> castingFunction.apply(controller.getCurrentValue()), defaultValue);
         this.bind(tab, name + " reached value", controller::atTarget, false);
         this.bind(tab, name + " controller state", () -> controller.getCurrentState().toString(), "");
