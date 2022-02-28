@@ -7,33 +7,33 @@ import frc.robot.Robot;
 
 public class AlongAxisTestCommand extends CommandBase {
     private AlongAxisController axisController;
-    private double far = 5;
-    private double close = -5;
-    private boolean out;
+    private double farDistance = 3;
+    private double closeDistance = -3; 
+    private boolean goingToFar; // these variable names are bad :(
 
-    private static final double DISTANCE_TOLERANCE = 0.3;
+    private static final double DISTANCE_TOLERANCE = 1;
 
     @Override
     public void initialize() {
         this.axisController = new AlongAxisController(Constants.STARTING_POINT, 0, DISTANCE_TOLERANCE);
-        this.axisController.setTarget(far);
-        this.out = false;
+        this.axisController.setTarget(farDistance);
+        this.goingToFar = false;
+        Robot.networkTableSubsystem.createControllerBindings("axis test", "axis", this.axisController, 0.0);
+        
     }
 
     @Override
     public void execute() {
         if (this.axisController.atTarget()) {
-            if (out) {
-                this.axisController.setTarget(close);
-                // Robot.driveSubsystem.setInvertedControl(false);
-                out = false;
-            } else {
-                this.axisController.setTarget(far);
-                // Robot.driveSubsystem.setInvertedControl(true);
-                out = true;
-            }
+            goingToFar = !goingToFar;
+            setTarget();
         }
         this.axisController.move();
+    }
+
+    public void setTarget() {
+        if (goingToFar) this.axisController.setTarget(farDistance);
+        else this.axisController.setTarget(closeDistance);
     }
 
     @Override

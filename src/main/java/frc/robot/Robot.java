@@ -9,6 +9,7 @@ import com.revrobotics.REVPhysicsSim;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -42,6 +43,10 @@ public class Robot extends TimedRobot {
 
   private Field2d field2d = new Field2d();
 
+  private Timer timer = new Timer();
+  private int tick = 0;
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -58,9 +63,15 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
 
     // drive
-    networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 1.0);
+    networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 0.5);
+    // networkTableSubsystem.bind("drive", "joystick left", oi.joystickLeft::getY, 0.0);
+    // networkTableSubsystem.bind("drive", "joystick right", oi.joystickRight::getY, 0.0);
 
     SmartDashboard.putData("Field", field2d);
+
+    timer.start();
+
+    networkTableSubsystem.bind("drive", "time per tick", this::getPeriod, 0.0);
 
     System.out.println(networkTableSubsystem);
   }
@@ -95,28 +106,28 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // TODO: Merge shooter, intake, hopper, ball follow into auto
-    CommandScheduler.getInstance().schedule(
-      new SequentialCommandGroup(
-        new MoveToPointAlphaCommand(),
-        new MoveToPointBetaCommand(),
-        new CommandBase() {
-          @Override
-          public boolean isFinished() {
-            return true;
-          }
-          @Override
-          public void end(boolean i) {
-            System.out.println("Auto Sequence Completed!");
-          }
-        }
-      )
-    );
-
     // CommandScheduler.getInstance().schedule(
-    //   // new SpinTestCommand()
-    //   // new FollowPointTestCommand()
-    //   // new AlongAxisTestCommand()
+    //   new SequentialCommandGroup(
+    //     new MoveToPointAlphaCommand(),
+    //     new MoveToPointBetaCommand(),
+    //     new CommandBase() {
+    //       @Override
+    //       public boolean isFinished() {
+    //         return true;
+    //       }
+    //       @Override
+    //       public void end(boolean i) {
+    //         System.out.println("Auto Sequence Completed!");
+    //       }
+    //     }
+    //   )
     // );
+
+    CommandScheduler.getInstance().schedule(
+      // new SpinTestCommand()
+      // new FollowPointTestCommand()
+      new AlongAxisTestCommand()
+    );
   }
 
   /** This function is called periodically during autonomous. */

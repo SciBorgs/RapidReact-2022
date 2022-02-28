@@ -37,7 +37,7 @@ public class DriveSubsystem extends SubsystemBase {
         rMiddle.setIdleMode(IdleMode.kCoast);
         rBack.setIdleMode(IdleMode.kCoast);
 
-        this.speedLimit = 0.95;
+        this.speedLimit = 1.0;
         this.invertedControl = false;
     }
 
@@ -48,6 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void setInvertedControl(boolean inverted) { this.invertedControl = inverted; }
 
     private void setSpeedRaw(double left, double right) {
+        System.out.println("speeds: " + left + " " + right);
         lFront.set(left);
         rFront.set(right);
     }

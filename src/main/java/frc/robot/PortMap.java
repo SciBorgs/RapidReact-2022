@@ -3,8 +3,8 @@ package frc.robot;
 public class PortMap {
   //*****************JOYSTICKS*****************//
 
-  public static final int JOYSTICK_LEFT = 1;
-  public static final int JOYSTICK_RIGHT = 0;
+  public static final int JOYSTICK_LEFT = 0;
+  public static final int JOYSTICK_RIGHT = 1;
 
   //*******************SPARKS******************//
   // public static final int LEFT_FRONT_SPARK = 26;
@@ -15,8 +15,8 @@ public class PortMap {
   // public static final int RIGHT_MIDDLE_SPARK = 15; goobye old bot
   // public static final int RIGHT_BACK_SPARK = 20;
 
-  public static final int LEFT_FRONT_SPARK = 6; 
-  public static final int LEFT_MIDDLE_SPARK = 5; 
+  public static final int LEFT_FRONT_SPARK = 6;
+  public static final int LEFT_MIDDLE_SPARK = 5;
   public static final int LEFT_BACK_SPARK = 4;
 
   public static final int RIGHT_FRONT_SPARK = 3;
