@@ -4,11 +4,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
-import frc.robot.util.PID;
+import frc.robot.util.*;
 import frc.robot.Constants;
 
 public class TurretSubsystem extends SubsystemBase {
@@ -18,12 +19,15 @@ public class TurretSubsystem extends SubsystemBase {
     private SciPigeon pigeon;
 
     public static final double TX_P = 6.0 / 360;
+    private ShufflePID pidShuffleboard;
     private PID pid;
 
     private static double avr;
     private static final double TX_WEIGHT = 0.1;
 
     public static final double DEFAULT_ANGLE = 10;
+
+    
 
     public TurretSubsystem() {
        // this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
@@ -47,9 +51,12 @@ public class TurretSubsystem extends SubsystemBase {
        // // rMiddle.setIdleMode(IdleMode.kCoast);
       //  rBack.setIdleMode(IdleMode.kCoast);
 
+        
+
         this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
         pigeon = new SciPigeon(42);
         pid = new PID(TX_P, 0, 0);
+        pidShuffleboard = new ShufflePID("Turret", pid, "Main");
     }
 
     public void setSpeed(double left, double right) {
@@ -97,6 +104,10 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void pointTowardsTarget() {
         pointTowardsTarget(getDirection() * DEFAULT_ANGLE);
+    }
+
+    public void updateShuffleboard() { 
+        pidShuffleboard.update();
     }
 }
 
