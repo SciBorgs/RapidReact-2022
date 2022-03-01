@@ -35,14 +35,15 @@ public class ShufflePID {
         bind.setD(dEntry.getDouble(0.0));
     }
  
-   public void updateError(double newError) {
-        errDisplay.setDouble(newError);
+   public void updateError() {
+        errDisplay.setDouble(bind.getError());
    }
 
     public void update() {
         setProportional();
         setIntegral();
         setDerivative();
+        updateError();
     }
 
 } 
