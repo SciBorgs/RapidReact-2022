@@ -13,6 +13,7 @@ public class SciAbsoluteEncoder {
     }
 
     public void setOffset(double offset) {this.offset = offset;}
+    public double getOffset(double angle) {return this.offset = angle - absEncoder.getDistance();}
     
     //returns the angle the hood is currently at:
     public double getAngle() {return absEncoder.getDistance();}

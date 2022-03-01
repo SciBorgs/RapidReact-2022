@@ -26,8 +26,8 @@ public class ShooterSubsystem extends SubsystemBase {
         thruBoreEncoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
     }
     
-    public final double HEIGHTDIFF = 9.8;
-    public final double CAM_MOUNT_ANGLE = 34.523;
+    public final double HEIGHTDIFF = 2.08534;
+    public final double CAM_MOUNT_ANGLE = 30;
 
     public double getDistance(double angle) {
         return HEIGHTDIFF/Math.tan(Math.toRadians(+CAM_MOUNT_ANGLE));
@@ -42,6 +42,7 @@ public class ShooterSubsystem extends SubsystemBase {
         rmotor.set(speed);
     }
     */
+
     public void moveVert(double speed) {
         if(speed > 0.1)speed = 0.1;
         if(speed <-0.1) speed = -0.1;
@@ -51,5 +52,4 @@ public class ShooterSubsystem extends SubsystemBase {
     public void moveHood(double angle) {
         moveVert(-pid.getOutput(angle, thruBoreEncoder.getAngle()));
     }
-
 }
