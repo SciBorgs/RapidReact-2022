@@ -7,10 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.DriveCommand;
-import frc.robot.commands.FollowBallCommand;
-import frc.robot.commands.turret.AimTurretCommand;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.Shooter.AngleFollower;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
@@ -25,10 +22,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
-
+  public static AngleFollower angle = new AngleFollower();
   public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
   public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
-  // public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
+  public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
 
   // public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 
@@ -65,12 +62,13 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // turretSubsystem.resetPigeon();
     // CommandScheduler.getInstance().schedule(new AimTurretCommand());
+    
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-
+    angle.execute();
   }
 
   /** This function is called once when teleop is enabled. */
@@ -82,7 +80,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-     new DriveCommand().execute();
+    // new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */

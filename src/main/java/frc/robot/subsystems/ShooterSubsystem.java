@@ -10,8 +10,9 @@ import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.util.PID;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private static PID pid = new PID(0.04, 0, 0);
-    public CANSparkMax hood, lmotor, rmotor;
+    private static PID pid = new PID(0.0005, 0, 0);
+    public CANSparkMax hood;
+    //, lmotor, rmotor;
     private SciAbsoluteEncoder thruBoreEncoder;
     public ShooterSubsystem() {
 
@@ -21,8 +22,8 @@ public class ShooterSubsystem extends SubsystemBase {
         this.rmotor = new CANSparkMax(PortMap.SHOOTER_RIGHT_SPARK, MotorType.kBrushless);
         */
         
-        lmotor.follow(rmotor);
-         thruBoreEncoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
+        //lmotor.follow(rmotor);
+        thruBoreEncoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
     }
     
     public final double HEIGHTDIFF = 9.8;
@@ -31,13 +32,24 @@ public class ShooterSubsystem extends SubsystemBase {
     public double getDistance(double angle) {
         return HEIGHTDIFF/Math.tan(Math.toRadians(+CAM_MOUNT_ANGLE));
     }
+
+    public double getHoodAngle() {
+        return thruBoreEncoder.getAngle();
+    }
+
+    /*
     public void shoot(double speed) {
         rmotor.set(speed);
     }
+    */
     public void moveVert(double speed) {
+        if(speed > 0.1)speed = 0.1;
+        if(speed <-0.1) speed = -0.1;
         hood.set(speed);
+
     }
     public void moveHood(double angle) {
-        moveVert(pid.getOutput(angle, thruBoreEncoder.getAngle()));
+        moveVert(-pid.getOutput(angle, thruBoreEncoder.getAngle()));
     }
+
 }
