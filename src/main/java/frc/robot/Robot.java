@@ -72,8 +72,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     angle.execute();
-    //System.out.println(shooterSubsystem.hood_Encoder.isConnected());
-    //\shooterSubsystem.hood.set(-0.2);
+    turretSubsystem.updateShuffleboard();
   }
   
 
