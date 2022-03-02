@@ -44,8 +44,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public final double HEIGHTDIFF = 9.8;
     public final double CAM_MOUNT_ANGLE = 34.523;
 
-    public double getDistance(double angle) {
-        return HEIGHTDIFF/Math.tan(Math.toRadians(+CAM_MOUNT_ANGLE));
+    public double getDistance(double limelightangle) {
+        return HEIGHTDIFF/Math.tan(Math.toRadians(+CAM_MOUNT_ANGLE) + limelightangle);
     }
 
     public double getHoodAngle() {
