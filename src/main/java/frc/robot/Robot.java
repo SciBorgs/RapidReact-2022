@@ -24,6 +24,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.NetworkTableSubsystem;
+import frc.robot.util.Point;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -74,6 +75,8 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("drive", "time per tick", this::getPeriod, 0.0);
 
     System.out.println(networkTableSubsystem);
+
+    double i = Constants.STARTING_HEADING;
   }
 
   @Override
@@ -126,7 +129,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().schedule(
       // new SpinTestCommand()
       // new FollowPointTestCommand()
-      new AlongAxisTestCommand()
+      // new AlongAxisTestCommand()
+      new PurePursuitTestCommand()
     );
   }
 
@@ -138,6 +142,9 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    for (Point p : Constants.PATH_TEST) {
+      System.out.println(p);
+    }
   }
 
   /** This function is called periodically during operator control. */

@@ -43,10 +43,10 @@ public final class Constants {
     public static final List<Point> PATH_TEST_RAW = new ArrayList<>();
     static {
         PATH_TEST_RAW.add(STARTING_POINT);
-        PATH_TEST_RAW.add(new Point(2, 0.6));
-        PATH_TEST_RAW.add(new Point(4, 0));
-        PATH_TEST_RAW.add(new Point(6, -0.6));
-        PATH_TEST_RAW.add(new Point(8, 0));
+        PATH_TEST_RAW.add(new Point(0.5, 0.2));
+        PATH_TEST_RAW.add(new Point(0, -0.5));
+        PATH_TEST_RAW.add(new Point(-0.5, 0.0));
+        // PATH_TEST_RAW.add(new Point(8, 0));
     }
-    public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 100).getFinalPath();
+    public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
 }

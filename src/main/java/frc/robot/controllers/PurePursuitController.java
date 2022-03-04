@@ -28,6 +28,8 @@ public class PurePursuitController implements MovementController<Point, PurePurs
     private double length, lookahead, trackingSpeed;
     private int n, index, searchMax, endIndex;
 
+    private double prevDesiredHeading;
+
     private static final double MAX_SEARCH_DISTANCE = 0.5;
     private static final double DISTANCE_TOLERANCE = 0.05;
 
@@ -48,6 +50,8 @@ public class PurePursuitController implements MovementController<Point, PurePurs
         this.turnPID = new PID(2.0, 0, 0);
         this.state = State.MOVING;
         this.lastPoint = waypoints.get(n - 1);
+
+        this.prevDesiredHeading = 0.0;
     }
 
     // MovementController methods
@@ -73,8 +77,10 @@ public class PurePursuitController implements MovementController<Point, PurePurs
             double currHeading = Robot.localizationSubsystem.getHeading();
             double targetHeading = Util.angleToPoint(Util.displacementVector(currPos, this.next));
 
+            this.prevDesiredHeading = targetHeading;
+
             double turnError = Util.travelledAngle(currHeading, targetHeading);
-            double angle = -turnPID.getOutput(turnError);
+            double angle = turnPID.getOutput(turnError);
 
             Robot.driveSubsystem.setSpeedForwardAngle(trackingSpeed, angle);
         }
@@ -133,6 +139,7 @@ public class PurePursuitController implements MovementController<Point, PurePurs
         ntsubsystem.bind(tab, "tracking speed", this::setTrackingSpeed, this.trackingSpeed);
         ntsubsystem.bind(tab, "tracking index", () -> this.index, 0);
         ntsubsystem.bind(tab, "num points", () -> this.n, 0);
+        ntsubsystem.bind(tab, "desired heading", () -> this.prevDesiredHeading, 0.0);
     }
 
     public void resetPIDs() {
