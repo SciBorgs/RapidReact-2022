@@ -45,7 +45,7 @@ public class PurePursuitController implements MovementController<Point, PurePurs
         this.searchMax = (int) (n * MAX_SEARCH_DISTANCE / this.length);
         this.endIndex  = (int) (n * (1 - DISTANCE_TOLERANCE / this.length));
 
-        this.turnPID = new PID(0.1, 0, 0);
+        this.turnPID = new PID(2.0, 0, 0);
         this.state = State.MOVING;
         this.lastPoint = waypoints.get(n - 1);
     }
