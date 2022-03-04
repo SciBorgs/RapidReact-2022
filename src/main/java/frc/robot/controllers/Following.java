@@ -2,6 +2,7 @@ package frc.robot.controllers;
 
 import frc.robot.Robot;
 import frc.robot.util.PID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.photonvision.targeting.PhotonPipelineResult;
 
@@ -9,9 +10,9 @@ public class Following {
     // public static final double K_TX = 1.;
     public static final double K_TA = 1.;
     
-    public static final double TX_P = 0.025;
-    public static final double TX_D = TX_P/5;
-    public static final double TA_P = 0.6;
+    public static final double TX_P = 0.06;
+    public static final double TX_D = TX_P/1;
+    public static final double TA_P = 0.8;
     public static final double TA_WEIGHT = 1./10.;
     public static PID txPID, taPID;
     public static double taAvr;
@@ -29,10 +30,12 @@ public class Following {
     
         if (result.hasTargets()) {
             ta = Robot.photonVisionSubsystem.getTarget().getArea();
-            tx = -Robot.photonVisionSubsystem.getTarget().getYaw();  
+            // if (ta > 0.5) return;
+            tx = Robot.photonVisionSubsystem.getTarget().getYaw();  
             taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
+            SmartDashboard.putNumber("average ta", taAvr);
             double distance = 10 / (taAvr * taAvr);
-            double forward = -taPID.getOutput(Math.exp(-0.1 * taAvr), 0);
+            double forward = taPID.getOutput(-distance, 0);
             // double forward = -Math.exp(0.5 * taPID.getOutput(distance, 0));
 
             System.out.println("Distance: " + distance);
@@ -46,5 +49,15 @@ public class Following {
             Robot.driveSubsystem.setSpeed(0, 0);
         }
 
+    }
+
+    public static boolean isFinished() {
+        /*if (Robot.photonVisionSubsystem.getResult().hasTargets()) {
+            return Robot.photonVisionSubsystem.getTarget().getArea() > 33.0;
+        }
+
+        return true;*/
+        return false;
+        
     }
 }

@@ -18,7 +18,13 @@ public class FollowBallCommand extends CommandBase {
 
     @Override 
     public boolean isFinished() {
-        //return Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "tx") < LENIENCY;
-        return false;
+        // return Robot.limelightSubsystem.getTableData(Robot.limelightSubsystem.getTable(), "tx") < LENIENCY;
+        // return false;
+        return Following.isFinished();
+    }
+
+    @Override
+    public void end(boolean interupted) {
+        Robot.driveSubsystem.setSpeed(0, 0);
     }
 }
