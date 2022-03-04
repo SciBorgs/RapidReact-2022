@@ -10,10 +10,12 @@ public class Following {
     // public static final double K_TX = 1.;
     public static final double K_TA = 1.;
     
-    public static final double TX_P = 0.06;
-    public static final double TX_D = TX_P/1;
-    public static final double TA_P = 0.8;
+    public static final double SECONDS_D = 0.01;
+    public static final double TX_P = 0.01;
+    public static final double TX_D = TX_P * SECONDS_D / 0.02;
+    public static final double TA_P = 0.5601155;
     public static final double TA_WEIGHT = 1./10.;
+    public static final double TA_MAX = 33.0;
     public static PID txPID, taPID;
     public static double taAvr;
 
@@ -30,17 +32,18 @@ public class Following {
     
         if (result.hasTargets()) {
             ta = Robot.photonVisionSubsystem.getTarget().getArea();
-            // if (ta > 0.5) return;
             tx = Robot.photonVisionSubsystem.getTarget().getYaw();  
             taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
             SmartDashboard.putNumber("average ta", taAvr);
-            double distance = 10 / (taAvr * taAvr);
+
+            // double distance = 10 * Math.pow(taAvr, -1.5);
+            double distance = (taAvr > TA_MAX) ? 0 : Math.exp(-0.05 * TA_P * taAvr);
             double forward = taPID.getOutput(-distance, 0);
             // double forward = -Math.exp(0.5 * taPID.getOutput(distance, 0));
 
-            System.out.println("Distance: " + distance);
-            System.out.println();
-            System.out.println("TX: " + tx);
+            // System.out.println("Distance: " + distance);
+            // System.out.println();
+            // System.out.println("TX: " + tx);
             // System.out.println("Forward: " + forward * 100);
             // System.out.println("tx: " + tx);
             // System.out.println("taAvg: " + taAvr);
@@ -59,7 +62,7 @@ public class Following {
         }
 
         return true;
-        //return false;
+        // return false;
         
     }
 }

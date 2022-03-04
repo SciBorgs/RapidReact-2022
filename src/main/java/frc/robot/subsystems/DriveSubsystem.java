@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
-import frc.robot.util.ShuffleUtil;
+// import frc.robot.util.ShuffleUtil;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -40,13 +40,13 @@ public class DriveSubsystem extends SubsystemBase {
         rBack.setIdleMode(IdleMode.kCoast);
 
         //NOTE: It appears that only the left and right front motors are ever set -Shuffleboard Duo
-        DriveTab = Shuffleboard.getTab("Drivetrain");
-        lFrontEntry = DriveTab.add("Left Front Motor Speed", 0).getEntry();
-        lMiddleEntry = DriveTab.add("Left Middle Motor Speed", 0).getEntry();
-        lBackEntry = DriveTab.add("Left Back Motor Speed", 0).getEntry();
-        rFrontEntry = DriveTab.add("Right Back Motor Speed", 0).getEntry();
-        rMiddleEntry = DriveTab.add("Right Middle Motor Speed", 0).getEntry();
-        rBackEntry =  DriveTab.add("Right Back Motor Speed", 0).getEntry();
+        // DriveTab = Shuffleboard.getTab("Drivetrain");
+        // lFrontEntry = DriveTab.add("Left Front Motor Speed", 0).getEntry();
+        // lMiddleEntry = DriveTab.add("Left Middle Motor Speed", 0).getEntry();
+        // lBackEntry = DriveTab.add("Left Back Motor Speed", 0).getEntry();
+        // rFrontEntry = DriveTab.add("Right Back Motor Speed", 0).getEntry();
+        // rMiddleEntry = DriveTab.add("Right Middle Motor Speed", 0).getEntry();
+        // rBackEntry =  DriveTab.add("Right Back Motor Speed", 0).getEntry();
     }
 
     public void setSpeed(double left, double right) {

@@ -13,6 +13,7 @@ public class FollowBallCommand extends CommandBase {
 
     @Override
     public void execute() {
+        System.out.println("RUNNING COMMAND!!!!!");
         Following.follow();
     }
 
