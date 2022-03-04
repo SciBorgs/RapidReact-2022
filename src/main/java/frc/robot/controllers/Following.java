@@ -52,12 +52,14 @@ public class Following {
     }
 
     public static boolean isFinished() {
-        /*if (Robot.photonVisionSubsystem.getResult().hasTargets()) {
-            return Robot.photonVisionSubsystem.getTarget().getArea() > 33.0;
+        if (Robot.photonVisionSubsystem.getResult().hasTargets()) {
+            boolean stopFollowing = taAvr > 33.0;
+            if (stopFollowing) System.out.println("STOPPING");
+            return stopFollowing;
         }
 
-        return true;*/
-        return false;
+        return true;
+        // return false;
         
     }
 }
