@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.PortMap;
 import frc.robot.Robot;
+import frc.robot.controllers.HoodAngleController;
 
 public class AimHoodCommand extends CommandBase {
     @Override
