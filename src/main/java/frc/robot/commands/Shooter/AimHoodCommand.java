@@ -19,8 +19,8 @@ public class AimHoodCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.shooterSubsystem.moveHood(hoodAngleController.getDegFromFunction(Robot.shooterSubsystem.getDistance(Robot.limelightSubsystem.getLimelightTableData("ty"))));
-        double angle = Robot.shooterSubsystem.getHoodAngle();
+        Robot.shooterSubsystem.moveHood(Robot.shooterSubsystem.functionAngle());
+        double angle = Robot.shooterSubsystem.getCurrentHoodAngle();
         System.out.println("Angle: " + angle);
     }
 

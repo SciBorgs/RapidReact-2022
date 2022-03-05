@@ -11,7 +11,7 @@ public class HoodAngleController {
     and then make a new function for hood angle.
     */
 
-    public double getDegFromFunction(double dist){
+    public static double getDegFromFunction(double dist){
         //add later Bozo
         return 1;
     }
