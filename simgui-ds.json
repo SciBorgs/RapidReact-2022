@@ -1,4 +1,19 @@
 {
+  "FMS": {
+    "window": {
+      "visible": false
+    }
+  },
+  "Joysticks": {
+    "window": {
+      "visible": false
+    }
+  },
+  "System Joysticks": {
+    "window": {
+      "visible": false
+    }
+  },
   "keyboardJoysticks": [
     {
       "axisConfig": [
@@ -88,5 +103,6 @@
       "buttonCount": 0,
       "povCount": 0
     }
-  ]
+  ],
+  "zeroDisconnectedJoysticks": false
 }
