@@ -12,7 +12,7 @@ public class Following {
     
     public static final double SECONDS_D = 0.01;
     public static final double TX_P = 0.01;
-    public static final double TX_D = TX_P * SECONDS_D / 0.02;
+    // public static final double TX_D = TX_P * SECONDS_D / 0.02;
     public static final double TA_P = 0.5601155;
     public static final double TA_WEIGHT = 1./10.;
     public static final double TA_MAX = 33.0;
@@ -23,7 +23,8 @@ public class Following {
     public static double ta;
 
     static {
-        txPID = new PID(TX_P, 0, TX_D);
+        // txPID = new PID(TX_P, 0, TX_D);
+        txPID = new PID(TX_P, 0, SECONDS_D, true);
         taPID = new PID(TA_P, 0, 0);
     }
 

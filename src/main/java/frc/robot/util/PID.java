@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
 
 public class PID {
   private double p, i, d;
@@ -18,6 +19,12 @@ public class PID {
 
     timer = new Timer();
     timer.start();
+  }
+
+  public PID(double p, double i, double dSecs, boolean whatever /*sorry*/) {
+    this.p = p;
+    this.i = i;
+    this.d = p * dSecs / Constants.SECONDS_PER_TICK;
   }
 
   public double getP() { return this.p; }
