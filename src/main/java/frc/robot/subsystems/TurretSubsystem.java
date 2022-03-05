@@ -22,7 +22,8 @@ public class TurretSubsystem extends SubsystemBase {
     private ShufflePID pidShuffleboard;
     private PID pid;
 
-    private static double avr;
+    private Averager txAverager;
+    private double txAvr;
     private static final double TX_WEIGHT = 0.1;
 
     private static final double DEFAULT_ANGLE = 10;
@@ -51,9 +52,10 @@ public class TurretSubsystem extends SubsystemBase {
 
         
         this.encoder = new SciEncoder(Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, lFront.getEncoder());
-        pigeon = new SciPigeon(42);
-        pid = new PID(TX_P, 0, 0);
-        pidShuffleboard = new ShufflePID("Turret", pid, "Main");
+        this.pigeon = new SciPigeon(42);
+        this.pid = new PID(TX_P, 0, 0);
+        this.pidShuffleboard = new ShufflePID("Turret", pid, "Main");
+        this.txAverager = new Averager(TX_WEIGHT);
     }
 
     public void setSpeed(double left, double right) {
@@ -85,8 +87,8 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void pointTowardsTarget(double angle) {
-        avr = TX_WEIGHT * -angle + (1 - TX_WEIGHT) * avr;
-        double targetAngle = getAngle() + avr;
+        txAvr = txAverager.getAverage(-angle);
+        double targetAngle = getAngle() + txAvr;
         targetAngle %= LIMIT;
         double turn = pid.getOutput(targetAngle, getAngle());
         if (turn > 0.5) {
