@@ -52,8 +52,7 @@ public class TurretSubsystem extends SubsystemBase {
       //  rBack.setIdleMode(IdleMode.kCoast);
 
         
-
-        this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
+        this.encoder = new SciEncoder(Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, lFront.getEncoder());
         pigeon = new SciPigeon(42);
         pid = new PID(TX_P, 0, 0);
         pidShuffleboard = new ShufflePID("Turret", pid, "Main");
@@ -77,7 +76,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     // returns direction that the turret is spinning as an int, either 1 or -1
     public int getDirection() {
-        if (encoder.getRate() > 0)
+        if (encoder.getSpeed() > 0)
             return -1;
         return 1;
     }
