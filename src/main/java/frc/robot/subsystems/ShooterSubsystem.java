@@ -10,16 +10,16 @@ import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.util.PID;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private static PID shooterPID = new PID(0.0005, 0, 0);
+    private PID shooterPID;
     public CANSparkMax hood;
     //, lmotor, rmotor;
     private SciAbsoluteEncoder thruBoreEncoder;
     public ShooterSubsystem() {
-
+        shooterPID = new PID(0.0005, 0, 0);
         this.hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         /*
         this.lmotor = new CANSparkMax(PortMap.SHOOTER_LEFT_SPARK, MotorType.kBrushless);
-        this.rmotor = new CANSparkMax(PortMap.SHOOTER_RIGHT_SPARK, MotorType.kBrushless);
+        this.rmotor = new C2NSparkMax(PortMap.SHOOTER_RIGHT_SPARK, MotorType.kBrushless);
         */
         
         //lmotor.follow(rmotor);

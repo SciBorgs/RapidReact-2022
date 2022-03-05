@@ -1,5 +1,6 @@
 package frc.robot.commands.Shooter;
 
+import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -7,11 +8,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.PortMap;
 import frc.robot.Robot;
 
-public class AngleFollower extends CommandBase {
+public class AimHoodCommand extends CommandBase {
     @Override
     public void execute(){
-        Robot.shooterSubsystem.moveHood(21.5);
+        Robot.shooterSubsystem.moveHood(HoodAngleController.getDegFromFunction(Robot.shooterSubsystem.getDistance(Robot.limelightSubsystem.getLimelightTableData("ty"))));
+        double angle = Robot.shooterSubsystem.getHoodAngle();
+        System.out.println("Angle: " + angle);
     }
+
     @Override
     public boolean isFinished(){
         return false;

@@ -20,10 +20,11 @@ public class SciEncoder {
         this.wheelCircumference = wheelCircumference;
 
         this.encoder.setPosition(0);
+        
     }
 
-    public int get() {
-        return (int) (encoder.getPosition() * gearRatio);
+    public double get() {
+        return encoder.getPosition() * gearRatio;
     }
 
     public double getRate() {
@@ -34,5 +35,5 @@ public class SciEncoder {
     public double getDistance() {
         return get() * wheelCircumference;   
     }
-
+   
 }
