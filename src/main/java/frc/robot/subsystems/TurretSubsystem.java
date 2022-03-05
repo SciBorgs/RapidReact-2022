@@ -13,21 +13,19 @@ import frc.robot.util.*;
 import frc.robot.Constants;
 
 public class TurretSubsystem extends SubsystemBase {
-    public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
+    // public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
     private SciEncoder encoder;
-    public final int LIMIT = 360;
+    private final int LIMIT = 360;
     private SciPigeon pigeon;
 
-    public static final double TX_P = 6.0 / 360;
+    private static final double TX_P = 6.0 / 360;
     private ShufflePID pidShuffleboard;
     private PID pid;
 
     private static double avr;
     private static final double TX_WEIGHT = 0.1;
 
-    public static final double DEFAULT_ANGLE = 10;
-
-    
+    private static final double DEFAULT_ANGLE = 10;
 
     public TurretSubsystem() {
        // this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
