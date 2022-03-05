@@ -4,20 +4,35 @@
 
 package frc.robot;
 
+import com.revrobotics.REVPhysicsSim;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.test.*;
+import frc.robot.commands.auto.*;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.FollowBallCommand;
+
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 
 import org.opencv.photo.Photo;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.subsystems.LocalizationSubsystem;
+import frc.robot.subsystems.NetworkTableSubsystem;
+import frc.robot.util.Point;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -28,14 +43,20 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
-  public static LimeLightSubsystem      limelightSubsystem    = new LimeLightSubsystem();
   public static PhotonVisionSubsystem   photonVisionSubsystem = new PhotonVisionSubsystem();
   // public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
   // public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
+  public static DriveSubsystem          driveSubsystem          = new DriveSubsystem();
+  public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
 
-  public static DriveSubsystem driveSubsystem = new DriveSubsystem();
+  public static NetworkTableSubsystem   networkTableSubsystem   = new NetworkTableSubsystem();
 
   private RobotContainer m_robotContainer;
+
+  private Field2d field2d = new Field2d();
+
+  private Timer timer = new Timer();
+  private int tick = 0;
 
 
   /**
@@ -49,6 +70,26 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     SmartDashboard.putNumber("random magic number", -0.2);
     //table = NetworkTableInstance.getDefault().getTable("limelight");
+
+    // localization
+    networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
+    networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
+    networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
+
+    // drive
+    networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 0.5);
+    // networkTableSubsystem.bind("drive", "joystick left", oi.joystickLeft::getY, 0.0);
+    // networkTableSubsystem.bind("drive", "joystick right", oi.joystickRight::getY, 0.0);
+
+    SmartDashboard.putData("Field", field2d);
+
+    timer.start();
+
+    networkTableSubsystem.bind("drive", "time per tick", this::getPeriod, 0.0);
+
+    System.out.println(networkTableSubsystem);
+
+    double i = Constants.STARTING_HEADING;
   }
 
   @Override
@@ -58,30 +99,65 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
-    //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
-    //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
-    //double data = table.getEntry("tx").getDouble(1.0);
-    //System.out.println(data);
+    localizationSubsystem.update();
+    networkTableSubsystem.update();
+    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
+  }
+
+  @Override
+  public void simulationInit() {
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lFront,  DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lMiddle, DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lBack,   DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rFront,  DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rMiddle, DCMotor.getNEO(1));
+    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rBack,   DCMotor.getNEO(1));
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    REVPhysicsSim.getInstance().run();
   }
 
   @Override
   public void autonomousInit() {
-    // System.out.println("This is autonomous init");
-    CommandScheduler.getInstance().schedule(new FollowBallCommand());
+    // TODO: Merge shooter, intake, hopper, ball follow into auto
+    // CommandScheduler.getInstance().schedule(
+    //   new SequentialCommandGroup(
+    //     new MoveToPointAlphaCommand(),
+    //     new MoveToPointBetaCommand(),
+    //     new CommandBase() {
+    //       @Override
+    //       public boolean isFinished() {
+    //         return true;
+    //       }
+    //       @Override
+    //       public void end(boolean i) {
+    //         System.out.println("Auto Sequence Completed!");
+    //       }
+    //     }
+    //   )
+    // );
+
+    CommandScheduler.getInstance().schedule(
+      // new SpinTestCommand()
+      // new FollowPointTestCommand()
+      // new AlongAxisTestCommand()
+      new PurePursuitTestCommand()
+    );
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-
-
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    // System.out.println("This is teleop init");
+    for (Point p : Constants.PATH_TEST) {
+      System.out.println(p);
+    }
   }
 
   /** This function is called periodically during operator control. */
@@ -93,24 +169,22 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    // System.out.println("This is disabled init");
+    driveSubsystem.setSpeed(0.0, 0.0);
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-    // System.out.println("This is disabled periodic");
   }
 
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
-    // System.out.println("This is test init");
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    // System.out.println("This is test periodic");
+    Robot.localizationSubsystem.reset();
   }
 }
