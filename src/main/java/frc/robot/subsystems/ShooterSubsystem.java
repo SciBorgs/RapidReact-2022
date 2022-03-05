@@ -10,7 +10,7 @@ import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.util.PID;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private static PID pid = new PID(0.0005, 0, 0);
+    private static PID shooterPID = new PID(0.0005, 0, 0);
     public CANSparkMax hood;
     //, lmotor, rmotor;
     private SciAbsoluteEncoder thruBoreEncoder;
@@ -50,6 +50,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
     public void moveHood(double angle) {
-        moveVert(-pid.getOutput(angle, thruBoreEncoder.getAngle()));
+        moveVert(-shooterPID.getOutput(angle, thruBoreEncoder.getAngle()));
     }
 }
