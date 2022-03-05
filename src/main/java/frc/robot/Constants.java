@@ -7,7 +7,6 @@ package frc.robot;
 import java.util.ArrayList;
 import java.util.List;
 
-import frc.robot.controllers.PathSmoother;
 import frc.robot.util.Point;
 
 /**
@@ -52,7 +51,7 @@ public final class Constants {
         PATH_TEST_RAW.add(new Point(-0.5, 0.0));
         // PATH_TEST_RAW.add(new Point(8, 0));
     }
-    public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
+    //public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
     
     //***************** GEAR RATIOS ***********************//
     public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
