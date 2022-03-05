@@ -53,4 +53,10 @@ public final class Constants {
         // PATH_TEST_RAW.add(new Point(8, 0));
     }
     public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
+    
+    //***************** GEAR RATIOS ***********************//
+    public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
+    public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
+    public static final double SMALL_TURRET_GEAR_RATIO = RIGHT_ENCODER_GEAR_RATIO / 10;
+    public static final double TOTAL_HOOD_GEAR_RATIO = 1/230;
 }
