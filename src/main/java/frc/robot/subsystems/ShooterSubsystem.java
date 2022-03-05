@@ -8,6 +8,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,11 +22,17 @@ import frc.robot.util.ShuffleUtil;
 public class ShooterSubsystem extends SubsystemBase {
     private static double P = 0.02;
     private static PID pid = new PID(P, 0, 0);
-    public CANSparkMax hood;
+
+    private CANSparkMax hood;
+    //danny: It has been noted that the field, hood, w
+    private ShuffleboardTab shooterTab;
+    private NetworkTableEntry distance, hoodAngle;
+    
     //, lmotor, rmotor;
     private SciAbsoluteEncoder thruBoreEncoder;
     public DutyCycleEncoder[] encoders = new DutyCycleEncoder[2];
     public DutyCycleEncoder hood_Encoder;
+
     public ShooterSubsystem() {
 
         this.hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);

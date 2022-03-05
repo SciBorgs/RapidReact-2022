@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Shooter.AngleFollower;
+import frc.robot.commands.Shooter.AimHoodCommand;
 import frc.robot.commands.Shooter.ManualHoodCommand;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -23,7 +23,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
-  public static AngleFollower angle = new AngleFollower();
   public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
   public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
   public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
@@ -63,7 +62,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // turretSubsystem.resetPigeon();
     // CommandScheduler.getInstance().schedule(new AimTurretCommand());
-    
+    CommandScheduler.getInstance().schedule(new AimHoodCommand());
     // shooterSubsystem.hood_Encoder.setPosition(0);
     
   }
@@ -71,7 +70,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    angle.execute();
     turretSubsystem.updateShuffleboard();
   }
   
