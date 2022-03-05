@@ -94,4 +94,12 @@ public class Util {
         return new Point(map(Math.random(), 0.0, 1.0, x1, x2),
                          map(Math.random(), 0.0, 1.0, y1, y2));
     }
+
+    public static List<Point> generateSinePath(double length, double amplitude, double frequency) {
+        List<Point> points = new ArrayList<>();
+        for (double t = 0; t < length; t+=0.05) {
+            points.add(new Point(t, amplitude * Math.sin(frequency * t)));
+        }
+        return points;
+    }
 }

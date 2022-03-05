@@ -80,7 +80,7 @@ public class PurePursuitController implements MovementController<Point, PurePurs
             this.prevDesiredHeading = targetHeading;
 
             double turnError = Util.travelledAngle(currHeading, targetHeading);
-            double angle = turnPID.getOutput(turnError);
+            double angle = -turnPID.getOutput(turnError);
 
             Robot.driveSubsystem.setSpeedForwardAngle(trackingSpeed, angle);
         }

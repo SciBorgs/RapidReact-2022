@@ -10,7 +10,7 @@ public class PurePursuitTestCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.pp = new PurePursuitController(Constants.PATH_TEST, 0.5, 0.0);
+        this.pp = new PurePursuitController(Constants.PATH_TEST, 0.201155, 0.0);
     }
 
     @Override

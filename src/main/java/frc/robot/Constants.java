@@ -9,6 +9,7 @@ import java.util.List;
 
 import frc.robot.controllers.PathSmoother;
 import frc.robot.util.Point;
+import frc.robot.util.Util;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -40,13 +41,15 @@ public final class Constants {
     public static final double SHOOTING_RADIUS_NEAR = 1.25;
     public static final double SHOOTING_RADIUS_FAR  = 3.3;
 
-    public static final List<Point> PATH_TEST_RAW = new ArrayList<>();
-    static {
-        PATH_TEST_RAW.add(STARTING_POINT);
-        PATH_TEST_RAW.add(new Point(0.5, 0.2));
-        PATH_TEST_RAW.add(new Point(0, -0.5));
-        PATH_TEST_RAW.add(new Point(-0.5, 0.0));
-        // PATH_TEST_RAW.add(new Point(8, 0));
-    }
-    public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
+    // public static final List<Point> PATH_TEST_RAW = new ArrayList<>();
+    // static {
+    //     PATH_TEST_RAW.add(STARTING_POINT);
+    //     PATH_TEST_RAW.add(new Point(0, 0));
+    //     PATH_TEST_RAW.add(new Point(2, 0));
+    //     PATH_TEST_RAW.add(new Point(4, 0));
+    //     PATH_TEST_RAW.add(new Point(6, 0));
+    // }
+    // public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 100).getFinalPath();
+
+    public static final List<Point> PATH_TEST = Util.generateSinePath(4.0, 0.45, 1.35);
 }
