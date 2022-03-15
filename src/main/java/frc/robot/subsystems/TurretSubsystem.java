@@ -13,21 +13,20 @@ import frc.robot.util.*;
 import frc.robot.Constants;
 
 public class TurretSubsystem extends SubsystemBase {
-    public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
+    // public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
     private SciEncoder encoder;
-    public final int LIMIT = 360;
+    private final int LIMIT = 360;
     private SciPigeon pigeon;
 
-    public static final double TX_P = 6.0 / 360;
+    private static final double TX_P = 6.0 / 360;
     private ShufflePID pidShuffleboard;
     private PID pid;
 
-    private static double avr;
+    private Averager txAverager;
+    private double txAvr;
     private static final double TX_WEIGHT = 0.1;
 
-    public static final double DEFAULT_ANGLE = 10;
-
-    
+    private static final double DEFAULT_ANGLE = 10;
 
     public TurretSubsystem() {
        // this.lFront = new CANSparkMax(PortMap.LEFT_FRONT_SPARK, MotorType.kBrushless);
@@ -52,11 +51,11 @@ public class TurretSubsystem extends SubsystemBase {
       //  rBack.setIdleMode(IdleMode.kCoast);
 
         
-
-        this.encoder = new SciEncoder(lFront.getEncoder(), Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE);
-        pigeon = new SciPigeon(42);
-        pid = new PID(TX_P, 0, 0);
-        pidShuffleboard = new ShufflePID("Turret", pid, "Main");
+        this.encoder = new SciEncoder(Constants.SMALL_TURRET_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, lFront.getEncoder());
+        this.pigeon = new SciPigeon(42);
+        this.pid = new PID(TX_P, 0, 0);
+        this.pidShuffleboard = new ShufflePID("Turret", pid, "Main");
+        this.txAverager = new Averager(TX_WEIGHT);
     }
 
     public void setSpeed(double left, double right) {
@@ -77,7 +76,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     // returns direction that the turret is spinning as an int, either 1 or -1
     public int getDirection() {
-        if (encoder.getRate() > 0)
+        if (encoder.getSpeed() > 0)
             return -1;
         return 1;
     }
@@ -88,8 +87,8 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void pointTowardsTarget(double angle) {
-        avr = TX_WEIGHT * -angle + (1 - TX_WEIGHT) * avr;
-        double targetAngle = getAngle() + avr;
+        txAvr = txAverager.getAverage(-angle);
+        double targetAngle = getAngle() + txAvr;
         targetAngle %= LIMIT;
         double turn = pid.getOutput(targetAngle, getAngle());
         if (turn > 0.5) {
