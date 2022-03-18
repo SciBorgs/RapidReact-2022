@@ -95,11 +95,87 @@ public class Util {
                          map(Math.random(), 0.0, 1.0, y1, y2));
     }
 
-    public static List<Point> generateSinePath(double length, double amplitude, double frequency) {
+    public static List<Point> generateSinePath(double length, double amplitude, double frequency, double step) {
         List<Point> points = new ArrayList<>();
-        for (double t = 0; t < length; t+=0.05) {
+        for (double t = 0; t < length; t+=step) {
             points.add(new Point(t, amplitude * Math.sin(frequency * t)));
         }
         return points;
+    }
+
+    /**
+     * Determines the heading of the robot when it reacheds a point along a certain path.
+     * @param path the path that the robot is following
+     * @param interceptionPoint the point at which to find the heading
+     * @param predictDistanceSquared the acceptable distance on a from the point, squared.
+     * @param step the interval on the curve on which to approximate the derivative
+     * @return the expected heading of the robot
+     * @throws IllegalArgumentException if the point is too far away from the curve
+     */
+    public static double interceptionAngle(List<Point> path, Point interceptionPoint, double predictDistanceSquared, int step) {
+        int searchIndex = 0;
+        int n = path.size();
+        boolean found = false;
+        while (++searchIndex < n && !found) {
+            Point near = path.get(searchIndex);
+            if (distanceSquared(interceptionPoint, near) < predictDistanceSquared)
+                found = true;
+        }
+
+        if (!found) throw new IllegalArgumentException("Point not found in the path!");
+        Point p1 = path.get(Math.max(0, searchIndex - step/2)); // derivative measurement is already delayed
+        Point p2 = path.get(Math.min(searchIndex + step, n - 1));
+        return Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    }
+
+    /**
+     * Returns a 'parameterization' of a curve where input is proportional to 
+     * arc length.
+     * @param curve a continuous sequence of points
+     * @param lengthStep the resolution to use
+     * @return a reparamaterization of the given curve
+     */
+    public static List<Point> reparameterize(List<Point> curve, double lengthStep) {
+        double arclength = length(curve, 1);
+        double forbidden = Math.pow(lengthStep * 0.9, 2);
+        List<Point> reparameterized = new ArrayList<Point>();
+
+        Point prevPoint = curve.get(0);
+        double s = 0;
+        int i = 1;
+        int n = 0;
+        while (s < arclength && i < curve.size()) {
+            Point currPoint = curve.get(i);
+            double ds = distance(prevPoint, currPoint);
+            // Number of points to linearly interpolate. Preferrably 0 or 1.
+            int pointsToEstimate = (int) ((s + ds) / lengthStep) - (int) (s / lengthStep);
+            for (int j = 1; j <= pointsToEstimate; j++) {
+                double k = lengthStep * j / ds;
+                Point interpolated = add(scale(prevPoint, 1-k), scale(currPoint, k));
+                /* With a large length step and low initial curve resolution,
+                   linearly interpolated points will stray from the actual curve.
+                   This has a tendency to cause "spikes" in the final curve,
+                   which may be very inconvenient if you want to find the slope
+                   at some point on the resulting curve.
+
+                   Instead of removing such spikes, which would sacrifice the
+                   correspondence between indices and arc length, we just replace
+                   a spike with the next point on the curve.
+
+                   Just don't make your index lookahead 1.                          */
+                if (j == 1 && n > 0) {
+                    Point prev = reparameterized.get(n - 1);
+                    if (distanceSquared(prev, interpolated) < forbidden)
+                        reparameterized.set(n - 1, interpolated);
+                }
+                reparameterized.add(interpolated);
+                n++;
+            }
+            prevPoint = currPoint;
+            i++;
+            s += ds;
+        }
+
+        return reparameterized;
     }
 }

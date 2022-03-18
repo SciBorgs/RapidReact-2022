@@ -51,5 +51,5 @@ public final class Constants {
     // }
     // public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 100).getFinalPath();
 
-    public static final List<Point> PATH_TEST = Util.generateSinePath(4.0, 0.45, 1.35);
+    public static final List<Point> PATH_TEST = Util.generateSinePath(4.0, 0.45, 1.35, 0.05);
 }
