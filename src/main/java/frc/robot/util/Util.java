@@ -135,7 +135,7 @@ public class Util {
      * @param lengthStep the resolution to use
      * @return a reparamaterization of the given curve
      */
-    public static List<Point> reparameterize(List<Point> curve, double lengthStep) {
+    public static Path reparameterize(List<Point> curve, double lengthStep) {
         double arclength = length(curve, 1);
         double forbidden = Math.pow(lengthStep * 0.9, 2);
         List<Point> reparameterized = new ArrayList<Point>();
@@ -176,6 +176,6 @@ public class Util {
             s += ds;
         }
 
-        return reparameterized;
+        return new Path(reparameterized, arclength);
     }
 }

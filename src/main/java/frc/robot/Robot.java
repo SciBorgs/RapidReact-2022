@@ -8,6 +8,7 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -45,8 +46,6 @@ public class Robot extends TimedRobot {
   private Field2d field2d = new Field2d();
 
   private Timer timer = new Timer();
-  private int tick = 0;
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -58,25 +57,22 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    // localization
+    // NETWORK TABLES
     networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
     networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
     networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
-
-    // drive
     networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 0.5);
-    // networkTableSubsystem.bind("drive", "joystick left", oi.joystickLeft::getY, 0.0);
-    // networkTableSubsystem.bind("drive", "joystick right", oi.joystickRight::getY, 0.0);
-
-    SmartDashboard.putData("Field", field2d);
-
-    timer.start();
-
+    networkTableSubsystem.bind("drive", "joystick left", oi.joystickLeft::getY, 0.0);
+    networkTableSubsystem.bind("drive", "joystick right", oi.joystickRight::getY, 0.0);
     networkTableSubsystem.bind("drive", "time per tick", this::getPeriod, 0.0);
 
-    System.out.println(networkTableSubsystem);
+    // SMART DASHBOARD
+    SmartDashboard.putData("Field", field2d);
 
-    double i = Constants.STARTING_HEADING;
+    // PATH WEAVER
+    Trajectory t;
+
+    timer.start();
   }
 
   @Override
@@ -110,20 +106,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // TODO: Merge shooter, intake, hopper, ball follow into auto
     // CommandScheduler.getInstance().schedule(
-    //   new SequentialCommandGroup(
-    //     new MoveToPointAlphaCommand(),
-    //     new MoveToPointBetaCommand(),
-    //     new CommandBase() {
-    //       @Override
-    //       public boolean isFinished() {
-    //         return true;
-    //       }
-    //       @Override
-    //       public void end(boolean i) {
-    //         System.out.println("Auto Sequence Completed!");
-    //       }
-    //     }
-    //   )
     // );
 
     CommandScheduler.getInstance().schedule(
@@ -142,9 +124,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    for (Point p : Constants.PATH_TEST) {
-      System.out.println(p);
-    }
   }
 
   /** This function is called periodically during operator control. */

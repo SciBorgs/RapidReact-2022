@@ -1,7 +1,7 @@
 package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.AutoProfile;
 import frc.robot.Robot;
 import frc.robot.controllers.PurePursuitController;
 
@@ -10,7 +10,7 @@ public class PurePursuitTestCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.pp = new PurePursuitController(Constants.PATH_TEST, 0.201155, 0.0);
+        this.pp = new PurePursuitController(AutoProfile.PATH_TEST, 0.201155, 0.0);
     }
 
     @Override

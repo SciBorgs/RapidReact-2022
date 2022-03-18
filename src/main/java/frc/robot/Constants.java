@@ -30,26 +30,4 @@ public final class Constants {
     
     //***************** GEAR RATIOS ***********************//
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
-
-    //********************** FIELD ***********************//
-        // Note: The origin is the center of the hub.
-    public static final Point POINT_HUB  = new Point(0, 0);
-    public static final Point POINT_BETA = new Point(0, 0);
-    public static final Point POINT_TEST = new Point(-2, 0);
-
-        // Adjust radii here for desired shooting/searching distances.
-    public static final double SHOOTING_RADIUS_NEAR = 1.25;
-    public static final double SHOOTING_RADIUS_FAR  = 3.3;
-
-    // public static final List<Point> PATH_TEST_RAW = new ArrayList<>();
-    // static {
-    //     PATH_TEST_RAW.add(STARTING_POINT);
-    //     PATH_TEST_RAW.add(new Point(0, 0));
-    //     PATH_TEST_RAW.add(new Point(2, 0));
-    //     PATH_TEST_RAW.add(new Point(4, 0));
-    //     PATH_TEST_RAW.add(new Point(6, 0));
-    // }
-    // public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 100).getFinalPath();
-
-    public static final List<Point> PATH_TEST = Util.generateSinePath(4.0, 0.45, 1.35, 0.05);
 }

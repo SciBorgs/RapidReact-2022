@@ -2,18 +2,19 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controllers.AlongAxisController;
-import frc.robot.Constants;
+import frc.robot.util.Point;
+import frc.robot.AutoProfile;
 import frc.robot.Robot;
 
-public class MoveToPointAlphaCommand extends CommandBase {
+public class MoveUpToHubCommand extends CommandBase {
     private AlongAxisController axisController;
 
     private static final double DISTANCE_TOLERANCE = 0.05;
 
     @Override
     public void initialize() {
-        this.axisController = new AlongAxisController(Constants.POINT_HUB, DISTANCE_TOLERANCE);
-        this.axisController.setTarget(Constants.SHOOTING_RADIUS_NEAR);
+        this.axisController = new AlongAxisController(new Point(0, 0), DISTANCE_TOLERANCE);
+        this.axisController.setTarget(AutoProfile.SHOOTING_RADIUS_NEAR);
     }
 
     @Override
