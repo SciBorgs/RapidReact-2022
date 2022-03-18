@@ -14,49 +14,51 @@ public class TurretSubsystem extends SubsystemBase {
     private CANSparkMax motor;
     private SciAbsoluteEncoder encoder;
 
-    private final int LIMIT = 360;
+    private final int LIMIT = 360; // change for real turret specs
     private static final double TX_P = 6.0 / 360;
+    private PID target_pid;
+    private PID reset_pid;
     private ShufflePID pidShuffleboard;
-    private PID pid;
 
     private Averager txAverager;
     private double txAvr;
     private static final double TX_WEIGHT = 0.1;
 
-    private static final double DEFAULT_ANGLE = 10;
-
     public TurretSubsystem() {
         this.encoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.SMALL_TURRET_GEAR_RATIO);
-        this.pid = new PID(TX_P, 0, 0);
-        this.pidShuffleboard = new ShufflePID("Turret", pid, "Main");
+        this.target_pid = new PID(TX_P, 0, 0);
+        this.reset_pid = new PID(TX_P, 0, 0);
+        this.pidShuffleboard = new ShufflePID("Turret", target_pid, "Main");
         this.txAverager = new Averager(TX_WEIGHT);
-    }
-
-    // returns direction that the turret is spinning as an int, either 1 or -1
-    public int getDirection() {
-        if (encoder.getSpeed() > 0)
-            return -1;
-        return 1;
     }
 
     public void pointTowardsTarget(double angle) {
         txAvr = txAverager.getAverage(-angle);
-        double targetAngle = getAngle() + txAvr;
+        double targetAngle = encoder.getAngle() + txAvr;
         targetAngle %= LIMIT;
-        double turn = pid.getOutput(targetAngle, getAngle());
-        if (turn > 0.5) {
-            turn = 0.5;
-            System.out.println("turn > 0.5");
-        } else if (turn < -0.5) {
-            turn = -0.5;
-            System.out.println("turn < -0.5");
-        }
-        turn(turn);
+        double turn = target_pid.getOutput(targetAngle, encoder.getAngle());
+        turn = cutToRange(turn, 0.5);
+        motor.set(turn);
     }
 
-    public void pointTowardsTarget() {
-        pointTowardsTarget(getDirection() * DEFAULT_ANGLE);
+    public void pointTowardsDefault() {
+        double turn = reset_pid.getOutput(0, encoder.getAngle());
+        turn = cutToRange(turn, 0.5);
+        motor.set(turn);
     }
+
+    // preventing things from going terribly wrong
+    public double cutToRange(double x, double limit) {
+        if (x > limit) {
+            x = limit;
+            System.out.println("turn > " + limit);
+        } else if (x < -limit) {
+            x = -limit;
+            System.out.println("turn < " + limit);
+        }
+        return x;
+    }
+
 
     public void updateShuffleboard() { 
         pidShuffleboard.update();

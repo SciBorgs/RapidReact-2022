@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     new ManualHoodCommand().execute();
-    System.out.println("Angle: " + shooterSubsystem.getHoodAngle());
+    // System.out.println("Angle: " + shooterSubsystem.getHoodAngle());
     // new DriveCommand().execute();
   }
 

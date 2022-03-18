@@ -19,7 +19,7 @@ public class AimTurretCommand extends CommandBase {
             unknownCount = 0;
             Robot.turretSubsystem.pointTowardsTarget(tx);
         } else if (unknownCount > UNKNOWN_LIMIT) {
-            Robot.turretSubsystem.pointTowardsTarget();
+            Robot.turretSubsystem.pointTowardsDefault();
         } else {
             unknownCount++;
         }
