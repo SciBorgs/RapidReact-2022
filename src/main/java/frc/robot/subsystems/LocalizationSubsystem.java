@@ -7,6 +7,7 @@ import frc.robot.Robot;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.util.Point;
+import frc.robot.AutoProfile;
 import frc.robot.Constants;
 
 public class LocalizationSubsystem extends SubsystemBase {
@@ -16,7 +17,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     public SciPigeon pigeon;
 
     public LocalizationSubsystem() {
-        this.pos = Constants.STARTING_POINT;
+        this.pos = AutoProfile.STARTING_POINT;
 
         this.totalEncoder = new SciEncoder(
             Constants.WHEEL_ENCODER_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE,
@@ -35,7 +36,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.prevDistance = this.totalEncoder.getDistance();
 
         this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
-        this.pigeon.setAngle(Constants.STARTING_HEADING);
+        this.pigeon.setAngle(AutoProfile.STARTING_HEADING);
     }
 
     public double[] get()      { return new double[] {this.pos.x, this.pos.y, this.pigeon.getAngle()}; }
@@ -68,12 +69,8 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     public void reset() {
-        this.pos = Constants.STARTING_POINT;
-        this.pigeon.setAngle(Constants.STARTING_HEADING);
+        this.pos = AutoProfile.STARTING_POINT;
+        this.pigeon.setAngle(AutoProfile.STARTING_HEADING);
         this.prevHeading = this.pigeon.getAngle();
-    }
-
-    public String getInfoString() {
-        return "ROBOT : " + this.getPos() + " " + this.getHeading();
     }
 }

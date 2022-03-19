@@ -18,8 +18,4 @@ public class Path extends ArrayList<Point> {
         this.n = points.size();
         this.speed = length / n;
     }
-
-    // public Path(Trajectory j) {
-    //     // TODO
-    // }
 }

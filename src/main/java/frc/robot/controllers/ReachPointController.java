@@ -9,14 +9,14 @@ import frc.robot.util.Util;
 /**
  * Controller for moving towards a point.
  */
-public class FollowPointController implements MovementController<Point, FollowPointController.State> {
+public class ReachPointController implements MovementController<Point, ReachPointController.State> {
     protected static enum State { NONE, MOVING, FINISHED }
     private State state;
     private PID headingPID, distancePID;
     private Point targetPoint;
     private final double distanceTolerance;
 
-    public FollowPointController(double distanceTolerance) {
+    public ReachPointController(double distanceTolerance) {
         this.distanceTolerance = distanceTolerance;
         this.headingPID = new PID(5.72, 0, 0);
         this.distancePID = new PID(9.04, 0.22, 0.31);

@@ -2,6 +2,7 @@ package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.controllers.AlongAxisController;
+import frc.robot.AutoProfile;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -15,7 +16,7 @@ public class AlongAxisTestCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.axisController = new AlongAxisController(Constants.STARTING_POINT, 0, DISTANCE_TOLERANCE);
+        this.axisController = new AlongAxisController(AutoProfile.STARTING_POINT, 0, DISTANCE_TOLERANCE);
         this.axisController.setTarget(farDistance);
         this.goingToFar = false;
         Robot.networkTableSubsystem.createControllerBindings("axis test", "axis", this.axisController, 0.0);

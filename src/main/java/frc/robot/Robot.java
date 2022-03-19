@@ -8,24 +8,17 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.test.*;
-import frc.robot.commands.auto.*;
+import frc.robot.AutoProfile.TransportProfile;
 import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.NetworkTableSubsystem;
-import frc.robot.util.Point;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -69,8 +62,8 @@ public class Robot extends TimedRobot {
     // SMART DASHBOARD
     SmartDashboard.putData("Field", field2d);
 
-    // PATH WEAVER
-    Trajectory t;
+    // AUTO SEQUENCE CHOOSING
+    AutoProfile.fromTransportProfile(TransportProfile.TEST);
 
     timer.start();
   }
@@ -104,16 +97,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // TODO: Merge shooter, intake, hopper, ball follow into auto
-    // CommandScheduler.getInstance().schedule(
-    // );
-
-    CommandScheduler.getInstance().schedule(
-      // new SpinTestCommand()
-      // new FollowPointTestCommand()
-      // new AlongAxisTestCommand()
-      new PurePursuitTestCommand()
-    );
+    CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
   }
 
   /** This function is called periodically during autonomous. */

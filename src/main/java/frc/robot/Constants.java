@@ -4,12 +4,7 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import frc.robot.controllers.PathSmoother;
 import frc.robot.util.Point;
-import frc.robot.util.Util;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -23,11 +18,13 @@ public final class Constants {
     //**************** ROBOT DIMENSIONS *******************//
     public static final double ROBOT_WIDTH = 0.5588; 
     public static final double WHEEL_CIRCUMFERENCE = 0.4787787204; //..... :)
-
-    //**************** INITIAL ROBOT STATE ****************//
-    public static final Point  STARTING_POINT = new Point(0, 0);
-    public static final double STARTING_HEADING = 0;
     
     //***************** GEAR RATIOS ***********************//
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
+
+    //***************** FIELD DATA ************************//
+    public static final double FIELD_WIDTH = 8.2296;
+    public static final double FIELD_LENGTH = 16.4592;
+    public static final double BALL_PLACEMENT_RADIUS = 3.885;
+    public static final Point POINT_HUB = new Point(FIELD_LENGTH / 2, FIELD_WIDTH / 2);
 }

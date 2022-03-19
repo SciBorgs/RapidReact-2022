@@ -1,19 +1,19 @@
 package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.AutoProfile;
 import frc.robot.Robot;
-import frc.robot.controllers.FollowPointController;
+import frc.robot.controllers.ReachPointController;
 
-public class FollowPointTestCommand extends CommandBase {
-    private FollowPointController controller;
+public class ReachPointTestCommand extends CommandBase {
+    private ReachPointController controller;
 
     private static final double DISTANCE_TOLERANCE = 0.05;
 
     @Override
     public void initialize() {
-        this.controller = new FollowPointController(DISTANCE_TOLERANCE);
-        this.controller.setTarget(Constants.POINT_TEST);
+        this.controller = new ReachPointController(DISTANCE_TOLERANCE);
+        this.controller.setTarget(AutoProfile.POINT_TEST);
     }
 
     @Override
