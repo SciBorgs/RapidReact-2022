@@ -1,11 +1,17 @@
 package frc.robot;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.PurePursuitCommand;
+import frc.robot.commands.test.MarkerCommand;
 import frc.robot.util.Path;
 import frc.robot.util.PathWeaverUtil;
 import frc.robot.util.Point;
@@ -20,10 +26,10 @@ public class AutoProfile {
     public static final double SHOOTING_RADIUS_NEAR = 1.5;
     public static final double SHOOTING_RADIUS_FAR  = 3.3;
 
-    public static final List<Point> PATH_TEST = Util.generateSinePath(4.0, 0.45, 1.35, 0.05);
+    public static final List<Point> PATH_TEST = Util.generateSinePath(4.0, 0.45, 1.35, 0.05).stream().map(p -> Util.add(p, Constants.POINT_HUB)).collect(Collectors.toList());
     public static final Point POINT_TEST = new Point(0, 0);
 
-    public static final Point  STARTING_POINT = new Point(0, 0);
+    public static final Point  STARTING_POINT = Constants.POINT_HUB;
     public static final double STARTING_HEADING = 0;
 
     public static final String FIELD_STRING = 
@@ -67,6 +73,7 @@ public class AutoProfile {
           ORBIT_LOW("Red-Orbit"),      ORBIT_HIGH("Red-Orbit",   "Red-Regress"),
         MEERKAT_LOW("Red-Meerkat"),  MEERKAT_HIGH("Red-Meerkat", "Red-Regress"),
         GUARD("Red-Guard"), SPY("Red-Spy"),
+        
         TEST("Test-Peanut", "Test-Circle");
  
         public final int transportStages;
@@ -75,6 +82,21 @@ public class AutoProfile {
         private TransportProfile(String... pathnames) {
             this.transportStages = pathnames.length;
             this.pathnames = pathnames;
+        }
+
+        private static final HashMap<String, TransportProfile> BY_NAME;
+        static {
+            BY_NAME = new HashMap<>();
+            for (String name : Set.of(
+                "SCOUT_LOW", "SCOUT_HIGH", "HOME_LOW", "HOME_HIGH", 
+                "ORBIT_LOW", "ORBIT_HIGH", "MEERKAT_LOW", "MEERKAT_HIGH", 
+                "GUARD", "SPY", "TEST")) {
+                BY_NAME.put(name, TransportProfile.valueOf(name));
+            }
+        }
+
+        public static TransportProfile getByName(String name) {
+            return BY_NAME.get(name);
         }
 
         // stages are 1-indexed
@@ -102,6 +124,7 @@ public class AutoProfile {
             this.addCommands(
                 // StartHopperCommand(),
                 // StartIntakeCommand(),
+                new MarkerCommand("Initializing")
             );
         }
     }
@@ -111,6 +134,7 @@ public class AutoProfile {
             super(StageType.FOLLOW);
             this.addCommands(
                 // FollowBallCommand()
+                new MarkerCommand("Following")
             );
         }
     }
@@ -125,7 +149,10 @@ public class AutoProfile {
                 double interceptAngle = Util.interceptionAngle(path, finalPoint, 0.1, 3);
                 // this.addCommands(new TurnTurretCommand(desiredAngle - interceptAngle));
             }
-            this.addCommands(new PurePursuitCommand(path));
+            this.addCommands(
+                new MarkerCommand("Transporting"),
+                new PurePursuitCommand(path)
+            );
         }
     }
 
@@ -135,20 +162,23 @@ public class AutoProfile {
             this.addCommands(new SequentialCommandGroup(
                 // new AimTurretCommand(),
                 // new ShootBallCommand()
+                new WaitCommand(1.155),
+                new MarkerCommand("Shooting")
             ));
         }
     }
 
-    private static Stage[] autoStrategy = {};
+    // commands cannot be added to the same command group twice
+    private static Supplier<Stage[]> autoStrategy = () -> new Stage[] {};
 
-    public static void fromTransportProfile(TransportProfile profile) {
+    public static void setTransportProfile(TransportProfile profile) {
         if (profile == TransportProfile.TEST) {
-            autoStrategy = new Stage[] {
+            autoStrategy = () -> new Stage[] {
                 new TransportStage(profile.getStagePath(1), true),
                 new TransportStage(profile.getStagePath(2), true)
             };
         } else if (profile.transportStages == 1) {
-            autoStrategy = new Stage[] {
+            autoStrategy = () -> new Stage[] {
                 new InitializeStage(),
                 new ShootStage(),
                 new TransportStage(profile.getStagePath(1), true),
@@ -156,7 +186,7 @@ public class AutoProfile {
                 new ShootStage(),
             };
         } else if (profile.transportStages == 2) {
-            autoStrategy = new Stage[] {
+            autoStrategy = () -> new Stage[] {
                 new InitializeStage(),
                 new ShootStage(),
                 new TransportStage(profile.getStagePath(1), true),
@@ -169,7 +199,20 @@ public class AutoProfile {
         }
     }
 
+    private static String prevValue = "";
+    public static boolean updateTransportProfile(String profileName) {
+        if (profileName.equals(prevValue)) return false;
+
+        prevValue = profileName;
+        TransportProfile profile = TransportProfile.getByName(profileName);
+        if (profile == null) return false;
+
+        System.out.println(profile.toString());
+        setTransportProfile(profile);
+        return true;
+    }
+
     public static Command getAutoCommand() {
-        return new SequentialCommandGroup(autoStrategy);
+        return new SequentialCommandGroup(autoStrategy.get());
     }
 }

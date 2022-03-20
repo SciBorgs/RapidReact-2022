@@ -3,25 +3,24 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
+import frc.robot.sciSensorsActuators.SciSpark;
 import frc.robot.util.Util;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class DriveSubsystem extends SubsystemBase {
-    public CANSparkMax lFront, lMiddle, lBack, rFront, rMiddle, rBack;
+    public SciSpark lFront, lMiddle, lBack, rFront, rMiddle, rBack;
     private boolean invertedControl;
     private double speedLimit;
 
     public DriveSubsystem() {
-        this.lFront  = new CANSparkMax(PortMap.LEFT_FRONT_SPARK,  MotorType.kBrushless);
-        this.lMiddle = new CANSparkMax(PortMap.LEFT_MIDDLE_SPARK, MotorType.kBrushless);
-        this.lBack   = new CANSparkMax(PortMap.LEFT_BACK_SPARK,   MotorType.kBrushless);
+        this.lFront  = new SciSpark(PortMap.LEFT_FRONT_SPARK);
+        this.lMiddle = new SciSpark(PortMap.LEFT_MIDDLE_SPARK);
+        this.lBack   = new SciSpark(PortMap.LEFT_BACK_SPARK);
 
-        this.rFront  = new CANSparkMax(PortMap.RIGHT_FRONT_SPARK,  MotorType.kBrushless);
-        this.rMiddle = new CANSparkMax(PortMap.RIGHT_MIDDLE_SPARK, MotorType.kBrushless);
-        this.rBack   = new CANSparkMax(PortMap.RIGHT_BACK_SPARK,   MotorType.kBrushless);
+        this.rFront  = new SciSpark(PortMap.RIGHT_FRONT_SPARK);
+        this.rMiddle = new SciSpark(PortMap.RIGHT_MIDDLE_SPARK);
+        this.rBack   = new SciSpark(PortMap.RIGHT_BACK_SPARK);
 
         lMiddle.follow(lFront);
         lBack.follow(lFront);
@@ -37,7 +36,7 @@ public class DriveSubsystem extends SubsystemBase {
         rMiddle.setIdleMode(IdleMode.kCoast);
         rBack.setIdleMode(IdleMode.kCoast);
 
-        this.speedLimit = 1.0;
+        this.speedLimit = 0.95;
         this.invertedControl = false;
     }
 

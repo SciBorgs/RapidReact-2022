@@ -1,7 +1,6 @@
 package frc.robot.util;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ import edu.wpi.first.wpilibj.Filesystem;
  * I know, it's stupid.
  */
 public class PathWeaverUtil {
-    private static HashMap<String, frc.robot.util.Path> stored;
+    private static HashMap<String, frc.robot.util.Path> stored = new HashMap<>();
 
     public static Trajectory getTrajectoryByName(String trajectoryJSON) {
         Trajectory trajectory;

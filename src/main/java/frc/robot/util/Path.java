@@ -3,8 +3,6 @@ package frc.robot.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.wpi.first.math.trajectory.Trajectory;
-
 /**
  * Represents a timeless path paramaterized by length.
  */

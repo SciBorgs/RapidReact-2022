@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.AutoProfile.TransportProfile;
 import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
@@ -38,8 +37,6 @@ public class Robot extends TimedRobot {
 
   private Field2d field2d = new Field2d();
 
-  private Timer timer = new Timer();
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -54,18 +51,18 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
     networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
     networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
+
     networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 0.5);
     networkTableSubsystem.bind("drive", "joystick left", oi.joystickLeft::getY, 0.0);
     networkTableSubsystem.bind("drive", "joystick right", oi.joystickRight::getY, 0.0);
     networkTableSubsystem.bind("drive", "time per tick", this::getPeriod, 0.0);
+    networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 1.0);
 
-    // SMART DASHBOARD
+    networkTableSubsystem.bind("auto", "profile", AutoProfile::updateTransportProfile, "TEST");
+
     SmartDashboard.putData("Field", field2d);
 
-    // AUTO SEQUENCE CHOOSING
-    AutoProfile.fromTransportProfile(TransportProfile.TEST);
-
-    timer.start();
+    System.out.println(networkTableSubsystem);
   }
 
   @Override
@@ -113,8 +110,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (Robot.isReal())
-      new DriveCommand().execute();
+    new DriveCommand().execute();
   }
 
   /** This function is called once when the robot is disabled. */
