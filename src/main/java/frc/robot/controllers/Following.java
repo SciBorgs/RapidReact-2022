@@ -2,8 +2,9 @@ package frc.robot.controllers;
 
 import frc.robot.Robot;
 import frc.robot.util.PID;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.Averager;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 public class Following {
@@ -22,9 +23,12 @@ public class Following {
     public static double tx;
     public static double ta;
 
+    public static Averager averager;
+
     static {
-        txPID = new PID(TX_P, 0, TX_D);
-        taPID = new PID(TA_P, 0, 0);
+        txPID      = new PID(TX_P, 0, TX_D);
+        taPID      = new PID(TA_P, 0, 0);
+        averager   = new Averager(TA_WEIGHT);
     }
 
     public static void follow() {
@@ -33,7 +37,8 @@ public class Following {
         if (result.hasTargets()) {
             ta = Robot.photonVisionSubsystem.getTarget().getArea();
             tx = Robot.photonVisionSubsystem.getTarget().getYaw();  
-            taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
+            // taAvr = TA_WEIGHT * ta + (1 - TA_WEIGHT) * taAvr;
+            taAvr = averager.getAverage(ta);
             SmartDashboard.putNumber("average ta", taAvr);
 
             // double distance = 10 * Math.pow(taAvr, -1.5);
