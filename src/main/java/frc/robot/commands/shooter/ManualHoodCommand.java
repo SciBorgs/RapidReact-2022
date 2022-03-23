@@ -8,6 +8,6 @@ public class ManualHoodCommand extends CommandBase {
     public void execute() {
         double val = Robot.oi.joystickLeft.getY();
         // System.out.println(val);
-        Robot.shooterSubsystem.moveVert(val);
+        // Robot.shooterSubsystem.moveVert(val);
     }
 }

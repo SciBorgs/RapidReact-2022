@@ -42,7 +42,7 @@ public class ShooterSubsystem extends SubsystemBase {
         */
         
         //lmotor.follow(rmotor);
-        thruBoreEncoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
+        // thruBoreEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
     }
     
     public final double HEIGHTDIFF = 2.08534;

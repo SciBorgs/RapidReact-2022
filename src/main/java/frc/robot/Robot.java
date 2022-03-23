@@ -26,7 +26,7 @@ public class Robot extends TimedRobot {
   public static OI oi = new OI();
   public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
   public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
-  public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
+  // public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
 
   // public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 
@@ -60,10 +60,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousInit() {
+  public void autonomousInit() { 
     // turretSubsystem.resetPigeon();
     CommandScheduler.getInstance().schedule(new AimTurretCommand());
-    // CommandScheduler.getInstance().schedule(new AimHoodCommand());
     // shooterSubsystem.hood_Encoder.setPosition(0);
     
   }
@@ -71,7 +70,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    shooterSubsystem.update();
+    // shooterSubsystem.update();
     turretSubsystem.updateShuffleboard();
   }
   

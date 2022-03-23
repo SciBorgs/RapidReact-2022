@@ -17,4 +17,6 @@ public class SciAbsoluteEncoder {
     //returns the angle the hood is currently at:
     public double getAngle() {return absEncoder.getDistance();}
 
+    public void reset() { absEncoder.reset();}
+
 }
