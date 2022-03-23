@@ -33,9 +33,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  //public static IntakeSubsystem intake = new IntakeSubsystem();
-  public static HopperSubsystem hopper = new HopperSubsystem();
-  //public static PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
+  public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public static HopperSubsystem hopperSubsystem = new HopperSubsystem();
+  public static PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
 
   private ShuffleboardTab mainTab;
   private NetworkTableEntry hopperGetSuck;
@@ -48,13 +48,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //probaby works
-    // CameraServer.addServer("limelight");
-    // CameraServer.startAutomaticCapture("Limelight Camera",0);
-    this.mainTab = Shuffleboard.getTab("Hopper");
-    this.hopperGetSuck = this.mainTab.add("Hopper Get Suck", 0).getEntry();
-    //this.mainTabSmartDashboard.putNumber("Hopper suck speed", hopper.getSuckSpeed());
-    this.hopperSetSuck = this.mainTab.add("Hopper Set Absolute Suck", 0).getEntry();
-    //SmartDashboard.putNumber("Hopper suck sped", hopper.getSuckSpeed());
 
   }
 
@@ -71,16 +64,8 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    // SmartDashboard.putBoolean("Pneumatics status", pneumatics.getStatus());
-    // SmartDashboard.putNumber("Elevator sped", hopper.getElevatorSpeed());
-    // SmartDashboard.putNumber("Hopper suck sped", hopper.getSuckSpeed());
-    //So to get data we just do:
-    
-    // SmartDashboard.putBoolean("Intake status", intake.getSwitchStatus());
-    // SmartDashboard.putNumber("Intake speed", intake.getIntakeSpeed());
 
-    hopperGetSuck.setDouble(hopper.getSuckSpeed());
-    CommandScheduler.getInstance().run();
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -94,29 +79,14 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // schedule the autonomous command (example)
-  //   if (m_autonomousCommand != null) {
-  //     m_autonomousCommand.schedule();
-  //   }
-  //   CommandScheduler.getInstance().schedule(new LowerIntakeArmCommand(), new IntakeBallsCommand().withTimeout(15.0));
-    new StartHopperCommand().execute();
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
    }   
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    // System.out.println("Test");
-    // System.out.println(hopperSetSuck.getDouble(0.01));
-    // hopper.setSuckSpeed(hopperSetSuck.getDouble(0.01));
-    // double speed = Math.abs(hopperSetSuck.getDouble(0.0));
-    // double shuffleboardSetSpeed = goForward ? speed : -speed;
-
-    double shuffleboardSetSpeed = hopperSetSuck.getDouble(0.0);
-    //System.out.println("Suffleboard Set Speed: " + shuffleboardSetSpeed);
-    hopper.setSuckSpeed(shuffleboardSetSpeed);
-
-    // if (intake.limitSwitch.get()) { 
-    //   CommandScheduler.getInstance().schedule(false, new StartElevatorCommand().withTimeout(3.0));
-    // }
 
   }
 
@@ -126,9 +96,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.cancel();
-    // }
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
   }
 
   /** This function is called periodically during operator control. */
@@ -138,6 +108,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */
