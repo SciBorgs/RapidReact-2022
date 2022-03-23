@@ -1,5 +1,6 @@
 package frc.robot.subsystems.localization;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.PortMap;
@@ -19,9 +20,10 @@ public class LocalizationSubsystem extends SubsystemBase {
     private Point pos;
     private double prevDistance, prevHeading;
 
-    // movement
+    // sensors
     public SciEncoder totalEncoder;
     public SciPigeon pigeon;
+    public DigitalInput ballSwitch;
 
     // localization models
     public static final int NUM_PARTICLES = 500;
@@ -53,6 +55,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.pigeon = new SciPigeon(PortMap.PIGEON_ID);
         this.pigeon.setAngle(AutoProfile.STARTING_HEADING);
 
+        this.ballSwitch = new DigitalInput(PortMap.INTAKE_SWITCH);
+
         // create particle filter
 
         this.motionValues = new double[2];
@@ -80,11 +84,11 @@ public class LocalizationSubsystem extends SubsystemBase {
                 double weight = 1.0;
 
                 double limelight = sensors[0];
-                if (limelight != -1.0)
+                if (limelight >= 0.0)
                     weight /= (0.5 + limelight - Util.distance(particle, Constants.POINT_HUB));
 
                 double limitSwitch = sensors[1];
-                if (limitSwitch != -1.0)
+                if (limitSwitch == 1.0)
                     weight /= (0.5 + Math.min(Util.distance(particle, Constants.RED_BALLS),
                                               Util.distance(particle, Constants.BLUE_BALLS)));
 
@@ -125,7 +129,9 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     public void sensorUpdate() {
-        // TODO: add limelight (shooter) and limit switch (intake) code
+        // TODO: MERGE SHOOTER BRANCH AND ADD LIMELIGHT HERE
+        this.sensorValues[0] = -1; // limelight
+        this.sensorValues[1] = this.ballSwitch.get() ? 1.0 : 0.0;
     }
 
     public void reset() {
