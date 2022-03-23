@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Shooter.AimHoodCommand;
 import frc.robot.commands.Shooter.ManualHoodCommand;
+import frc.robot.commands.Turret.AimTurretCommand;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
@@ -61,8 +62,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // turretSubsystem.resetPigeon();
-    // CommandScheduler.getInstance().schedule(new AimTurretCommand());
-    CommandScheduler.getInstance().schedule(new AimHoodCommand());
+    CommandScheduler.getInstance().schedule(new AimTurretCommand());
+    // CommandScheduler.getInstance().schedule(new AimHoodCommand());
     // shooterSubsystem.hood_Encoder.setPosition(0);
     
   }
