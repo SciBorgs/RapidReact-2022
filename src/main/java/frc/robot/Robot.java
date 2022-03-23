@@ -7,9 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Shooter.AimHoodCommand;
-import frc.robot.commands.Shooter.ManualHoodCommand;
-import frc.robot.commands.Turret.AimTurretCommand;
+import frc.robot.commands.shooter.AimHoodCommand;
+import frc.robot.commands.shooter.ManualHoodCommand;
+import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    new ManualHoodCommand().execute();
+    // new ManualHoodCommand().execute();
     // System.out.println("Angle: " + shooterSubsystem.getHoodAngle());
     // new DriveCommand().execute();
   }
