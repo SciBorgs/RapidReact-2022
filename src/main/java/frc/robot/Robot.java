@@ -8,17 +8,18 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.NetworkTableSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.localization.LocalizationSubsystem;
 
 /**
@@ -30,10 +31,13 @@ import frc.robot.subsystems.localization.LocalizationSubsystem;
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
-  public static DriveSubsystem          driveSubsystem          = new DriveSubsystem();
-  public static LocalizationSubsystem   localizationSubsystem   = new LocalizationSubsystem();
+  public static DriveSubsystem      driveSubsystem      = new DriveSubsystem();
+  public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
+  public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
+  public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
 
-  public static NetworkTableSubsystem   networkTableSubsystem   = new NetworkTableSubsystem();
+  public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
+  public static LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem();
 
   private RobotContainer m_robotContainer;
 
@@ -104,7 +108,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    shooterSubsystem.update();
+    turretSubsystem.updateShuffleboard();
   }
+  
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -120,22 +127,24 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    driveSubsystem.setSpeed(0.0, 0.0);
+    // System.out.println("This is disabled init");
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
+    // System.out.println("This is disabled periodic");
   }
 
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
+    // System.out.println("This is test init");
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    Robot.localizationSubsystem.reset();
+    // System.out.println("This is test periodic");
   }
 }
