@@ -1,7 +1,10 @@
 package frc.robot.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.Supplier;
 
 public class Util {
     public static double normalize(double v) {
@@ -177,5 +180,83 @@ public class Util {
         }
 
         return new Path(reparameterized, arclength);
+    }
+
+    public static DoubleUnaryOperator gaussian(double stddev, double mean) {
+        return new DoubleUnaryOperator() {
+            private final double k = 1/(stddev * Math.sqrt(2*Math.PI));
+            private final double a = -1/(2*stddev*stddev);
+            @Override
+            public double applyAsDouble(double x) {
+                return k * Math.exp(a * (x - mean) * (x - mean));
+            }
+        };
+    }
+
+    public static Supplier<double[]> gaussianPairSampler(double[] stddev, double[] mean) {
+        return new Supplier<>() {
+            @Override
+            public double[] get() {
+                double R = Math.sqrt(-2*Math.log(Math.random()));
+                double theta = 2 * Math.PI * Math.random();
+                return new double[] {
+                    stddev[0] * R * Math.cos(theta) + mean[0],
+                    stddev[1] * R * Math.sin(theta) + mean[1]
+                };
+            }
+        };
+    }
+
+    // there is no such thing as a "gaussioid" (in the way i'm using it). i mean
+    // that this samples a 2D normal distribution (hence the name) using the
+    // Box-Muller transform 
+    public static double[] sampleGaussioid(double[] stddev, double[] mean) {
+            double R = Math.sqrt(-2*Math.log(Math.random()));
+            double theta = 2 * Math.PI * Math.random();
+            return new double[] {
+                stddev[0] * R * Math.cos(theta) + mean[0],
+                stddev[1] * R * Math.sin(theta) + mean[1]
+            };
+    }
+
+    // not normalized
+    public static double[] cdf(double[] cdf, double[] pdf) {
+        double total = 0;
+        for (int i = 0; i < cdf.length; i++) {
+            cdf[i] = total;
+            total += pdf[i];
+        }
+        return cdf;
+    }
+
+    // returns an index
+    public static int sampleDiscreteCdf(double[] cdf) {
+        double rand = cdf[cdf.length] * Math.random();
+        int index = Arrays.binarySearch(cdf, rand);
+        return (index < 0) ? -(index + 2) : index;
+    }
+
+    // shortest distance
+    public static double distance(double[] p, Point... cs) {
+        double minDistanceSquared = Double.MAX_VALUE;
+        for (Point c : cs) {
+            double dy = c.y - p[0];
+            double dx = c.x - p[1];
+            double distanceSquared = dy*dy + dx*dx;
+            if (distanceSquared > minDistanceSquared)
+                minDistanceSquared = distanceSquared;
+        }
+        return minDistanceSquared;
+    }
+
+    public static void fill(double[] arr, double val) {
+        for (int i = 0; i < arr.length; i++)
+            arr[i] = val;
+    }
+
+    public static void flatten(double[] flat, double[][] matrix, int length, int depth) {
+        for (int i = 0; i < matrix.length; i++) {
+            System.arraycopy(matrix[i], 0, flat, depth*i, depth);
+        }
     }
 }

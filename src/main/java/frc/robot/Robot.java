@@ -8,6 +8,8 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -16,8 +18,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.NetworkTableSubsystem;
+import frc.robot.subsystems.localization.LocalizationSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -47,17 +49,18 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    // NETWORK TABLES
-    networkTableSubsystem.bind("localization", "rX", localizationSubsystem::getX, 0.0);
-    networkTableSubsystem.bind("localization", "rY", localizationSubsystem::getY, 0.0);
-    networkTableSubsystem.bind("localization", "rH", localizationSubsystem::getHeading, 0.0);
+    // localization
+    networkTableSubsystem.bind("localization", "pose", localizationSubsystem::get, new double[] {0, 0, 0});
+    networkTableSubsystem.bind("localization", "particles", localizationSubsystem.particleFilter::getFlat, new double[] {});
+    networkTableSubsystem.bind("localization", "meanParticle", localizationSubsystem.particleFilter::getMeanParticle, new double[] {8, 4});
 
-    networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 0.5);
-    networkTableSubsystem.bind("drive", "joystick left", oi.joystickLeft::getY, 0.0);
-    networkTableSubsystem.bind("drive", "joystick right", oi.joystickRight::getY, 0.0);
-    networkTableSubsystem.bind("drive", "time per tick", this::getPeriod, 0.0);
-    networkTableSubsystem.bind("drive", "vLimit", driveSubsystem::setSpeedLimit, 1.0);
+    // teleop sim
+    networkTableSubsystem.bind("drive", "joyLeft", oi.joystickLeft::getY, 0.0);
+    networkTableSubsystem.bind("drive", "joyRight", oi.joystickRight::getY, 0.0);
+    networkTableSubsystem.bind("drive", "driveSpeed", localizationSubsystem::getVel, 0.0);
+    networkTableSubsystem.bind("drive", "driveLimit", driveSubsystem::setSpeedLimit, 1.0);
 
+    // auto sequence
     networkTableSubsystem.bind("auto", "profile", AutoProfile::updateTransportProfile, "TEST");
 
     SmartDashboard.putData("Field", field2d);
@@ -74,6 +77,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     localizationSubsystem.update();
     networkTableSubsystem.update();
+
     field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }
 

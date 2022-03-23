@@ -27,4 +27,10 @@ public final class Constants {
     public static final double FIELD_LENGTH = 16.4592;
     public static final double BALL_PLACEMENT_RADIUS = 3.885;
     public static final Point POINT_HUB = new Point(FIELD_LENGTH / 2, FIELD_WIDTH / 2);
+    public static final Point[] RED_BALLS = new Point[] {
+        new Point(11.633, 2.028), new Point(11.551, 6.3768), new Point(8.999, 7.973),
+        new Point(6.084, 7.331), new Point(4.52, 3.263), new Point(9.229, 0.332)};
+    public static final Point[] BLUE_BALLS = new Point[] {
+        new Point(10.629, 0.958), new Point(12.144, 5.042), new Point(7.368, 7.490),
+        new Point(4.968, 6.194), new Point(5.03, 1.864), new Point(7.582, 0.283)};
 }
