@@ -18,8 +18,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     private final int LIMIT = 360; // change for real turret specs
     private static final double TX_P = 6.0 / 360;
-    private PID target_pid;
-    private PID reset_pid;
+    private PID pid;
     private ShufflePID pidShuffleboard;
 
     private Averager txAverager;
@@ -28,9 +27,8 @@ public class TurretSubsystem extends SubsystemBase {
 
     public TurretSubsystem() {
         this.encoder = new SciAbsoluteEncoder(PortMap.THRUBORE_ENCODER, Constants.TURRET_GEAR_RATIO);
-        this.target_pid = new PID(TX_P, 0, 0);
-        this.reset_pid = new PID(TX_P, 0, 0);
-        this.pidShuffleboard = new ShufflePID("Turret", target_pid, "Main");
+        this.pid = new PID(TX_P, 0, 0);
+        this.pidShuffleboard = new ShufflePID("Turret", pid, "Main");
         this.txAverager = new Averager(TX_WEIGHT);
     }
 
@@ -38,13 +36,13 @@ public class TurretSubsystem extends SubsystemBase {
         txAvr = txAverager.getAverage(-angle);
         double targetAngle = encoder.getAngle() + txAvr;
         targetAngle %= LIMIT;
-        double turn = target_pid.getOutput(targetAngle, encoder.getAngle());
+        double turn = pid.getOutput(targetAngle, encoder.getAngle());
         turn = cutToRange(turn, SPEED_LIMIT);
         motor.set(turn);
     }
 
     public void pointTowardsDefault() {
-        double turn = reset_pid.getOutput(0, encoder.getAngle());
+        double turn = pid.getOutput(0, encoder.getAngle());
         turn = cutToRange(turn, SPEED_LIMIT);
         motor.set(turn);
     }
