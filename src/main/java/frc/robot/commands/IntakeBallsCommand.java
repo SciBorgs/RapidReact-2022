@@ -10,9 +10,9 @@ public class IntakeBallsCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.addRequirements(Robot.intake, Robot.hopper);
-        Robot.intake.startSuck();
-        Robot.hopper.startSuck();
+        this.addRequirements(Robot.intakeSubsystem, Robot.hopperSubsystem);
+        Robot.intakeSubsystem.startSuck();
+        Robot.hopperSubsystem.startSuck();
     }
  
     @Override
@@ -22,8 +22,8 @@ public class IntakeBallsCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        Robot.intake.stopSuck();
-        Robot.hopper.stopSuck();
+        Robot.intakeSubsystem.stopSuck();
+        Robot.hopperSubsystem.stopSuck();
     }
 
     @Override
