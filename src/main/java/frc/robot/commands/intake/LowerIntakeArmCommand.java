@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import java.util.Set;
 
@@ -10,7 +10,7 @@ public class LowerIntakeArmCommand extends CommandBase {
     @Override
     public void initialize() {
         this.addRequirements(Robot.intakeSubsystem);
-        Robot.intake.startSuck();
+        Robot.intakeSubsystem.startSuck();
     }
 
     @Override

@@ -1,8 +1,8 @@
 package frc.robot;
 
 import frc.robot.commands.intake.*;
-import frc.robot.commands.hopper.*
-import frc.robot.commands.pneumatics.*
+import frc.robot.commands.hopper.*;
+import frc.robot.commands.pneumatics.*;
 
 import edu.wpi.first.wpilibj2.command.button.*;
 
@@ -20,7 +20,7 @@ public class OI {
                this.StartHopper.whenPressed(new StartHopperCommand());
 
                this.togglePneumatics = new Button();
-                this.togglePneumatics.toggleWhenPressed(new TogglePneumaticsCommand()); */
+                this.togglePneumatics.toggleWhenPressed(new TogglePneumaticsCommand());
 
         }
 }

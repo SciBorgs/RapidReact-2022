@@ -47,7 +47,5 @@ public class IntakeSubsystem implements Subsystem {
         return this.limitSwitch.get();
     }
     
-    @Override
-    public void initDefaultCommand(){}
-    
+
 }

@@ -9,8 +9,8 @@ public class HopperSubsystem implements Subsystem {
     private CANSparkMax suck;
     private CANSparkMax elevator;
 
-    private double final HOPPER_SPEED = 0.01;
-    private double final ELEVATOR_SPEED = 0.01;
+    private final double HOPPER_SPEED = 0.01;
+    private final double ELEVATOR_SPEED = 0.01;
     
     private final double MAX_SPEED = 0.1;
 
