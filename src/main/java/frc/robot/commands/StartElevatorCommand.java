@@ -7,29 +7,27 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
 public class StartElevatorCommand extends CommandBase {
-    //Starts the elevator. Runs when held button, stops the elevator when released.
-
     @Override
     public void initialize() {
-        this.addRequirements(Robot.hopper);
-        //Robot.hopper.setElevatorSpeed();
-    }
-
-    @Override
-    public void execute() {
-
+        this.addRequirements(Robot.hopperSubsystem);
+        Robot.hopperSubsystem.startElevator();
     }
 
     @Override
     public void end(boolean interrupted) {
-        //Robot.hopper.stopElevator();
+        Robot.hopperSubsystem.stopElevator();
     }
 
     @Override
     public boolean isFinished() {
         return false;
     }
+    // useless functions
+    @Override
+    public void execute() {
 
+    }
+    
     @Override
     public Set<Subsystem> getRequirements() {
         // TODO Auto-generated method stub
