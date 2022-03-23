@@ -7,12 +7,10 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
 public class TogglePneumaticsCommand extends CommandBase {
-    //Toggles the pneumatics. Runs when toggled button
-    
     @Override
     public void initialize() {
-        //this.addRequirements(Robot.pneumatics);
-        //Robot.pneumatics.start();
+        this.addRequirements(Robot.pneumaticsSubsystem);
+        Robot.pneumaticsSubsystem.start();
     }
 
     @Override
@@ -22,7 +20,7 @@ public class TogglePneumaticsCommand extends CommandBase {
     
     @Override
     public void end(boolean interruted) { 
-        //Robot.pneumatics.stop();
+        Robot.pneumaticsSubsystem.stop();
     }
 
     @Override
