@@ -129,8 +129,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     public void sensorUpdate() {
-        // TODO: MERGE SHOOTER BRANCH AND ADD LIMELIGHT HERE
-        this.sensorValues[0] = -1; // limelight
+        this.sensorValues[0] = Robot.shooterSubsystem.getDistance();
         this.sensorValues[1] = this.ballSwitch.get() ? 1.0 : 0.0;
     }
 

@@ -79,8 +79,12 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    
     localizationSubsystem.update();
     networkTableSubsystem.update();
+    shooterSubsystem.update();
+
+    turretSubsystem.updateShuffleboard();
 
     field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }
@@ -108,8 +112,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    shooterSubsystem.update();
-    turretSubsystem.updateShuffleboard();
   }
   
 
