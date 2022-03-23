@@ -9,36 +9,34 @@ import frc.robot.PortMap;
 
 public class IntakeSubsystem implements Subsystem {
 
-    private DoubleSolenoid armSolenoid;
-    private CANSparkMax suckSpark;
-    public DigitalInput limitSwitch;
+    private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
+    private CANSparkMax suckSpark; // motor used for intaking balls
+    public DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
 
     private final double INTAKE_SPEED = 0.5;
 
     public IntakeSubsystem() {
-        this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL);
+        this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL); 
         this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
+        // this.suckSpark.setInverted(true); // invert the motor
         this.limitSwitch = new DigitalInput(PortMap.LIMIT_SWITCH_INTAKE);
+        
     }
 
-    public void extendArm() {
+    public void extendArm() { 
         this.armSolenoid.set(DoubleSolenoid.Value.kForward);
     }
+    
+    public void retractArm() {
+        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
 
-    public void setSuckSpeed() {
+    public void startSuck() {
         this.suckSpark.set(this.INTAKE_SPEED);
     }
 
     public void stopSuck() {
         this.suckSpark.set(0);
-    }
-
-    /* public void retractArm() {
-        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
-    } */
-
-    public void initDefaultCommand(){
-
     }
 
     public double getIntakeSpeed() {
@@ -48,6 +46,8 @@ public class IntakeSubsystem implements Subsystem {
     public boolean getSwitchStatus() {
         return this.limitSwitch.get();
     }
-
-
+    
+    @Override
+    public void initDefaultCommand(){}
+    
 }
