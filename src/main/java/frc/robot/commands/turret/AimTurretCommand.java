@@ -1,4 +1,4 @@
-package frc.robot.commands.turret_;
+package frc.robot.commands.turret;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj2.command.CommandBase;

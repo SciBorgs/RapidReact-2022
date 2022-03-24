@@ -62,7 +62,8 @@ public class PID {
   }
 
   public void reset() {
-    this.integrator = this.prevErr = this.prevTime = 0;
+    this.integrator = this.prevTime = 0;
+    this.prevErr = Double.POSITIVE_INFINITY;
     this.timer.reset();
   }
 }

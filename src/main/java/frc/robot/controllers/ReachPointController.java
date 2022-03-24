@@ -10,7 +10,7 @@ import frc.robot.util.Util;
  * Controller for moving towards a point.
  */
 public class ReachPointController implements MovementController<Point, ReachPointController.State> {
-    protected static enum State { NONE, MOVING, FINISHED }
+    protected static enum State { NONE, MOVING, FINISHED };
     private State state;
     private PID headingPID, distancePID;
     private Point targetPoint;
