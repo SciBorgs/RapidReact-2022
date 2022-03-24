@@ -18,7 +18,7 @@ import frc.robot.util.Util;
  * https://www.ri.cmu.edu/pub_files/pub1/kelly_alonzo_1994_4/kelly_alonzo_1994_4.pdf
  */
 public class PurePursuitController implements MovementController<Point, PurePursuitController.State> {
-    protected static enum State { MOVING, FINISHED }
+    protected static enum State { MOVING, FINISHED };
     private State state;
     private PID turnPID;
     private Point lastPoint;
