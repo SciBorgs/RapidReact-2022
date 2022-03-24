@@ -45,12 +45,8 @@ public class TurretSubsystem extends SubsystemBase {
         motor.set(turn);
     }
 
-    public void pointTowardsDefault() {
-        double turn = pid.getOutput(0, encoder.getAngle());
-        System.out.println("Turn: " + turn);
-        System.out.println("Traveled: " + encoder.getAngle());
-        turn = cutToRange(turn, SPEED_LIMIT);
-        motor.set(turn);
+    public void stop() {
+        motor.set(0);
     }
 
     // preventing things from going terribly wrong
@@ -61,12 +57,12 @@ public class TurretSubsystem extends SubsystemBase {
         } else if (x < -limit) {
             x = -limit;
             System.out.println("turn < " + -limit);
-        } else {
-            System.out.println("value is good " + x);
         }
+        
         return x;
     }
 
+    public double
 
     public void updateShuffleboard() { 
         pidShuffleboard.update();
