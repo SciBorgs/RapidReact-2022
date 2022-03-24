@@ -18,7 +18,7 @@ public class TurretSubsystem extends SubsystemBase {
     private double SPEED_LIMIT = 0.1;
 
     private final int LIMIT = 360; // change for real turret specs
-    private static final double TX_P = 6.0 / 360;
+    private static final double TX_P = 0.1;
     private PID pid;
     private ShufflePID pidShuffleboard;
 
@@ -36,6 +36,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void pointTowardsTarget(double angle) {
+        System.out.println(encoder.getAngle());
         txAvr = txAverager.getAverage(-angle);
         double targetAngle = encoder.getAngle() + txAvr;
         targetAngle %= LIMIT;
@@ -59,7 +60,7 @@ public class TurretSubsystem extends SubsystemBase {
             System.out.println("turn > " + limit);
         } else if (x < -limit) {
             x = -limit;
-            System.out.println("turn < " + limit);
+            System.out.println("turn < " + -limit);
         } else {
             System.out.println("value is good " + x);
         }

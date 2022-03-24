@@ -11,23 +11,21 @@ public class AimTurretCommand extends CommandBase {
     @Override
     public void execute() {
 
-        System.out.println("executed");
         /*
         Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 0);
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
         */
-        double tv = 0;
+        double tv = 1;
+        double tx = 2;
 
         if (tv == 1) {
             unknownCount = 0;
-            System.out.println("why??");
-            // Robot.turretSubsystem.pointTowardsTarget(tx);
+            Robot.turretSubsystem.pointTowardsTarget(tx);
         } else if (unknownCount > UNKNOWN_LIMIT) {
             Robot.turretSubsystem.pointTowardsDefault();
         } else {
-            System.out.println(unknownCount);
             unknownCount++;
         }
     }

@@ -56,6 +56,6 @@ public final class Constants {
     //***************** GEAR RATIOS ***********************//
     public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
     public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
-    public static final double TURRET_GEAR_RATIO = 24.0 / 300 / 20;
+    public static final double TURRET_GEAR_RATIO = 26.0 / 300 / 20;
     public static final double TOTAL_HOOD_GEAR_RATIO = 1/230;
 }
