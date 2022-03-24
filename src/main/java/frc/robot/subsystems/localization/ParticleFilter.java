@@ -74,7 +74,7 @@ public class ParticleFilter {
     public double[][] getParticles() { return this.particles; }
     
     public double[] getFlat() {
-        Util.flatten(flat, particles, n, 2);
+        Util.flatten(flat, particles, n, stateDim);
         return flat;
     }
 
