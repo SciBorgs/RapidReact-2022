@@ -18,6 +18,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.NetworkTableSubsystem;
+import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.localization.LocalizationSubsystem;
@@ -31,10 +32,11 @@ import frc.robot.subsystems.localization.LocalizationSubsystem;
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
-  public static DriveSubsystem      driveSubsystem      = new DriveSubsystem();
-  public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
-  public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
-  public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
+  public static DriveSubsystem        driveSubsystem        = new DriveSubsystem();
+  public static LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
+  public static PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
+  public static TurretSubsystem       turretSubsystem       = new TurretSubsystem();
+  public static ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
 
   public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem();
