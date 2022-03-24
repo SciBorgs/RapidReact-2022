@@ -1,4 +1,4 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands.Shooter;
 
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
