@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
+import javax.naming.LimitExceededException;
+
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -16,9 +19,9 @@ public class TurretSubsystem extends SubsystemBase {
     public CANSparkMax motor;
     private SciAbsoluteEncoder encoder;
 
-    private double SPEED_LIMIT = 0.3;
+    private double SPEED_LIMIT = 0.5;
 
-    private final double LIMIT = 360; // change for real turret specs
+    private final double LIMIT = 177; // change for real turret specs
     private static final double TX_P = 0.1;
     private PID pid;
     private ShufflePID pidShuffleboard;
@@ -34,16 +37,19 @@ public class TurretSubsystem extends SubsystemBase {
         this.pidShuffleboard = new ShufflePID("Turret", pid, "Main");
         this.txAverager = new Averager(TX_WEIGHT);
         this.motor = new CANSparkMax(PortMap.TURRET_SPARK, MotorType.kBrushless);
+        this.motor.setIdleMode(IdleMode.kBrake);
     
     }
 
     public void pointTowardsTarget(double angle) {
-        System.out.println(encoder.getAngle());
+        System.out.println("inpAng " + angle);
         txAvr = txAverager.getAverage(-angle);
-        // double targetAngle = encoder.getAbsoluteAngle() + txAvr;
         double targetAngle = encoder.getAngle() + txAvr;
-        targetAngle %= LIMIT;
         double turn = pid.getOutput(targetAngle, encoder.getAngle());
+        
+        if (Math.abs(targetAngle) > LIMIT)
+            turn = 0;
+        System.out.println("targAng " + targetAngle);
 
         turn = cutToRange(turn, SPEED_LIMIT);
         motor.set(turn);
