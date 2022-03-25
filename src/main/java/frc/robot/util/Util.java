@@ -229,7 +229,7 @@ public class Util {
         return cdf;
     }
 
-    // returns an index
+    // Performs a binary search to simulate x = F^-1(p)
     public static int sampleDiscreteCdf(double[] cdf) {
         double rand = cdf[cdf.length] * Math.random();
         int index = Arrays.binarySearch(cdf, rand);
