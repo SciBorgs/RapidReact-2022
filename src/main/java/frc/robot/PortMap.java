@@ -7,13 +7,10 @@ public class PortMap {
   public static final int JOYSTICK_RIGHT = 0;
 
   //*******************SPARKS******************//
-  public static final int LEFT_FRONT_SPARK = 26;
-  public static final int LEFT_MIDDLE_SPARK = 27;
-  public static final int LEFT_BACK_SPARK = 8;
-
-  public static final int RIGHT_FRONT_SPARK = 22;
-  public static final int RIGHT_MIDDLE_SPARK = 15;
-  public static final int RIGHT_BACK_SPARK = 20;
+  public static final int HOOD_SPARK = 28;
+  public static final int FLYWHEEL_LEFT_SPARK = 0;
+  public static final int FLYWHEEL_RIGHT_SPARK = 0;
+  public static final int TURRET_SPARK = 3;
 
   //*******************SWITCHES******************//
   public static final int TOP_LIMIT_SWITCH = 3;
@@ -41,5 +38,6 @@ public class PortMap {
   public static final int COMPRESSOR = -1;
 
   //******************ENCODERS******************//
-   public static final int THRUBORE_ENCODER = 9;
+   public static final int TURRET_ENCODER = 2;
+   public static final int HOOD_ENCODER = 42;
 }

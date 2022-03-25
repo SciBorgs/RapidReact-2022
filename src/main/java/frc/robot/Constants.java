@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import frc.robot.util.Point;
 
 /**
@@ -30,8 +27,8 @@ public final class Constants {
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
     public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
     public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
-    public static final double SMALL_TURRET_GEAR_RATIO = RIGHT_ENCODER_GEAR_RATIO / 10;
     public static final double TOTAL_HOOD_GEAR_RATIO = 36.0  / 334.0;
+    public static final double TURRET_GEAR_RATIO = 26.0 / 300;
     // 1.0 / 230.0;
 
     //***************** FIELD DATA ************************//
@@ -45,4 +42,8 @@ public final class Constants {
     public static final Point[] BLUE_BALLS = new Point[] {
         new Point(10.629, 0.958), new Point(12.144, 5.042), new Point(7.368, 7.490),
         new Point(4.968, 6.194), new Point(5.03, 1.864), new Point(7.582, 0.283)};
+    public static final double FLYWHEEL_GEAR_RATIO = 1;
+
+    //public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
+    
 }

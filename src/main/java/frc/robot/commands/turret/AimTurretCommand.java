@@ -14,12 +14,12 @@ public class AimTurretCommand extends CommandBase {
         NetworkTable table = Robot.limelightSubsystem.getTable();
         double tv = Robot.limelightSubsystem.getTableData(table, "tv");
         double tx = Robot.limelightSubsystem.getTableData(table, "tx");
-    
+
         if (tv == 1) {
             unknownCount = 0;
             Robot.turretSubsystem.pointTowardsTarget(tx);
         } else if (unknownCount > UNKNOWN_LIMIT) {
-            Robot.turretSubsystem.pointTowardsDefault();
+            Robot.turretSubsystem.stop();
         } else {
             unknownCount++;
         }
@@ -27,6 +27,10 @@ public class AimTurretCommand extends CommandBase {
     
     @Override
     public boolean isFinished() {
+        if (Math.abs(Robot.turretSubsystem.getAngle() - Robot.turretSubsystem.getTarget()) < 0.1) {
+            Robot.turretSubsystem.stop();
+            return true;
+        }
         return false;
     }
 }
