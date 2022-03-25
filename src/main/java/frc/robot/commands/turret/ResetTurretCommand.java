@@ -9,9 +9,13 @@ public class ResetTurretCommand extends CommandBase {
     public void execute() {
         Robot.turretSubsystem.pointTowardsTarget(0);
     }
-    
+
     @Override
     public boolean isFinished() {
+        if (Math.round(Robot.turretSubsystem.getAngle()) == 0) {
+            Robot.turretSubsystem.stop();
+            return true;
+        }
         return false;
     }
 }
