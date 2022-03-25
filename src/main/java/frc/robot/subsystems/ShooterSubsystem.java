@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -13,6 +14,7 @@ import frc.robot.PortMap;
 import frc.robot.Robot;
 import frc.robot.controllers.HoodAngleController;
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
+import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.util.PID;
 import frc.robot.util.ShufflePID;
 
@@ -23,9 +25,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private ShuffleboardTab shooterTab;
     private NetworkTableEntry distance, hoodAngle;
     
-    public CANSparkMax hood;
-    //, lmotor, rmotor;
-    private SciAbsoluteEncoder thruBoreEncoder;
+    private CANSparkMax hood, lmotor, rmotor;
+    private SciEncoder flywheelEncoder;
+    private SciAbsoluteEncoder hoodEncoder;
     public ShooterSubsystem() {
         shooterPID = new PID(0.0005, 0, 0);
         shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
@@ -34,15 +36,15 @@ public class ShooterSubsystem extends SubsystemBase {
         distance = shooterTab.add("distance", 0.0).withWidget(BuiltInWidgets.kGraph).getEntry();
         hoodAngle = shooterTab.add("hoodangle ", 0.0).withWidget(BuiltInWidgets.kGraph).getEntry();
 
-        this.hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
+        hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
+        lmotor = new CANSparkMax(PortMap.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless);
+        rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
+        lmotor.follow(rmotor);
 
-        /*
-        this.lmotor = new CANSparkMax(PortMap.SHOOTER_LEFT_SPARK, MotorType.kBrushless);
-        this.rmotor = new C2NSparkMax(PortMap.SHOOTER_RIGHT_SPARK, MotorType.kBrushless);
-        */
+        flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
+
         
-        //lmotor.follow(rmotor);
-        // thruBoreEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
+        hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
     }
     
     public final double HEIGHTDIFF = 2.08534;
@@ -53,16 +55,23 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getCurrentHoodAngle() {
-        return thruBoreEncoder.getAngle();
+        return hoodEncoder.getAngle();
     }
     public double functionAngle() {
         return HoodAngleController.getDegFromFunction(getDistance());
     }
-    /*
-    public void shoot(double speed) {
+
+    public void run(double speed) {
         rmotor.set(speed);
     }
-    */
+
+    public void resetDistanceSpun() {
+        flywheelEncoder.setDistance(0);
+    }
+
+    public double getDistanceSpun() {
+        return flywheelEncoder.getDistance();
+    }
 
     public void moveVert(double speed) {
         if(speed > 0.1)speed = 0.1;
@@ -72,7 +81,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void moveHood(double angle) {
-        moveVert(-shooterPID.getOutput(angle, thruBoreEncoder.getAngle()));
+        moveVert(-shooterPID.getOutput(angle, hoodEncoder.getAngle()));
     }
 
     public void updateGraphs() {

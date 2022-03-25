@@ -77,6 +77,10 @@ public class TurretSubsystem extends SubsystemBase {
         return encoder.getAngle();
     }
 
+    public double getTarget() {
+        return txAvr;
+    }
+
     public void updateShuffleboard() { 
         pidShuffleboard.update();
     }

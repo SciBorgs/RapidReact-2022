@@ -32,6 +32,7 @@ public final class Constants {
     
     //***************** GEAR RATIOS ***********************//
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
+    public static final double FLYWHEEL_GEAR_RATIO = 1;
 
     //********************** FIELD ***********************//
         // Note: The origin is the center of the hub.

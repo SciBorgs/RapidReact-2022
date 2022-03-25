@@ -12,7 +12,7 @@ public class ResetTurretCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (Math.round(Robot.turretSubsystem.getAngle()) == 0) {
+        if (Math.abs(Robot.turretSubsystem.getAngle()) < 0.1) {
             Robot.turretSubsystem.stop();
             return true;
         }

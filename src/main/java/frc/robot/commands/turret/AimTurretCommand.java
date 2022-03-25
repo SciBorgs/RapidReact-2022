@@ -27,6 +27,10 @@ public class AimTurretCommand extends CommandBase {
     
     @Override
     public boolean isFinished() {
+        if (Math.abs(Robot.turretSubsystem.getAngle() - Robot.turretSubsystem.getTarget()) < 0.1) {
+            Robot.turretSubsystem.stop();
+            return true;
+        }
         return false;
     }
 }
