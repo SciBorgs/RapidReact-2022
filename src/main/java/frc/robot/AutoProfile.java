@@ -17,11 +17,11 @@ import frc.robot.util.Point;
 import frc.robot.util.Util;
 
 import frc.robot.commands.ShootCommandGroup;
+import frc.robot.commands.IntakeCommandGroup;
+
 import frc.robot.commands.auto.FollowBallCommand;
 import frc.robot.commands.auto.PurePursuitCommand;
 import frc.robot.commands.hopper.StartHopperCommand;
-import frc.robot.commands.intake.IntakeBallsCommand;
-import frc.robot.commands.intake.LowerIntakeArmCommand;
 import frc.robot.commands.test.MarkerCommand;
 import frc.robot.commands.turret.AimTurretCommand;
 
@@ -131,8 +131,7 @@ public class AutoProfile {
             super(StageType.INITIALIZE);
             this.addCommands(
                 new StartHopperCommand(),
-                new LowerIntakeArmCommand(),
-                new IntakeBallsCommand(),
+                new IntakeCommandGroup(),
                 new MarkerCommand("Initializing")
             );
         }
