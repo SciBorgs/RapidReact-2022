@@ -10,12 +10,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.auto.PurePursuitCommand;
-import frc.robot.commands.test.MarkerCommand;
+
 import frc.robot.util.Path;
 import frc.robot.util.PathWeaverUtil;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
+
+import frc.robot.commands.ShootCommandGroup;
+import frc.robot.commands.auto.FollowBallCommand;
+import frc.robot.commands.auto.PurePursuitCommand;
+import frc.robot.commands.hopper.StartHopperCommand;
+import frc.robot.commands.intake.IntakeBallsCommand;
+import frc.robot.commands.intake.LowerIntakeArmCommand;
+import frc.robot.commands.test.MarkerCommand;
+import frc.robot.commands.turret.AimTurretCommand;
 
 /**
  * Use this class for storing paths, points, etc. in the auto sequence.
@@ -122,8 +130,9 @@ public class AutoProfile {
         public InitializeStage() {
             super(StageType.INITIALIZE);
             this.addCommands(
-                // StartHopperCommand(),
-                // StartIntakeCommand(),
+                new StartHopperCommand(),
+                new LowerIntakeArmCommand(),
+                new IntakeBallsCommand(),
                 new MarkerCommand("Initializing")
             );
         }
@@ -133,7 +142,7 @@ public class AutoProfile {
         public FollowStage() {
             super(StageType.FOLLOW);
             this.addCommands(
-                // FollowBallCommand()
+                new FollowBallCommand(),
                 new MarkerCommand("Following")
             );
         }
@@ -160,8 +169,8 @@ public class AutoProfile {
         public ShootStage() {
             super(StageType.SHOOT);
             this.addCommands(new SequentialCommandGroup(
-                // new AimTurretCommand(),
-                // new ShootBallCommand()
+                new AimTurretCommand(),
+                new ShootCommandGroup(),
                 new WaitCommand(1.155),
                 new MarkerCommand("Shooting")
             ));
