@@ -7,15 +7,19 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
 public class StartHopperCommand extends CommandBase {
+
+    // WARNING: THIS COMMAND NEVER FINISHES BY ITSELF. USE WITH TIMEOUT OR OTHER END CONDITION.
+
     @Override
     public void initialize() {
         this.addRequirements(Robot.hopperSubsystem);
         Robot.hopperSubsystem.startElevator();
+        Robot.hopperSubsystem.startSuck();
     }
 
     @Override
     public void execute() {
-        Robot.hopperSubsystem.startSuck();
+
     }
 
     @Override
