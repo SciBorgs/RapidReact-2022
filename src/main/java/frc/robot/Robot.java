@@ -127,6 +127,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    // shooterSubsystem.update();
+    turretSubsystem.updateShuffleboard();
+    shooterSubsystem.update();
   }
   
 
