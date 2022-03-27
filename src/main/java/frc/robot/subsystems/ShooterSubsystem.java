@@ -58,7 +58,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getRequiredHoodAngle() {
-        // return tba(getDistance());
+        //return tba(getDistance());
         return 0;
     }
 
@@ -66,10 +66,14 @@ public class ShooterSubsystem extends SubsystemBase {
         rmotor.set(speed);
     }
 
-    public void stop() {
+    public void stopFlywheel() {
         rmotor.set(0);
     }
 
+    public void stopHood(){
+        hood.set(0);
+    }
+    
     public void resetDistanceSpun() {
         flywheelEncoder.setDistance(0);
     }

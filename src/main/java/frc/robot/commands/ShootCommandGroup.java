@@ -9,6 +9,8 @@ public class ShootCommandGroup extends SequentialCommandGroup {
         addCommands(
             new AimCommandGroup(),
             new ShootCommand(),
+            //move elevator
+            //something to stop the flywheel
             new ResetTurretCommand()
         );
     }
