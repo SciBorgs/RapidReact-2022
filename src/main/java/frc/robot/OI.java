@@ -1,9 +1,9 @@
 package frc.robot;
 
 import frc.robot.commands.intake.*;
-import frc.robot.commands.ClimberExtend;
-import frc.robot.commands.HookMotor;
-import frc.robot.commands.RetractClimberArm;
+import frc.robot.commands.climber.ClimberExtend;
+import frc.robot.commands.climber.HookMotor;
+import frc.robot.commands.climber.RetractClimberArm;
 import frc.robot.commands.hopper.*;
 import frc.robot.commands.pneumatics.*;
 import edu.wpi.first.wpilibj.Joystick;
