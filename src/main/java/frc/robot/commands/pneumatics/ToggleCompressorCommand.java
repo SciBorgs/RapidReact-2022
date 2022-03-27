@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class TogglePneumaticsCommand extends CommandBase {
+public class ToggleCompressorCommand extends CommandBase {
     @Override
     public void initialize() {
         this.addRequirements(Robot.pneumaticsSubsystem);
