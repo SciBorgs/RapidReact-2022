@@ -13,6 +13,7 @@ import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.util.Averager;
 import frc.robot.util.PID;
+import frc.robot.util.Util;
 import frc.robot.util.ShufflePID;
 
 public class TurretSubsystem extends SubsystemBase {
@@ -51,26 +52,12 @@ public class TurretSubsystem extends SubsystemBase {
             turn = 0;
         System.out.println("targAng " + targetAngle);
 
-        turn = cutToRange(turn, SPEED_LIMIT);
+        turn = Util.normalize(turn, SPEED_LIMIT);
         motor.set(turn);
     }
 
     public void stop() {
         motor.set(0);
-    }
-
-    // preventing things from going terribly wrong
-    private double cutToRange(double x, double limit) {
-        System.out.println("current x " + x);
-        if (x > limit) {
-            x = limit;
-            System.out.println("turn > " + limit);
-        } else if (x < -limit) {
-            x = -limit;
-            System.out.println("turn < " + -limit);
-        }
-        
-        return x;
     }
 
     public double getAngle() {

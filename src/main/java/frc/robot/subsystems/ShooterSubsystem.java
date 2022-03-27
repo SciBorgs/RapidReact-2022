@@ -15,6 +15,7 @@ import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.util.PID;
 import frc.robot.util.ShufflePID;
+import frc.robot.util.Util;
 
 public class ShooterSubsystem extends SubsystemBase {
     private PID shooterPID;
@@ -27,6 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private SciEncoder flywheelEncoder;
     private SciAbsoluteEncoder hoodEncoder;
 
+    private final double SPEED_LIMIT = 0.1;
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
 
@@ -76,15 +78,9 @@ public class ShooterSubsystem extends SubsystemBase {
         return flywheelEncoder.getDistance();
     }
 
-    // testing
-    public void moveVert(double speed) {
-        if(speed > 0.1)speed = 0.1;
-        if(speed <-0.1) speed = -0.1;
-        hood.set(speed);
-    }
-
     public void moveHood(double angle) {
-        moveVert(-shooterPID.getOutput(angle, hoodEncoder.getAngle()));
+        double turn = -shooterPID.getOutput(angle, hoodEncoder.getAngle());
+        hood.set(Util.normalize(turn, SPEED_LIMIT));
     }
 
     public void updateGraphs() {
