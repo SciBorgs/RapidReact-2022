@@ -29,6 +29,8 @@ public class IntakeSubsystem implements Subsystem {
     }
     // ONLY WORKS IF LIMIT SWITCH IS IN INTAKE AND NOT HOPPER balsucker//
     public void updateBallCounter(){
+
+        /* Should also work
         if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end
             lastFallingEdge = System.currentTimeMillis();
 
@@ -37,6 +39,14 @@ public class IntakeSubsystem implements Subsystem {
                 amountOfBalls += 1;
 
         lastLimit = this.getLimitSwitchState();
+        */
+
+        if (this.getLimitSwitchState()) {
+            if (System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) {
+                amountOfBalls++;
+            }
+            lastFallingEdge = System.currentTimeMillis();
+        }
     }
 
     public boolean getLimitSwitchState(){
