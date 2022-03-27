@@ -39,10 +39,6 @@ public class Robot extends TimedRobot {
   public static HopperSubsystem hopperSubsystem = new HopperSubsystem();
   public static PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
 
-  private ShuffleboardTab mainTab;
-  private NetworkTableEntry hopperGetSuck;
-  private NetworkTableEntry hopperSetSuck;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -89,6 +85,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    Robot.intakeSubsystem.updateBallCounter();
 
   }
 
