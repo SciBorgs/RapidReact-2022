@@ -10,7 +10,7 @@ import frc.robot.Robot;
 
 public class PneumaticsSubsystem implements Subsystem {
     private Compressor compressor;    
-    private ShuffleboardTab mainTab;
+    public  ShuffleboardTab mainTab;
 
     public PneumaticsSubsystem() {
         this.compressor = new Compressor(PortMap.COMPRESSOR, PneumaticsModuleType.CTREPCM);
