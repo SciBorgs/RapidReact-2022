@@ -22,12 +22,13 @@ public class ShooterSubsystem extends SubsystemBase {
     private ShufflePID shooterShufflePID;
 
     private ShuffleboardTab shooterTab;
-    private NetworkTableEntry distance, hoodAngle;
+    private NetworkTableEntry distance, hoodAngle, changeHoodAngle;
     
     private CANSparkMax hood, lmotor, rmotor;
     private SciEncoder flywheelEncoder;
     private SciAbsoluteEncoder hoodEncoder;
 
+    private final double LIMIT = 30; // add for real measurement
     private final double SPEED_LIMIT = 0.1;
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
@@ -39,6 +40,7 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterTab = Shuffleboard.getTab("shooter");
         distance = shooterTab.add("distance", 0.0).withWidget(BuiltInWidgets.kGraph).getEntry();
         hoodAngle = shooterTab.add("hoodangle ", 0.0).withWidget(BuiltInWidgets.kGraph).getEntry();
+        changeHoodAngle = shooterTab.add("change hood angle", 0.0).getEntry();
 
         hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
@@ -87,6 +89,10 @@ public class ShooterSubsystem extends SubsystemBase {
         hood.set(Util.normalize(turn, SPEED_LIMIT));
     }
 
+    public void updateAngle() { 
+        moveHood(changeHoodAngle.getDouble(0.0));
+    }
+
     public void updateGraphs() {
         distance.setDouble(getDistance());
         hoodAngle.setDouble(getCurrentHoodAngle());
@@ -95,5 +101,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public void update() {
         shooterShufflePID.update();
         updateGraphs();
+        updateAngle();
     }
 }

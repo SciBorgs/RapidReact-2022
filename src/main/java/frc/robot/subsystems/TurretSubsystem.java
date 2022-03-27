@@ -1,20 +1,17 @@
 package frc.robot.subsystems;
 
-import javax.naming.LimitExceededException;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.util.Averager;
 import frc.robot.util.PID;
-import frc.robot.util.Util;
 import frc.robot.util.ShufflePID;
+import frc.robot.util.Util;
 
 public class TurretSubsystem extends SubsystemBase {
     public CANSparkMax motor;
@@ -22,7 +19,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     private double SPEED_LIMIT = 0.5;
 
-    private final double LIMIT = 177; // change for real turret specs
+    private final double LIMIT = 90; // change for real turret specs
     private static final double TX_P = 0.1;
     private PID pid;
     private ShufflePID pidShuffleboard;

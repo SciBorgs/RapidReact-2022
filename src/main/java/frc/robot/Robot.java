@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     // shooterSubsystem.update();
     turretSubsystem.updateShuffleboard();
+    shooterSubsystem.update();
   }
   
 
