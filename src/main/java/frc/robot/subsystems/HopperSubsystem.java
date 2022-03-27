@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import com.revrobotics.CANSparkMax;
 
 import frc.robot.PortMap;
+import frc.robot.Robot;
 
 public class HopperSubsystem implements Subsystem {
 
@@ -14,9 +17,15 @@ public class HopperSubsystem implements Subsystem {
     
     private final double MAX_SPEED = 0.1;
 
+    public ShuffleboardTab hopperTab;
+
     public HopperSubsystem() {
         this.suck = new CANSparkMax(PortMap.HOPPER_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
         this.elevator = new CANSparkMax(PortMap.HOPPER_ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
+
+        hopperTab = Shuffleboard.getTab("Hopper");
+        hopperTab.addNumber("Suck Speed", this::getSuckSpeed);
+        hopperTab.addNumber("Elevator Speed", this::getElevatorSpeed);
     }
 
     public void startSuck() {
