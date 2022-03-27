@@ -60,7 +60,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     // preventing things from going terribly wrong
-    public double cutToRange(double x, double limit) {
+    private double cutToRange(double x, double limit) {
         System.out.println("current x " + x);
         if (x > limit) {
             x = limit;
