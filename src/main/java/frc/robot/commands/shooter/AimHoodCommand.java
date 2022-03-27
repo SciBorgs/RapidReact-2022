@@ -17,8 +17,6 @@ public class AimHoodCommand extends CommandBase {
     @Override
     public void execute() {
         // Robot.shooterSubsystem.moveHood(Robot.shooterSubsystem.getRequiredHoodAngle());
-        // double angle = Robot.shooterSubsystem.getCurrentHoodAngle();
-        // System.out.println("Angle: " + angle);
     }
 
     @Override
