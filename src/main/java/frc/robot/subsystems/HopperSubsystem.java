@@ -24,8 +24,8 @@ public class HopperSubsystem implements Subsystem {
         this.elevator = new CANSparkMax(PortMap.HOPPER_ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
 
         hopperTab = Shuffleboard.getTab("Hopper");
-        hopperTab.addNumber("Suck Speed", Robot.hopperSubsystem::getSuckSpeed);
-        hopperTab.addNumber("Elevator Speed", Robot.hopperSubsystem::getElevatorSpeed);
+        hopperTab.addNumber("Suck Speed", this::getSuckSpeed);
+        hopperTab.addNumber("Elevator Speed", this::getElevatorSpeed);
     }
 
     public void startSuck() {

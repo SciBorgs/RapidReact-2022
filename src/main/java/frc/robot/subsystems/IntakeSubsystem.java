@@ -28,8 +28,9 @@ public class IntakeSubsystem implements Subsystem {
         this.limitSwitch = new DigitalInput(PortMap.LIMIT_SWITCH_INTAKE);
 
         intakeTab = Shuffleboard.getTab("Intake");
-        intakeTab.addBoolean("Intake Running", Robot.intakeSubsystem::getIntakeRunning);
-        intakeTab.addBoolean("Limit Switch Set", Robot.intakeSubsystem::getSwitchStatus);
+        intakeTab.addBoolean("Intake Running", this::getIntakeRunning);
+        intakeTab.addBoolean("Limit Switch Set", this::getSwitchStatus);
+        intakeTab.addString("Solenoid Arm Status", this::getSolenoidArmStatus);
     }
 
     public void extendArm() { 
@@ -58,6 +59,10 @@ public class IntakeSubsystem implements Subsystem {
 
     public boolean getSwitchStatus() {
         return this.limitSwitch.get();
+    }
+
+    public String getSolenoidArmStatus() { 
+        return this.armSolenoid.get().name().substring(1);
     }
     
 
