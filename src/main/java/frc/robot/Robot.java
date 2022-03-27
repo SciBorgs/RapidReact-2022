@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
   public static IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
   public static HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
   public static PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
+  public static ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
 
   public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem();

@@ -26,7 +26,7 @@ public class PortMap {
   public static final int INTAKE_SWITCH = 6;
     public static final int LIMIT_SWITCH_INTAKE = -1;
 
-    // *******************HOPPER******************//
+  // *******************HOPPER******************//
 
     public static final int HOPPER_SUCK_SPARK = 28;
     public static final int HOPPER_ELEVATOR_SPARK = -1;
@@ -43,6 +43,11 @@ public class PortMap {
   
   // *******************PNEMUATICS******************//
   public static final int COMPRESSOR = -1;
+
+  // *******************CLIMBER******************//
+  public static final int CLIMBER_ARM = -1;
+  public static final int HOOK_MOTOR = -1;
+  public static final int RETRACT_CLIMBER_ARM = -1;
 
   //******************ENCODERS******************//
    public static final int TURRET_ENCODER = 2;
