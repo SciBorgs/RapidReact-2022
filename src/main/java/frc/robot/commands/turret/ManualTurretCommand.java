@@ -6,7 +6,7 @@ import frc.robot.Robot;
 public class ManualTurretCommand extends CommandBase {
     @Override
     public void execute() {
-        double val = Robot.oi.joystickLeft.getY();
+        double val = Robot.oi.leftStick.getY();
         Robot.turretSubsystem.motor.set(val);
     }
 }

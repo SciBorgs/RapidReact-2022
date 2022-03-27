@@ -6,7 +6,7 @@ import frc.robot.Robot;
 public class ManualHoodCommand extends CommandBase {
     @Override
     public void execute() {
-        double val = Robot.oi.joystickLeft.getY();
+        double val = Robot.oi.leftStick.getY();
         // System.out.println(val);
         // Robot.shooterSubsystem.moveVert(val);
     }

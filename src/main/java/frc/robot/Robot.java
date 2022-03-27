@@ -74,8 +74,8 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("localization", "meanParticle", localizationSubsystem.particleFilter::getMeanParticle, new double[] {8, 4});
 
     // teleop sim
-    networkTableSubsystem.bind("drive", "joyLeft", oi.joystickLeft::getY, 0.0);
-    networkTableSubsystem.bind("drive", "joyRight", oi.joystickRight::getY, 0.0);
+    networkTableSubsystem.bind("drive", "joyLeft", oi.leftStick::getY, 0.0);
+    networkTableSubsystem.bind("drive", "joyRight", oi.rightStick::getY, 0.0);
     networkTableSubsystem.bind("drive", "driveSpeed", localizationSubsystem::getVel, 0.0);
     networkTableSubsystem.bind("drive", "driveLimit", driveSubsystem::setSpeedLimit, 1.0);
 
