@@ -1,11 +1,6 @@
 package frc.robot;
 
 public class PortMap {
-    // **************INPUT DEVICES***************//
-
-    public static final int JOYSTICK_LEFT = 0;
-    public static final int JOYSTICK_RIGHT = 1;
-    public static final int XBOX_CONTROLLER = 2;
 
     // *******************SPARKS******************//
     public static final int LEFT_FRONT_SPARK = 0;
@@ -49,6 +44,12 @@ public class PortMap {
     public static final int CLIMBER_ARM = -1;
     public static final int HOOK_MOTOR = -1;
     public static final int RETRACT_CLIMBER_ARM = -1;
+
+    // **************INPUT DEVICES***************//
+
+    public static final int JOYSTICK_LEFT = 0;
+    public static final int JOYSTICK_RIGHT = 1;
+    public static final int XBOX_CONTROLLER = 2;
 
     // ******************ENCODERS******************//
     public static final int TURRET_ENCODER = 2;
