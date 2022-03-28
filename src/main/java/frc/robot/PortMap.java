@@ -1,31 +1,34 @@
 package frc.robot;
 
 public class PortMap {
+    // **************INPUT DEVICES***************//
+
+    public static final int JOYSTICK_LEFT = 0;
+    public static final int JOYSTICK_RIGHT = 1;
+    public static final int XBOX_CONTROLLER = 2;
 
     // *******************SPARKS******************//
-    public static final int LEFT_FRONT_SPARK = 0;
-    public static final int LEFT_MIDDLE_SPARK = 0;
-    public static final int LEFT_BACK_SPARK = 0;
-    public static final int RIGHT_FRONT_SPARK = 0;
-    public static final int RIGHT_MIDDLE_SPARK = 0;
-    public static final int RIGHT_BACK_SPARK = 0;
+    public static final int LEFT_FRONT_SPARK = 21;
+    public static final int LEFT_MIDDLE_SPARK = 22;
+    public static final int LEFT_BACK_SPARK = 7;
+    public static final int RIGHT_FRONT_SPARK = 14;
+    public static final int RIGHT_MIDDLE_SPARK = 10;
+    public static final int RIGHT_BACK_SPARK = 26;
 
-    public static final int HOOD_SPARK = 28;
-    public static final int FLYWHEEL_LEFT_SPARK = 0;
-    public static final int FLYWHEEL_RIGHT_SPARK = 0;
-    public static final int TURRET_SPARK = 3;
+    public static final int HOOD_SPARK = 4;
+    public static final int FLYWHEEL_LEFT_SPARK = 30;
+    public static final int FLYWHEEL_RIGHT_SPARK = 15;
+    public static final int TURRET_SPARK = 11;
 
     // *******************SWITCHES******************//
     public static final int TOP_LIMIT_SWITCH = 3;
-    public static final int SHOOTER_LEFT_SPARK = 0;
-    public static final int SHOOTER_RIGHT_SPARK = 0;
     public static final int INTAKE_SWITCH = 6;
     public static final int LIMIT_SWITCH_INTAKE = -1;
 
     // *******************HOPPER******************//
 
     public static final int HOPPER_SUCK_SPARK = 28;
-    public static final int HOPPER_ELEVATOR_SPARK = -1;
+    public static final int HOPPER_ELEVATOR_SPARK = 80;
 
     // *******************MISC******************//
     public static final int PIGEON_ID = 42;
@@ -35,25 +38,19 @@ public class PortMap {
     // ******************INTAKE********************//
     public static final int INTAKE_ARM_FORWARD_CHANNEL = -1;
     public static final int INTAKE_ARM_REVERSE_CHANNEL = -1;
-    public static final int INTAKE_SUCK_SPARK = -1;
+    public static final int INTAKE_SUCK_SPARK = 80;
 
     // *******************PNEMUATICS******************//
     public static final int COMPRESSOR = -1;
 
     // *******************CLIMBER******************//
     public static final int CLIMBER_ARM = -1;
-    public static final int HOOK_MOTOR = -1;
+    public static final int HOOK_MOTOR = 80;
     public static final int RETRACT_CLIMBER_ARM = -1;
-
-    // **************INPUT DEVICES***************//
-
-    public static final int JOYSTICK_LEFT = 0;
-    public static final int JOYSTICK_RIGHT = 1;
-    public static final int XBOX_CONTROLLER = 2;
 
     // ******************ENCODERS******************//
     public static final int TURRET_ENCODER = 2;
-    public static final int HOOD_ENCODER = 42;
+    public static final int HOOD_ENCODER = 3;
 
     public static final class Joystick {
         public static final int JOYSTICK_TRIGGER = 1;
