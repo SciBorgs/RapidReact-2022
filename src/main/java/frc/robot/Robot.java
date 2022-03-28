@@ -5,16 +5,31 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.hopper.*;
+import frc.robot.commands.intake.*;
+import frc.robot.commands.pneumatics.*;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.shooter.AimHoodCommand;
 import frc.robot.commands.shooter.ManualHoodCommand;
 import frc.robot.commands.turret.AimTurretCommand;
+import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
+//for list
+import java.util.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,11 +42,12 @@ public class Robot extends TimedRobot {
   public static LimeLightSubsystem  limelightSubsystem  = new LimeLightSubsystem();
   public static TurretSubsystem     turretSubsystem     = new TurretSubsystem();
   public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
+  public static IntakeSubsystem     intakeSubsystem     = new IntakeSubsystem();
+  public static HopperSubsystem     hopperSubsystem     = new HopperSubsystem();
 
   // public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 
   private RobotContainer m_robotContainer;
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
