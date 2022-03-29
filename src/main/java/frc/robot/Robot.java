@@ -23,6 +23,7 @@ import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
@@ -44,6 +45,7 @@ public class Robot extends TimedRobot {
   public static ShooterSubsystem    shooterSubsystem    = new ShooterSubsystem();
   public static IntakeSubsystem     intakeSubsystem     = new IntakeSubsystem();
   public static HopperSubsystem     hopperSubsystem     = new HopperSubsystem();
+  public static PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
 
   // public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 
