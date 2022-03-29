@@ -80,10 +80,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Field", field2d);
 
     System.out.println(networkTableSubsystem);
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    //table = NetworkTableInstance.getDefault().getTable("limelight");
   }
 
   @Override
