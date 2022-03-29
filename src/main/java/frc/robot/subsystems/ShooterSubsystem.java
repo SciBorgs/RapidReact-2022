@@ -28,7 +28,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private SciEncoder flywheelEncoder;
     private SciAbsoluteEncoder hoodEncoder;
 
-    private final double LIMIT = 30; // add for real measurement
+    private final double LOWER_LIMIT = 2.57; // add for real measurement
+    private final double UPPER_LIMIT = -30.53;
     private final double SPEED_LIMIT = 0.1;
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
@@ -85,8 +86,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void moveHood(double angle) {
-        double turn = -shooterPID.getOutput(angle, hoodEncoder.getAngle());
-        hood.set(Util.normalize(turn, SPEED_LIMIT));
+        double move = -shooterPID.getOutput(angle, hoodEncoder.getAngle());
+        if (angle > UPPER_LIMIT || angle < LOWER_LIMIT)
+            move = 0;
+        hood.set(Util.normalize(move, SPEED_LIMIT));
     }
 
     public void updateAngle() { 
@@ -102,5 +105,10 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterShufflePID.update();
         updateGraphs();
         updateAngle();
+    }
+
+    // for our encoder, which doesn't completely work
+    private double translate(double encoderVal) {
+        return 2.57 - encoderVal;
     }
 }
