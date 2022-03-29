@@ -1,7 +1,10 @@
 package frc.robot.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.Supplier;
 
 public class Util {
     public static double normalize(double v) {
@@ -58,6 +61,8 @@ public class Util {
         return a.x * b.x + a.y * b.y;
     }
 
+    // calculates the smallest angular displacement needed to go from one angle
+    // to another
     public static double travelledAngle(double from, double to) {
         double raw = to - from;
         while (raw > Math.PI) raw -= 2 * Math.PI;
@@ -65,10 +70,12 @@ public class Util {
         return raw;
     }
 
+    // maps a value between a1 and b1 to a value between a2 and b2.
     public static double map(double v, double a1, double b1, double a2, double b2) {
         return a2 + (b2 - a2) * (v - a1) / (b1 - a1);
     }
 
+    // approximates the (physical) length of a curve
     public static double length(List<Point> curve, int skip) {
         double length = 0;
         int n = curve.size();
@@ -82,7 +89,7 @@ public class Util {
         return length;
     }
 
-    // Generates a path to be used for testing discrete path following
+    // generates a random sequence of points
     public static List<Point> generateRandomPath(int n, double x1, double y1, double x2, double y2) {
         List<Point> points = new ArrayList<>();
         for (int i = 0; i < n; i++)
@@ -90,11 +97,13 @@ public class Util {
         return points;
     }
 
+    // generates a random point with x-values in [x1, x2) and y-values in [y1, y2)
     public static Point generateRandomPoint(double x1, double y1, double x2, double y2) {
         return new Point(map(Math.random(), 0.0, 1.0, x1, x2),
                          map(Math.random(), 0.0, 1.0, y1, y2));
     }
 
+    // generates a sinusoidal path
     public static List<Point> generateSinePath(double length, double amplitude, double frequency, double step) {
         List<Point> points = new ArrayList<>();
         for (double t = 0; t < length; t+=step) {
@@ -135,7 +144,7 @@ public class Util {
      * @param lengthStep the resolution to use
      * @return a reparamaterization of the given curve
      */
-    public static List<Point> reparameterize(List<Point> curve, double lengthStep) {
+    public static Path reparameterize(List<Point> curve, double lengthStep) {
         double arclength = length(curve, 1);
         double forbidden = Math.pow(lengthStep * 0.9, 2);
         List<Point> reparameterized = new ArrayList<Point>();
@@ -176,6 +185,81 @@ public class Util {
             s += ds;
         }
 
-        return reparameterized;
+        return new Path(reparameterized, arclength);
+    }
+
+    // returns the function p(x), where p is the probability density at x
+    public static DoubleUnaryOperator gaussian(double stddev, double mean) {
+        return new DoubleUnaryOperator() {
+            private final double k = 1/(stddev * Math.sqrt(2*Math.PI));
+            private final double a = -1/(2*stddev*stddev);
+            @Override
+            public double applyAsDouble(double x) {
+                return k * Math.exp(a * (x - mean) * (x - mean));
+            }
+        };
+    }
+
+    // there is no such thing as a "gaussioid" (in the way i'm using it). i mean
+    // that this samples a 2D normal distribution (hence the name) using the
+    // Box-Muller transform:
+    // https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+    public static double[] sampleGaussioid(double[] stddev, double[] mean) {
+            double R = Math.sqrt(-2*Math.log(Math.random()));
+            double theta = 2 * Math.PI * Math.random();
+            return new double[] {
+                stddev[0] * R * Math.cos(theta) + mean[0],
+                stddev[1] * R * Math.sin(theta) + mean[1]
+            };
+    }
+
+    // returns a Supplier<double[]> that samples two variables using the
+    // Box-Muller transform
+    public static Supplier<double[]> gaussianPairSampler(double[] stddev, double[] mean) {
+        return () -> sampleGaussioid(stddev, mean);
+    }
+
+    // stores the cummalative sums of the pdf array in the cd array.
+    // cdf[0] = 0, cdf[cdf.length - 1] is the sum of all of the elements
+    public static double[] cdf(double[] cdf, double[] pdf) {
+        double total = 0;
+        for (int i = 0; i < cdf.length; i++) {
+            cdf[i] = total;
+            total += pdf[i];
+        }
+        return cdf;
+    }
+
+    // Performs a binary search to simulate x = F^-1(p)
+    public static int sampleDiscreteCdf(double[] cdf) {
+        double rand = cdf[cdf.length] * Math.random();
+        int index = Arrays.binarySearch(cdf, rand);
+        return (index < 0) ? -(index + 2) : index;
+    }
+
+    // shortest distance of a vector from another vector
+    public static double distance(double[] p, Point... cs) {
+        double minDistanceSquared = Double.MAX_VALUE;
+        for (Point c : cs) {
+            double dy = c.y - p[0];
+            double dx = c.x - p[1];
+            double distanceSquared = dy*dy + dx*dx;
+            if (distanceSquared > minDistanceSquared)
+                minDistanceSquared = distanceSquared;
+        }
+        return minDistanceSquared;
+    }
+
+    // fills an array with a value
+    public static void fill(double[] arr, double val) {
+        for (int i = 0; i < arr.length; i++)
+            arr[i] = val;
+    }
+
+    // stores the flattened version of matrix into flat
+    public static void flatten(double[] flat, double[][] matrix, int length, int depth) {
+        for (int i = 0; i < matrix.length; i++) {
+            System.arraycopy(matrix[i], 0, flat, depth*i, depth);
+        }
     }
 }
