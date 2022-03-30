@@ -66,6 +66,9 @@ dependencies {
     nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
+    
+    compileOnly 'edu.wpi.first.shuffleboard:api:2020.+'
+    compileOnly 'edu.wpi.first.shuffleboard.plugin:networktables:2020.+'
 
     testImplementation 'junit:junit:4.12'
 }
@@ -87,3 +90,8 @@ jar {
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
+
+repositories {
+   mavenCentral()
+   maven{ url "https://frcmaven.wpi.edu:443/artifactory/release" }
+}
