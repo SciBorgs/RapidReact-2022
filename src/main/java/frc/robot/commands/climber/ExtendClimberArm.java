@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class RetractClimberArm extends CommandBase {
+public class ExtendClimberArm extends CommandBase {
 
     @Override
     public void initialize() {
         //this.addRequirements(Robot.climberSubsystem); //dont need this rn
-        Robot.climberSubsystem.retractClimberArm();
+        Robot.climberSubsystem.extendClimberArm();
     }
 
     @Override

@@ -53,10 +53,6 @@ public class Robot extends TimedRobot {
   private Field2d field2d = new Field2d();
 
 
-  private ShuffleboardTab mainTab;
-  private NetworkTableEntry hopperGetSuck;
-  private NetworkTableEntry hopperSetSuck;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.

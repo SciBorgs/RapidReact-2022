@@ -37,24 +37,32 @@ public class ClimberSubsystem implements Subsystem {
     //     hookMotorEntry = tab.add("Hook Motor Speed", 0.0).getEntry();
     }
 
+    public void setSpeed(double speed) {
+        this.climberArm.set(speed);
+    }
+
     public void extendClimberArm() {
         this.climberArm.set(this.CLIMBER_ARM_SPEED);
+    }
+
+    public void retractClimberArm() {
+        this.climberArm.set(-(this.CLIMBER_ARM_SPEED));
     }
 
     public void stopClimberArm() {
         this.climberArm.set(0);
     }
 
-    public void setHookMotorSpeed() {
+    public void extendHook() {
         this.hookMotor.set(this.HOOK_MOTOR_SPEED);
     }
 
-    public void stopHookMotor() {
-        this.hookMotor.set(0);
+    public void reverseHookMotor() { 
+        this.hookMotor.set(-(this.HOOK_MOTOR_SPEED));
     }
 
-    public void retractClimberArm() {
-        this.climberArm.set(-(this.CLIMBER_ARM_SPEED));
+    public void retractHook() {
+        this.hookMotor.set(0);
     }
 
     public void initDefaultCommand(){
