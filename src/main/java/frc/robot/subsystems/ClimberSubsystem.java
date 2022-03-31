@@ -16,37 +16,25 @@ public class ClimberSubsystem implements Subsystem {
     private CANSparkMax climberArm;
     private CANSparkMax hookMotor;
 
-    private SciEncoder climberArmEncoder;
-    private SciEncoder hookMotorEncoder;  
+    // private SciEncoder climberArmEncoder;
+    // private SciEncoder hookMotorEncoder;  
     
     private ShuffleboardTab tab;
-    private NetworkTableEntry rotations, armEntry, hookMotorEntry;
+    // private NetworkTableEntry rotations, armEntry, hookMotorEntry;
     private final double CLIMBER_ARM_SPEED = 0.5;
     private final double HOOK_MOTOR_SPEED = 0.2;
-
-    private PID charlie;
-    private ShufflePID charlieGUI;
-
-    private PID daniel;
-    private ShufflePID danielGUI;
 
     public ClimberSubsystem() {
         this.climberArm = new CANSparkMax(PortMap.CLIMBER_ARM, MotorType.kBrushless);
         this.hookMotor = new CANSparkMax(PortMap.HOOK_MOTOR, MotorType.kBrushless);
 
-        climberArmEncoder = new SciEncoder(25,0.5, climberArm.getEncoder());
-        hookMotorEncoder = new SciEncoder(50, 0.5, hookMotor.getEncoder());
-
-        charlie = new PID(0, 0, 0);
-        charlieGUI = new ShufflePID("Climber", charlie, "big boobas");
-
-        daniel = new PID(0, 0, 0);
-        danielGUI = new ShufflePID("Climber", daniel, "big booebs");
+    //     climberArmEncoder = new SciEncoder(25,0.5, climberArm.getEncoder());
+    //     hookMotorEncoder = new SciEncoder(50, 0.5, hookMotor.getEncoder());
         
-        tab = Shuffleboard.getTab("Climber");
-        rotations = tab.add("Number of Rotations", 0.0).getEntry();
-        armEntry = tab.add("Climber Arm Speed", 0.0).getEntry();
-        hookMotorEntry = tab.add("Hook Motor Speed", 0.0).getEntry();
+    //     tab = Shuffleboard.getTab("Climber");
+    //     rotations = tab.add("Number of Rotations", 0.0).getEntry();
+    //     armEntry = tab.add("Climber Arm Speed", 0.0).getEntry();
+    //     hookMotorEntry = tab.add("Hook Motor Speed", 0.0).getEntry();
     }
 
     public void extendClimberArm() {
