@@ -1,0 +1,14 @@
+30 - left side shooter
+19 - nicholas climber
+21 - drivetrain left
+22 - drivetrain left
+7 - drivetrain left
+23 - turret
+15 - right side shooter
+4 - hood
+14 - drivetrain right
+10 - drievtrain right
+26 - drivetrain right
+20 - hook
+16 - intake
+24 - intake
