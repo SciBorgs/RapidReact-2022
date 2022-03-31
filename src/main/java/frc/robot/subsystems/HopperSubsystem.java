@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 
 import frc.robot.PortMap;
 import frc.robot.Robot;
+import frc.robot.util.Util;
 
 public class HopperSubsystem implements Subsystem {
 
@@ -29,11 +30,11 @@ public class HopperSubsystem implements Subsystem {
     }
 
     public void startSuck() {
-        startSuck(HOPPER_SPEED);
+        this.startSuck(HOPPER_SPEED);
     }
 
     public void startSuck(double newSpeed) {
-        this.suck.set(Math.min(Math.max(newSpeed, -MAX_SPEED), MAX_SPEED));
+        this.suck.set(Util.normalize(newSpeed, MAX_SPEED));
     }
 
     public void stopSuck() {
@@ -45,7 +46,7 @@ public class HopperSubsystem implements Subsystem {
     }
     
     public void startElevator(double newSpeed) {
-        this.elevator.set(Math.min(Math.max(newSpeed, -MAX_SPEED), MAX_SPEED));
+        this.elevator.set(Util.normalize(newSpeed, MAX_SPEED));
     }
 
     public void stopElevator() {
