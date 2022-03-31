@@ -29,7 +29,7 @@ public class HopperSubsystem implements Subsystem {
     }
 
     public void startSuck() {
-        startSuck(HOPPER_SPEED);
+        this.startSuck(HOPPER_SPEED);
     }
 
     public void startSuck(double newSpeed) {
