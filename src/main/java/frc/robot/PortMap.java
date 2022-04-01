@@ -27,8 +27,8 @@ public class PortMap {
 
     // *******************HOPPER******************//
 
-    public static final int HOPPER_SUCK_SPARK = 28;
-    public static final int HOPPER_ELEVATOR_SPARK = 80;
+    public static final int HOPPER_SUCK_SPARK = 16;
+    public static final int HOPPER_ELEVATOR_SPARK = 14;
 
     // *******************MISC******************//
     public static final int PIGEON_ID = 42;
@@ -36,6 +36,7 @@ public class PortMap {
     public static final int RIGHT_ENCODER = -1;
 
     // ******************INTAKE********************//
+    // spark 23 = intake flip
     public static final int INTAKE_ARM_FORWARD_CHANNEL = -1;
     public static final int INTAKE_ARM_REVERSE_CHANNEL = -1;
     public static final int INTAKE_SUCK_SPARK = 80;
@@ -44,6 +45,8 @@ public class PortMap {
     public static final int COMPRESSOR = -1;
 
     // *******************CLIMBER******************//
+    // nicholas: 19
+    // daniel: 20
     public static final int CLIMBER_ARM = -1;
     public static final int HOOK_MOTOR = 80;
     public static final int RETRACT_CLIMBER_ARM = -1;
