@@ -8,65 +8,42 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.robot.util.*;
 import frc.robot.sciSensorsActuators.*;
 
 public class ClimberSubsystem implements Subsystem {
-    private CANSparkMax climberArm;
-    private CANSparkMax hookMotor;
+    private CANSparkMax telescope;
+    private CANSparkMax arms;
 
-    // private SciEncoder climberArmEncoder;
-    // private SciEncoder hookMotorEncoder;  
+    // private SciEncoder telescopeEncoder;
+    // private SciEncoder armsEncoder;  
     
     private ShuffleboardTab tab;
-    // private NetworkTableEntry rotations, armEntry, hookMotorEntry;
-    private final double CLIMBER_ARM_SPEED = 0.5;
-    private final double HOOK_MOTOR_SPEED = 0.2;
+    // private NetworkTableEntry rotations, armEntry, armsEntry;
+    private static final double TELESCOPE_SPEED = 0.5;
+    private static final double ARM_SPEED = 0.2;
 
     public ClimberSubsystem() {
-        this.climberArm = new CANSparkMax(PortMap.CLIMBER_ARM, MotorType.kBrushless);
-        this.hookMotor = new CANSparkMax(PortMap.HOOK_MOTOR, MotorType.kBrushless);
-
-    //     climberArmEncoder = new SciEncoder(25,0.5, climberArm.getEncoder());
-    //     hookMotorEncoder = new SciEncoder(50, 0.5, hookMotor.getEncoder());
-        
-    //     tab = Shuffleboard.getTab("Climber");
-    //     rotations = tab.add("Number of Rotations", 0.0).getEntry();
-    //     armEntry = tab.add("Climber Arm Speed", 0.0).getEntry();
-    //     hookMotorEntry = tab.add("Hook Motor Speed", 0.0).getEntry();
+        this.telescope = new CANSparkMax(PortMap.CLIMBER_TELESCOPE, MotorType.kBrushless);
+        this.arms = new CANSparkMax(PortMap.CLIMBER_ARMS, MotorType.kBrushless);
     }
 
-    public void setSpeed(double speed) {
-        this.climberArm.set(speed);
+    public void runTelescope(boolean reversed) {
+        this.telescope.set(reversed ? -TELESCOPE_SPEED : TELESCOPE_SPEED);
     }
 
-    public void extendClimberArm() {
-        this.climberArm.set(this.CLIMBER_ARM_SPEED);
+    public void stopTelescope() {
+        this.telescope.set(0);
     }
 
-    public void retractClimberArm() {
-        this.climberArm.set(-(this.CLIMBER_ARM_SPEED));
+    public void runArms(boolean reversed) {
+        this.telescope.set(reversed ? -ARM_SPEED : ARM_SPEED);
     }
 
-    public void stopClimberArm() {
-        this.climberArm.set(0);
-    }
-
-    public void extendHook() {
-        this.hookMotor.set(this.HOOK_MOTOR_SPEED);
-    }
-
-    public void reverseHookMotor() { 
-        this.hookMotor.set(-(this.HOOK_MOTOR_SPEED));
-    }
-
-    public void retractHook() {
-        this.hookMotor.set(0);
-    }
-
-    public void initDefaultCommand(){
-
+    public void stopArms() {
+        this.telescope.set(0);
     }
 
 }

@@ -31,10 +31,6 @@ public class IntakeBallsCommand extends CommandBase {
         return false;
     }
 
-    @Override
-    public Set<Subsystem> getRequirements() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    
     
 }

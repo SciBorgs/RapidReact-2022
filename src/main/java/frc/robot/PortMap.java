@@ -45,11 +45,8 @@ public class PortMap {
     public static final int COMPRESSOR = -1;
 
     // *******************CLIMBER******************//
-    // nicholas: 19
-    // daniel: 20
-    public static final int CLIMBER_ARM = -1;
-    public static final int HOOK_MOTOR = 80;
-    public static final int RETRACT_CLIMBER_ARM = -1;
+    public static final int CLIMBER_TELESCOPE = 19;
+    public static final int CLIMBER_ARMS = 20;
 
     // ******************ENCODERS******************//
     public static final int TURRET_ENCODER = 2;

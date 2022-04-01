@@ -24,9 +24,5 @@ public class LowerIntakeArmCommand extends CommandBase {
     public void execute() {
 
     }
-    @Override
-    public Set<Subsystem> getRequirements() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    
 }

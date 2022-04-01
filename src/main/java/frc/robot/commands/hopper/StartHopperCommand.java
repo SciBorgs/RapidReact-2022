@@ -13,13 +13,13 @@ public class StartHopperCommand extends CommandBase {
     @Override
     public void initialize() {
         this.addRequirements(Robot.hopperSubsystem);
-        Robot.hopperSubsystem.startElevator();
-        Robot.hopperSubsystem.startSuck();
     }
 
     @Override
     public void execute() {
 
+        Robot.hopperSubsystem.startElevator();
+        Robot.hopperSubsystem.startSuck();
     }
 
     @Override
@@ -33,10 +33,6 @@ public class StartHopperCommand extends CommandBase {
         return false;
     }
 
-    @Override
-    public Set<Subsystem> getRequirements() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    
     
 }

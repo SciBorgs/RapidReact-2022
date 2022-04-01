@@ -1,8 +1,8 @@
 package frc.robot;
 
 import frc.robot.commands.intake.*;
-import frc.robot.commands.climber.ExtendClimberArm;
-import frc.robot.commands.climber.ExtendHook;
+import frc.robot.commands.climber.RunTelescopeCommand;
+import frc.robot.commands.climber.RunArmCommand;
 import frc.robot.commands.climber.RetractClimberArm;
 import frc.robot.commands.climber.RetractHook;
 import frc.robot.commands.hopper.*;
@@ -16,7 +16,6 @@ public class OI {
     public Joystick leftStick, rightStick;
     public XboxController xboxController;
     public JoystickButton intakeBalls, lowerIntakeArms, StartHopper, toggleCompressor, extendClimberArm, retractClimberArm, extendHook, retractHook;
-
 
     public OI() {
         this.leftStick = new Joystick(PortMap.JOYSTICK_LEFT);
@@ -41,16 +40,16 @@ public class OI {
 
         // Climber
         this.extendClimberArm = new JoystickButton(this.rightStick, PortMap.Joystick.JOYSTICK_CENTER_BUTTON);
-        this.extendClimberArm.whenHeld(new ExtendClimberArm());
+        this.extendClimberArm.whenHeld(new RunTelescopeCommand());
 
         this.retractClimberArm = new JoystickButton(this.rightStick, PortMap.Joystick.JOYSTICK_TRIGGER);
         this.retractClimberArm.whenHeld(new RetractClimberArm());
 
         this.extendHook = new JoystickButton(this.rightStick, PortMap.Joystick.JOYSTICK_RIGHT_BUTTON);
-        this.extendHook.whenHeld(new ExtendHook().withTimeout(0.2));
+        this.extendHook.whenHeld(new RunArmCommand(false));
 
         this.retractHook = new JoystickButton(this.rightStick, PortMap.Joystick.JOYSTICK_LEFT_BUTTON);
-        this.retractHook.whenHeld(new RetractHook());
+        this.retractHook.whenHeld(new RunArmCommand(true));
 
     }
 }

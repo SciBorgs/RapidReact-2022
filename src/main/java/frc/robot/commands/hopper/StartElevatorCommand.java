@@ -10,6 +10,10 @@ public class StartElevatorCommand extends CommandBase {
     @Override
     public void initialize() {
         this.addRequirements(Robot.hopperSubsystem);
+    }
+
+    @Override
+    public void execute() {
         Robot.hopperSubsystem.startElevator();
     }
 
@@ -21,17 +25,7 @@ public class StartElevatorCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
-    }
-    // useless functions
-    @Override
-    public void execute() {
-
-    }
+    }  
     
-    @Override
-    public Set<Subsystem> getRequirements() {
-        // TODO Auto-generated method stub
-        return null;
-    }
     
 }

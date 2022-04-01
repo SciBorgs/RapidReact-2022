@@ -13,7 +13,8 @@ public class SciSpark extends CANSparkMax {
     }
 
     public void set(double speed) {
-        double jerk = Util.normalize(speed - super.get(), MAX_JERK);
-        super.set(speed + jerk);
+        double currSpeed = super.get();
+        double jerk = Util.normalize(speed - currSpeed, MAX_JERK);
+        super.set(currSpeed + jerk);
     }
 }

@@ -12,11 +12,6 @@ public class ToggleCompressorCommand extends CommandBase {
         this.addRequirements(Robot.pneumaticsSubsystem);
         Robot.pneumaticsSubsystem.start();
     }
-
-    @Override
-    public void execute() {
-
-    }
     
     @Override
     public void end(boolean interruted) { 
@@ -28,9 +23,5 @@ public class ToggleCompressorCommand extends CommandBase {
         return false;
     }
 
-    @Override
-    public Set<Subsystem> getRequirements() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    
 }
