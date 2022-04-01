@@ -28,7 +28,7 @@ public class PortMap {
     // *******************HOPPER******************//
 
     public static final int HOPPER_SUCK_SPARK = 16;
-    public static final int HOPPER_ELEVATOR_SPARK = 14;
+    public static final int HOPPER_ELEVATOR_SPARK = 24;
 
     // *******************MISC******************//
     public static final int PIGEON_ID = 42;
