@@ -3,19 +3,14 @@ import frc.robot.PortMap;
 
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import frc.robot.util.*;
-import frc.robot.sciSensorsActuators.*;
 
 public class ClimberSubsystem implements Subsystem {
-    private CANSparkMax telescope;
-    private CANSparkMax arms;
+    private CANSparkMax telescope, arms;
 
     // private SciEncoder telescopeEncoder;
     // private SciEncoder armsEncoder;  
@@ -28,6 +23,9 @@ public class ClimberSubsystem implements Subsystem {
     public ClimberSubsystem() {
         this.telescope = new CANSparkMax(PortMap.CLIMBER_TELESCOPE, MotorType.kBrushless);
         this.arms = new CANSparkMax(PortMap.CLIMBER_ARMS, MotorType.kBrushless);
+
+        this.telescope.setIdleMode(IdleMode.kBrake);
+        this.arms.setIdleMode(IdleMode.kBrake);
     }
 
     public void runTelescope(boolean reversed) {
@@ -39,11 +37,10 @@ public class ClimberSubsystem implements Subsystem {
     }
 
     public void runArms(boolean reversed) {
-        this.telescope.set(reversed ? -ARM_SPEED : ARM_SPEED);
+        this.arms.set(reversed ? -ARM_SPEED : ARM_SPEED);
     }
 
     public void stopArms() {
-        this.telescope.set(0);
+        this.arms.set(0);
     }
-
 }
