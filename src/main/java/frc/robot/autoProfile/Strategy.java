@@ -1,5 +1,9 @@
 package frc.robot.autoProfile;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public enum Strategy {
     // No movement
     NOTHING         (TransportProfile.R_0,      StrategyType.Nothing),
@@ -30,6 +34,18 @@ public enum Strategy {
     S_4_4BALL_B     (TransportProfile.R_4EDM,   StrategyType.ShootMoveShootShootMoveShoot),
     S_4_5BALL       (TransportProfile.R_4EDM,   StrategyType.ShootMoveShootShootMoveShootShoot);
 
+    protected static final Map<String, Strategy> BY_NAME;
+    static {
+        BY_NAME = new HashMap<>();
+        for (String name : Set.of(
+            "NOTHING", "SHOOT_IN_PLACE", 
+            "S_1_2BALL_A", "S_1_2BALL_B", "S_1_3BALL",
+            "S_2_2BALL_A", "S_2_2BALL_B",
+            "S_3_2BALL", "S_3_3BALL_A", "S_3_3BALL_B", "S_3_4BALL",
+            "S_4_2BALL_A", "S_4_2BALL_B", "S_4_3BALL_A", "S_4_3BALL_B", "S_4_3BALL_C", "S_4_4BALL_A", "S_4_4BALL_B", "S_4_5BALL"
+        )) BY_NAME.put(name, valueOf(name));
+    }
+    
     protected final TransportProfile transportProfile;
     protected final StrategyType type;
 

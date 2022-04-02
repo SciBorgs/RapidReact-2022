@@ -12,10 +12,12 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.autoProfile.AutoProfile;
+import frc.robot.autoProfile.Strategy;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.localization.LocalizationSubsystem;
@@ -42,7 +44,7 @@ public class Robot extends TimedRobot {
   public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem();
 
-
+  private SendableChooser<Strategy> autoChooser = AutoProfile.getAutoChooser();
   private Field2d field2d = new Field2d();
 
 
@@ -63,9 +65,8 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("drive", "driveSpeed", localizationSubsystem::getVel, 0.0);
     networkTableSubsystem.bind("drive", "driveLimit", driveSubsystem::setSpeedLimit, 1.0);
 
-    // auto sequence
-    networkTableSubsystem.bind("auto", "strategy", AutoProfile::setStrategyByName, "TEST");
-
+    // shuffleboard
+    SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putData("Field", field2d);
 
     System.out.println(networkTableSubsystem);
@@ -105,6 +106,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    AutoProfile.setStrategy(autoChooser.getSelected());
     CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
     //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
