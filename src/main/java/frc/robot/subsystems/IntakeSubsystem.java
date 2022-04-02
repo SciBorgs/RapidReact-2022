@@ -20,7 +20,7 @@ public class IntakeSubsystem implements Subsystem {
     public DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
     public int amountOfBalls = 0;
     public final int WAIT_TIME = 1000; //in miliseconds
-    public long lastFallingEdge = 0;
+    public long lastActivated = 0;
     
     private final double INTAKE_SPEED = 0.5;
 
@@ -34,22 +34,22 @@ public class IntakeSubsystem implements Subsystem {
     // ONLY WORKS IF LIMIT SWITCH IS IN INTAKE AND NOT HOPPER balsucker//
     public void updateBallCounter(){
 
-        /* Should also work
-        if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end
-            lastFallingEdge = System.currentTimeMillis();
+        // // Should also work
+        // if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end (falling edge = turning off)
+        //     lastFallingEdge = System.currentTimeMillis();
 
-        if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge
-            if(System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) //so we know ball did not shake around in intake
-                amountOfBalls += 1;
+        // if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
+        //     if(System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) //so we know ball did not shake around in intake
+        //         amountOfBalls += 1;
 
-        lastLimit = this.getLimitSwitchState();
-        */
+        // lastLimit = this.getLimitSwitchState();
+        
 
         if (this.getLimitSwitchState()) {
-            if (System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) {
+            if (System.currentTimeMillis() - lastActivated > WAIT_TIME) {
                 amountOfBalls++;
             }
-            lastFallingEdge = System.currentTimeMillis();
+            lastActivated = System.currentTimeMillis();
         }
     }
 
@@ -76,10 +76,5 @@ public class IntakeSubsystem implements Subsystem {
     public double getIntakeSpeed() {
         return this.suckSpark.get();
     }
-
-    public boolean getSwitchStatus() {
-        return this.limitSwitch.get();
-    }
     
-
 }

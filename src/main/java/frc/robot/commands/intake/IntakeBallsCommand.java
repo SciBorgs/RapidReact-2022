@@ -11,13 +11,12 @@ public class IntakeBallsCommand extends CommandBase {
     @Override
     public void initialize() {
         this.addRequirements(Robot.intakeSubsystem, Robot.hopperSubsystem);
-        Robot.intakeSubsystem.startSuck();
-        Robot.hopperSubsystem.startSuck();
     }
  
     @Override
     public void execute() {
-
+        Robot.intakeSubsystem.startSuck();
+        Robot.hopperSubsystem.startSuck();
     }
 
     @Override
