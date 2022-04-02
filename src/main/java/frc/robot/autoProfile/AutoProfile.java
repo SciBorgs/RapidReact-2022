@@ -179,7 +179,7 @@ public class AutoProfile {
                     new FollowStage(),
                     new ShootStage(),
                     new ShootStage(),
-                    new TransportStage(profile.getStagePath(1), true),
+                    new TransportStage(profile.getStagePath(2), true),
                     new FollowStage(),
                     new ShootStage()
                 };
@@ -191,7 +191,7 @@ public class AutoProfile {
                     new FollowStage(),
                     new ShootStage(),
                     new ShootStage(),
-                    new TransportStage(profile.getStagePath(1), true),
+                    new TransportStage(profile.getStagePath(2), true),
                     new FollowStage(),
                     new ShootStage(),
                     new FollowStage(),
@@ -207,8 +207,13 @@ public class AutoProfile {
         if (strategyName.equals(prevValue)) return;
 
         prevValue = strategyName;
-        Strategy strategy = Strategy.valueOf(strategyName.toUpperCase());
-        if (strategy == null) return;
+        Strategy strategy;
+        try {
+            strategy = Strategy.valueOf(strategyName.toUpperCase());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return;
+        }
 
         System.out.println(strategy.toString());
         autoStrategy = () -> getStagesFromStrategy(strategy);
