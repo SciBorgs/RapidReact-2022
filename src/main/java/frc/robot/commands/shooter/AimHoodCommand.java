@@ -1,14 +1,10 @@
 package frc.robot.commands.shooter;
 
-import frc.robot.subsystems.LimeLightSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.PortMap;
 import frc.robot.Robot;
 
 public class AimHoodCommand extends CommandBase {
+    public static final double ANGLE = -15;
 
     @Override
     public void initialize() {
@@ -16,12 +12,17 @@ public class AimHoodCommand extends CommandBase {
 
     @Override
     public void execute() {
-        // Robot.shooterSubsystem.moveHood(Robot.shooterSubsystem.getRequiredHoodAngle());
+        Robot.shooterSubsystem.moveHood(ANGLE);
+
+        // for a regression, if we have time
+        // double distance = Robot.shooterSubsystem.getDistance();
+        // double angle = to_be_implemented(distance);
+        // Robot.shooterSubsystem.moveHood(angle);
     }
 
     @Override
     public boolean isFinished(){
-        if (Math.abs(Robot.shooterSubsystem.getCurrentHoodAngle() - Robot.shooterSubsystem.getRequiredHoodAngle()) < 0.1) {
+        if (Math.abs(Robot.shooterSubsystem.getCurrentHoodAngle() - ANGLE) < 0.1) {
             Robot.shooterSubsystem.stopHood();
             return true;
         }

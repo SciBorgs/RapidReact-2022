@@ -60,12 +60,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return hoodEncoder.getAngle();
     }
 
-    public double getRequiredHoodAngle() {
-        //return tba(getDistance());
-        return 0;
-    }
-
-    public void run(double speed) {
+    public void runFlywheel(double speed) {
         rmotor.set(speed);
     }
 
@@ -91,6 +86,8 @@ public class ShooterSubsystem extends SubsystemBase {
             move = 0;
         hood.set(Util.normalize(move, SPEED_LIMIT));
     }
+
+    // shuffleboard
 
     public void updateAngle() { 
         moveHood(changeHoodAngle.getDouble(0.0));
