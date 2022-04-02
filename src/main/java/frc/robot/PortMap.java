@@ -21,9 +21,8 @@ public class PortMap {
     public static final int TURRET_SPARK = 11;
 
     // *******************SWITCHES******************//
-    public static final int TOP_LIMIT_SWITCH = 3;
     public static final int INTAKE_SWITCH = 6;
-    public static final int LIMIT_SWITCH_INTAKE = -1;
+    public static final int LIMIT_SWITCH_INTAKE = 4;
 
     // *******************HOPPER******************//
 
