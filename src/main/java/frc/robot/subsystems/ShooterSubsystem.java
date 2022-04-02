@@ -82,7 +82,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void moveHood(double angle) {
         double move = -shooterPID.getOutput(angle, hoodEncoder.getAngle());
-        if (angle > UPPER_LIMIT || angle < LOWER_LIMIT)
+
+        // signs are reversed because the encoder returns negative values
+        if (angle < UPPER_LIMIT || angle > LOWER_LIMIT)
             move = 0;
         hood.set(Util.normalize(move, SPEED_LIMIT));
     }
@@ -106,6 +108,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // for our encoder, which doesn't completely work
     private double translate(double encoderVal) {
-        return 2.57 - encoderVal;
+        return LOWER_LIMIT - encoderVal;
     }
 }
