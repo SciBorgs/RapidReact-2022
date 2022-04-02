@@ -19,7 +19,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     private double SPEED_LIMIT = 0.5;
 
-    private final double LIMIT = 90; // change for real turret specs
+    private final double LIMIT = 85; // change for real turret specs
     private static final double TX_P = 0.1;
     private PID pid;
     private ShufflePID pidShuffleboard;
