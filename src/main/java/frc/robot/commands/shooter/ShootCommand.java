@@ -10,7 +10,7 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.shooterSubsystem.run(SPEED);
+        Robot.shooterSubsystem.runFlywheel(SPEED);
     }
 
     @Override
