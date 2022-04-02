@@ -15,7 +15,7 @@ public class PurePursuitCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.pp = new PurePursuitController(this.path, 0.201155, 0.0);
+        this.pp = new PurePursuitController(this.path, 0.201155, 0.5);
         Robot.networkTableSubsystem.createControllerBindings("pp", "pp", pp, p -> p.toArray(), new double[] {0, 0});
     }
 
