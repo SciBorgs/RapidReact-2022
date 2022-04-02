@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -207,19 +208,28 @@ public class AutoProfile {
         if (strategyName.equals(prevValue)) return;
 
         prevValue = strategyName;
-        Strategy strategy;
-        try {
-            strategy = Strategy.valueOf(strategyName.toUpperCase());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return;
-        }
+        Strategy strategy = Strategy.BY_NAME.get(strategyName.toUpperCase());
+        if (strategy == null) return;
 
+        System.out.println(strategy.toString());
+        autoStrategy = () -> getStagesFromStrategy(strategy);
+    }
+
+    public static void setStrategy(Strategy strategy) {
         System.out.println(strategy.toString());
         autoStrategy = () -> getStagesFromStrategy(strategy);
     }
 
     public static Command getAutoCommand() {
         return new SequentialCommandGroup(autoStrategy.get());
+    }
+
+    public static SendableChooser<Strategy> getAutoChooser() {
+        SendableChooser<Strategy> chooser = new SendableChooser<>();
+        for (String name : Strategy.BY_NAME.keySet()) {
+            chooser.addOption(name, Strategy.BY_NAME.get(name));
+        }
+        chooser.setDefaultOption("DEFAULT", Strategy.NOTHING);
+        return chooser;
     }
 }
