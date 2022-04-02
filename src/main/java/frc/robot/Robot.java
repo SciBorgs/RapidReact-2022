@@ -14,17 +14,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import frc.robot.autoProfile.AutoProfile;
 import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimeLightSubsystem;
-import frc.robot.subsystems.NetworkTableSubsystem;
-import frc.robot.subsystems.PhotonVisionSubsystem;
-import frc.robot.subsystems.PneumaticsSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.localization.LocalizationSubsystem;
 
 /**
@@ -71,7 +64,7 @@ public class Robot extends TimedRobot {
     networkTableSubsystem.bind("drive", "driveLimit", driveSubsystem::setSpeedLimit, 1.0);
 
     // auto sequence
-    networkTableSubsystem.bind("auto", "profile", AutoProfile::updateTransportProfile, "TEST");
+    networkTableSubsystem.bind("auto", "strategy", AutoProfile::setStrategyByName, "TEST");
 
     SmartDashboard.putData("Field", field2d);
 

@@ -11,7 +11,7 @@ import frc.robot.subsystems.localization.models.MotionModel;
 import frc.robot.subsystems.localization.models.SensorModel;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
-import frc.robot.AutoProfile;
+import frc.robot.autoProfile.AutoProfile;
 import frc.robot.Constants;
 
 public class LocalizationSubsystem extends SubsystemBase {
