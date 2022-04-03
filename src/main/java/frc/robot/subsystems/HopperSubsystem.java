@@ -13,10 +13,10 @@ public class HopperSubsystem implements Subsystem {
     private CANSparkMax suck;
     private CANSparkMax elevator;
 
-    private final double HOPPER_SPEED = 0.01;
-    private final double ELEVATOR_SPEED = 0.01;
+    private final double HOPPER_SPEED = 0.2;
+    private final double ELEVATOR_SPEED = -0.5;
     
-    private final double MAX_SPEED = 0.1;
+    private final double MAX_SPEED = 0.2;
 
     public ShuffleboardTab hopperTab;
 
@@ -30,7 +30,7 @@ public class HopperSubsystem implements Subsystem {
     }
 
     public void startSuck() {
-        this.startSuck(HOPPER_SPEED);
+        this.suck.set(HOPPER_SPEED);
     }
 
     public void startSuck(double newSpeed) {
@@ -42,7 +42,7 @@ public class HopperSubsystem implements Subsystem {
     }
 
     public void startElevator() {
-        this.startElevator(ELEVATOR_SPEED);
+        this.elevator.set(ELEVATOR_SPEED);
     }
     
     public void startElevator(double newSpeed) {

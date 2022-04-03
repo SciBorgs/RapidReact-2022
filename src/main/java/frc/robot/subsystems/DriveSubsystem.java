@@ -28,13 +28,13 @@ public class DriveSubsystem extends SubsystemBase {
         rMiddle.follow(rFront);
         rBack.follow(rFront);
 
-        lFront.setIdleMode(IdleMode.kCoast);
-        lMiddle.setIdleMode(IdleMode.kCoast);
-        lBack.setIdleMode(IdleMode.kCoast);
+        lFront.setIdleMode(IdleMode.kBrake);
+        lMiddle.setIdleMode(IdleMode.kBrake);
+        lBack.setIdleMode(IdleMode.kBrake);
 
-        rFront.setIdleMode(IdleMode.kCoast);
-        rMiddle.setIdleMode(IdleMode.kCoast);
-        rBack.setIdleMode(IdleMode.kCoast);
+        rFront.setIdleMode(IdleMode.kBrake);
+        rMiddle.setIdleMode(IdleMode.kBrake);
+        rBack.setIdleMode(IdleMode.kBrake);
 
         this.speedLimit = 0.95;
         this.invertedControl = false;
@@ -70,8 +70,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void driveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {
-        double leftValue = -leftJoystick.getY();
-        double rightValue = rightJoystick.getY();
+        double leftValue = leftJoystick.getY();
+        double rightValue = -rightJoystick.getY();
 
         double thresholdToMove = 0.05;
 

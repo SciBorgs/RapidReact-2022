@@ -35,7 +35,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public final double CAM_MOUNT_ANGLE = 30;
 
     public ShooterSubsystem() {
-        shooterPID = new PID(0.0005, 0, 0);
+        shooterPID = new PID(6.0/360.0, 0, 0);
         shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
 
         shooterTab = Shuffleboard.getTab("shooter");
@@ -83,16 +83,20 @@ public class ShooterSubsystem extends SubsystemBase {
     public void moveHood(double angle) {
         double move = -shooterPID.getOutput(angle, hoodEncoder.getAngle());
 
+        System.out.println("ang " + hoodEncoder.getAngle() + " targ " + angle + " move " + move);
+
         // signs are reversed because the encoder returns negative values
-        if (angle < UPPER_LIMIT || angle > LOWER_LIMIT)
+        if (angle < UPPER_LIMIT || angle > LOWER_LIMIT) {
             move = 0;
+            System.out.println("BOUNDARY");
+        }
         hood.set(Util.normalize(move, SPEED_LIMIT));
     }
 
     // shuffleboard
 
     public void updateAngle() { 
-        moveHood(changeHoodAngle.getDouble(0.0));
+        // moveHood(changeHoodAngle.getDouble(0.0));
     }
 
     public void updateGraphs() {

@@ -31,17 +31,12 @@ public class PortMap {
 
     // *******************MISC******************//
     public static final int PIGEON_ID = 42;
-    public static final int LEFT_ENCODER = -1;
-    public static final int RIGHT_ENCODER = -1;
 
     // ******************INTAKE********************//
     // spark 23 = intake flip
-    public static final int INTAKE_ARM_FORWARD_CHANNEL = -1;
-    public static final int INTAKE_ARM_REVERSE_CHANNEL = -1;
-    public static final int INTAKE_SUCK_SPARK = 80;
-
-    // *******************PNEMUATICS******************//
-    public static final int COMPRESSOR = -1;
+    public static final int INTAKE_ARM_FORWARD_CHANNEL = 1;
+    public static final int INTAKE_ARM_REVERSE_CHANNEL = 0;
+    public static final int INTAKE_SUCK_SPARK = 23;
 
     // *******************CLIMBER******************//
     public static final int CLIMBER_TELESCOPE = 19;
