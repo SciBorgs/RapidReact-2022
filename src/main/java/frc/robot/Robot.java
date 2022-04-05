@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
   public static DriveSubsystem        driveSubsystem        = new DriveSubsystem();
+  public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
   public static PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public static TurretSubsystem       turretSubsystem       = new TurretSubsystem();
@@ -42,8 +43,8 @@ public class Robot extends TimedRobot {
   public static HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
   public static PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
   public static ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
+  public static MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
 
-  public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem();
 
   private SendableChooser<Strategy> autoChooser = AutoProfile.getAutoChooser();

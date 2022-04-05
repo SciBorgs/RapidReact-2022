@@ -28,8 +28,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private SciEncoder flywheelEncoder;
     private SciAbsoluteEncoder hoodEncoder;
 
-    private final double LOWER_LIMIT = 2.57; // add for real measurement
-    private final double UPPER_LIMIT = -30.53;
+    private final double LOWER_LIMIT = 40; // add for real measurement
+    private final double UPPER_LIMIT = 20;
     private final double SPEED_LIMIT = 0.1;
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
@@ -49,7 +49,7 @@ public class ShooterSubsystem extends SubsystemBase {
         Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
         Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
         Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 0.0);
-        Robot.networkTableSubsystem.bind("shooter", "sethood", this::moveHood, getHoodAngle());
+        // Robot.networkTableSubsystem.bind("shooter", "sethood", this::moveHood, getHoodAngle());
     }
     
     public double getDistance() {
