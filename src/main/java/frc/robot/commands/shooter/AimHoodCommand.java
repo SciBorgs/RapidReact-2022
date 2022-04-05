@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 public class AimHoodCommand extends CommandBase {
-    public static final double ANGLE = -15;
+    public static final double ANGLE = 15;
 
     @Override
     public void initialize() {

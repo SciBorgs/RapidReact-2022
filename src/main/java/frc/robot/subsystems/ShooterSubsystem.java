@@ -81,6 +81,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void moveHood(double angle) {
+        angle = translate(angle)
         double move = shooterPID.getOutput(angle, hoodEncoder.getAngle());
 
         System.out.println("ang " + hoodEncoder.getAngle() + " targ " + angle + " move " + move);
