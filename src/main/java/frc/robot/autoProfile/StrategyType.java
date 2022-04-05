@@ -2,6 +2,7 @@ package frc.robot.autoProfile;
 
 public enum StrategyType {
     Nothing                             (0), 
+    Taxi                                (0),
     Shoot                               (1),
     ShootMoveShoot                      (2),
     ShootMoveShootShoot                 (3),

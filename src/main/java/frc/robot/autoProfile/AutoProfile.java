@@ -20,6 +20,7 @@ import frc.robot.Constants;
 import frc.robot.commands.IntakeCommandGroup;
 
 import frc.robot.commands.auto.FollowBallCommand;
+import frc.robot.commands.auto.MoveUpToHubCommand;
 import frc.robot.commands.auto.PurePursuitCommand;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.test.MarkerCommand;
@@ -36,6 +37,8 @@ public class AutoProfile {
 
     public static final Point  STARTING_POINT = Constants.POINT_HUB;
     public static final double STARTING_HEADING = 0;
+
+    public static final double TAXI_DISTANCE = 2.0;
 
     public static final String FIELD_STRING = 
     //   ___.___.___.___.___.___.___.___.___.___.___.___.___.___.___ 
@@ -59,6 +62,7 @@ public class AutoProfile {
 
     private static enum StageType { 
         INITIALIZE, // start hopper and intake
+        TAXI,       // taxi to set distance from hub
         TRANSPORT,  // drive off tarmac, drive to balls
         FOLLOW,     // follow ball (if ball placement is not exact)
         SHOOT,      // shoot ball in place
@@ -76,6 +80,15 @@ public class AutoProfile {
                 new StartHopperCommand(),
                 new IntakeCommandGroup(),
                 new MarkerCommand("Initializing")
+            );
+        }
+    }
+
+    private static class TaxiStage extends Stage {
+        public TaxiStage() {
+            super(StageType.TAXI);
+            this.addCommands(
+                new MoveUpToHubCommand(TAXI_DISTANCE)
             );
         }
     }
@@ -126,6 +139,11 @@ public class AutoProfile {
         switch (strategy.type) {
             case Nothing:
                 return new Stage[] {};
+            case Taxi:
+                return new Stage[] {
+                    new InitializeStage(),
+                    new TaxiStage()
+                };
             case Shoot:
                 return new Stage[] {
                     new InitializeStage(),

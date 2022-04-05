@@ -9,6 +9,9 @@ public enum Strategy {
     NOTHING         (TransportProfile.R_0,      StrategyType.Nothing),
     SHOOT_IN_PLACE  (TransportProfile.R_0,      StrategyType.Shoot),
 
+    // Taxi
+    TAXI            (TransportProfile.R_0,      StrategyType.Taxi),
+
     // Start at pos 1
     S_1_2BALL_A     (TransportProfile.R_1B,     StrategyType.ShootMoveShoot),
     S_1_2BALL_B     (TransportProfile.R_1L,     StrategyType.ShootMoveShoot),
@@ -38,7 +41,7 @@ public enum Strategy {
     static {
         BY_NAME = new HashMap<>();
         for (String name : Set.of(
-            "NOTHING", "SHOOT_IN_PLACE", 
+            "NOTHING", "SHOOT_IN_PLACE", "TAXI",
             "S_1_2BALL_A", "S_1_2BALL_B", "S_1_3BALL",
             "S_2_2BALL_A", "S_2_2BALL_B",
             "S_3_2BALL", "S_3_3BALL_A", "S_3_3BALL_B", "S_3_4BALL",
