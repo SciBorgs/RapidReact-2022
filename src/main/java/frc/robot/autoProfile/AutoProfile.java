@@ -15,7 +15,7 @@ import frc.robot.util.PathWeaverUtil;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
 
-import frc.robot.commands.ShootCommandGroup;
+import frc.robot.commands.ShootSequence;
 import frc.robot.Constants;
 import frc.robot.commands.IntakeCommandGroup;
 
@@ -125,7 +125,7 @@ public class AutoProfile {
             super(StageType.SHOOT);
             this.addCommands(new SequentialCommandGroup(
                 new AimTurretCommand(),
-                new ShootCommandGroup(),
+                new ShootSequence(),
                 new WaitCommand(1.155),
                 new MarkerCommand("Shooting")
             ));

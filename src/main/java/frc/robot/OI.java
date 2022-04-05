@@ -74,6 +74,6 @@ public class OI {
         this.aimButton.whenPressed(new AimCommandGroup());
 
         this.shootButton = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][1]);
-        this.shootButton.whenPressed(new ShootCommandGroup());
+        this.shootButton.whenPressed(new ShootSequence());
     }
 }

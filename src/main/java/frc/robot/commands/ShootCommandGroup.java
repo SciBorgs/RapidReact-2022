@@ -1,17 +1,14 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import frc.robot.commands.hopper.StartElevatorCommand;
 import frc.robot.commands.shooter.ShootCommand;
-import frc.robot.commands.turret.ResetTurretCommand;
 
-public class ShootCommandGroup extends SequentialCommandGroup {
+public class ShootCommandGroup extends ParallelDeadlineGroup  {
+
     public ShootCommandGroup() {
-        addCommands(
-            new AimCommandGroup(),
-            new ShootCommand(),
-            //move elevator
-            //something to stop the flywheel
-            new ResetTurretCommand()
-        );
+        super(new ShootCommand(), new StartElevatorCommand());
     }
+    
 }
