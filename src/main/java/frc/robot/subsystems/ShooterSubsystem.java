@@ -38,11 +38,6 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterPID = new PID(6.0/360.0, 0, 0);
         shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
 
-        Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
-        Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 0.0);
-        Robot.networkTableSubsystem.bind("distance", "sethood", this::moveHood, getHoodAngle());
-
-
         hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
         lmotor = new CANSparkMax(PortMap.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless);
@@ -50,6 +45,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
         flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
+
+        Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
+        Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
+        Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 0.0);
+        Robot.networkTableSubsystem.bind("shooter", "sethood", this::moveHood, getHoodAngle());
     }
     
     public double getDistance() {

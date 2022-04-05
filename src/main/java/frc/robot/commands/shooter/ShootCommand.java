@@ -15,6 +15,6 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Robot.shooterSubsystem.getDistanceSpun() > (double)LIMIT;
+        return Robot.shooterSubsystem.getDistanceSpun() > (double) LIMIT;
     }
 }

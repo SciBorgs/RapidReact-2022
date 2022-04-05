@@ -20,6 +20,7 @@ import frc.robot.autoProfile.AutoProfile;
 import frc.robot.autoProfile.Strategy;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootSequence;
+import frc.robot.commands.shooter.AimHoodCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.localization.LocalizationSubsystem;
 
@@ -107,8 +108,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    AutoProfile.setStrategy(autoChooser.getSelected());
+    // AutoProfile.setStrategy(autoChooser.getSelected());
     // CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
+
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
     //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
