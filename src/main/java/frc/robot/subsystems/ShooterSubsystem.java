@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.concurrent.TimeUnit;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,6 +19,7 @@ import frc.robot.util.PID;
 import frc.robot.util.ShufflePID;
 import frc.robot.util.Util;
 
+
 public class ShooterSubsystem extends SubsystemBase {
     private PID shooterPID;
     private ShufflePID shooterShufflePID;
@@ -28,13 +31,15 @@ public class ShooterSubsystem extends SubsystemBase {
     private SciEncoder flywheelEncoder;
     private SciAbsoluteEncoder hoodEncoder;
 
-    private final double LOWER_LIMIT = 40; // add for real measurement
+    private double encoderOffset = 0;
+
+    private final double LOWER_LIMIT = 0; // add for real measurement
     private final double UPPER_LIMIT = 20;
     private final double SPEED_LIMIT = 0.1;
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
 
-    public ShooterSubsystem() {
+    public ShooterSubsystem() throws InterruptedException {
         shooterPID = new PID(6.0/360.0, 0, 0);
         shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
 
@@ -45,6 +50,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
         flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
+        hoodEncoder.reset();
+        for (int i = 0; i < 100; i++);
+        this.encoderOffset = hoodEncoder.getAngle();
 
         Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
         Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
@@ -57,7 +65,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getHoodAngle() {
-        return hoodEncoder.getAngle();
+        return hoodEncoder.getAngle() - this.encoderOffset;
     }
 
     public void runFlywheel(double speed) {
@@ -81,10 +89,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void moveHood(double angle) {
-        angle = translate(angle)
-        double move = shooterPID.getOutput(angle, hoodEncoder.getAngle());
+        angle = translate(angle);
+        double move = shooterPID.getOutput(angle, getHoodAngle());
 
-        System.out.println("ang " + hoodEncoder.getAngle() + " targ " + angle + " move " + move);
+        System.out.println("ang " + getHoodAngle() + " targ " + angle + " move " + move);
 
         // signs are reversed because the encoder returns negative values
         if (angle < UPPER_LIMIT || angle > LOWER_LIMIT) {

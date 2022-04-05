@@ -88,6 +88,7 @@ public class Robot extends TimedRobot {
     // shooterSubsystem.update();
 
     turretSubsystem.updateShuffleboard();
+    System.out.println(this.shooterSubsystem.getHoodAngle());
 
     field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }
