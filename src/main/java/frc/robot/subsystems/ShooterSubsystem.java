@@ -38,10 +38,10 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterPID = new PID(6.0/360.0, 0, 0);
         shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
 
-        shooterTab = Shuffleboard.getTab("shooter");
-        distance = shooterTab.add("distance", 0.0).withWidget(BuiltInWidgets.kGraph).getEntry();
-        hoodAngle = shooterTab.add("hoodangle ", 0.0).withWidget(BuiltInWidgets.kGraph).getEntry();
-        changeHoodAngle = shooterTab.add("change hood angle", 0.0).getEntry();
+        Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
+        Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 0.0);
+        Robot.networkTableSubsystem.bind("distance", "sethood", this::moveHood, getHoodAngle());
+
 
         hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
@@ -56,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return HEIGHT_DIFF / Math.tan(Math.toRadians(Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE));
     }
 
-    public double getCurrentHoodAngle() {
+    public double getHoodAngle() {
         return hoodEncoder.getAngle();
     }
 
@@ -95,19 +95,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // shuffleboard
 
-    public void updateAngle() { 
-        // moveHood(changeHoodAngle.getDouble(0.0));
-    }
-
     public void updateGraphs() {
         distance.setDouble(getDistance());
-        hoodAngle.setDouble(getCurrentHoodAngle());
+        hoodAngle.setDouble(getHoodAngle());
     }
 
     public void update() {
         shooterShufflePID.update();
         updateGraphs();
-        updateAngle();
     }
 
     // for our encoder, which doesn't completely work

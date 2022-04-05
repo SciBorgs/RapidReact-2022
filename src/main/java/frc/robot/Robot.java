@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
     
     localizationSubsystem.update();
     networkTableSubsystem.update();
-    shooterSubsystem.update();
+    // shooterSubsystem.update();
 
     turretSubsystem.updateShuffleboard();
 
@@ -119,8 +119,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     // shooterSubsystem.update();
+
     turretSubsystem.updateShuffleboard();
-    shooterSubsystem.update();
+    // shooterSubsystem.update();
   }
   
 

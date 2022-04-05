@@ -27,7 +27,7 @@ public class AimHoodCommand extends CommandBase {
 
     @Override
     public boolean isFinished(){
-        if (Math.abs(Robot.shooterSubsystem.getCurrentHoodAngle() - ANGLE) < 0.1) {
+        if (Math.abs(Robot.shooterSubsystem.getHoodAngle() - ANGLE) < 0.1) {
             Robot.shooterSubsystem.stopHood();
             return true;
         }
