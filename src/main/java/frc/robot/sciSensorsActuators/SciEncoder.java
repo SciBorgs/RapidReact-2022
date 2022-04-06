@@ -8,6 +8,7 @@ public class SciEncoder {
 
     // this number is suspiciously close to 360
     // imagine if it really is 360...
+    // it's probably being caused by not converting from radians to degrees, meaning it is 360
     private static final double ROYS_CONSTANT = 365.831868022;
     private double factor;
 
