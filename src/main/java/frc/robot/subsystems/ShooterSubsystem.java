@@ -27,8 +27,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private double encoderOffset = 0;
 
-    private final double LOWER_LIMIT = 0.26; // add for real measurement
-    private final double UPPER_LIMIT = 0.02;
+    private final double LOWER_LIMIT = 9.2; // add for real measurement
+    private final double UPPER_LIMIT = 35.5;
     private final double SPEED_LIMIT = 0.1;
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
@@ -44,7 +44,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
-        encoderOffset = hoodEncoder.getAngle();
+        encoderOffset = getHoodAngle();
         // hoodEncoder.reset();
 
         Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);

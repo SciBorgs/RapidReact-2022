@@ -34,8 +34,8 @@ public class PortMap {
 
     // ******************INTAKE********************//
     // spark 23 = intake flip
-    public static final int INTAKE_ARM_FORWARD_CHANNEL = 1;
-    public static final int INTAKE_ARM_REVERSE_CHANNEL = 0;
+    public static final int INTAKE_ARM_FORWARD_CHANNEL = 0;
+    public static final int INTAKE_ARM_REVERSE_CHANNEL = 1;
     public static final int INTAKE_SUCK_SPARK = 23;
 
     // *******************CLIMBER******************//

@@ -14,7 +14,7 @@ public class HopperSubsystem implements Subsystem {
     private CANSparkMax elevator;
 
     private final double HOPPER_SPEED = 0.2;
-    private final double ELEVATOR_SPEED = -0.5;
+    private final double ELEVATOR_SPEED = 0.5;
     
     private final double MAX_SPEED = 0.2;
 
