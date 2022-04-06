@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putData("Field", field2d);
 
-    System.out.println(networkTableSubsystem);
+    // System.out.println(networkTableSubsystem);
   }
 
   @Override
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
     // shooterSubsystem.update();
 
     turretSubsystem.updateShuffleboard();
-    System.out.println(this.shooterSubsystem.getHoodAngle());
+    System.out.println("ang " + this.shooterSubsystem.getHoodAngle() + " off " + this.shooterSubsystem.getOffset());
 
     field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }

@@ -32,8 +32,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private double encoderOffset = 0;
 
-    private final double LOWER_LIMIT = 0; // add for real measurement
-    private final double UPPER_LIMIT = 20;
+    private final double LOWER_LIMIT = 0.26; // add for real measurement
+    private final double UPPER_LIMIT = 0.02;
     private final double SPEED_LIMIT = 0.1;
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
@@ -49,11 +49,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
         flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
+        encoderOffset = hoodEncoder.getAngle();
         // hoodEncoder.reset();
 
         Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
         Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
-        Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 0.0);
+        Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 321.3);
+        Robot.networkTableSubsystem.bind("shooter", "offset", this::getOffset, 321.3);
+
         // Robot.networkTableSubsystem.bind("shooter", "sethood", this::moveHood, getHoodAngle());
     }
     
@@ -61,8 +64,12 @@ public class ShooterSubsystem extends SubsystemBase {
         return HEIGHT_DIFF / Math.tan(Math.toRadians(Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE));
     }
 
+    public double getOffset() {
+        return encoderOffset;
+    }
+
     public double getHoodAngle() {
-        return hoodEncoder.getAngle() - this.encoderOffset;
+        return hoodEncoder.getAngle();
     }
 
     public void runFlywheel(double speed) {

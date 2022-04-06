@@ -8,7 +8,7 @@ public class SciAbsoluteEncoder {
 
     public SciAbsoluteEncoder(int port, double gearRatio) {
         this.absEncoder = new DutyCycleEncoder(port);
-        this.absEncoder.setDistancePerRotation(gearRatio * 360);
+        // this.absEncoder.setDistancePerRotation(gearRatio * 360);
     }
 
     // public void setOffset(double offset) {this.offset = offset;}
