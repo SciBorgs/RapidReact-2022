@@ -24,7 +24,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private PID shooterPID;
     private ShufflePID shooterShufflePID;
 
-    private ShuffleboardTab shooterTab;
     private NetworkTableEntry distance, hoodAngle, changeHoodAngle;
     
     private CANSparkMax hood, lmotor, rmotor;
@@ -50,9 +49,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
-        hoodEncoder.reset();
-        for (int i = 0; i < 100; i++);
-        this.encoderOffset = hoodEncoder.getAngle();
+        // hoodEncoder.reset();
 
         Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
         Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);

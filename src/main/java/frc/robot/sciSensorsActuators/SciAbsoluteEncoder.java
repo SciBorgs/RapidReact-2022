@@ -11,12 +11,12 @@ public class SciAbsoluteEncoder {
         this.absEncoder.setDistancePerRotation(gearRatio * 360);
     }
 
-    public void setOffset(double offset) {this.offset = offset;}
-    public double getOffset(double angle) {return this.offset = angle - absEncoder.getDistance();}
+    // public void setOffset(double offset) {this.offset = offset;}
+    // public double getOffset(double angle) {return this.offset = angle - absEncoder.getDistance();}
     
 
     //returns the angle the hood is currently at:
-    public double getAngle() { return absEncoder.getDistance(); }
+    public double getAngle() { return absEncoder.getAbsolutePosition(); }
     public void reset() { absEncoder.reset();}
 
 }
