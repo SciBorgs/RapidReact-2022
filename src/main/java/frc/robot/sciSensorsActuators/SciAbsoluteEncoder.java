@@ -5,10 +5,11 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 public class SciAbsoluteEncoder {
     private DutyCycleEncoder absEncoder;
     public double offset;
+    private double factor;
 
     public SciAbsoluteEncoder(int port, double gearRatio) {
         this.absEncoder = new DutyCycleEncoder(port);
-        // this.absEncoder.setDistancePerRotation(gearRatio * 360);
+        factor = gearRatio * 360;
     }
 
     // public void setOffset(double offset) {this.offset = offset;}
@@ -16,7 +17,7 @@ public class SciAbsoluteEncoder {
     
 
     //returns the angle the hood is currently at:
-    public double getAngle() { return absEncoder.getAbsolutePosition(); }
+    public double getAngle() { return absEncoder.getAbsolutePosition() * factor; }
     public void reset() { absEncoder.reset();}
 
 }
