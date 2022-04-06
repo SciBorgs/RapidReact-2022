@@ -38,7 +38,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
 
-    public ShooterSubsystem() throws InterruptedException {
+    public ShooterSubsystem() {
         shooterPID = new PID(6.0/360.0, 0, 0);
         shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
 
