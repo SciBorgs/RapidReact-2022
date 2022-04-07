@@ -27,8 +27,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private double encoderOffset = 0;
 
-    private final double LOWER_LIMIT = 9.2; // add for real measurement
-    private final double UPPER_LIMIT = 35.5;
+    private final double LOWER_LIMIT = 35.5; // add for real measurement
+    private final double UPPER_LIMIT = 9.2;
     private final double SPEED_LIMIT = 0.1;
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
