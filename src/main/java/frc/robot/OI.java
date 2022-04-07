@@ -9,6 +9,8 @@ import frc.robot.commands.shooter.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.*;
 
 import static frc.robot.PortMap.*;
@@ -25,6 +27,9 @@ public class OI {
     
     // Buttons | Hopper-Pneumatics
     public JoystickButton startHopper, toggleCompressor;
+
+    // Buttons | Intake + Hopper
+    public JoystickButton intakeHopperGroup;
     
     // Buttons | Climber
     public JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
@@ -39,6 +44,7 @@ public class OI {
         this.xboxController = new XboxController(XBOX_CONTROLLER);
 
         // Intake
+
         this.intakeBalls = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
         this.intakeBalls.whenPressed(new IntakeBallsCommand().withTimeout(5));
 
@@ -51,6 +57,10 @@ public class OI {
         // Hopper
         this.startHopper = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
         this.startHopper.whenHeld(new StartHopperCommand());
+
+        // Intake + Hopper
+        // this.intakeHopperGroup = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
+        // this.intakeHopperGroup.whileHeld(new ParallelDeadlineGroup(new IntakeBallsCommand().withTimeout(5), new StartHopperCommand()));
 
         // Compressor
         this.toggleCompressor = new JoystickButton(this.xboxController, XBOX_START);
