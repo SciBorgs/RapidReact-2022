@@ -74,10 +74,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public void stopFlywheel() {
         rmotor.set(0);
     }
-
-    public void stopHood(){
-        hood.set(0);
-    }
     
     public void resetDistanceSpun() {
         flywheelEncoder.setDistance(0);
@@ -85,6 +81,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double getDistanceSpun() {
         return flywheelEncoder.getDistance();
+    }
+
+    public void setHoodSpeed(double speed) {
+        hood.set(speed);
     }
 
     public void moveHood(double angle) {

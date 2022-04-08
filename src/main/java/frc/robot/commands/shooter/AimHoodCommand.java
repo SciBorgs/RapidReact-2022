@@ -22,13 +22,13 @@ public class AimHoodCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        Robot.shooterSubsystem.stopHood();
+        Robot.shooterSubsystem.setHoodSpeed(0);
     }
 
     @Override
     public boolean isFinished(){
         if (Math.abs(Robot.shooterSubsystem.getHoodAngle() - ANGLE) < 0.1) {
-            Robot.shooterSubsystem.stopHood();
+            Robot.shooterSubsystem.setHoodSpeed(0);
             return true;
         }
         return false;
