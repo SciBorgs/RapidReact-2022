@@ -8,9 +8,9 @@ import frc.robot.commands.turret.ResetTurretCommand;
 public class ShootSequence extends SequentialCommandGroup {
     public ShootSequence() {
         addCommands(
-            new AimHoodCommand()
+            // new AimHoodCommand(),
             // new AimCommandGroup(),
-            // new ShootCommandGroup(),
+            new ShootCommandGroup()
             // new ResetTurretCommand()
         );
     }
