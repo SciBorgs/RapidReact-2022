@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciSpark;
@@ -72,6 +73,16 @@ public class DriveSubsystem extends SubsystemBase {
     public void driveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {
         double leftValue = leftJoystick.getY();
         double rightValue = -rightJoystick.getY();
+
+        double thresholdToMove = 0.05;
+
+        lFront.set(Math.abs(leftValue) > thresholdToMove ? leftValue : 0);
+        rFront.set(Math.abs(rightValue) > thresholdToMove ? rightValue : 0);
+    }
+
+    public void driveRobot(XboxController xboxController, double speedLimit) {
+        double leftValue  = xboxController.getLeftY();
+        double rightValue = xboxController.getRightY();
 
         double thresholdToMove = 0.05;
 

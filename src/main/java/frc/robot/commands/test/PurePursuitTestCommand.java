@@ -15,7 +15,7 @@ public class PurePursuitTestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.networkTableSubsystem.createControllerBindings("pp", "pp", pp, p -> p.toArray(), new double[] {0, 0});
+        // Robot.networkTableSubsystem.createControllerBindings("pp", "pp", pp, p -> p.toArray(), new double[] {0, 0});
         pp.move();
     }
 

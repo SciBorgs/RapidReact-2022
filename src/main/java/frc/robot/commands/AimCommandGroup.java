@@ -7,8 +7,9 @@ import frc.robot.commands.turret.AimTurretCommand;
 public class AimCommandGroup extends ParallelCommandGroup {
     public AimCommandGroup() {
         addCommands(
-            new AimTurretCommand(),
-            new AimHoodCommand()
+            new AimTurretCommand()
+            // hood aiming is manual for now
+            // new AimHoodCommand()
         );
     }
 }

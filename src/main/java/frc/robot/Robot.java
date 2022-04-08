@@ -31,10 +31,10 @@ import frc.robot.subsystems.localization.LocalizationSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static OI oi = new OI();
+  public static OI oi = new OI(false);
 
   public static DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
+  // public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
   public static PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public static TurretSubsystem       turretSubsystem       = new TurretSubsystem();
@@ -58,15 +58,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // localization
-    networkTableSubsystem.bind("localization", "pose", localizationSubsystem::get, new double[] {0, 0, 0});
-    networkTableSubsystem.bind("localization", "particles", localizationSubsystem.particleFilter::getFlat, new double[] {});
-    networkTableSubsystem.bind("localization", "meanParticle", localizationSubsystem.particleFilter::getMeanParticle, new double[] {8, 4});
+    // networkTableSubsystem.bind("localization", "pose", localizationSubsystem::get, new double[] {0, 0, 0});
+    // networkTableSubsystem.bind("localization", "particles", localizationSubsystem.particleFilter::getFlat, new double[] {});
+    // networkTableSubsystem.bind("localization", "meanParticle", localizationSubsystem.particleFilter::getMeanParticle, new double[] {8, 4});
 
     // teleop sim
-    networkTableSubsystem.bind("drive", "joyLeft", oi.leftStick::getY, 0.0);
-    networkTableSubsystem.bind("drive", "joyRight", oi.rightStick::getY, 0.0);
-    networkTableSubsystem.bind("drive", "driveSpeed", localizationSubsystem::getVel, 0.0);
-    networkTableSubsystem.bind("drive", "driveLimit", driveSubsystem::setSpeedLimit, 1.0);
+    // networkTableSubsystem.bind("drive", "joyLeft", oi.leftStick::getY, 0.0);
+    // networkTableSubsystem.bind("drive", "joyRight", oi.rightStick::getY, 0.0);
+    // networkTableSubsystem.bind("drive", "driveSpeed", localizationSubsystem::getVel, 0.0);
+    // networkTableSubsystem.bind("drive", "driveLimit", driveSubsystem::setSpeedLimit, 1.0);
 
     // shuffleboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -84,8 +84,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     
     localizationSubsystem.update();
-    networkTableSubsystem.update();
-    // shooterSubsystem.update();
+    // networkTableSubsystem.update();
+    shooterSubsystem.update();
 
     turretSubsystem.updateShuffleboard();
     // System.out.println(!this.intakeSubsystem.getLimitSwitchState());
