@@ -14,7 +14,7 @@ public class SpinTestCommand extends CommandBase {
     public void initialize() {
         this.spinController = new SpinController(HEADING_TOLERANCE);
         this.spinController.setTarget(Constants.POINT_HUB);
-        Robot.networkTableSubsystem.createControllerBindings("spin controller", "patrol", this.spinController, p -> p.toArray(), new double[] {0, 0});
+        // Robot.networkTableSubsystem.createControllerBindings("spin controller", "patrol", this.spinController, p -> p.toArray(), new double[] {0, 0});
     }
 
     @Override

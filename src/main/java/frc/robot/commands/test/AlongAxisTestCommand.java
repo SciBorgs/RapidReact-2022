@@ -18,7 +18,7 @@ public class AlongAxisTestCommand extends CommandBase {
         this.axisController = new AlongAxisController(AutoProfile.STARTING_POINT, 0, DISTANCE_TOLERANCE);
         this.axisController.setTarget(farDistance);
         this.goingToFar = false;
-        Robot.networkTableSubsystem.createControllerBindings("axis test", "axis", this.axisController, 0.0);
+        // Robot.networkTableSubsystem.createControllerBindings("axis test", "axis", this.axisController, 0.0);
         
     }
 

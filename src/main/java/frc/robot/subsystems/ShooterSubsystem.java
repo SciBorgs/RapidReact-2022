@@ -47,10 +47,10 @@ public class ShooterSubsystem extends SubsystemBase {
         encoderOffset = getHoodAngle();
         // hoodEncoder.reset();
 
-        Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
-        Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
-        Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 321.3);
-        Robot.networkTableSubsystem.bind("shooter", "offset", this::getOffset, 321.3);
+        // Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
+        // Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
+        // Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 321.3);
+        // Robot.networkTableSubsystem.bind("shooter", "offset", this::getOffset, 321.3);
 
         // Robot.networkTableSubsystem.bind("shooter", "sethood", this::moveHood, getHoodAngle());
     }
