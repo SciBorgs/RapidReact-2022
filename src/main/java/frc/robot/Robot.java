@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
     // shooterSubsystem.update();
 
     turretSubsystem.updateShuffleboard();
-    System.out.println(!this.intakeSubsystem.getLimitSwitchState());
+    // System.out.println(!this.intakeSubsystem.getLimitSwitchState());
 
     field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }
@@ -110,8 +110,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // AutoProfile.setStrategy(autoChooser.getSelected());
-    // CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
+    AutoProfile.setStrategy(Strategy.TAXI);
+    CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
 
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
     //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");

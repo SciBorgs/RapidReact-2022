@@ -46,7 +46,7 @@ public class OI {
         // Intake
 
         this.intakeBalls = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
-        this.intakeBalls.whenPressed(new IntakeBallsCommand().withTimeout(5));
+        this.intakeBalls.whenHeld(new IntakeBallsCommand());
 
         this.lowerIntakeArms = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
         this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
