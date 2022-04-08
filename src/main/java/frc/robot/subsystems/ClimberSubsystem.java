@@ -15,7 +15,7 @@ public class ClimberSubsystem implements Subsystem {
     // private SciEncoder telescopeEncoder;
     // private SciEncoder armsEncoder;  
     
-    private ShuffleboardTab tab;
+    // private ShuffleboardTab tab;
     // private NetworkTableEntry rotations, armEntry, armsEntry;
     private static final double TELESCOPE_SPEED = 0.5;
     private static final double ARM_SPEED = 0.2;
