@@ -3,7 +3,7 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class RaiseHoodCommand extends CommandBase {
+public class LowerHoodCommand extends CommandBase {
     public static final double SPEED = -0.1;
 
     @Override

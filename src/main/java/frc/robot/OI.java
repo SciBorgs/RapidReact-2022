@@ -38,6 +38,7 @@ public class OI {
 
     // Buttons | Shooter
     public JoystickButton aimButton, shootButton;
+    public JoystickButton lowerHoodButton, raiseHoodButton;
 
     public OI(boolean isXbox) {
         this.isXbox = isXbox;
@@ -94,6 +95,9 @@ public class OI {
             // Shooter
             this.aimButton   = new JoystickButton(this.rightStick, JOYSTICK_CENTER_BUTTON);
             this.shootButton = new JoystickButton(this.rightStick, JOYSTICK_TRIGGER);
+
+            this.lowerHoodButton = new JoystickButton(this.xboxController, XBOX_A);
+            this.raiseHoodButton = new JoystickButton(this.xboxController, XBOX_B);
         }
 
         //////////////////////
@@ -119,5 +123,8 @@ public class OI {
         // Shooter
         this.aimButton.whenPressed(new AimCommandGroup());
         this.shootButton.whenPressed(new ShootSequence());
+
+        this.lowerHoodButton.whenHeld(new LowerHoodCommand());
+        this.raiseHoodButton.whenHeld(new RaiseHoodCommand());
     }
 }
