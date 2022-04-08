@@ -8,6 +8,7 @@ public class AimCommandGroup extends ParallelCommandGroup {
     public AimCommandGroup() {
         addCommands(
             new AimTurretCommand()
+            // hood aiming is manual for now
             // new AimHoodCommand()
         );
     }
