@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.autoProfile.Strategy;
+import frc.robot.commands.AutoDriveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootSequence;
 import frc.robot.commands.shooter.AimHoodCommand;
@@ -31,10 +32,9 @@ import frc.robot.subsystems.localization.LocalizationSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static OI oi = new OI(false);
 
   public static DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  // public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
+  public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
   public static PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public static TurretSubsystem       turretSubsystem       = new TurretSubsystem();
@@ -110,9 +110,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    AutoProfile.setStrategy(Strategy.TAXI);
-    CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
+    // AutoProfile.setStrategy(Strategy.TAXI);
+    // CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
 
+    CommandScheduler.getInstance().schedule(new AutoDriveCommand(0.21).withTimeout(2));
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
     //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");

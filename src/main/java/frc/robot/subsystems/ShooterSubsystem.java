@@ -104,8 +104,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // shuffleboard
 
     public void updateGraphs() {
-        distance.setDouble(getDistance());
-        hoodAngle.setDouble(getHoodAngle());
+        // distance.setDouble(getDistance());
+        // hoodAngle.setDouble(getHoodAngle());
     }
 
     public void update() {
