@@ -118,10 +118,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // AutoProfile.setStrategy(Strategy.TAXI);
-    // CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
-
-    CommandScheduler.getInstance().schedule(new AutoDriveCommand(0.21).withTimeout(2));
+    AutoProfile.setStrategy(Strategy.TAXI);
+    CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
+`
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
     //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
