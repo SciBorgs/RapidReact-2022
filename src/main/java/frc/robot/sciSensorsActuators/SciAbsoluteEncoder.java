@@ -12,6 +12,10 @@ public class SciAbsoluteEncoder {
         factor = gearRatio * 360;
     }
 
+    public boolean connected() {
+        return this.absEncoder.isConnected();
+    }
+
     // public void setOffset(double offset) {this.offset = offset;}
     // public double getOffset(double angle) {return this.offset = angle - absEncoder.getDistance();}
     

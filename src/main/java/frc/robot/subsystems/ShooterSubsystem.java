@@ -87,15 +87,21 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setHoodSpeed(double speed) {
-        if (getHoodAngle() < UPPER_LIMIT || getHoodAngle() > LOWER_LIMIT) {
+        if (speed > 0 && getHoodAngle() < UPPER_LIMIT) {
+            // No up
+            System.out.println("Top boundary; cannot go up!");
             speed = 0;
-            System.out.println("BOUNDARY");
+        } else if (speed < 0 || getHoodAngle() > LOWER_LIMIT) {
+            // No down
+            System.out.println("Bottom boundary; cannot go down!");
+            speed = 0;
         }
         hood.set(speed);
     }
 
     public void moveHood(double angle) {
         angle = translateToEncoder(angle);
+
         double move = shooterPID.getOutput(angle, getHoodAngle());
 
         System.out.println("ang " + getHoodAngle() + " targ " + angle + " move " + move);

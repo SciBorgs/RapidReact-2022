@@ -19,7 +19,7 @@ public class StartHopperCommand extends CommandBase {
     public void execute() {
 
         Robot.hopperSubsystem.startElevator();
-        Robot.hopperSubsystem.startSuck();
+        // Robot.hopperSubsystem.startSuck();
     }
 
     @Override
