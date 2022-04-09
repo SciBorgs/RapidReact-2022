@@ -60,9 +60,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public double getDistance() {
-        return HEIGHT_DIFF / Math.tan(Math.toRadians(
-            translateFromEncoder(Robot.limelightSubsystem.getLimelightTableData("ty"))
-             + CAM_MOUNT_ANGLE));
+        return HEIGHT_DIFF / Math.tan(Math.toRadians(Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE));
     }
 
     public double getOffset() {
