@@ -11,15 +11,20 @@ public class ShootCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.shooterSubsystem.runFlywheel(Robot.shooterSubsystem.goToFlywheelSpeed);
+        writeData();
+    }
+
+    public void writeData() {
         CSVWriter writer = new CSVWriter("src/main/java/frc/robot/controllers/placeHolder.csv");
         writer.addData(
             Robot.shooterSubsystem.translateFromEncoder(Robot.shooterSubsystem.getHoodAngle()),
             Robot.shooterSubsystem.getDistance(),
             Robot.shooterSubsystem.goToFlywheelSpeed,
-            null,
+            "",
             System.currentTimeMillis()
         );
     }
+
 
     @Override
     public boolean isFinished() {
