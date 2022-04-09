@@ -10,7 +10,7 @@ public class IntakeBallsCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.addRequirements(Robot.intakeSubsystem, Robot.hopperSubsystem);
+        // this.addRequirements(Robot.intakeSubsystem, Robot.hopperSubsystem);
     }
  
     @Override

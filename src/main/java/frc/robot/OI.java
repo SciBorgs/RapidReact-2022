@@ -26,12 +26,9 @@ public class OI {
 
     // Buttons | Intake
     public JoystickButton intakeBalls, lowerIntakeArms, retractIntakeArms;
-    
-    // Buttons | Hopper-Pneumatics
-    public JoystickButton startHopper, toggleCompressor;
 
     // Buttons | Intake + Hopper
-    public JoystickButton intakeHopperGroup;
+    public JoystickButton hopper;
     
     // Buttons | Climber
     public JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
@@ -44,12 +41,9 @@ public class OI {
         this.isXbox = isXbox;
 
         // Controllers
-        if (isXbox) {
-            this.xboxController = new XboxController(XBOX_CONTROLLER);
-        } else {
-            this.leftStick  = new Joystick(JOYSTICK_LEFT);
-            this.rightStick = new Joystick(JOYSTICK_RIGHT);
-        }
+        this.xboxController = new XboxController(XBOX_CONTROLLER);
+        this.leftStick  = new Joystick(JOYSTICK_LEFT);
+        this.rightStick = new Joystick(JOYSTICK_RIGHT);
 
         ////////////////////
         // INITIALIZATION //
@@ -58,52 +52,44 @@ public class OI {
         if (isXbox) {
             // Intake
             this.intakeBalls       = new JoystickButton(this.xboxController, XBOX_B);
-            this.lowerIntakeArms   = new JoystickButton(this.xboxController, XBOX_Y);
+            this.lowerIntakeArms   = new JoystickButton(this.xboxController, XBOX_START);
             this.retractIntakeArms = new JoystickButton(this.xboxController, XBOX_BACK);
 
             // Intake-Hopper-Compressor
-            this.startHopper       = new JoystickButton(this.xboxController, XBOX_STICK_LEFT_BUTTON);
-            this.intakeHopperGroup = new JoystickButton(this.xboxController, XBOX_STICK_RIGHT_BUTTON);
-            this.toggleCompressor  = new JoystickButton(this.xboxController, XBOX_START);
-
-            // Climber
-            this.extendTelescope  = new JoystickButton(this.xboxController, XBOX_TRIGGER_LEFT);
-            this.retractTelescope = new JoystickButton(this.xboxController, XBOX_TRIGGER_RIGHT);
-            this.extendArm  = new JoystickButton(this.xboxController, XBOX_BUMPER_LEFT);
-            this.retractArm = new JoystickButton(this.xboxController, XBOX_BUMPER_RIGHT);
+            this.hopper = new JoystickButton(this.xboxController, XBOX_A);
 
             // Shooter
-            this.aimButton   = new JoystickButton(this.xboxController, XBOX_A);
-            this.shootButton = new JoystickButton(this.xboxController, XBOX_X);
+            this.aimButton   = new JoystickButton(this.xboxController, XBOX_X);
+            this.shootButton = new JoystickButton(this.xboxController, XBOX_Y);
         } else {
             // Intake
-            this.intakeBalls       = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
+            this.intakeBalls       = new JoystickButton(this.leftStick, JOYSTICK_CENTER_BUTTON);
             this.lowerIntakeArms   = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
-            this.retractIntakeArms = new JoystickButton(this.leftStick, JOYSTICK_CENTER_BUTTON);
+            this.retractIntakeArms = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
 
             // Intake-Hopper-Compressor
-            // this.startHopper       = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
-            this.intakeHopperGroup = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
-            this.toggleCompressor  = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
-
-            // Climber
-            this.extendTelescope  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][0]);
-            this.retractTelescope = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][1]);
-            this.extendArm  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][0]);
-            this.retractArm = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][1]);
+            this.hopper = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
 
             // Shooter
             this.aimButton   = new JoystickButton(this.rightStick, JOYSTICK_CENTER_BUTTON);
             this.shootButton = new JoystickButton(this.rightStick, JOYSTICK_TRIGGER);
 
-            this.lowerHoodButton = new JoystickButton(this.xboxController, XBOX_A);
-            this.raiseHoodButton = new JoystickButton(this.xboxController, XBOX_B);
         }
+        
+        this.lowerHoodButton = new JoystickButton(this.xboxController, XBOX_BUMPER_LEFT);
+        this.raiseHoodButton = new JoystickButton(this.xboxController, XBOX_BUMPER_RIGHT);
 
         //////////////////////
         // COMMAND BINDINGS //
         //////////////////////
 
+        // Climber
+        this.extendTelescope  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][0]);
+        this.retractTelescope = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][1]);
+        this.extendArm  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][0]);
+        this.retractArm = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][1]);
+
+    
         // Intake
         this.intakeBalls.whenHeld(new IntakeBallsCommand());
         this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
@@ -111,8 +97,7 @@ public class OI {
 
         // Intake-Hopper-Compressor
         // this.startHopper.whenHeld(new StartHopperCommand());
-        this.intakeHopperGroup.whileHeld(new ParallelDeadlineGroup(new IntakeBallsCommand().withTimeout(5), new StartHopperCommand()));
-        this.toggleCompressor.toggleWhenPressed(new ToggleCompressorCommand());
+        this.hopper.whileHeld(new StartHopperCommand());
 
         // Climber
         this.extendTelescope.whenHeld(new RunTelescopeCommand(false));

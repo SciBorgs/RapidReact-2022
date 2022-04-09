@@ -24,6 +24,7 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
+import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -37,6 +38,8 @@ import frc.robot.subsystems.localization.LocalizationSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static OI                    oi                    = new OI(true);
+
 
   public static DriveSubsystem        driveSubsystem        = new DriveSubsystem();
   public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();

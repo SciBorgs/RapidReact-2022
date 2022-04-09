@@ -12,7 +12,7 @@ public class StartHopperCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.addRequirements(Robot.hopperSubsystem);
+        // this.addRequirements(Robot.hopperSubsystem);
     }
 
     @Override
