@@ -12,6 +12,6 @@ public class ShootSequence extends SequentialCommandGroup {
             new ResetTurretCommand()
         );
         // log shots so we can get default angle
-        System.out.println(Robot.shooterSubsystem.getHoodAngle());
+        // System.out.println(Robot.shooterSubsystem.getHoodAngle());
     }
 }

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.autoProfile.Strategy;
+import frc.robot.commands.AutoDriveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -23,6 +24,7 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
+import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -36,10 +38,11 @@ import frc.robot.subsystems.localization.LocalizationSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static OI oi = new OI(false);
+  public static OI                    oi                    = new OI(true);
+
 
   public static DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  // public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
+  public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
   public static PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public static TurretSubsystem       turretSubsystem       = new TurretSubsystem();
@@ -115,9 +118,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // AutoProfile.setStrategy(autoChooser.getSelected());
+    // AutoProfile.setStrategy(Strategy.TAXI);
     // CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
 
+    CommandScheduler.getInstance().schedule(new AutoDriveCommand(0.21).withTimeout(2));
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
     //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");

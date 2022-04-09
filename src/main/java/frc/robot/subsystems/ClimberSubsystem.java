@@ -17,7 +17,7 @@ public class ClimberSubsystem implements Subsystem {
     
     // private ShuffleboardTab tab;
     // private NetworkTableEntry rotations, armEntry, armsEntry;
-    private static final double TELESCOPE_SPEED = 0.5;
+    private static final double TELESCOPE_SPEED = 0.95;
     private static final double ARM_SPEED = 0.2;
 
     public ClimberSubsystem() {

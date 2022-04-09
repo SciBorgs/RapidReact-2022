@@ -70,6 +70,16 @@ public class DriveSubsystem extends SubsystemBase {
         setSpeed(-speed, speed);
     }
 
+    public void driveRobot(double leftJoystick, double rightJoystick, double speedLimit) {
+        double leftValue = leftJoystick;
+        double rightValue = -rightJoystick;
+
+        double thresholdToMove = 0.05;
+
+        lFront.set(Math.abs(leftValue) > thresholdToMove ? leftValue : 0);
+        rFront.set(Math.abs(rightValue) > thresholdToMove ? rightValue : 0);
+    }
+
     public void driveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {
         double leftValue = leftJoystick.getY();
         double rightValue = -rightJoystick.getY();
