@@ -35,7 +35,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // hood angle, adjusted by raise and lower hood commands
     public double goToHoodAngle = 15;
-    public double goToFlywheelSpeed = 0.5;
 
     public ShooterSubsystem() {
         shooterPID = new PID(6.0/360.0, 0, 0);
