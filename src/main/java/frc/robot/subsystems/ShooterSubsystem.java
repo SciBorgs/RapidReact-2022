@@ -33,6 +33,10 @@ public class ShooterSubsystem extends SubsystemBase {
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
 
+    // hood angle, adjusted by raise and lower hood commands
+    public double goToHoodAngle = 15;
+    public double goToFlywheelSpeed = 0.5;
+
     public ShooterSubsystem() {
         shooterPID = new PID(6.0/360.0, 0, 0);
         shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
@@ -84,11 +88,15 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setHoodSpeed(double speed) {
+        if (getHoodAngle() < UPPER_LIMIT || getHoodAngle() > LOWER_LIMIT) {
+            speed = 0;
+            System.out.println("BOUNDARY");
+        }
         hood.set(speed);
     }
 
     public void moveHood(double angle) {
-        angle = translate(angle);
+        angle = translateToEncoder(angle);
         double move = shooterPID.getOutput(angle, getHoodAngle());
 
         System.out.println("ang " + getHoodAngle() + " targ " + angle + " move " + move);
@@ -113,8 +121,13 @@ public class ShooterSubsystem extends SubsystemBase {
         updateGraphs();
     }
 
-    // for our encoder, which doesn't completely work
-    private double translate(double encoderVal) {
+    // normal -> crazy encoder
+    private double translateToEncoder(double encoderVal) {
         return LOWER_LIMIT - encoderVal;
+    }
+
+    // crazy encoder -> normal
+    public double translateFromEncoder(double val) {
+        return val - LOWER_LIMIT;
     }
 }
