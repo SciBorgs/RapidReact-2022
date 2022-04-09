@@ -12,7 +12,8 @@ public class AutoDriveCommand extends CommandBase {
 
 
     public void execute() {
-        Robot.driveSubsystem.driveRobot(speed, speed, 0.7);
+        Robot.driveSubsystem.setSpeed(speed, speed);
+        // Robot.driveSubsystem.driveRobot(speed, speed, 0.7);
     }
 
     @Override
