@@ -54,7 +54,6 @@ public class Robot extends TimedRobot {
 
   private SendableChooser<Strategy> autoChooser = AutoProfile.getAutoChooser();
   private Field2d field2d = new Field2d();
-  private static Timer timer;
 
 
   /**

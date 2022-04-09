@@ -34,7 +34,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public final double CAM_MOUNT_ANGLE = 30;
 
     // hood angle, adjusted by raise and lower hood commands
-    public double HOOD_ANGLE = 15;
+    public double goToHoodAngle = 15;
+    public double goToFlywheelSpeed = 0.5;
 
     public ShooterSubsystem() {
         shooterPID = new PID(6.0/360.0, 0, 0);
@@ -59,7 +60,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public double getDistance() {
-        return HEIGHT_DIFF / Math.tan(Math.toRadians(Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE));
+        return HEIGHT_DIFF / Math.tan(Math.toRadians(
+            translateFromEncoder(Robot.limelightSubsystem.getLimelightTableData("ty"))
+             + CAM_MOUNT_ANGLE));
     }
 
     public double getOffset() {
@@ -95,7 +98,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void moveHood(double angle) {
-        angle = translate(angle);
+        angle = translateToEncoder(angle);
         double move = shooterPID.getOutput(angle, getHoodAngle());
 
         System.out.println("ang " + getHoodAngle() + " targ " + angle + " move " + move);
@@ -120,8 +123,13 @@ public class ShooterSubsystem extends SubsystemBase {
         updateGraphs();
     }
 
-    // for our encoder, which doesn't completely work
-    private double translate(double encoderVal) {
+    // normal -> crazy encoder
+    private double translateToEncoder(double encoderVal) {
         return LOWER_LIMIT - encoderVal;
+    }
+
+    // crazy encoder -> normal
+    public double translateFromEncoder(double val) {
+        return val - LOWER_LIMIT;
     }
 }
