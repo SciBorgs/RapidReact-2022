@@ -275,7 +275,19 @@ public class Util {
         }
     }
 
-    // Uses a list of data points (formatted as { angle, distance } for each point) and calculates
+    // Converts CSV data into 2D array of doubles to pass into calcHoodAngle()
+    public static double[][] getHoodAngleData(String fName) {
+        ArrayList<String[]> lines = CSVUtils.newReader(fName).readData();
+        double[][] data = new double[lines.size()-1][]; // Subtract 1 because we want to exclude the headers of CSV file
+        for(int i = 1; i < lines.size(); i++) {
+            double[] temp = { Double.valueOf(lines.get(i)[0]), Double.valueOf(lines.get(i)[1]) };
+            data[i-1] = temp;
+        }
+
+        return data;
+    }
+
+    // Uses a 2D array of doubles (formatted as { angle, distance } for each point) and calculates
     public static double calcHoodAngle(double[][] data, double distance) {
         int entry1 = findClosest(data, distance);
         int entry2;
@@ -349,6 +361,4 @@ public class Util {
         else
             return val1;
     }
-
-
 }

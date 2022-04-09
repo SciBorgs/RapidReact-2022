@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 public class CSVUtils {
 
-
-    private static class CSVWriter {
+    public static class CSVWriter {
         private PrintWriter writer;
 
         public CSVWriter(String path) {
@@ -47,7 +46,7 @@ public class CSVUtils {
         }
     }
 
-    private static class CSVReader {
+    public static class CSVReader {
         private BufferedReader reader;
 
         public CSVReader(String path) {
