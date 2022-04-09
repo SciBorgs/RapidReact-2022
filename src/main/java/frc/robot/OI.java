@@ -51,43 +51,43 @@ public class OI {
 
         if (isXbox) {
             // Intake
-            this.intakeBalls       = new JoystickButton(this.xboxController, XBOX_B);
-            this.lowerIntakeArms   = new JoystickButton(this.xboxController, XBOX_START);
-            this.retractIntakeArms = new JoystickButton(this.xboxController, XBOX_BACK);
+            // this.intakeBalls       = new JoystickButton(this.xboxController, XBOX_B);
+            // this.lowerIntakeArms   = new JoystickButton(this.xboxController, XBOX_START);
+            // this.retractIntakeArms = new JoystickButton(this.xboxController, XBOX_BACK);
 
             // Intake-Hopper-Compressor
-            this.hopper = new JoystickButton(this.xboxController, XBOX_A);
+            // this.hopper = new JoystickButton(this.xboxController, XBOX_A);
 
             // Shooter
-            this.aimButton   = new JoystickButton(this.xboxController, XBOX_X);
-            this.shootButton = new JoystickButton(this.xboxController, XBOX_Y);
+            // this.aimButton   = new JoystickButton(this.xboxController, XBOX_X);
+            // this.shootButton = new JoystickButton(this.xboxController, XBOX_Y);
         } else {
             // Intake
-            this.intakeBalls       = new JoystickButton(this.leftStick, JOYSTICK_CENTER_BUTTON);
-            this.lowerIntakeArms   = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
-            this.retractIntakeArms = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
+            // this.intakeBalls       = new JoystickButton(this.leftStick, JOYSTICK_CENTER_BUTTON);
+            // this.lowerIntakeArms   = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
+            // this.retractIntakeArms = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
 
             // Intake-Hopper-Compressor
-            this.hopper = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
+            // this.hopper = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
 
             // Shooter
-            this.aimButton   = new JoystickButton(this.rightStick, JOYSTICK_CENTER_BUTTON);
-            this.shootButton = new JoystickButton(this.rightStick, JOYSTICK_TRIGGER);
+            // this.aimButton   = new JoystickButton(this.rightStick, JOYSTICK_CENTER_BUTTON);
+            // this.shootButton = new JoystickButton(this.rightStick, JOYSTICK_TRIGGER);
 
         }
         
-        this.lowerHoodButton = new JoystickButton(this.xboxController, XBOX_BUMPER_LEFT);
-        this.raiseHoodButton = new JoystickButton(this.xboxController, XBOX_BUMPER_RIGHT);
+        // this.lowerHoodButton = new JoystickButton(this.xboxController, XBOX_BUMPER_LEFT);
+        // this.raiseHoodButton = new JoystickButton(this.xboxController, XBOX_BUMPER_RIGHT);
 
         //////////////////////
         // COMMAND BINDINGS //
         //////////////////////
 
         // Climber
-        this.extendTelescope  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][0]);
-        this.retractTelescope = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][1]);
-        this.extendArm  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][0]);
-        this.retractArm = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][1]);
+        this.extendTelescope  = new JoystickButton(this.xboxController, XBOX_Y);
+        this.retractTelescope = new JoystickButton(this.xboxController, XBOX_A);
+        this.extendArm  = new JoystickButton(this.xboxController, XBOX_X);
+        this.retractArm = new JoystickButton(this.xboxController, XBOX_B);
 
     
         // Intake
@@ -97,7 +97,7 @@ public class OI {
 
         // Intake-Hopper-Compressor
         // this.startHopper.whenHeld(new StartHopperCommand());
-        this.hopper.whileHeld(new StartHopperCommand());
+        // this.hopper.whileHeld(new StartHopperCommand());
 
         // Climber
         this.extendTelescope.whenHeld(new RunTelescopeCommand(false));
@@ -106,10 +106,10 @@ public class OI {
         this.retractArm.whenHeld(new RunArmCommand(true));
 
         // Shooter
-        this.aimButton.whenPressed(new AimCommandGroup());
-        this.shootButton.whenPressed(new ShootSequence());
+        // this.aimButton.whenPressed(new AimCommandGroup());
+        // this.shootButton.whenPressed(new ShootSequence());
 
-        this.lowerHoodButton.whenHeld(new LowerHoodCommand());
-        this.raiseHoodButton.whenHeld(new RaiseHoodCommand());
+        // this.lowerHoodButton.whenHeld(new LowerHoodCommand());
+        // this.raiseHoodButton.whenHeld(new RaiseHoodCommand());
     }
 }

@@ -11,6 +11,11 @@ public class ShootCommand extends CommandBase {
     private static final double CLOSE_BOUND = 1, FAR_BOUND = 5;
 
     @Override
+    public void initialize() {
+        Robot.shooterSubsystem.resetDistanceSpun();
+    }
+
+    @Override
     public void execute() {
         Robot.shooterSubsystem.runFlywheel(getSpeed(Robot.shooterSubsystem.getDistance()));
         writeData();
@@ -28,9 +33,7 @@ public class ShootCommand extends CommandBase {
     }
 
     public double getSpeed(double distance) {
-
-        return CLOSE;
-        // return MIDDLE;
+        return MIDDLE;
         // if (distance < CLOSE_BOUND)
         //     return CLOSE;
         // if (distance < FAR_BOUND)
@@ -38,9 +41,14 @@ public class ShootCommand extends CommandBase {
         // return FAR;
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("WE LEAVE");
+    }
 
     @Override
     public boolean isFinished() {
-        return Robot.shooterSubsystem.getDistanceSpun() > (double) LIMIT;
+        return false;
+        // return Robot.shooterSubsystem.getDistanceSpun() > (double) LIMIT;
     }
 }

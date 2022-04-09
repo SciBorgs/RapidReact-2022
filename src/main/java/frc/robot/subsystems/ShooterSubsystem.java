@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -43,7 +44,13 @@ public class ShooterSubsystem extends SubsystemBase {
         hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
         lmotor = new CANSparkMax(PortMap.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless);
-        lmotor.follow(rmotor);
+        lmotor.follow(rmotor, true);
+
+        rmotor.setIdleMode(IdleMode.kCoast);
+        lmotor.setIdleMode(IdleMode.kCoast);
+
+        rmotor.burnFlash();
+        lmotor.burnFlash();
 
         flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
@@ -71,6 +78,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void runFlywheel(double speed) {
+        System.out.println("SETTING TO " + speed);
         rmotor.set(speed);
     }
 

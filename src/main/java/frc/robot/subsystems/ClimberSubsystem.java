@@ -18,7 +18,7 @@ public class ClimberSubsystem implements Subsystem {
     // private ShuffleboardTab tab;
     // private NetworkTableEntry rotations, armEntry, armsEntry;
     private static final double TELESCOPE_SPEED = 0.95;
-    private static final double ARM_SPEED = 0.2;
+    private static final double ARM_SPEED = 0.5;
 
     public ClimberSubsystem() {
         this.telescope = new CANSparkMax(PortMap.CLIMBER_TELESCOPE, MotorType.kBrushless);

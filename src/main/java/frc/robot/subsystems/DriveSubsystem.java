@@ -37,6 +37,16 @@ public class DriveSubsystem extends SubsystemBase {
         rMiddle.setIdleMode(IdleMode.kBrake);
         rBack.setIdleMode(IdleMode.kBrake);
 
+        lFront.setSmartCurrentLimit(20);
+        lMiddle.setSmartCurrentLimit(20);
+        lBack.setSmartCurrentLimit(20);
+
+        rFront.setSmartCurrentLimit(20);
+        rMiddle.setSmartCurrentLimit(20);
+        rBack.setSmartCurrentLimit(20);
+
+        
+
         this.speedLimit = 0.95;
         this.invertedControl = false;
     }

@@ -12,12 +12,12 @@ public class PortMap {
     public static final int LEFT_MIDDLE_SPARK = 22;
     public static final int LEFT_BACK_SPARK = 7;
     public static final int RIGHT_FRONT_SPARK = 14;
-    public static final int RIGHT_MIDDLE_SPARK = 10;
-    public static final int RIGHT_BACK_SPARK = 26;
+    public static final int RIGHT_MIDDLE_SPARK = 26;
+    public static final int RIGHT_BACK_SPARK = 10;
 
     public static final int HOOD_SPARK = 4;
     public static final int FLYWHEEL_LEFT_SPARK = 30;
-    public static final int FLYWHEEL_RIGHT_SPARK = 15;
+    public static final int FLYWHEEL_RIGHT_SPARK = 5;
     public static final int TURRET_SPARK = 11;
 
     // *******************SWITCHES******************//

@@ -16,7 +16,7 @@ public class IntakeBallsCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.intakeSubsystem.startSuck();
-        // Robot.hopperSubsystem.startSuck();
+        Robot.hopperSubsystem.startSuck();
     }
 
     @Override
