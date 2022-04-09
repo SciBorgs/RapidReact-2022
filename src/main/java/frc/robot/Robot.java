@@ -8,20 +8,25 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.autoProfile.Strategy;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.ShootSequence;
-import frc.robot.commands.shooter.AimHoodCommand;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.MonitorSubsystem;
+import frc.robot.subsystems.PhotonVisionSubsystem;
+import frc.robot.subsystems.PneumaticsSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.localization.LocalizationSubsystem;
 
 /**
@@ -49,6 +54,7 @@ public class Robot extends TimedRobot {
 
   private SendableChooser<Strategy> autoChooser = AutoProfile.getAutoChooser();
   private Field2d field2d = new Field2d();
+  private static Timer timer;
 
 
   /**
@@ -73,6 +79,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Field", field2d);
 
     // System.out.println(networkTableSubsystem);
+    timer = new Timer();
+    timer.start();
   }
 
   @Override
@@ -163,5 +171,9 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     // System.out.println("This is test periodic");
+  }
+
+  public static double getTime() {
+    return timer.get();
   }
 }

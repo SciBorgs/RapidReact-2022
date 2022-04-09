@@ -315,7 +315,7 @@ public class Util {
             }
         }
 
-        return (data[entry1][0] - data[entry2][0]) / (data[entry1][1] - data[entry2][1]) + data[entry1][0];
+        return (data[entry2][0] - data[entry1][0]) / (data[entry2][1] - data[entry1][1]) + data[entry1][0];
     }
 
     // Helper function. Grabs index of the closest entry based on inputted distance value
