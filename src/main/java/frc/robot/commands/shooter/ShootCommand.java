@@ -18,7 +18,7 @@ public class ShootCommand extends CommandBase {
             Robot.shooterSubsystem.getDistance(),
             speed,
             null,
-            Robot.getTime()
+            System.currentTimeMillis()
         );
     }
 

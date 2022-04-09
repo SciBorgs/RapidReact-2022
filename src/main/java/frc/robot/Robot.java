@@ -79,8 +79,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Field", field2d);
 
     // System.out.println(networkTableSubsystem);
-    timer = new Timer();
-    timer.start();
   }
 
   @Override
@@ -171,9 +169,5 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     // System.out.println("This is test periodic");
-  }
-
-  public static double getTime() {
-    return timer.get();
   }
 }
