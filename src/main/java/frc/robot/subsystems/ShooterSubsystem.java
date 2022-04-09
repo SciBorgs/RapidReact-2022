@@ -87,11 +87,12 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setHoodSpeed(double speed) {
-        if (speed > 0 && getHoodAngle() < UPPER_LIMIT) {
+        System.out.println("Curr ang: " + getHoodAngle() + " speed " + speed);
+        if (speed > 0 && getHoodAngle() > LOWER_LIMIT) {
             // No up
             System.out.println("Top boundary; cannot go up!");
             speed = 0;
-        } else if (speed < 0 || getHoodAngle() > LOWER_LIMIT) {
+        } else if (speed < 0 && getHoodAngle() < UPPER_LIMIT) {
             // No down
             System.out.println("Bottom boundary; cannot go down!");
             speed = 0;

@@ -17,7 +17,7 @@ public class ShootCommand extends CommandBase {
     }
 
     public void writeData() {
-        CSVWriter writer = new CSVWriter("src/main/java/frc/robot/controllers/placeHolder.csv");
+        CSVWriter writer = new CSVWriter("/home/lvuser/logging.csv");
         writer.addData(
             Robot.shooterSubsystem.translateFromEncoder(Robot.shooterSubsystem.getHoodAngle()),
             Robot.shooterSubsystem.getDistance(),
@@ -28,12 +28,14 @@ public class ShootCommand extends CommandBase {
     }
 
     public double getSpeed(double distance) {
+
+        return CLOSE;
         // return MIDDLE;
-        if (distance < CLOSE_BOUND)
-            return CLOSE;
-        if (distance < FAR_BOUND)
-            return MIDDLE;
-        return FAR;
+        // if (distance < CLOSE_BOUND)
+        //     return CLOSE;
+        // if (distance < FAR_BOUND)
+        //     return MIDDLE;
+        // return FAR;
     }
 
 

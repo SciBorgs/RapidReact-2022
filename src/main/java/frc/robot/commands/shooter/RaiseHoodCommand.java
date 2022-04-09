@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 public class RaiseHoodCommand extends CommandBase {
-    public static final double SPEED = 0.07;
+    public static final double SPEED = -0.07;
 
     @Override
     public void execute() {

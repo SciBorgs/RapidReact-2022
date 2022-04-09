@@ -91,9 +91,9 @@ public class OI {
 
     
         // Intake
-        this.intakeBalls.whenHeld(new IntakeBallsCommand());
-        this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
-        this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
+        // this.intakeBalls.whenHeld(new IntakeBallsCommand());
+        // this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
+        // this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
 
         // Intake-Hopper-Compressor
         // this.startHopper.whenHeld(new StartHopperCommand());
