@@ -33,6 +33,9 @@ public class ShooterSubsystem extends SubsystemBase {
     public final double HEIGHT_DIFF = 2.08534;
     public final double CAM_MOUNT_ANGLE = 30;
 
+    // hood angle, adjusted by raise and lower hood commands
+    public double HOOD_ANGLE = 15;
+
     public ShooterSubsystem() {
         shooterPID = new PID(6.0/360.0, 0, 0);
         shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
@@ -84,6 +87,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setHoodSpeed(double speed) {
+        if (getHoodAngle() < UPPER_LIMIT || getHoodAngle() > LOWER_LIMIT) {
+            speed = 0;
+            System.out.println("BOUNDARY");
+        }
         hood.set(speed);
     }
 
