@@ -8,6 +8,7 @@ import frc.robot.util.CSVUtils.CSVWriter;
 public class ShootCommand extends CommandBase {
     private static final double LIMIT = 100*Constants.WHEEL_CIRCUMFERENCE; // number of rotations before the command ends
     private static final double CLOSE = 0.3, MIDDLE = 0.5, FAR = 0.7;
+    private static final double CLOSE_BOUND = 1, FAR_BOUND = 5;
 
     @Override
     public void execute() {
@@ -27,8 +28,12 @@ public class ShootCommand extends CommandBase {
     }
 
     public double getSpeed(double distance) {
-        return MIDDLE;
-        // if (distance > )
+        // return MIDDLE;
+        if (distance < CLOSE_BOUND)
+            return CLOSE;
+        if (distance < FAR_BOUND)
+            return MIDDLE;
+        return FAR;
     }
 
 
