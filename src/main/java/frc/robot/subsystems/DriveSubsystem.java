@@ -47,7 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         
 
-        this.speedLimit = 0.95;
+        this.speedLimit = 1;
         this.invertedControl = false;
     }
 
