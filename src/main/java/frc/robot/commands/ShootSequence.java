@@ -8,8 +8,8 @@ public class ShootSequence extends SequentialCommandGroup {
     public ShootSequence() {
         addCommands(
             // new AimCommandGroup(),
-            new ShootCommandGroup(),
-            new ResetTurretCommand()
+            new ShootCommandGroup()
+            // new ResetTurretCommand()
         );
         // log shots so we can get default angle
         // System.out.println(Robot.shooterSubsystem.getHoodAngle());
