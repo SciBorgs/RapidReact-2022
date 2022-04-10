@@ -9,8 +9,9 @@ import frc.robot.commands.AutoDriveCommand;
 public class AutoCommandGroup extends SequentialCommandGroup {
     public AutoCommandGroup() {
         addCommands(
-            new ShootSequence(),
-            new AutoDriveCommand(-0.21).withTimeout(2)
+            new ShootSequence(), // ** IF SHOOTER IS NOT USED DURING AUTO COMMENT OUT THIS LINE JUST IN CASE
+            new AutoDriveCommand(0.21).withTimeout(2) 
+            // IMPORTANT: REMEMBER TO ADJUST AUTODRIVECOMMAND VALUE BASED ON WHAT WAY YOU ARE FACING 
         );
     }
 }
