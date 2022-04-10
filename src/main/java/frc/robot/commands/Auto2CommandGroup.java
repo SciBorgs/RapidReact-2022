@@ -12,7 +12,7 @@ import frc.robot.commands.AutoDriveCommand;
 public class Auto2CommandGroup extends SequentialCommandGroup {
     public Auto2CommandGroup() {
         addCommands(
-            new DriveUntilIntakeCommand(0.7),
+            new DriveUntilIntakeCommand(0.2),
             new SpinCommand(Math.PI),
             new ShootCommandGroup()
             // IMPORTANT: REMEMBER TO ADJUST AUTODRIVECOMMAND VALUE BASED ON WHAT WAY YOU ARE FACING 
