@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.autoProfile.Strategy;
+import frc.robot.commands.AutoCommandGroup;
 import frc.robot.commands.AutoDriveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -121,7 +122,7 @@ public class Robot extends TimedRobot {
     // AutoProfile.setStrategy(Strategy.TAXI);
     // CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
 
-    CommandScheduler.getInstance().schedule(new AutoDriveCommand(0.21).withTimeout(2));
+    CommandScheduler.getInstance().schedule(new AutoCommandGroup());
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
     //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");
