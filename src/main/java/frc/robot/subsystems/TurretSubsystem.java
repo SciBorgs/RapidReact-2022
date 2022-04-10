@@ -30,7 +30,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     public TurretSubsystem() {
         this.encoder = new SciAbsoluteEncoder(PortMap.TURRET_ENCODER, Constants.TURRET_GEAR_RATIO);
-        this.encoder.reset();
+        // this.encoder.reset();
         this.pid = new PID(TX_P, 0, 0);
         this.pidShuffleboard = new ShufflePID("Turret", pid, "Main");
         this.txAverager = new Averager(TX_WEIGHT);
@@ -44,12 +44,13 @@ public class TurretSubsystem extends SubsystemBase {
         txAvr = txAverager.getAverage(-angle);
         double targetAngle = encoder.getAngle() + txAvr;
         double turn = pid.getOutput(targetAngle, encoder.getAngle());
-        
-        if (Math.abs(targetAngle) > LIMIT)
+        turn = Util.normalize(turn, SPEED_LIMIT);
+
+        if (Math.abs(targetAngle) > LIMIT) {
             turn = 0;
+        }
         System.out.println("targAng " + targetAngle);
 
-        turn = Util.normalize(turn, SPEED_LIMIT);
         motor.set(turn);
     }
 

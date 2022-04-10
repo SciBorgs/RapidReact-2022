@@ -7,8 +7,7 @@ import frc.robot.util.CSVUtils.CSVWriter;
 
 public class ShootCommand extends CommandBase {
     private static final double LIMIT = 100*Constants.WHEEL_CIRCUMFERENCE; // number of rotations before the command ends
-    private static final double CLOSE = 0.3, MIDDLE = 0.5, FAR = 0.7;
-    private static final double CLOSE_BOUND = 1, FAR_BOUND = 5;
+    private static final double POWER = 0.5;
 
     @Override
     public void initialize() {
@@ -17,7 +16,7 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.shooterSubsystem.runFlywheel(getSpeed(Robot.shooterSubsystem.getDistance()));
+        Robot.shooterSubsystem.runFlywheel(POWER);
         writeData();
     }
 
@@ -26,29 +25,20 @@ public class ShootCommand extends CommandBase {
         writer.addData(
             Robot.shooterSubsystem.translateFromEncoder(Robot.shooterSubsystem.getHoodAngle()),
             Robot.shooterSubsystem.getDistance(),
-            getSpeed(Robot.shooterSubsystem.getDistance()),
+            POWER,
             "",
             System.currentTimeMillis()
         );
     }
 
-    public double getSpeed(double distance) {
-        return MIDDLE;
-        // if (distance < CLOSE_BOUND)
-        //     return CLOSE;
-        // if (distance < FAR_BOUND)
-        //     return MIDDLE;
-        // return FAR;
-    }
-
     @Override
     public void end(boolean interrupted) {
+        Robot.shooterSubsystem.stopFlywheel();
         System.out.println("WE LEAVE");
     }
 
     @Override
     public boolean isFinished() {
-        return false;
-        // return Robot.shooterSubsystem.getDistanceSpun() > (double) LIMIT;
+        return Robot.shooterSubsystem.getDistanceSpun() > (double) LIMIT;
     }
 }
