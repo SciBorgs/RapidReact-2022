@@ -10,7 +10,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
     public AutoCommandGroup() {
         addCommands(
             new ShootSequence(),
-            new AutoDriveCommand(0.21).withTimeout(2)
+            new AutoDriveCommand(-0.21).withTimeout(2)
         );
     }
 }
