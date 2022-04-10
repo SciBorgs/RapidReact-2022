@@ -6,13 +6,10 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import frc.robot.commands.hopper.StartElevatorCommand;
 import frc.robot.commands.shooter.ShootCommand;
 
-public class ShootCommandGroup extends ParallelCommandGroup  {
+public class ShootCommandGroup extends ParallelDeadlineGroup  {
 
     public ShootCommandGroup() {
-        addCommands(
-            new ShootCommand(),
-            new StartElevatorCommand()
-        );
+        super(new ShootCommand(), new StartElevatorCommand());
     }
     
 }

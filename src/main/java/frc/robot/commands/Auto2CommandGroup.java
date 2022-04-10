@@ -14,7 +14,7 @@ public class Auto2CommandGroup extends SequentialCommandGroup {
         addCommands(
             new DriveUntilIntakeCommand(0.7),
             new SpinCommand(Math.PI),
-            new ShootCommand()
+            new ShootCommandGroup()
             // IMPORTANT: REMEMBER TO ADJUST AUTODRIVECOMMAND VALUE BASED ON WHAT WAY YOU ARE FACING 
         );
     }
