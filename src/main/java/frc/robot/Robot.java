@@ -9,28 +9,15 @@ import com.revrobotics.REVPhysicsSim;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.autoProfile.AutoProfile;
-import frc.robot.autoProfile.Strategy;
-import frc.robot.commands.AutoCommandGroup;
-import frc.robot.commands.AutoDriveCommand;
-import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimeLightSubsystem;
-import frc.robot.subsystems.MonitorSubsystem;
-import frc.robot.subsystems.NetworkTableSubsystem;
-import frc.robot.subsystems.PhotonVisionSubsystem;
-import frc.robot.subsystems.PneumaticsSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.localization.LocalizationSubsystem;
+import frc.robot.autoProfile.*;
+import frc.robot.commands.auto.*;
+import frc.robot.commands.drive.*;
+import frc.robot.subsystems.*;
+import frc.robot.subsystems.localization.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -41,9 +28,7 @@ import frc.robot.subsystems.localization.LocalizationSubsystem;
 public class Robot extends TimedRobot {
   public static OI                    oi                    = new OI(true);
 
-
   public static DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
   public static PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public static TurretSubsystem       turretSubsystem       = new TurretSubsystem();
@@ -66,17 +51,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // localization
-    // networkTableSubsystem.bind("localization", "pose", localizationSubsystem::get, new double[] {0, 0, 0});
-    // networkTableSubsystem.bind("localization", "particles", localizationSubsystem.particleFilter::getFlat, new double[] {});
-    // networkTableSubsystem.bind("localization", "meanParticle", localizationSubsystem.particleFilter::getMeanParticle, new double[] {8, 4});
-
-    // teleop sim
-    // networkTableSubsystem.bind("drive", "joyLeft", oi.leftStick::getY, 0.0);
-    // networkTableSubsystem.bind("drive", "joyRight", oi.rightStick::getY, 0.0);
-    // networkTableSubsystem.bind("drive", "driveSpeed", localizationSubsystem::getVel, 0.0);
-    // networkTableSubsystem.bind("drive", "driveLimit", driveSubsystem::setSpeedLimit, 1.0);
-
     // shuffleboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putData("Field", field2d);
@@ -121,6 +95,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // AutoProfile.setStrategy(Strategy.TAXI);
     // CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
+    CommandScheduler.getInstance().schedule(new SpinCommand(Math.PI));
 
     CommandScheduler.getInstance().schedule(new AutoCommandGroup());
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);

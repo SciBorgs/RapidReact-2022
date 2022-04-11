@@ -1,13 +1,13 @@
 package frc.robot.controllers;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.NetworkTableSubsystem;
+// import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
 
 import static frc.robot.util.Util.*;
 
-public class AlongAxisController implements MovementController<Double, AlongAxisController.State> {
+public class AlongAxisController /*implements MovementController<Double, AlongAxisController.State>*/ {
     protected static enum State { NONE, MOVING_NEG, MOVING_POS, FINISHED }
     private State state;
     private final PID headPID, distPID;
@@ -122,10 +122,10 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
 
     // MovementController methods
 
-    public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
-        ntsubsystem.createPIDBindings(tab + " dist pid", "dist", this.distPID, true, true);
-        ntsubsystem.createPIDBindings(tab + " head pid", "head", this.headPID, true, true);
-    }
+    // public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
+    //     ntsubsystem.createPIDBindings(tab + " dist pid", "dist", this.distPID, true, true);
+    //     ntsubsystem.createPIDBindings(tab + " head pid", "head", this.headPID, true, true);
+    // }
 
     public void resetPIDs() {
         this.headPID.reset();

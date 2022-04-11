@@ -3,7 +3,6 @@ package frc.robot.controllers;
 import java.util.List;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
@@ -17,7 +16,7 @@ import frc.robot.util.Util;
  * this paper (which has a lot more than pure pursuit) for some reason)
  * https://www.ri.cmu.edu/pub_files/pub1/kelly_alonzo_1994_4/kelly_alonzo_1994_4.pdf
  */
-public class PurePursuitController implements MovementController<Point, PurePursuitController.State> {
+public class PurePursuitController /*implements MovementController<Point, PurePursuitController.State>*/ {
     protected static enum State { MOVING, FINISHED };
     private State state;
     private PID turnPID;
@@ -132,15 +131,15 @@ public class PurePursuitController implements MovementController<Point, PurePurs
 
     public void setTrackingSpeed(double speed) { this.trackingSpeed = speed; }
 
-    public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
-        ntsubsystem.createPIDBindings(tab + " pid", "pid", turnPID, true, true);
-        ntsubsystem.bind(tab, "progress %", () -> 100. * this.index / this.n, 0.0);
-        ntsubsystem.bind(tab, "lookahead pt", () -> this.next.toArray(), new double[] {0.0, 0.0});
-        ntsubsystem.bind(tab, "tracking speed", this::setTrackingSpeed, this.trackingSpeed);
-        ntsubsystem.bind(tab, "tracking index", () -> this.index, 0);
-        ntsubsystem.bind(tab, "num points", () -> this.n, 0);
-        ntsubsystem.bind(tab, "desired heading", () -> this.prevDesiredHeading, 0.0);
-    }
+    // public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
+    //     ntsubsystem.createPIDBindings(tab + " pid", "pid", turnPID, true, true);
+    //     ntsubsystem.bind(tab, "progress %", () -> 100. * this.index / this.n, 0.0);
+    //     ntsubsystem.bind(tab, "lookahead pt", () -> this.next.toArray(), new double[] {0.0, 0.0});
+    //     ntsubsystem.bind(tab, "tracking speed", this::setTrackingSpeed, this.trackingSpeed);
+    //     ntsubsystem.bind(tab, "tracking index", () -> this.index, 0);
+    //     ntsubsystem.bind(tab, "num points", () -> this.n, 0);
+    //     ntsubsystem.bind(tab, "desired heading", () -> this.prevDesiredHeading, 0.0);
+    // }
 
     public void resetPIDs() {
         this.turnPID.reset();

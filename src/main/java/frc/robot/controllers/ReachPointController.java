@@ -1,7 +1,6 @@
 package frc.robot.controllers;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.util.PID;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
@@ -9,7 +8,7 @@ import frc.robot.util.Util;
 /**
  * Controller for moving towards a point.
  */
-public class ReachPointController implements MovementController<Point, ReachPointController.State> {
+public class ReachPointController /*implements MovementController<Point, ReachPointController.State>*/ {
     protected static enum State { NONE, MOVING, FINISHED };
     private State state;
     private PID headingPID, distancePID;
@@ -78,10 +77,10 @@ public class ReachPointController implements MovementController<Point, ReachPoin
 
     // MovementController methods
 
-    public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
-        ntsubsystem.createPIDBindings(tab + " dist pid", "pid", this.distancePID, true, true);
-        ntsubsystem.createPIDBindings(tab + " head pid", "pid", this.headingPID, true, true);
-    }
+    // public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
+    //     ntsubsystem.createPIDBindings(tab + " dist pid", "pid", this.distancePID, true, true);
+    //     ntsubsystem.createPIDBindings(tab + " head pid", "pid", this.headingPID, true, true);
+    // }
 
     public void resetPIDs() {
         this.headingPID.reset();
