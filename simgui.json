@@ -21,12 +21,17 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/DriveSubsystem": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/LimeLightSubsystem": "Subsystem",
       "/LiveWindow/LocalizationSubsystem": "Subsystem",
+      "/LiveWindow/PhotonVisionSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
       "/LiveWindow/TurretSubsystem": "Subsystem",
       "/LiveWindow/Ungrouped/DigitalInput[2]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[4]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[6]": "Digital Input",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/field": "Field2d"
@@ -95,7 +100,7 @@
     "Plot <0>": {
       "plots": [
         {
-          "height": -6,
+          "height": 127,
           "series": [
             {
               "color": [
@@ -143,7 +148,7 @@
     "Plot <1>": {
       "plots": [
         {
-          "height": -6,
+          "height": 172,
           "series": [
             {
               "color": [
