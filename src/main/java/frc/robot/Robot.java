@@ -44,7 +44,6 @@ public class Robot extends TimedRobot {
   private SendableChooser<Strategy> autoChooser = AutoProfile.getAutoChooser();
   private Field2d field2d = new Field2d();
 
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -54,8 +53,6 @@ public class Robot extends TimedRobot {
     // shuffleboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putData("Field", field2d);
-
-    // System.out.println(networkTableSubsystem);
   }
 
   @Override
@@ -67,11 +64,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     
     localizationSubsystem.update();
-    // networkTableSubsystem.update();
     shooterSubsystem.update();
-
     turretSubsystem.updateShuffleboard();
-    // System.out.println(!this.intakeSubsystem.getLimitSwitchState());
 
     field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
   }
