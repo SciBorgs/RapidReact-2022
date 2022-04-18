@@ -18,6 +18,9 @@ public final class Constants {
 
     //*********************** OTHER ***********************//
     public static final double SECONDS_PER_TICK = 0.02;
+    public static final double CURRENT_THRESHOLD = 0;
+    public static final double DUTY_CYCLE_THRESHOLD = 0;
+    public static final double VELOCITY_THRESHOLD = 0;
     
     //**************** ROBOT DIMENSIONS *******************//
     public static final double ROBOT_WIDTH = 0.5588; 

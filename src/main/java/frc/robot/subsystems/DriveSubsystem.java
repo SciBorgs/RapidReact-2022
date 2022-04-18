@@ -1,112 +1,190 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciSpark;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.util.Util;
+import frc.robot.sciSensorsActuators.SciEncoder;
+import frc.robot.sciSensorsActuators.SciPigeon;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.autoProfile.AutoProfile;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class DriveSubsystem extends SubsystemBase {
-    public SciSpark lFront, lMiddle, lBack, rFront, rMiddle, rBack;
-    private boolean invertedControl;
-    private double speedLimit;
+    private SciEncoder lEncoder, rEncoder;
+    public SciPigeon pigeon;
+    
+    private final SciSpark[] leftSparks = {
+        new SciSpark(PortMap.LEFT_FRONT_SPARK),
+        new SciSpark(PortMap.LEFT_MIDDLE_SPARK),
+        new SciSpark(PortMap.LEFT_BACK_SPARK)
+    };
+
+    private final SciSpark[] rightSparks = {
+        new SciSpark(PortMap.RIGHT_FRONT_SPARK),
+        new SciSpark(PortMap.RIGHT_MIDDLE_SPARK),
+        new SciSpark(PortMap.RIGHT_BACK_SPARK)
+    };
+    
+    private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
+    private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
+    private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
+    
+    private final DifferentialDrive drive = new DifferentialDrive(
+        leftGroup,
+        rightGroup
+    );
+
+    private DifferentialDriveOdometry odometry;
+    // private DifferentialDriveKinematics kinematics;
+    private SimpleMotorFeedforward feedForward;
+    
+    private PIDController leftPIDController = new PIDController(1, 0, 0);
+    private PIDController rightPIDController = new PIDController(1, 0, 0);
+
+    public enum DriveMode {
+        TANK,
+        ARCADE, CURVATURE
+    }
 
     public DriveSubsystem() {
-        this.lFront  = new SciSpark(PortMap.LEFT_FRONT_SPARK);
-        this.lMiddle = new SciSpark(PortMap.LEFT_MIDDLE_SPARK);
-        this.lBack   = new SciSpark(PortMap.LEFT_BACK_SPARK);
 
-        this.rFront  = new SciSpark(PortMap.RIGHT_FRONT_SPARK);
-        this.rMiddle = new SciSpark(PortMap.RIGHT_MIDDLE_SPARK);
-        this.rBack   = new SciSpark(PortMap.RIGHT_BACK_SPARK);
-
-        lMiddle.follow(lFront);
-        lBack.follow(lFront);
-
-        rMiddle.follow(rFront);
-        rBack.follow(rFront);
-
-        lFront.setIdleMode(IdleMode.kBrake);
-        lMiddle.setIdleMode(IdleMode.kBrake);
-        lBack.setIdleMode(IdleMode.kBrake);
-
-        rFront.setIdleMode(IdleMode.kBrake);
-        rMiddle.setIdleMode(IdleMode.kBrake);
-        rBack.setIdleMode(IdleMode.kBrake);
-
-        lFront.setSmartCurrentLimit(20);
-        lMiddle.setSmartCurrentLimit(20);
-        lBack.setSmartCurrentLimit(20);
-
-        rFront.setSmartCurrentLimit(20);
-        rMiddle.setSmartCurrentLimit(20);
-        rBack.setSmartCurrentLimit(20);
-
+        lEncoder = new SciEncoder(1, 1, leftSparks);
+        rEncoder = new SciEncoder(1, 1, rightSparks);
         
-
-        this.speedLimit = 0.95;
-        this.invertedControl = false;
-    }
-
-    public double getSpeedLimit() { return this.speedLimit; }
-    public boolean getInvertedControl() { return this.invertedControl; }
-
-    public void setSpeedLimit(double speedLimit) { this.speedLimit = speedLimit; }
-    public void setInvertedControl(boolean inverted) { this.invertedControl = inverted; }
-
-    private void setSpeedRaw(double left, double right) {
-        System.out.println("speeds: " + left + " " + right);
-        lFront.set(left);
-        rFront.set(right);
-    }
-
-    public void setSpeed(double left, double right) {
-        if (invertedControl) {
-            left *= -1.0;
-            right *= -1.0;
+        for (SciSpark motor : allSparks) {
+            motor.setIdleMode(IdleMode.kBrake);
+            motor.setSmartCurrentLimit(20);
         }
-        setSpeedRaw(Util.normalize(left, this.speedLimit), -Util.normalize(right, this.speedLimit));
+
+        leftGroup.setInverted(true);
+        drive.setDeadband(0.05);
+        
+        odometry = new DifferentialDriveOdometry(getRotation(), AutoProfile.STARTING_POSE);
+        // kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
+        feedForward = new SimpleMotorFeedforward(1, 3);
+    }
+    
+    public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
+        double leftFeedForward = feedForward.calculate(speeds.leftMetersPerSecond);
+        double rightFeedForward = feedForward.calculate(speeds.rightMetersPerSecond);
+
+        double leftOutput = leftPIDController.calculate(lEncoder.getSpeed(), speeds.leftMetersPerSecond);
+        double rightOutput = rightPIDController.calculate(rEncoder.getSpeed(), speeds.rightMetersPerSecond);
+    
+        leftGroup.setVoltage(leftOutput + leftFeedForward);
+        rightGroup.setVoltage(rightOutput + rightFeedForward);  
     }
 
-    public void setSpeedForwardAngle(double forward, double angle) {
-        // System.out.println(forward * (1 + angle));
-        setSpeed(forward * (1 + angle), forward * (1 - angle)); // thank you zev
+    public void driveRobot(DriveMode mode, double left, double right) {
+        // Controller interface
+        switch (mode) {
+            case TANK:
+                drive.tankDrive(left, right, true);
+                break;
+            case ARCADE:
+                drive.arcadeDrive(left, right);
+                break;
+            case CURVATURE:
+                drive.curvatureDrive(left, right, true);
+                break;
+        }
+    }
+    
+    public void driveRobot(DriveMode mode, Joystick leftJoystick, Joystick rightJoystick) {
+        driveRobot(mode, leftJoystick.getY(), rightJoystick.getY());
     }
 
-    public void spinRobot(double speed) {
-        setSpeed(-speed, speed);
+    public void driveRobot(DriveMode mode, XboxController xboxController) {
+        driveRobot(mode, xboxController.getLeftY() , xboxController.getRightY());
     }
 
-    public void driveRobot(double leftJoystick, double rightJoystick, double speedLimit) {
-        double leftValue = leftJoystick;
-        double rightValue = -rightJoystick;
-
-        double thresholdToMove = 0.05;
-
-        lFront.set(Math.abs(leftValue) > thresholdToMove ? leftValue : 0);
-        rFront.set(Math.abs(rightValue) > thresholdToMove ? rightValue : 0);
+    public void failureWatchdog() {
+        for (int i = 0; i < leftSparks.length; i++) {
+            if (leftSparks[i].updateFailState()) {
+                rightSparks[i].forceFailState(true);
+            }
+        }
+        for (int i = 0; i < rightSparks.length; i++) {
+            if (rightSparks[i].updateFailState()) {
+                leftSparks[i].forceFailState(true);
+            }
+        }
     }
 
-    public void driveRobot(Joystick leftJoystick, Joystick rightJoystick, double speedLimit) {
-        double leftValue = leftJoystick.getY();
-        double rightValue = -rightJoystick.getY();
-
-        double thresholdToMove = 0.05;
-
-        lFront.set(Math.abs(leftValue) > thresholdToMove ? leftValue : 0);
-        rFront.set(Math.abs(rightValue) > thresholdToMove ? rightValue : 0);
+    public Rotation2d getRotation() {
+        return new Rotation2d(pigeon.getAngle());
     }
 
-    public void driveRobot(XboxController xboxController, double speedLimit) {
-        double leftValue  = xboxController.getLeftY();
-        double rightValue = xboxController.getRightY();
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(getLeftAverageVelocity(), getRightAverageVelocity());
+    }
+    
+    public void updateOdometry() {
+        odometry.update(getRotation(), lEncoder.getDistance(), rEncoder.getDistance());
+    }
 
-        double thresholdToMove = 0.05;
+    public static <T> double getAverageOfArray(T[] array, java.util.function.ToDoubleFunction<? super T> arg0) {
+        return Arrays.stream(array).mapToDouble(arg0).average().orElse(Double.NaN);
+    }
 
-        lFront.set(Math.abs(leftValue) > thresholdToMove ? leftValue : 0);
-        rFront.set(Math.abs(rightValue) > thresholdToMove ? rightValue : 0);
+    public double getLeftCurrentAmps() {
+        return getAverageOfArray(leftSparks, CANSparkMax::getOutputCurrent);
+    }
+
+    public double getRightCurrentAmps() {
+        return getAverageOfArray(rightSparks, CANSparkMax::getOutputCurrent);
+    }
+
+    public double getLeftAverageVelocity() {
+        return getAverageOfArray(leftSparks, CANSparkMax::get);
+    }
+
+    public double getRightAverageVelocity() {
+        return getAverageOfArray(rightSparks, CANSparkMax::get);
+    }
+
+    public boolean isLeftStalling() {
+        boolean current = getLeftCurrentAmps() > Constants.CURRENT_THRESHOLD;
+        boolean output = Math.abs(getLeftAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
+        boolean velocity = Math.abs(lEncoder.getSpeed()) < Constants.VELOCITY_THRESHOLD;
+        return (current || output) && velocity;
+    }
+
+    public boolean isRightStalling() {
+        boolean current = getRightCurrentAmps() > Constants.CURRENT_THRESHOLD;
+        boolean output = Math.abs(getRightAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
+        boolean velocity = Math.abs(rEncoder.getSpeed()) < Constants.VELOCITY_THRESHOLD;
+        return (current || output) && velocity;
+    }
+
+    public boolean isStalling() {
+        return isLeftStalling() || isRightStalling();
+    }
+
+    @Override
+    public void periodic() {
+        updateOdometry();
     }
 }
+

@@ -12,6 +12,17 @@ public class SciEncoder {
     private static final double ROYS_CONSTANT = 365.831868022;
     private double factor;
 
+    public SciEncoder(double gearRatio, double wheelCircumference, SciSpark... sparks) {
+        this.factor = gearRatio * wheelCircumference / ROYS_CONSTANT;
+
+        this.encoders = new RelativeEncoder[sparks.length];
+        for (int i = 0; i < sparks.length; i++) {
+            encoders[i] = sparks[i].getEncoder();
+            encoders[i].setPosition(0);
+        }
+        this.inverted = new boolean[this.encoders.length];
+    }
+
     // allows us to pass in several encoders to be averaged (i.e. w/ drivetrain encoders)
     public SciEncoder(double gearRatio, double wheelCircumference, RelativeEncoder... encoders) {
         this.factor = gearRatio * wheelCircumference / ROYS_CONSTANT;
@@ -42,7 +53,6 @@ public class SciEncoder {
         }
         return val / this.encoders.length;
     }
-
     public double getDistance() {
         return this.getRawDistance() * this.factor;
     }

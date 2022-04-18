@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -35,8 +37,9 @@ public class AutoProfile {
     public static final List<Point> PATH_TEST = Util.generateSinePath(4.0, 0.45, 1.35, 0.05).stream().map(p -> Util.add(p, Constants.POINT_HUB)).collect(Collectors.toList());
     public static final Point POINT_TEST = new Point(0, 0);
 
-    public static final Point  STARTING_POINT = Constants.POINT_HUB;
-    public static final double STARTING_HEADING = 0;
+    // public static final Point  STARTING_POINT = Constants.POINT_HUB;
+    // public static final double STARTING_HEADING = 0;
+    public static final Pose2d STARTING_POSE = new Pose2d(0, 0, new Rotation2d(0));
 
     public static final double TAXI_DISTANCE = 2.0;
 

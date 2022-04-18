@@ -8,6 +8,7 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -25,12 +26,13 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
-import frc.robot.subsystems.NetworkTableSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.localization.LocalizationSubsystem;
+import frc.robot.subsystems.RumbleSubsystem;
+
+// import frc.robot.subsystems.localization.LocalizationSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -41,9 +43,7 @@ import frc.robot.subsystems.localization.LocalizationSubsystem;
 public class Robot extends TimedRobot {
   public static OI                    oi                    = new OI(true);
 
-
   public static DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  public static NetworkTableSubsystem networkTableSubsystem = new NetworkTableSubsystem();
   public static LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
   public static PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public static TurretSubsystem       turretSubsystem       = new TurretSubsystem();
@@ -53,8 +53,9 @@ public class Robot extends TimedRobot {
   public static PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
   public static ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
   public static MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
+  public static RumbleSubsystem       RumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
 
-  public static LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem();
+  // public static LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem();
 
   private SendableChooser<Strategy> autoChooser = AutoProfile.getAutoChooser();
   private Field2d field2d = new Field2d();
@@ -100,6 +101,9 @@ public class Robot extends TimedRobot {
     // System.out.println(!this.intakeSubsystem.getLimitSwitchState());
 
     field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
+
+    if (Math.abs(driveSubsystem.pigeon.getRoll()) > 0.2)
+      DriverStation.reportError("You done fucked up.", false);
   }
 
   @Override

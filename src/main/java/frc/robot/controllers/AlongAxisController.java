@@ -122,10 +122,7 @@ public class AlongAxisController implements MovementController<Double, AlongAxis
 
     // MovementController methods
 
-    public void setBindings(NetworkTableSubsystem ntsubsystem, String tab, String name) {
-        ntsubsystem.createPIDBindings(tab + " dist pid", "dist", this.distPID, true, true);
-        ntsubsystem.createPIDBindings(tab + " head pid", "head", this.headPID, true, true);
-    }
+    
 
     public void resetPIDs() {
         this.headPID.reset();

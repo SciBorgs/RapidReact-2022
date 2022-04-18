@@ -19,8 +19,6 @@ import frc.robot.util.Util;
 public class ShooterSubsystem extends SubsystemBase {
     private PID shooterPID;
     private ShufflePID shooterShufflePID;
-
-    private NetworkTableEntry distance, hoodAngle, changeHoodAngle;
     
     private CANSparkMax hood, lmotor, rmotor;
     private SciEncoder flywheelEncoder;

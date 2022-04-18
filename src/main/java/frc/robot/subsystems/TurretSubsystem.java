@@ -14,7 +14,7 @@ import frc.robot.util.ShufflePID;
 import frc.robot.util.Util;
 
 public class TurretSubsystem extends SubsystemBase {
-    public CANSparkMax motor;
+    private CANSparkMax motor;
     private SciAbsoluteEncoder encoder;
 
     private double SPEED_LIMIT = 0.5;
@@ -24,6 +24,7 @@ public class TurretSubsystem extends SubsystemBase {
     private PID pid;
     private ShufflePID pidShuffleboard;
 
+    // TODO replace with filter
     private Averager txAverager;
     private double txAvr;
     private static final double TX_WEIGHT = 0.1;

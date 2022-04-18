@@ -5,6 +5,6 @@ import frc.robot.Robot;
 
 public class DriveCommand extends InstantCommand {
     public void execute() {
-        Robot.driveSubsystem.driveRobot(Robot.oi.leftStick, Robot.oi.rightStick, 1);
+        Robot.driveSubsystem.driveRobot(Robot.oi.leftStick, Robot.oi.rightStick);
     }
 }

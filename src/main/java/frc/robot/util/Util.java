@@ -2,9 +2,11 @@ package frc.robot.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class Util {
     public static double normalize(double v) {
@@ -360,5 +362,118 @@ public class Util {
             return val2;
         else
             return val1;
+    }
+
+    // Important
+    public static <T> Iterator<T> arrayIterator(T[] arr) {
+        return new Iterator<T>() {
+            private int index = 0;
+            @Override
+            public boolean hasNext() {
+                return index < arr.length;
+            }
+            @Override
+            public T next() {
+                T val = arr[index];
+                index++;
+                return val;
+            }
+        };
+    }
+
+    @SafeVarargs
+    public static <T> Iterable<T> concat(T[]... arrs) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+                    private int arrI = 0, index = 0;
+					@Override
+					public boolean hasNext() {
+						return arrI < arrs.length;
+					}
+					@Override
+					public T next() {
+						T[] arr = arrs[arrI];
+                        T val = arr[index];
+                        index++;
+                        if (index == arr.length) {
+                            index = 0;
+                            arrI++;
+                        }
+                        return val;
+					}
+                };
+			}
+        };
+    }
+
+    @SafeVarargs
+    public static <T> Iterable<T> concat(Iterable<T>... iterables) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+                    private int iterI = 0;
+                    private Iterator<T> currIter = iterables[0].iterator();
+					@Override
+					public boolean hasNext() {
+						return iterI < iterables.length;
+					}
+					@Override
+					public T next() {
+                        T val = currIter.next();
+                        if (!currIter.hasNext()) {
+                            iterI++;
+                            if (iterI < iterables.length) {
+                                currIter = iterables[iterI].iterator();
+                            }
+                        }
+                        return val;
+					}
+                };
+			}
+        };
+    }
+
+    @SafeVarargs
+    public static <T> Iterable<T> concat(Object... objs) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+                    private int iterI = 0;
+                    private Iterator<T> currIter = getIterator(objs[0]);
+					@Override
+					public boolean hasNext() {
+						return iterI < objs.length;
+					}
+					@Override
+					public T next() {
+                        T val = currIter.next();
+                        if (!currIter.hasNext()) {
+                            iterI++;
+                            if (iterI < objs.length) {
+                                currIter = getIterator(objs[iterI]);
+                            }
+                        }
+                        return val;
+					}
+                    @SuppressWarnings("unchecked")
+                    private Iterator<T> getIterator(Object obj) {
+                        if (obj instanceof Iterator<?>) {
+                            return (Iterator<T>) obj;
+                        } else if (obj instanceof Iterable<?>) {
+                            return ((Iterable<T>) obj).iterator();
+                        } else if (obj instanceof Stream<?>) {
+                            return ((Stream<T>) obj).iterator();
+                        } else {
+                            T[] arr = (T[]) obj;
+                            return arrayIterator(arr);
+                        }
+                    }
+                };
+			}
+        };
     }
 }
