@@ -10,16 +10,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.autoProfile.Strategy;
-import frc.robot.commands.AutoCommandGroup;
-import frc.robot.commands.AutoDriveCommand;
-import frc.robot.commands.DriveCommand;
+import frc.robot.commands.drive.DriveCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -31,8 +28,6 @@ import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
-
-// import frc.robot.subsystems.localization.LocalizationSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -60,29 +55,15 @@ public class Robot extends TimedRobot {
   private SendableChooser<Strategy> autoChooser = AutoProfile.getAutoChooser();
   private Field2d field2d = new Field2d();
 
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    // localization
-    // networkTableSubsystem.bind("localization", "pose", localizationSubsystem::get, new double[] {0, 0, 0});
-    // networkTableSubsystem.bind("localization", "particles", localizationSubsystem.particleFilter::getFlat, new double[] {});
-    // networkTableSubsystem.bind("localization", "meanParticle", localizationSubsystem.particleFilter::getMeanParticle, new double[] {8, 4});
-
-    // teleop sim
-    // networkTableSubsystem.bind("drive", "joyLeft", oi.leftStick::getY, 0.0);
-    // networkTableSubsystem.bind("drive", "joyRight", oi.rightStick::getY, 0.0);
-    // networkTableSubsystem.bind("drive", "driveSpeed", localizationSubsystem::getVel, 0.0);
-    // networkTableSubsystem.bind("drive", "driveLimit", driveSubsystem::setSpeedLimit, 1.0);
-
     // shuffleboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putData("Field", field2d);
-
-    // System.out.println(networkTableSubsystem);
   }
 
   @Override
@@ -92,29 +73,21 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    
-    localizationSubsystem.update();
-    // networkTableSubsystem.update();
     shooterSubsystem.update();
-
     turretSubsystem.updateShuffleboard();
-    // System.out.println(!this.intakeSubsystem.getLimitSwitchState());
 
-    field2d.setRobotPose(localizationSubsystem.getX(), localizationSubsystem.getY(), new Rotation2d(localizationSubsystem.getHeading()));
-
-    if (Math.abs(driveSubsystem.pigeon.getRoll()) > 0.2)
-      DriverStation.reportError("You done fucked up.", false);
+    field2d.setRobotPose(driveSubsystem.getPose());
   }
 
-  @Override
-  public void simulationInit() {
-    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lFront,  DCMotor.getNEO(1));
-    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lMiddle, DCMotor.getNEO(1));
-    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lBack,   DCMotor.getNEO(1));
-    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rFront,  DCMotor.getNEO(1));
-    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rMiddle, DCMotor.getNEO(1));
-    REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rBack,   DCMotor.getNEO(1));
-  }
+  // @Override
+  // public void simulationInit() {
+  //   REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lFront,  DCMotor.getNEO(1));
+  //   REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lMiddle, DCMotor.getNEO(1));
+  //   REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.lBack,   DCMotor.getNEO(1));
+  //   REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rFront,  DCMotor.getNEO(1));
+  //   REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rMiddle, DCMotor.getNEO(1));
+  //   REVPhysicsSim.getInstance().addSparkMax(driveSubsystem.rBack,   DCMotor.getNEO(1));
+  // }
 
   @Override
   public void simulationPeriodic() {
@@ -125,8 +98,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // AutoProfile.setStrategy(Strategy.TAXI);
     // CommandScheduler.getInstance().schedule(AutoProfile.getAutoCommand());
+    // CommandScheduler.getInstance().schedule(new SpinCommand(Math.PI));
 
-    CommandScheduler.getInstance().schedule(new AutoCommandGroup());
+    // CommandScheduler.getInstance().schedule(new AutoCommandGroup());
     //limelightSubsystem.setCameraParams(limelightSubsystem.getTable(), "pipeline", 2);
     //double data = limelightSubsystem.getTableData(limelightSubsystem.getTable(), "tx");
     //double data = limeLightSubsystem.getTableData(limeLightSubsystem.getTable(), "pipeline");

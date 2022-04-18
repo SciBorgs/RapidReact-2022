@@ -8,6 +8,8 @@ import java.util.function.DoubleUnaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import edu.wpi.first.math.geometry.Pose2d;
+
 public class Util {
     public static double normalize(double v) {
         return Math.min(Math.max(-1, v), 1);
@@ -35,6 +37,18 @@ public class Util {
 
     public static Point displacementVector(Point from, Point to) {
         return new Point(to.x - from.x, to.y - from.y);
+    }
+
+    public static Point displacementVector(Point from, Pose2d to) {
+        return new Point(to.getX() - from.x, to.getY() - from.y);
+    }
+
+    public static Point displacementVector(Pose2d from, Point to) {
+        return new Point(to.x - from.getX(), to.y - from.getY());
+    }
+
+    public static Point displacementVector(Pose2d from, Pose2d to) {
+        return new Point(to.getX() - from.getX(), to.getY() - from.getY());
     }
 
     public static Point add(Point... ps) {

@@ -16,16 +16,14 @@ import frc.robot.util.Path;
 import frc.robot.util.PathWeaverUtil;
 import frc.robot.util.Point;
 import frc.robot.util.Util;
-
-import frc.robot.commands.ShootSequence;
 import frc.robot.Constants;
-import frc.robot.commands.IntakeCommandGroup;
-
-import frc.robot.commands.auto.FollowBallCommand;
-import frc.robot.commands.auto.MoveUpToHubCommand;
-import frc.robot.commands.auto.PurePursuitCommand;
+// import frc.robot.commands.auto.FollowBallCommand;
+// import frc.robot.commands.auto.MoveUpToHubCommand;
+// import frc.robot.commands.auto.PurePursuitCommand;
+import frc.robot.commands.drive.MarkerCommand;
 import frc.robot.commands.hopper.StartHopperCommand;
-import frc.robot.commands.test.MarkerCommand;
+import frc.robot.commands.intake.IntakeCommandGroup;
+import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.commands.turret.SetTurretCommand;
 
@@ -91,7 +89,7 @@ public class AutoProfile {
         public TaxiStage() {
             super(StageType.TAXI);
             this.addCommands(
-                new MoveUpToHubCommand(TAXI_DISTANCE)
+                // new MoveUpToHubCommand(TAXI_DISTANCE)
             );
         }
     }
@@ -100,7 +98,7 @@ public class AutoProfile {
         public FollowStage() {
             super(StageType.FOLLOW);
             this.addCommands(
-                new FollowBallCommand(),
+                // new FollowBallCommand(),
                 new MarkerCommand("Following")
             );
         }
@@ -117,8 +115,8 @@ public class AutoProfile {
                 this.addCommands(new SetTurretCommand(desiredAngle - interceptAngle));
             }
             this.addCommands(
-                new MarkerCommand("Transporting"),
-                new PurePursuitCommand(path)
+                new MarkerCommand("Transporting")
+                // new PurePursuitCommand(path)
             );
         }
     }

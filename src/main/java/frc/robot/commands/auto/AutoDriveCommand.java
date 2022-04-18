@@ -3,12 +3,13 @@
 // import edu.wpi.first.wpilibj2.command.CommandBase;
 // import frc.robot.Robot;
 
-// public class DriveUntilIntakeCommand extends CommandBase {
-//     private double speed;
+// public class AutoDriveCommand extends CommandBase {
+//     double speed;
 
-//     public DriveUntilIntakeCommand(double speed) {
+//     public AutoDriveCommand(double speed) {
 //         this.speed = speed;
 //     }
+
 
 //     public void execute() {
 //         Robot.driveSubsystem.setSpeed(speed, speed);
@@ -23,6 +24,7 @@
     
 //     @Override
 //     public boolean isFinished() {
-//         return Robot.intakeSubsystem.getLimitSwitchState();
+//         return false;
 //     }
+    
 // }

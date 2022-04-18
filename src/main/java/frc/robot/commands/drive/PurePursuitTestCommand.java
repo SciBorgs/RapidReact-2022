@@ -1,21 +1,16 @@
-// package frc.robot.commands.auto;
+// package frc.robot.commands.drive;
 
 // import edu.wpi.first.wpilibj2.command.CommandBase;
+// import frc.robot.autoProfile.AutoProfile;
 // import frc.robot.Robot;
 // import frc.robot.controllers.PurePursuitController;
-// import frc.robot.util.Path;
 
-// public class PurePursuitCommand extends CommandBase {
+// public class PurePursuitTestCommand extends CommandBase {
 //     private PurePursuitController pp;
-//     private final Path path;
-
-//     public PurePursuitCommand(Path path) {
-//         this.path = path;
-//     }
 
 //     @Override
 //     public void initialize() {
-//         this.pp = new PurePursuitController(this.path, 0.2, 0.5);
+//         this.pp = new PurePursuitController(AutoProfile.PATH_TEST, 0.201155, 0.0);
 //     }
 
 //     @Override

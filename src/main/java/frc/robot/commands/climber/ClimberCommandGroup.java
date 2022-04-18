@@ -1,7 +1,5 @@
-package frc.robot.commands;
+package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.climber.RunTelescopeCommand;
-import frc.robot.commands.climber.RunArmCommand;
 
 public class ClimberCommandGroup extends SequentialCommandGroup {
     // TODO incomplete

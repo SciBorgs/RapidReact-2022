@@ -1,8 +1,5 @@
 // package frc.robot.subsystems.localization;
 
-// import edu.wpi.first.wpilibj.DigitalInput;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 // import frc.robot.PortMap;
 // import frc.robot.Robot;
 // import frc.robot.sciSensorsActuators.SciEncoder;
@@ -96,9 +93,16 @@
 //             }
 //         };
 
-//         this.particleFilter.setMotionModel(this.encoderPigeonModel);
-//         this.particleFilter.setSensorModel(this.limelightLimitSwitchModel);
-//     }
+    //     this.particleFilter.setMotionModel(this.encoderPigeonModel);
+    //     this.particleFilter.setSensorModel(this.limelightLimitSwitchModel);
+
+    //     // Localization
+
+    //     ShuffleboardTab tab = Shuffleboard.getTab("localization");
+    //     tab.addDoubleArray("pose",          this::get);
+    //     tab.addDoubleArray("particles",     this.particleFilter::getFlat);
+    //     tab.addDoubleArray("meanParticle",  this.particleFilter::getMeanParticle);
+    // }
 
 //     public double[] get()      { return new double[] {this.pos.x, this.pos.y, this.pigeon.getAngle()}; }
 //     public Point  getPos()     { return this.pos; }

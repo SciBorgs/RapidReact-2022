@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import edu.wpi.first.math.geometry.Pose2d;
+
 public class Point {
     public final double x, y;
 
@@ -20,5 +22,9 @@ public class Point {
 
     public double[] toArray() {
         return new double[] {this.x, this.y};
+    }
+
+    public static Point fromPos(Pose2d pose2d) {
+        return new Point(pose2d.getX(), pose2d.getY());
     }
 }

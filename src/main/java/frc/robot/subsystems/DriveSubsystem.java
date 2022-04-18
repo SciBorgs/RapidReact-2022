@@ -136,6 +136,10 @@ public class DriveSubsystem extends SubsystemBase {
         return new Rotation2d(pigeon.getAngle());
     }
 
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
+    }
+
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
         return new DifferentialDriveWheelSpeeds(getLeftAverageVelocity(), getRightAverageVelocity());
     }
