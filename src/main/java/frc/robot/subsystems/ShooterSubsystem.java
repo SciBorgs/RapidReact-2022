@@ -17,7 +17,10 @@ import frc.robot.util.Util;
 
 
 public class ShooterSubsystem extends SubsystemBase {
-    private PID shooterPID;
+    private double h_P = 6.0/360, h_I = 0, h_D = 0;
+    private double f_P = 0, f_I = 0, f_D = 0;
+    private final PID hoodPID = new PID(h_P, h_I, h_D);
+    private final PID flywheelPID = new PID(f_P, f_I, f_D);
     private ShufflePID shooterShufflePID;
     
     private CANSparkMax hood, lmotor, rmotor;
@@ -36,8 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public double goToHoodAngle = 15;
 
     public ShooterSubsystem() {
-        shooterPID = new PID(6.0/360.0, 0, 0);
-        shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
+        // shooterShufflePID = new ShufflePID("shooter", hoodPID, "big shell");
 
         hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
@@ -53,14 +55,6 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
         encoderOffset = getHoodAngle();
-        // hoodEncoder.reset();
-
-        // Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
-        // Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
-        // Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 321.3);
-        // Robot.networkTableSubsystem.bind("shooter", "offset", this::getOffset, 321.3);
-
-        // Robot.networkTableSubsystem.bind("shooter", "sethood", this::moveHood, getHoodAngle());
     }
     
     public double getDistance() {
@@ -77,7 +71,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void runFlywheel(double speed) {
         System.out.println("SETTING TO " + speed);
-        rmotor.set(speed);
+        double power = hoodPID.getOutput(getFlywheelSpeed(), speed);
+        rmotor.set(power);
     }
 
     public void stopFlywheel() {
@@ -86,6 +81,10 @@ public class ShooterSubsystem extends SubsystemBase {
     
     public void resetDistanceSpun() {
         flywheelEncoder.setDistance(0);
+    }
+
+    public double getFlywheelSpeed() {
+        return flywheelEncoder.getSpeed();
     }
 
     public double getDistanceSpun() {
@@ -109,7 +108,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void moveHood(double angle) {
         angle = translateToEncoder(angle);
 
-        double move = shooterPID.getOutput(angle, getHoodAngle());
+        double move = hoodPID.getOutput(angle, getHoodAngle());
 
         System.out.println("ang " + getHoodAngle() + " targ " + angle + " move " + move);
 
