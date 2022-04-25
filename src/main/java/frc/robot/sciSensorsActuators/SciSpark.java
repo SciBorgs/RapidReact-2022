@@ -2,7 +2,7 @@ package frc.robot.sciSensorsActuators;
 
 import com.revrobotics.CANSparkMax;
 
-import frc.robot.util.Util;
+import edu.wpi.first.math.MathUtil;
 
 public class SciSpark extends CANSparkMax {
 
@@ -15,7 +15,7 @@ public class SciSpark extends CANSparkMax {
 
     public void set(double speed) {
         double currSpeed = super.get();
-        double jerk = Util.normalize(speed - currSpeed, MAX_JERK);
+        double jerk = MathUtil.clamp(speed - currSpeed, -MAX_JERK, MAX_JERK);
         super.set(this.hasFailed ? 0 : (currSpeed + jerk));
     }
 

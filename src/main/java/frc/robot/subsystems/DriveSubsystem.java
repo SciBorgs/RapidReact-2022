@@ -1,34 +1,28 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.RobotController;
-import frc.robot.Constants;
-import frc.robot.PortMap;
-import frc.robot.sciSensorsActuators.SciSpark;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import frc.robot.util.Util;
-import frc.robot.sciSensorsActuators.SciEncoder;
-import frc.robot.sciSensorsActuators.SciPigeon;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.autoProfile.AutoProfile;
-
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.PortMap;
+import frc.robot.autoProfile.AutoProfile;
+import frc.robot.sciSensorsActuators.SciEncoder;
+import frc.robot.sciSensorsActuators.SciPigeon;
+import frc.robot.sciSensorsActuators.SciSpark;
+import frc.robot.util.Util;
 
 public class DriveSubsystem extends SubsystemBase {
     private SciEncoder lEncoder, rEncoder;
@@ -191,4 +185,3 @@ public class DriveSubsystem extends SubsystemBase {
         updateOdometry();
     }
 }
-

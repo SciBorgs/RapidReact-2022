@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -34,7 +35,7 @@ public class HopperSubsystem implements Subsystem {
     }
 
     public void startSuck(double newSpeed) {
-        this.suck.set(Util.normalize(newSpeed, MAX_SPEED));
+        this.suck.set(MathUtil.clamp(newSpeed, -MAX_SPEED, MAX_SPEED));
     }
 
     public void stopSuck() {
@@ -46,7 +47,7 @@ public class HopperSubsystem implements Subsystem {
     }
     
     public void startElevator(double newSpeed) {
-        this.elevator.set(Util.normalize(newSpeed, MAX_SPEED));
+        this.elevator.set(MathUtil.clamp(newSpeed, -MAX_SPEED, MAX_SPEED));
     }
 
     public void stopElevator() {

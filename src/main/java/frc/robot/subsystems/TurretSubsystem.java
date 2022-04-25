@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
@@ -45,7 +46,7 @@ public class TurretSubsystem extends SubsystemBase {
         txAvr = txAverager.getAverage(-angle);
         double targetAngle = encoder.getAngle() + txAvr;
         double turn = pid.getOutput(targetAngle, encoder.getAngle());
-        turn = Util.normalize(turn, SPEED_LIMIT);
+        turn = MathUtil.clamp(turn, -SPEED_LIMIT, SPEED_LIMIT);
 
         if (Math.abs(targetAngle) > LIMIT) {
             turn = 0;

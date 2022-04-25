@@ -11,11 +11,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-
-import frc.robot.util.Path;
-import frc.robot.util.PathWeaverUtil;
-import frc.robot.util.Point;
-import frc.robot.util.Util;
 import frc.robot.Constants;
 // import frc.robot.commands.auto.FollowBallCommand;
 // import frc.robot.commands.auto.MoveUpToHubCommand;
@@ -26,6 +21,10 @@ import frc.robot.commands.intake.IntakeCommandGroup;
 import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.commands.turret.SetTurretCommand;
+import frc.robot.util.Path;
+import frc.robot.util.PathWeaverUtil;
+import frc.robot.util.Point;
+import frc.robot.util.Util;
 
 /**
  * Use this class for storing paths, points, etc. in the auto sequence.

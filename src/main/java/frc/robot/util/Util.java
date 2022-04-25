@@ -11,13 +11,6 @@ import java.util.stream.Stream;
 import edu.wpi.first.math.geometry.Pose2d;
 
 public class Util {
-    public static double normalize(double v) {
-        return Math.min(Math.max(-1, v), 1);
-    }
-
-    public static double normalize(double v, double absmax) {
-        return Math.min(Math.max(-absmax, v), absmax);
-    }
 
     public static double distanceSquared(Point a, Point b) {
         return Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2);

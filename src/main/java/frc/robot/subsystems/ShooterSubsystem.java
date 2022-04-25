@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -117,7 +118,7 @@ public class ShooterSubsystem extends SubsystemBase {
             move = 0;
             System.out.println("BOUNDARY");
         }
-        hood.set(Util.normalize(move, SPEED_LIMIT));
+        hood.set(MathUtil.clamp(move, -SPEED_LIMIT, SPEED_LIMIT));
     }
 
     // shuffleboard
