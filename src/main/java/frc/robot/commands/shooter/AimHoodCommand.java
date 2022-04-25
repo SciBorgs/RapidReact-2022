@@ -2,14 +2,15 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.util.Util;
+import frc.robot.util.ShooterData;
 
 public class AimHoodCommand extends CommandBase {
     public static final double ANGLE = 15;
+    private double[][] hoodData;
 
     @Override
     public void initialize() {
+        hoodData = ShooterData.getHoodAngleData("src/main/java/frc/robot/controllers/placeHolder.csv");
     }
 
     @Override
@@ -17,9 +18,9 @@ public class AimHoodCommand extends CommandBase {
         Robot.shooterSubsystem.moveHood(ANGLE);
 
         // for averaging data, if we have time
-        // double[][] hoodData = Util.getHoodAngleData("src/main/java/frc/robot/controllers/placeHolder.csv");
-        // double distance = Robot.shooterSubsystem.getDistance();
-        // double angle = Util.calcHoodAngle(hoodData, distance);
+        
+        // double distance = Robot.limelightSubsystem.getDistance();
+        // double angle = ShooterData.calcHoodAngle(hoodData, distance);
         // Robot.shooterSubsystem.moveHood(angle);
     }
 
