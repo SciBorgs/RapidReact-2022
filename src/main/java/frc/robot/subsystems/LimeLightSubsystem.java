@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class LimeLightSubsystem extends SubsystemBase {
 
@@ -28,5 +30,8 @@ public class LimeLightSubsystem extends SubsystemBase {
     public void setCameraParams(NetworkTable table, String param, double setting) {
         table.getEntry(param).setValue(setting);
     }
-    
+
+    public double getDistance() {
+        return Constants.HEIGHT_DIFF / Math.tan(Math.toRadians(Robot.limelightSubsystem.getLimelightTableData("ty") + Constants.CAM_MOUNT_ANGLE));
+    }
 }

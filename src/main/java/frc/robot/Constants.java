@@ -50,4 +50,8 @@ public final class Constants {
 
     //public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
     
+    //***************** FIELD DATA ************************//
+    public static final double HEIGHT_DIFF = 2.08534;
+    public static final double CAM_MOUNT_ANGLE = 30;
+    
 }

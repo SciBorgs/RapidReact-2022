@@ -24,7 +24,7 @@ public class ShootCommand extends CommandBase {
         CSVWriter writer = new CSVWriter("/home/lvuser/logging.csv");
         writer.addData(
             Robot.shooterSubsystem.translateFromEncoder(Robot.shooterSubsystem.getHoodAngle()),
-            Robot.shooterSubsystem.getDistance(),
+            Robot.limelightSubsystem.getDistance(),
             POWER,
             "",
             System.currentTimeMillis()
