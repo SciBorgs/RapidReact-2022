@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SubsystemCommand;
 
@@ -420,5 +421,18 @@ public class Util {
             if (!schedule(command)) allScheduled = false;
         }
         return allScheduled;
+    }
+
+    public static Command[] withAllWrapped(Command... commands) {
+        Command[] wrapped = new Command[commands.length];
+        for (int i = 0; i < commands.length; i++) {
+            Command command = commands[i];
+            if (command instanceof SubsystemCommand) {
+                wrapped[i] = ((SubsystemCommand) commands[i]).wrap();
+            } else {
+                wrapped[i] = commands[i];
+            }
+        }
+        return wrapped;
     }
 }

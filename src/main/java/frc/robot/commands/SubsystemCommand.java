@@ -7,10 +7,42 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 /**
  * Extend this class and call the constructor (super(Subsystem...) in a child
  * class).
+ * <pre>
+ * // SubsystemCommand example.
+ *  public class CustomCommand extends SubsystemCommand {
+ *      public CustomCommand() {
+ *          super(Robot.limelight, Robot.turret);
+ *          // ...
+ *      }
+ *  }
+ * </pre>
  * <p>
  * SubsystemCommands may be scheduled safely using the Util.schedule() method.
  * If the command must be part of a command group, you may wrap this command
- * inline using the wrap() method.
+ * inline using the wrap() method, or using Util.withAllWrapped().
+ * Ex.
+ * <pre>
+ * // withAllWrapped example:
+ *  public class CustomCommandGroup extends ParallelCommandGroup {
+ *      public CustomCommandGroup() {
+ *          addCommands(withAllWrapped(
+ *              new ACommand(),
+ *              new BCommand(),
+ *              new CCommand()
+ *          ));
+ *      }
+ * 
+ *      // OR
+ * 
+ *      public CustomCommandGroup() {
+ *          addCommands(
+ *              new ACommand().wrap(),
+ *              new BCommand().wrap(),
+ *              new CCommand().wrap()
+ *          );
+ *      }
+ *  }
+ * </pre>
  */
 public abstract class SubsystemCommand extends CommandBase {
     protected boolean hasNullReferences;
