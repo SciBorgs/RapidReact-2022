@@ -9,6 +9,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.SubsystemCommand;
 
 public class Util {
 
@@ -482,5 +484,25 @@ public class Util {
                 };
 			}
         };
+    }
+
+    // COMMAND SCHEDULING
+
+    public static boolean canSchedule(SubsystemCommand command) {
+        return !command.hasNullReferences();
+    }
+
+    public static boolean schedule(SubsystemCommand command) {
+        if (command.hasNullReferences()) return false;
+        CommandScheduler.getInstance().schedule(command);
+        return false;
+    }
+
+    public static boolean schedule(SubsystemCommand... commands) {
+        boolean allScheduled = true;
+        for (SubsystemCommand command : commands) {
+            if (!schedule(command)) allScheduled = false;
+        }
+        return allScheduled;
     }
 }
