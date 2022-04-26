@@ -1,12 +1,16 @@
 package frc.robot.commands.turret;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.commands.SubsystemCommand;
 
-public class AimTurretCommand extends CommandBase {
+public class AimTurretCommand extends SubsystemCommand {
     private static int unknownCount = 0;
     public static final int UNKNOWN_LIMIT = 60;
+
+    public AimTurretCommand() {
+        super(Robot.turretSubsystem, Robot.limelightSubsystem);
+    }
     
     @Override
     public void execute() {

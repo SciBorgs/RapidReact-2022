@@ -1,13 +1,14 @@
 package frc.robot.commands.turret;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.commands.SubsystemCommand;
 
-public class SetTurretCommand extends CommandBase {
+public class SetTurretCommand extends SubsystemCommand {
     private final double target;
     private static final double LENIENCY = 0.25;
 
     public SetTurretCommand(double target) {
+        super(Robot.turretSubsystem);
         this.target = target;
     }
     

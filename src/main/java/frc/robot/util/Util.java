@@ -406,9 +406,12 @@ public class Util {
     }
 
     public static boolean schedule(SubsystemCommand command) {
-        if (command.hasNullReferences()) return false;
+        if (command.hasNullReferences()) {
+            System.out.println(command.getClass().getCanonicalName() + " was cancelled due to a missing subsystem.");
+            return false;
+        }
         CommandScheduler.getInstance().schedule(command);
-        return false;
+        return true;
     }
 
     public static boolean schedule(SubsystemCommand... commands) {
