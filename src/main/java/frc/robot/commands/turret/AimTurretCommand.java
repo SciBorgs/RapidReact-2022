@@ -1,29 +1,34 @@
 package frc.robot.commands.turret;
 
 import edu.wpi.first.networktables.NetworkTable;
-import frc.robot.Robot;
-import frc.robot.commands.SubsystemCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
-public class AimTurretCommand extends SubsystemCommand {
+public class AimTurretCommand extends CommandBase {
+    private TurretSubsystem turretSubsystem;
+    private LimeLightSubsystem limeLightSubsystem;
     private static int unknownCount = 0;
     public static final int UNKNOWN_LIMIT = 60;
 
-    public AimTurretCommand() {
-        super(Robot.turretSubsystem, Robot.limelightSubsystem);
+    public AimTurretCommand(TurretSubsystem turretSubsystem, LimeLightSubsystem limeLightSubsystem) {
+        this.turretSubsystem = turretSubsystem;
+        this.limeLightSubsystem = limeLightSubsystem;
+        addRequirements(turretSubsystem, limeLightSubsystem);
     }
     
     @Override
     public void execute() {
-        Robot.limelightSubsystem.setCameraParams(Robot.limelightSubsystem.getTable(), "pipeline", 0);
-        NetworkTable table = Robot.limelightSubsystem.getTable();
-        double tv = Robot.limelightSubsystem.getTableData(table, "tv");
-        double tx = Robot.limelightSubsystem.getTableData(table, "tx");
+        limeLightSubsystem.setCameraParams(limeLightSubsystem.getTable(), "pipeline", 0);
+        NetworkTable table = limeLightSubsystem.getTable();
+        double tv = limeLightSubsystem.getTableData(table, "tv");
+        double tx = limeLightSubsystem.getTableData(table, "tx");
 
         if (tv == 1) {
             unknownCount = 0;
-            Robot.turretSubsystem.pointTowardsTarget(tx);
+            turretSubsystem.pointTowardsTarget(tx);
         } else if (unknownCount > UNKNOWN_LIMIT) {
-            Robot.turretSubsystem.stop();
+            turretSubsystem.stop();
         } else {
             unknownCount++;
         }
@@ -31,8 +36,8 @@ public class AimTurretCommand extends SubsystemCommand {
     
     @Override
     public boolean isFinished() {
-        if (Math.abs(Robot.turretSubsystem.getAngle() - Robot.turretSubsystem.getTarget()) < 0.1) {
-            Robot.turretSubsystem.stop();
+        if (Math.abs(turretSubsystem.getAngle() - turretSubsystem.getTarget()) < 0.1) {
+            turretSubsystem.stop();
             return true;
         }
         return false;

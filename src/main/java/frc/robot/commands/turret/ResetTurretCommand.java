@@ -1,9 +1,29 @@
 package frc.robot.commands.turret;
 
-public class ResetTurretCommand extends SetTurretCommand {
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.TurretSubsystem;
 
-    public ResetTurretCommand() {
-        super(0);
+public class ResetTurretCommand extends CommandBase {
+    private TurretSubsystem turretSubsystem;
+
+    public ResetTurretCommand(TurretSubsystem turretSubsystem) {
+        this.turretSubsystem = turretSubsystem;
+        addRequirements(turretSubsystem);
+    }
+    
+    @Override
+    public void execute() {
+        turretSubsystem.pointTowardsTarget(0);
+    }
+    
+    @Override
+    public boolean isFinished() {
+        if (Math.abs(turretSubsystem.getAngle()) < 0.1) {
+            turretSubsystem.stop();
+            return true;
+        }
+        return false;
+    }
     }
     
 }

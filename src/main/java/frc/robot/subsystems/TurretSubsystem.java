@@ -13,8 +13,6 @@ import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.util.Averager;
 import frc.robot.util.PID;
-import frc.robot.util.ShufflePID;
-import frc.robot.util.Util;
 
 public class TurretSubsystem extends SubsystemBase {
     private CANSparkMax motor;

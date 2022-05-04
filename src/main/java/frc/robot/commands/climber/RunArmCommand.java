@@ -1,34 +1,25 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.subsystems.ClimberSubsystem;
 
 public class RunArmCommand extends CommandBase {
-    boolean reversed;
+    private ClimberSubsystem climberSubsystem;
+    private boolean reversed;
 
-    public RunArmCommand(boolean reversed) {
+    public RunArmCommand(ClimberSubsystem climberSubsystem, boolean reversed) {
+        this.climberSubsystem = climberSubsystem;
         this.reversed = reversed;
-    }
-
-    @Override
-    public void initialize() {
-        // this.addRequirements(Robot.climberSubsystem); //dont need this rn
+        addRequirements(climberSubsystem);
     }
 
     @Override
     public void execute() {
-        Robot.climberSubsystem.runArms(this.reversed);
-
+        climberSubsystem.runArms(this.reversed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        Robot.climberSubsystem.stopArms();
+        climberSubsystem.stopArms();
     }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-
 }
