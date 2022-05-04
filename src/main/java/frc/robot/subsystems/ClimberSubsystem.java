@@ -11,12 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class ClimberSubsystem implements Subsystem {
     private CANSparkMax telescope, arms;
-
-    // private SciEncoder telescopeEncoder;
-    // private SciEncoder armsEncoder;  
-    
-    // private ShuffleboardTab tab;
-    // private NetworkTableEntry rotations, armEntry, armsEntry;
+   
     private static final double TELESCOPE_SPEED = 0.95;
     private static final double ARM_SPEED = 0.5;
 

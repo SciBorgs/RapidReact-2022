@@ -5,6 +5,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
@@ -19,7 +21,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private double f_P = 0, f_I = 0, f_D = 0;
     private final PID hoodPID = new PID(h_P, h_I, h_D);
     private final PID flywheelPID = new PID(f_P, f_I, f_D);
-    private ShufflePID shooterShufflePID;
     
     private CANSparkMax hood, lmotor, rmotor;
     private SciEncoder flywheelEncoder;
@@ -29,11 +30,15 @@ public class ShooterSubsystem extends SubsystemBase {
     private final double UPPER_LIMIT = 9.2;
     private final double SPEED_LIMIT = 0.1;
 
+    private ShuffleboardTab mainTab;
+
     // hood angle, adjusted by raise and lower hood commands
     public double goToHoodAngle = 15;
 
     public ShooterSubsystem() {
-        // shooterShufflePID = new ShufflePID("shooter", hoodPID, "big shell");
+
+        mainTab = Shuffleboard.getTab("Shootr ");
+        mainTab.addNumber("Hood Angle", this::getHoodAngle);
 
         hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
@@ -106,17 +111,6 @@ public class ShooterSubsystem extends SubsystemBase {
         hood.set(MathUtil.clamp(move, -SPEED_LIMIT, SPEED_LIMIT));
     }
 
-    // shuffleboard
-
-    public void updateGraphs() {
-        // distance.setDouble(getDistance());
-        // hoodAngle.setDouble(getHoodAngle());
-    }
-
-    public void update() {
-        shooterShufflePID.update();
-        updateGraphs();
-    }
 
     // normal -> crazy encoder
     private double translateToEncoder(double encoderVal) {
