@@ -347,18 +347,6 @@ public class Util {
         return blockingCommand;
     }
 
-    /*
-    in the case we do unit testing at some point, here is a sample test we can use
-
-    @Test
-    private void blockTest() {
-        Command block = Util.blockSubsystems(shooter);
-        Command shoot = new ShootCommand(shooter);
-        shoot.schedule();
-        assertEquals(shoot.isScheduled(), shoot.getRequirements().contains(shooter));
-    }
-    */
-
     public static <T> Predicate<T> annotationFilter(Class<? extends Annotation> annotation) {
         return (obj) -> obj.getClass().isAnnotationPresent(annotation);
     }
