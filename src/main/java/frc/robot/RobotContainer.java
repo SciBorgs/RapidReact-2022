@@ -8,9 +8,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.commands.climber.RunArmCommand;
 import frc.robot.commands.climber.RunTelescopeCommand;
+import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.commands.turret.ResetTurretCommand;
 import frc.robot.subsystems.*;
@@ -27,9 +29,7 @@ import static frc.robot.PortMap.XboxController.*;
  */
 public class RobotContainer {
   // CONTROLLERS
-  public final XboxController xboxController = new XboxController(XBOX_CONTROLLER);
-  public final Joystick leftStick = new Joystick(JOYSTICK_LEFT);
-  public final Joystick rightStick = new Joystick(JOYSTICK_RIGHT);
+  public final OI oi = new OI(true);
 
   // SUBSYSTEMS
   public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
@@ -53,9 +53,9 @@ public class RobotContainer {
   // not sure what's going on with drive commands right now
 
   // hopper
-  public final 
 
   // intake
+  public final IntakeBallsCommand   intakeBallsCommand    = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
   // pneumatics
   // shooter
   // turret
@@ -73,8 +73,8 @@ public class RobotContainer {
       new RunCommand(
         () -> driveSubsystem.driveRobot(
           DriveMode.TANK,
-          leftStick,
-          rightStick)
+          oi.leftStick,
+          oi.rightStick)
     ));
   }
 
@@ -86,12 +86,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Climber
-    // this.extendTelescope  = new JoystickButton(this.xboxController, XBOX_Y);
-    // this.retractTelescope = new JoystickButton(this.xboxController, XBOX_A);
-    // this.extendArm  = new JoystickButton(this.xboxController, XBOX_X);
-    // this.retractArm = new JoystickButton(this.xboxController, XBOX_B);
-
-
+    oi.intakeBalls.whenHeld();
     // Intake
     // this.intakeBalls.whenHeld(new IntakeBallsCommand());
     // this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
