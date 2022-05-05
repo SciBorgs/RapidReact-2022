@@ -22,8 +22,10 @@ import frc.robot.autoProfile.AutoProfile;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.sciSensorsActuators.SciSpark;
+import frc.robot.util.Blockable;
 import frc.robot.util.Util;
 
+@Blockable
 public class DriveSubsystem extends SubsystemBase {
     private SciEncoder lEncoder, rEncoder;
     public SciPigeon pigeon;

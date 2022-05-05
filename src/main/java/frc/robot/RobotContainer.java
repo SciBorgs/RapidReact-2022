@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.commands.climber.RunArmCommand;
@@ -17,9 +18,13 @@ import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.commands.turret.ResetTurretCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
+import frc.robot.util.Util;
+
 import static frc.robot.PortMap.*;
 import static frc.robot.PortMap.Joystick.*;
 import static frc.robot.PortMap.XboxController.*;
+
+import java.util.Set;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -43,6 +48,12 @@ public class RobotContainer {
   public final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
   public final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
   public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(xboxController);
+
+  public final Set<Subsystem> subsystems = Set.of(
+    driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
+    shooterSubsystem, intakeSubsystem, hopperSubsystem, pneumaticsSubsystem,
+    climberSubsystem, monitorSubsystem, rumbleSubsystem
+  );
   
   // COMMANDS
   // climber
@@ -62,6 +73,8 @@ public class RobotContainer {
   public final AimTurretCommand      aimTurretCommand      = new AimTurretCommand(turretSubsystem, limelightSubsystem);
   public final ResetTurretCommand    resetTurretCommand    = new ResetTurretCommand(turretSubsystem);
 
+  // blocker
+  public final Command block = Util.blockSubsystems(subsystems);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

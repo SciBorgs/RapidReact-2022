@@ -7,8 +7,10 @@ import com.revrobotics.CANSparkMax;
 
 import frc.robot.PortMap;
 import frc.robot.Robot;
+import frc.robot.util.Blockable;
 import frc.robot.util.Util;
 
+@Blockable
 public class HopperSubsystem implements Subsystem {
 
     private CANSparkMax suck;

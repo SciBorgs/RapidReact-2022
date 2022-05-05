@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 import frc.robot.PortMap;
-
+import frc.robot.util.Blockable;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
+@Blockable
 public class ClimberSubsystem implements Subsystem {
     private CANSparkMax telescope, arms;
    

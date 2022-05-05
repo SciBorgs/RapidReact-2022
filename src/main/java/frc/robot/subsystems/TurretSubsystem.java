@@ -12,8 +12,10 @@ import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.util.Averager;
+import frc.robot.util.Blockable;
 import frc.robot.util.PID;
 
+@Blockable
 public class TurretSubsystem extends SubsystemBase {
     private CANSparkMax motor;
     private SciAbsoluteEncoder encoder;

@@ -1,17 +1,21 @@
 package frc.robot.util;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.DoubleUnaryOperator;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.SubsystemCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class Util {
 
@@ -287,6 +291,78 @@ public class Util {
         }
     }
 
+    // Testing util
+
+    /**
+     * Sam's proposal for blocking subsystems.
+     * <p>
+     * Prevents any commands requiring the specified subsystems from being run.
+     * This state persists even if the robot is disabled and then reenabled.
+     * <p>
+     * This method returns the blocking command, so if you wish to stop blocking
+     * the specified subsystems, you may call cancel() on the returned command.
+     * <pre>
+     * // Blocking subsystem example
+     *  void robotInit() {
+     *      Command block = Util.blockSubsystems(shooter);
+     * 
+     *      Command shoot = new ShootCommand(shooter); // requires shooter
+     *      shoot.schedule();
+     *      System.out.println(shoot.isScheduled()); // should return false
+     * 
+     *      block.cancel();
+     *      shoot.schedule();
+     *      System.out.println(shoot.isScheduled()); // should return true
+     *  }
+     * </pre>
+     * <p>
+     * <b>Note: Calling end() will do nothing. Call cancel() instead. </b>
+     * <p>
+     * Because of the mechanism used to block subsystems, if the subsystems
+     * argument includes an already blocked/required subsystem, this method
+     * does nothing.
+     * 
+     * @param subsystems the subsystems to block
+     * @return the blocking command, which may be cancelled.
+     */
+    public static Command blockSubsystems(Set<Subsystem> subsystems) {
+        Set<@Blockable Subsystem> blockable 
+            = subsystems.stream()
+                        .filter(Util.annotationFilter(Blockable.class))
+                        .collect(Collectors.toUnmodifiableSet());
+
+        Command blockingCommand = new Command() {
+            @Override
+            public Set<Subsystem> getRequirements() {
+                return blockable;
+            }
+
+            @Override
+            public boolean runsWhenDisabled() {
+                return true;
+            }
+        };
+        
+        CommandScheduler.getInstance().schedule(false, blockingCommand);
+        return blockingCommand;
+    }
+
+    /*
+    in the case we do unit testing at some point, here is a sample test we can use
+
+    @Test
+    private void blockTest() {
+        Command block = Util.blockSubsystems(shooter);
+        Command shoot = new ShootCommand(shooter);
+        shoot.schedule();
+        assertEquals(shoot.isScheduled(), shoot.getRequirements().contains(shooter));
+    }
+    */
+
+    public static <T> Predicate<T> annotationFilter(Class<? extends Annotation> annotation) {
+        return (obj) -> obj.getClass().isAnnotationPresent(annotation);
+    }
+
     // Important
     public static <T> Iterator<T> arrayIterator(T[] arr) {
         return new Iterator<T>() {
@@ -398,41 +474,5 @@ public class Util {
                 };
 			}
         };
-    }
-
-    // COMMAND SCHEDULING
-
-    public static boolean canSchedule(SubsystemCommand command) {
-        return !command.hasNullReferences();
-    }
-
-    public static boolean schedule(SubsystemCommand command) {
-        if (command.hasNullReferences()) {
-            System.out.println(command.getClass().getCanonicalName() + " was cancelled due to a missing subsystem.");
-            return false;
-        }
-        CommandScheduler.getInstance().schedule(command);
-        return true;
-    }
-
-    public static boolean schedule(SubsystemCommand... commands) {
-        boolean allScheduled = true;
-        for (SubsystemCommand command : commands) {
-            if (!schedule(command)) allScheduled = false;
-        }
-        return allScheduled;
-    }
-
-    public static Command[] withAllWrapped(Command... commands) {
-        Command[] wrapped = new Command[commands.length];
-        for (int i = 0; i < commands.length; i++) {
-            Command command = commands[i];
-            if (command instanceof SubsystemCommand) {
-                wrapped[i] = ((SubsystemCommand) commands[i]).wrap();
-            } else {
-                wrapped[i] = commands[i];
-            }
-        }
-        return wrapped;
     }
 }

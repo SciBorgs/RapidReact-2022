@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.PortMap;
 import frc.robot.Robot;
+import frc.robot.util.Blockable;
 
+@Blockable
 public class PneumaticsSubsystem implements Subsystem {
     private Compressor compressor;    
     public  ShuffleboardTab mainTab;

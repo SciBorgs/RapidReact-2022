@@ -12,10 +12,11 @@ import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.sciSensorsActuators.SciEncoder;
+import frc.robot.util.Blockable;
 import frc.robot.util.PID;
 import frc.robot.util.ShufflePID;
 
-
+@Blockable
 public class ShooterSubsystem extends SubsystemBase {
     private double h_P = 6.0/360, h_I = 0, h_D = 0;
     private double f_P = 0, f_I = 0, f_D = 0;

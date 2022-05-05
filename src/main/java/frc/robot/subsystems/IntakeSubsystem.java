@@ -10,7 +10,9 @@ import com.revrobotics.CANSparkMax;
 
 import frc.robot.PortMap;
 import frc.robot.Robot;
+import frc.robot.util.Blockable;
 
+@Blockable
 public class IntakeSubsystem implements Subsystem {
 
     private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
