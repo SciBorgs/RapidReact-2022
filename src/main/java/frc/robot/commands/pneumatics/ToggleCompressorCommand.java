@@ -1,27 +1,23 @@
 package frc.robot.commands.pneumatics;
 
-import java.util.Set;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Robot;
+import frc.robot.subsystems.PneumaticsSubsystem;
 
 public class ToggleCompressorCommand extends CommandBase {
+    private PneumaticsSubsystem pneumaticsSubsystem;
+
+    public ToggleCompressorCommand(PneumaticsSubsystem pneumaticsSubsystem) {
+        this.pneumaticsSubsystem = pneumaticsSubsystem;
+        addRequirements(pneumaticsSubsystem);
+    }
+
     @Override
     public void initialize() {
-        this.addRequirements(Robot.pneumaticsSubsystem);
-        Robot.pneumaticsSubsystem.start();
+        pneumaticsSubsystem.start();
     }
     
     @Override
     public void end(boolean interruted) { 
-        Robot.pneumaticsSubsystem.stop();
+        pneumaticsSubsystem.stop();
     }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-
-    
 }

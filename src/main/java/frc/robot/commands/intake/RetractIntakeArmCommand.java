@@ -1,28 +1,18 @@
 package frc.robot.commands.intake;
 
-import java.util.Set;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.IntakeSubsystem;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Robot;
+public class RetractIntakeArmCommand extends InstantCommand {
+    private IntakeSubsystem intakeSubsystem;
 
-public class RetractIntakeArmCommand extends CommandBase {
+    public RetractIntakeArmCommand(IntakeSubsystem intakeSubsystem) {
+        this.intakeSubsystem = intakeSubsystem;
+        addRequirements(intakeSubsystem);
+    }
 
     @Override
     public void initialize() {
-        this.addRequirements(Robot.intakeSubsystem);
-        Robot.intakeSubsystem.retractArm();
+        intakeSubsystem.retractArm();
     }
-
-    @Override
-    public boolean isFinished() {
-        return true;
-    }
-
-    // useless functions
-    @Override
-    public void execute() {
-
-    }
-    
 }

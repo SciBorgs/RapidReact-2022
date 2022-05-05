@@ -1,38 +1,25 @@
 package frc.robot.commands.climber;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.subsystems.ClimberSubsystem;
 
 public class RunTelescopeCommand extends CommandBase {
-    boolean reversed;
+    private ClimberSubsystem climberSubsystem;
+    private boolean reversed;
 
-
-    public RunTelescopeCommand(boolean reversed) {
+    public RunTelescopeCommand(ClimberSubsystem climberSubsystem, boolean reversed) {
+        this.climberSubsystem = climberSubsystem;
         this.reversed = reversed;
-    }
-
-    @Override
-    public void initialize() {
-        //this.addRequirements(Robot.climberSubsystem); //dont need this rn
+        addRequirements(climberSubsystem);
     }
     
     @Override
     public void execute() {
-        Robot.climberSubsystem.runTelescope(this.reversed);
-
+        climberSubsystem.runTelescope(this.reversed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        Robot.climberSubsystem.stopTelescope(); 
+        climberSubsystem.stopTelescope(); 
     }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-    
-    
-    
 }

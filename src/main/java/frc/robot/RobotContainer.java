@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.autoProfile.AutoProfile;
+import frc.robot.commands.climber.RunArmCommand;
+import frc.robot.commands.climber.RunTelescopeCommand;
 import frc.robot.commands.turret.AimTurretCommand;
 import frc.robot.commands.turret.ResetTurretCommand;
 import frc.robot.subsystems.*;
@@ -44,8 +46,15 @@ public class RobotContainer {
   
   // COMMANDS
   // climber
+  public final RunArmCommand        runArmCommand         = new RunArmCommand(climberSubsystem, reversed); // TODO add forwards and backwards versions or change implementation
+  public final RunTelescopeCommand  runTelescopeCommand   = new RunTelescopeCommand(climberSubsystem, reversed);
+
   // drive
+  // not sure what's going on with drive commands right now
+
   // hopper
+  public final 
+
   // intake
   // pneumatics
   // shooter
