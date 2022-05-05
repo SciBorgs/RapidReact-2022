@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class BlockingTest {
     @Test
-    private void blockTest() {
+    public void blockTest() {
         BlockingSubsystem dummy = new BlockingSubsystem();
         Command block = Util.blockSubsystems(Set.of(dummy));
         Command shouldNotBeScheduled = new Command() {
