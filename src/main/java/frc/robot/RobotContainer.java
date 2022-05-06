@@ -38,17 +38,17 @@ public class RobotContainer {
   private final OI oi = new OI(true);
 
   // SUBSYSTEMS
-  private final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  private final LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
-  private final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
-  private final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
-  private final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
-  private final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
-  private final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
-  private final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
-  private final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
-  private final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
-  private final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
+  public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
+  public final LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
+  public final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
+  public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
+  public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
+  public final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
+  public final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
+  public final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
+  public final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
+  public final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
+  public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
 
   private final Set<Subsystem> subsystems = Set.of(
     driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
