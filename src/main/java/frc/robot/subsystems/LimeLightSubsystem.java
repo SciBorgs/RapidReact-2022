@@ -35,6 +35,6 @@ public class LimeLightSubsystem extends SubsystemBase {
     }
 
     public double getDistance() {
-        return Constants.HEIGHT_DIFF / Math.tan(Math.toRadians(Robot.limelightSubsystem.getLimelightTableData("ty") + Constants.CAM_MOUNT_ANGLE));
+        return Constants.HEIGHT_DIFF / Math.tan(Math.toRadians(getLimelightTableData("ty") + Constants.CAM_MOUNT_ANGLE));
     }
 }

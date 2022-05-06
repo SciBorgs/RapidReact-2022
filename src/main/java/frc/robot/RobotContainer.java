@@ -47,7 +47,7 @@ public class RobotContainer {
   public final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
   public final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
   public final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
-  public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(xboxController);
+  public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
 
   public final Set<Subsystem> subsystems = Set.of(
     driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
@@ -58,7 +58,8 @@ public class RobotContainer {
   // COMMANDS
   // climber
   public final RunArmCommand        runArmCommand         = new RunArmCommand(climberSubsystem, reversed); // TODO add forwards and backwards versions or change implementation
-  public final RunTelescopeCommand  runTelescopeCommand   = new RunTelescopeCommand(climberSubsystem, reversed);
+  public final RunTelescopeCommand  raiseTelescopeCommand   = new RunTelescopeCommand(climberSubsystem, false);
+  public final RunTelescopeCommand  lowerTelescopeCommand   = new RunTelescopeCommand(climberSubsystem, true);
 
   // drive
   // not sure what's going on with drive commands right now
@@ -99,7 +100,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Climber
-    oi.intakeBalls.whenHeld();
+    oi.intakeBalls.whenPressed(intakeBallsCommand);
+
     // Intake
     // this.intakeBalls.whenHeld(new IntakeBallsCommand());
     // this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());

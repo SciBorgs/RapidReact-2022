@@ -5,10 +5,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import frc.robot.commands.hopper.StartElevatorCommand;
 
-public class ShootCommandGroup extends ParallelDeadlineGroup  {
+import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 
-    public ShootCommandGroup() {
-        super(new ShootCommand(), new StartElevatorCommand());
+public class ShootCommandGroup extends ParallelDeadlineGroup  {
+    public ShootCommandGroup(ShooterSubsystem shooterSubsystem, LimeLightSubsystem limeLightSubsystem, HopperSubsystem hopperSubsystem) {
+        super(new ShootCommand(shooterSubsystem, limeLightSubsystem), new StartElevatorCommand(hopperSubsystem));
     }
     
 }

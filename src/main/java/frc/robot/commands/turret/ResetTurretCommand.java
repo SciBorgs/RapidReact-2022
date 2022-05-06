@@ -10,12 +10,12 @@ public class ResetTurretCommand extends CommandBase {
         this.turretSubsystem = turretSubsystem;
         addRequirements(turretSubsystem);
     }
-    
+
     @Override
     public void execute() {
         turretSubsystem.pointTowardsTarget(0);
     }
-    
+
     @Override
     public boolean isFinished() {
         if (Math.abs(turretSubsystem.getAngle()) < 0.1) {
@@ -24,6 +24,4 @@ public class ResetTurretCommand extends CommandBase {
         }
         return false;
     }
-    }
-    
 }
