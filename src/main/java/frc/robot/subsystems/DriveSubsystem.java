@@ -60,7 +60,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     public enum DriveMode {
         TANK,
-        ARCADE, CURVATURE
+        ARCADE, 
+        CURVATURE
     }
 
     public DriveSubsystem() {

@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.commands.climber.RunArmCommand;
 import frc.robot.commands.climber.RunTelescopeCommand;
+import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
-import frc.robot.commands.turret.AimTurretCommand;
-import frc.robot.commands.turret.ResetTurretCommand;
+import frc.robot.commands.shooter.AimTurretCommand;
+import frc.robot.commands.shooter.ResetTurretCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.Util;
@@ -34,22 +35,22 @@ import java.util.Set;
  */
 public class RobotContainer {
   // CONTROLLERS
-  public final OI oi = new OI(true);
+  private final OI oi = new OI(true);
 
   // SUBSYSTEMS
-  public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  public final LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
-  public final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
-  public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
-  public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
-  public final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
-  public final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
-  public final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
-  public final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
-  public final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
-  public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
+  private final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
+  private final LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
+  private final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
+  private final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
+  private final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
+  private final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
+  private final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
+  private final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
+  private final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
+  private final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
+  private final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
 
-  public final Set<Subsystem> subsystems = Set.of(
+  private final Set<Subsystem> subsystems = Set.of(
     driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
     shooterSubsystem, intakeSubsystem, hopperSubsystem, pneumaticsSubsystem,
     climberSubsystem, monitorSubsystem, rumbleSubsystem
@@ -57,9 +58,10 @@ public class RobotContainer {
   
   // COMMANDS
   // climber
-  public final RunArmCommand        runArmCommand         = new RunArmCommand(climberSubsystem, reversed); // TODO add forwards and backwards versions or change implementation
-  public final RunTelescopeCommand  raiseTelescopeCommand   = new RunTelescopeCommand(climberSubsystem, false);
-  public final RunTelescopeCommand  lowerTelescopeCommand   = new RunTelescopeCommand(climberSubsystem, true);
+  private final RunArmCommand        extendArmCommand          = new RunArmCommand(climberSubsystem, false);
+  private final RunArmCommand        retractArmCommand         = new RunArmCommand(climberSubsystem, true);
+  private final RunTelescopeCommand  extendTelescopeCommand    = new RunTelescopeCommand(climberSubsystem, false);
+  private final RunTelescopeCommand  retractTelescopeCommand   = new RunTelescopeCommand(climberSubsystem, true);
 
   // drive
   // not sure what's going on with drive commands right now
@@ -67,15 +69,15 @@ public class RobotContainer {
   // hopper
 
   // intake
-  public final IntakeBallsCommand   intakeBallsCommand    = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
+  private final IntakeBallsCommand   intakeBallsCommand    = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
   // pneumatics
   // shooter
   // turret
-  public final AimTurretCommand      aimTurretCommand      = new AimTurretCommand(turretSubsystem, limelightSubsystem);
-  public final ResetTurretCommand    resetTurretCommand    = new ResetTurretCommand(turretSubsystem);
+  private final AimTurretCommand      aimTurretCommand      = new AimTurretCommand(turretSubsystem, limelightSubsystem);
+  private final ResetTurretCommand    resetTurretCommand    = new ResetTurretCommand(turretSubsystem);
 
   // blocker
-  public final Command block = Util.blockSubsystems(subsystems);
+  private final Command block = Util.blockSubsystems(subsystems);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -83,12 +85,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     // drives robot in tank drive according to the joysticks
-    driveSubsystem.setDefaultCommand(
-      new RunCommand(
-        () -> driveSubsystem.driveRobot(
-          DriveMode.TANK,
-          oi.leftStick,
-          oi.rightStick)
+    driveSubsystem.setDefaultCommand(new DriveCommand(
+      driveSubsystem,
+      () -> oi.leftStick.getY(),
+      () -> oi.rightStick.getY()
     ));
   }
 
@@ -99,9 +99,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Climber
-    oi.intakeBalls.whenPressed(intakeBallsCommand);
-
     // Intake
     // this.intakeBalls.whenHeld(new IntakeBallsCommand());
     // this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
@@ -112,12 +109,13 @@ public class RobotContainer {
     // this.hopper.whileHeld(new StartHopperCommand());
 
     // Climber
-    // this.extendTelescope.whenHeld(new RunTelescopeCommand(false));
-    // this.retractTelescope.whenHeld(new RunTelescopeCommand(true));
-    // this.extendArm.whenHeld(new RunArmCommand(false));
-    // this.retractArm.whenHeld(new RunArmCommand(true));
+    oi.extendTelescope.whenHeld(extendTelescopeCommand);
+    oi.retractTelescope.whenHeld(retractTelescopeCommand);
+    oi.extendArm.whenHeld(extendArmCommand);
+    oi.retractArm.whenHeld(retractArmCommand);
 
     // Shooter
+    oi.aimButton.whenPressed(command)
     // this.aimButton.whenPressed(new AimCommandGroup());
     // this.shootButton.whenPressed(new ShootSequence());
 

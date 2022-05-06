@@ -16,7 +16,7 @@ import frc.robot.util.Blockable;
 import frc.robot.util.PID;
 
 @Blockable
-public class TurretSubsystem extends SubsystemBase {
+public class TurretSubsystem extends pidsubsy {
     private CANSparkMax motor;
     private SciAbsoluteEncoder encoder;
 
