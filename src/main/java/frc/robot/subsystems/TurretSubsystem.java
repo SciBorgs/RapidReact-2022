@@ -5,8 +5,12 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
@@ -16,7 +20,7 @@ import frc.robot.util.Blockable;
 import frc.robot.util.PID;
 
 @Blockable
-public class TurretSubsystem extends pidsubsy {
+public class TurretSubsystem extends ProfiledPIDSubsystem {
     private CANSparkMax motor;
     private SciAbsoluteEncoder encoder;
 
@@ -34,6 +38,14 @@ public class TurretSubsystem extends pidsubsy {
 
 
     public TurretSubsystem() {
+        super(
+        new ProfiledPIDController(
+            0,
+            0,
+            0,
+            // The motion profile constraints
+            new TrapezoidProfile.Constraints(0, 0)));
+
         this.encoder = new SciAbsoluteEncoder(PortMap.TURRET_ENCODER, Constants.TURRET_GEAR_RATIO);
         // this.encoder.reset();
         this.pid = new PID(TX_P, 0, 0);
@@ -72,5 +84,17 @@ public class TurretSubsystem extends pidsubsy {
 
     public double getTarget() {
         return txAvr;
+    }
+
+    @Override
+    protected void useOutput(double output, State setpoint) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected double getMeasurement() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

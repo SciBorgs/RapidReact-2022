@@ -120,14 +120,6 @@ public class DriveSubsystem extends SubsystemBase {
         }
     }
 
-    public void driveRobot(DriveMode mode, Joystick leftJoystick, Joystick rightJoystick) {
-        driveRobot(mode, leftJoystick.getY(), rightJoystick.getY());
-    }
-
-    public void driveRobot(DriveMode mode, XboxController xboxController) {
-        driveRobot(mode, xboxController.getLeftY(), xboxController.getRightY());
-    }
-
     public void failureWatchdog() {
         for (int i = 0; i < leftSparks.length; i++) {
             if (leftSparks[i].updateFailState()) {

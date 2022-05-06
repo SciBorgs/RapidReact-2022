@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.commands.climber.RunArmCommand;
 import frc.robot.commands.climber.RunTelescopeCommand;
-import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
 import frc.robot.commands.shooter.ResetTurretCommand;
@@ -28,9 +27,12 @@ import static frc.robot.PortMap.XboxController.*;
 import java.util.Set;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
@@ -51,17 +53,16 @@ public class RobotContainer {
   public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
 
   private final Set<Subsystem> subsystems = Set.of(
-    driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
-    shooterSubsystem, intakeSubsystem, hopperSubsystem, pneumaticsSubsystem,
-    climberSubsystem, monitorSubsystem, rumbleSubsystem
-  );
-  
+      driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
+      shooterSubsystem, intakeSubsystem, hopperSubsystem, pneumaticsSubsystem,
+      climberSubsystem, monitorSubsystem, rumbleSubsystem);
+
   // COMMANDS
   // climber
-  private final RunArmCommand        extendArmCommand          = new RunArmCommand(climberSubsystem, false);
-  private final RunArmCommand        retractArmCommand         = new RunArmCommand(climberSubsystem, true);
-  private final RunTelescopeCommand  extendTelescopeCommand    = new RunTelescopeCommand(climberSubsystem, false);
-  private final RunTelescopeCommand  retractTelescopeCommand   = new RunTelescopeCommand(climberSubsystem, true);
+  private final RunArmCommand extendArmCommand = new RunArmCommand(climberSubsystem, false);
+  private final RunArmCommand retractArmCommand = new RunArmCommand(climberSubsystem, true);
+  private final RunTelescopeCommand extendTelescopeCommand = new RunTelescopeCommand(climberSubsystem, false);
+  private final RunTelescopeCommand retractTelescopeCommand = new RunTelescopeCommand(climberSubsystem, true);
 
   // drive
   // not sure what's going on with drive commands right now
@@ -69,27 +70,30 @@ public class RobotContainer {
   // hopper
 
   // intake
-  private final IntakeBallsCommand   intakeBallsCommand    = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
+  private final IntakeBallsCommand intakeBallsCommand = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
   // pneumatics
   // shooter
   // turret
-  private final AimTurretCommand      aimTurretCommand      = new AimTurretCommand(turretSubsystem, limelightSubsystem);
-  private final ResetTurretCommand    resetTurretCommand    = new ResetTurretCommand(turretSubsystem);
+  private final AimTurretCommand aimTurretCommand = new AimTurretCommand(turretSubsystem, limelightSubsystem);
+  private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
 
   // blocker
   private final Command block = Util.blockSubsystems(subsystems);
-  
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
     // drives robot in tank drive according to the joysticks
-    driveSubsystem.setDefaultCommand(new DriveCommand(
-      driveSubsystem,
-      () -> oi.leftStick.getY(),
-      () -> oi.rightStick.getY()
-    ));
+    driveSubsystem.setDefaultCommand(new RunCommand(
+        () -> driveSubsystem.driveRobot(
+            DriveMode.TANK,
+            oi.leftStick.getY(),
+            oi.rightStick.getY()),
+        driveSubsystem));
   }
 
   /**
