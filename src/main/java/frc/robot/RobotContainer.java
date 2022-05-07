@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -59,10 +60,6 @@ public class RobotContainer {
 
   // COMMANDS
   // climber
-  private final RunArmCommand extendArmCommand = new RunArmCommand(climberSubsystem, false);
-  private final RunArmCommand retractArmCommand = new RunArmCommand(climberSubsystem, true);
-  private final RunTelescopeCommand extendTelescopeCommand = new RunTelescopeCommand(climberSubsystem, false);
-  private final RunTelescopeCommand retractTelescopeCommand = new RunTelescopeCommand(climberSubsystem, true);
 
   // drive
   // not sure what's going on with drive commands right now
@@ -113,10 +110,18 @@ public class RobotContainer {
     // this.hopper.whileHeld(new StartHopperCommand());
 
     // Climber
-    oi.extendTelescope.whenHeld(extendTelescopeCommand);
-    oi.retractTelescope.whenHeld(retractTelescopeCommand);
-    oi.extendArm.whenHeld(extendArmCommand);
-    oi.retractArm.whenHeld(retractArmCommand);
+    oi.extendTelescope.whenHeld(
+      new RunCommand(() -> climberSubsystem.runTelescope(false), climberSubsystem)
+    );
+    oi.retractTelescope.whenHeld(
+      new RunCommand(() -> climberSubsystem.runTelescope(true), climberSubsystem)
+    );
+    oi.extendArm.whenHeld(
+      new RunCommand(() -> climberSubsystem.runArms(false), climberSubsystem)
+    );
+    oi.retractArm.whenHeld(
+      new RunCommand(() -> climberSubsystem.runArms(true), climberSubsystem)
+    );
 
     // Shooter
     oi.aimButton.whenPressed(command)
