@@ -12,7 +12,7 @@ public final class N1155 extends Num implements Nat<N1155> {
     /**
      * The integer this class represents.
      * 
-     * @return The literal number 0.
+     * @return The literal number 1155.
      */
     @Override
     public int getNum() {

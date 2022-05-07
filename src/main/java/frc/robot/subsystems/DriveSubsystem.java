@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,8 +15,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +26,6 @@ import frc.robot.autoProfile.AutoProfile;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.sciSensorsActuators.SciSpark;
-import edu.wpi.first.math.controller.RamseteController;
 import frc.robot.util.Blockable;
 import frc.robot.util.Util;
 
@@ -58,10 +56,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     private DifferentialDriveOdometry odometry;
     private DifferentialDriveKinematics kinematics;
-    private SimpleMotorFeedforward feedForward;
+    
 
-    private PIDController leftPIDController = new PIDController(1, 0, 0);
-    private PIDController rightPIDController = new PIDController(1, 0, 0);
+    private final PIDController leftFeedback = new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD);
+    private final PIDController rightFeedback = new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD);
+    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.DriveConstants.kS, Constants.DriveConstants.kV, Constants.DriveConstants.kA);
     public RamseteController ramseteController;
 
     public enum DriveMode {
@@ -84,7 +83,6 @@ public class DriveSubsystem extends SubsystemBase {
 
         odometry = new DifferentialDriveOdometry(getRotation(), AutoProfile.STARTING_POSE);
         kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
-        feedForward = new SimpleMotorFeedforward(1, 3);
         ramseteController = new RamseteController(); // b and zeta
     }
 
@@ -95,11 +93,11 @@ public class DriveSubsystem extends SubsystemBase {
     }    
 
     public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
-        double leftFeedForward = feedForward.calculate(speeds.leftMetersPerSecond);
-        double rightFeedForward = feedForward.calculate(speeds.rightMetersPerSecond);
+        double leftFeedForward = feedforward.calculate(speeds.leftMetersPerSecond);
+        double rightFeedForward = feedforward.calculate(speeds.rightMetersPerSecond);
 
-        double leftOutput = leftPIDController.calculate(lEncoder.getSpeed(), speeds.leftMetersPerSecond);
-        double rightOutput = rightPIDController.calculate(rEncoder.getSpeed(), speeds.rightMetersPerSecond);
+        double leftOutput = leftFeedback.calculate(lEncoder.getSpeed(), speeds.leftMetersPerSecond);
+        double rightOutput = rightFeedback.calculate(rEncoder.getSpeed(), speeds.rightMetersPerSecond);
 
         leftGroup.setVoltage(leftOutput + leftFeedForward);
         rightGroup.setVoltage(rightOutput + rightFeedForward);
@@ -143,10 +141,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
         return new DifferentialDriveWheelSpeeds(getLeftAverageVelocity(), getRightAverageVelocity());
-    }
-
-    public void updateOdometry() {
-        odometry.update(getRotation(), lEncoder.getDistance(), rEncoder.getDistance());
     }
 
     public static <T> double getAverageOfArray(T[] array, java.util.function.ToDoubleFunction<? super T> arg0) {
@@ -193,15 +187,19 @@ public class DriveSubsystem extends SubsystemBase {
                 trajectory,
                 this::getPose,
                 ramseteController,
-                feedForward,
+                feedforward,
                 kinematics,
                 this::getWheelSpeeds,
-                leftPIDController,
-                rightPIDController,
+                leftFeedback,
+                rightFeedback,
                 this::tankDriveVolts,
                 this);
 
         return ramseteCommand.andThen(() -> tankDriveVolts(0, 0));
+    }
+
+    public void updateOdometry() {
+        odometry.update(getRotation(), lEncoder.getDistance(), rEncoder.getDistance());
     }
 
     @Override
