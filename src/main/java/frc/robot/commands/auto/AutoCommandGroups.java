@@ -16,8 +16,8 @@ public class AutoCommandGroups {
     //   ___.___.___.___.___.___.___.___.___.___.___.___.___.___.___ 
     // Red  balls:  B D E / G I L / M N
     // Blue balls:  A C F / H J K / O P
-    // Red  positions: 1 2 3 4
-    // Blue positions: 5 6 7 8
+    // Red  positions: 1 2 3 
+    // Blue positions: 4 5 6
         "/// /// /// /// /// /// /// /// /// /// /// /// /// /// ///"
     + "\n//                    |_   F   [E]                   [M] //"
     + "\n//                 [G] |_                                //"
@@ -40,24 +40,28 @@ public class AutoCommandGroups {
 
     public AutoCommandGroups (DriveSubsystem drive, IntakeSubsystem intake, ShooterSubsystem shooter, String initialPos) {
 
-        switch (initialPos) {
-            case "1":
-                this.TwoBallAuto.addCommands(
-                    new ParallelCommandGroup(
-                        new IntakeCommandGroup(),
-                        drive.getRamseteCommand("Pos" + initialPos + "_2Ball")
-                    ),
-                    new ShootSequence()  
-                );
+        this.TwoBallAuto.addCommands(
+            new ParallelCommandGroup(
+                new IntakeCommandGroup(),
+                drive.getRamseteCommand("Pos" + initialPos + "_2Ball")
+            ),
+            new ShootSequence()  
+        );
 
-                break;
+        switch (initialPos) {
             case "2":
+            this.FourBallAuto.addCommands(
+                TwoBallAuto,
+                new ParallelCommandGroup(
+                    new IntakeCommandGroup(),
+                    drive.getRamseteCommand("Pos" + initialPos + "_4Ball")
+                ),
+                new ShootSequence()  
+            );
                 break;
             case "3":
                 break;
             
-            
         }
-
     }
 }
