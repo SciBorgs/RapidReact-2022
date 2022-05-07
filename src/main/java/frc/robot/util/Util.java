@@ -368,6 +368,10 @@ public class Util {
         };
     }
 
+    public static <T> double getAverageOfArray(T[] array, java.util.function.ToDoubleFunction<? super T> arg0) {
+        return Arrays.stream(array).mapToDouble(arg0).average().orElse(Double.NaN);
+    }
+
     @SafeVarargs
     public static <T> Iterable<T> concat(T[]... arrs) {
 		return new Iterable<T>() {

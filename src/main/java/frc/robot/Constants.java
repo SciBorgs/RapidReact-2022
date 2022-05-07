@@ -33,7 +33,6 @@ public final class Constants {
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
     public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
     public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
-    public static final double TURRET_GEAR_RATIO = 26.0 / 300;
     // 1.0 / 230.0;
 
     //***************** FIELD DATA ************************//
@@ -101,6 +100,12 @@ public final class Constants {
     }
 
     public static final class TurretConstants {
+        // Gear ratios
+        public static final double TURRET_GEAR_RATIO = 26.0 / 300.0;
+        // Physical constraints
+        public static final double LIMIT = 85;
+        // Through Bore Encoder offset
+        public static final double OFFSET = 0;
         // Feedforward
         public static final double kS = 0;
         public static final double kV = 0;

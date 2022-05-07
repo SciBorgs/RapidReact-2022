@@ -6,9 +6,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
@@ -59,10 +59,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     // FLYWHEEL
-    public void setDesiredSpeed(double speed) {
-        targetSpeed = speed;
+    public void setTargetFlywheelSpeed(double targetSpeed) {
+        this.targetSpeed = targetSpeed;
     }
-
+    
     public double getCurrentFlywheelSpeed() {
         return flywheelEncoder.getSpeed();
     }
@@ -76,7 +76,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     // HOOD ANGLE
-    public void setDesiredAngle(double angle) {
+    public void setTargetHoodAngle(double angle) {
         // signs are reversed because the encoder returns negative values
         if (angle > 0 || angle < ShooterConstants.MAX) {
             System.out.println("BOUNDARY");
@@ -104,7 +104,7 @@ public class ShooterSubsystem extends SubsystemBase {
         rmotor.setVoltage(flywheelFB + flywheelFF);
         
         double hoodFB = hoodFeedback.calculate(hoodEncoder.getAngle(), targetAngle);
-        double hoodFF = hoodFeedforward.calculate(targetSpeed);
+        double hoodFF = hoodFeedforward.calculate(0);
         hood.setVoltage(hoodFB + hoodFF);
     }
 }

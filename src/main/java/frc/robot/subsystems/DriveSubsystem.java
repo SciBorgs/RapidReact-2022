@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.autoProfile.AutoProfile;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
 import frc.robot.sciSensorsActuators.SciSpark;
@@ -150,24 +149,20 @@ public class DriveSubsystem extends SubsystemBase {
         odometry.resetPosition(pose, getRotation());
     }
 
-    public static <T> double getAverageOfArray(T[] array, java.util.function.ToDoubleFunction<? super T> arg0) {
-        return Arrays.stream(array).mapToDouble(arg0).average().orElse(Double.NaN);
-    }
-
     public double getLeftCurrentAmps() {
-        return getAverageOfArray(leftSparks, CANSparkMax::getOutputCurrent);
+        return Util.getAverageOfArray(leftSparks, CANSparkMax::getOutputCurrent);
     }
 
     public double getRightCurrentAmps() {
-        return getAverageOfArray(rightSparks, CANSparkMax::getOutputCurrent);
+        return Util.getAverageOfArray(rightSparks, CANSparkMax::getOutputCurrent);
     }
 
     public double getLeftAverageVelocity() {
-        return getAverageOfArray(leftSparks, CANSparkMax::get);
+        return Util.getAverageOfArray(leftSparks, CANSparkMax::get);
     }
 
     public double getRightAverageVelocity() {
-        return getAverageOfArray(rightSparks, CANSparkMax::get);
+        return Util.getAverageOfArray(rightSparks, CANSparkMax::get);
     }
 
     public PIDController getLeftFeedback() {

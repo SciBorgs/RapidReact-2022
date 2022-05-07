@@ -7,6 +7,9 @@ import edu.wpi.first.math.Num;
  * A class representing the number 1155.
  */
 public final class N1155 extends Num implements Nat<N1155> {
+    private static final int int_1155 = 1155;
+    private static final Integer obj_1155 = Integer.valueOf(int_1155);
+
     private N1155() {}
 
     /**
@@ -16,9 +19,9 @@ public final class N1155 extends Num implements Nat<N1155> {
      */
     @Override
     public int getNum() {
-        return 1155;
+        return obj_1155;
     }
-    
+
     /**
      * The singleton instance of this class.
      */

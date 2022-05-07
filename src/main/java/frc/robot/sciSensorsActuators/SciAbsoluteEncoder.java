@@ -19,5 +19,4 @@ public class SciAbsoluteEncoder extends DutyCycleEncoder {
     public double getAngle() {
         return getAbsolutePosition() * factor - offset;
     }
-
 }
