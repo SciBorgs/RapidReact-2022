@@ -2,25 +2,22 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 
-import com.pathplanner.lib.PathPlanner;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.autoProfile.AutoProfile;
 import frc.robot.sciSensorsActuators.SciEncoder;
 import frc.robot.sciSensorsActuators.SciPigeon;
@@ -54,7 +51,12 @@ public class DriveSubsystem extends SubsystemBase {
             rightGroup);
 
     private DifferentialDriveOdometry odometry;
+    private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
 
+    private PIDController leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+    private PIDController rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
+    
     public enum DriveMode {
         TANK,
         ARCADE,
@@ -64,7 +66,8 @@ public class DriveSubsystem extends SubsystemBase {
     public DriveSubsystem() {
         lEncoder = new SciEncoder(1, 1, leftSparks);
         rEncoder = new SciEncoder(1, 1, rightSparks);
-
+        resetEncoders();
+        
         for (SciSpark motor : allSparks) {
             motor.setIdleMode(IdleMode.kBrake);
             motor.setSmartCurrentLimit(20);
@@ -74,7 +77,6 @@ public class DriveSubsystem extends SubsystemBase {
         drive.setDeadband(0.05);
 
         odometry = new DifferentialDriveOdometry(getRotation(), AutoProfile.STARTING_POSE);
-        
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -166,6 +168,22 @@ public class DriveSubsystem extends SubsystemBase {
 
     public double getRightAverageVelocity() {
         return getAverageOfArray(rightSparks, CANSparkMax::get);
+    }
+
+    public PIDController getLeftFeedback() {
+        return leftFeedback;
+    }
+
+    public PIDController getRightFeedback() {
+        return rightFeedback;
+    }
+
+    public SimpleMotorFeedforward getFeedforward() {
+        return feedforward;
+    }
+
+    public DifferentialDriveKinematics getKinematics() {
+        return kinematics;
     }
 
     public boolean isLeftStalling() {

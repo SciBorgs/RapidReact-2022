@@ -17,14 +17,15 @@ public class DriveRamsete extends RamseteCommand {
             trajectory,
             ds::getPose,
             new RamseteController(),
-            Constants.DriveConstants.feedForward,
-            Constants.DriveConstants.kinematics,
+            ds.getFeedforward(),
+            ds.getKinematics(),
             ds::getWheelSpeeds,
             new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD),
             new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD),
             ds::tankDriveVolts,
             ds
         );
+        
         
         this.driveSubsystem = ds;
         this.trajectory = trajectory;
