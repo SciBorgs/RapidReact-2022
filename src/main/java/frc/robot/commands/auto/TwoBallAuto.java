@@ -12,7 +12,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
         addCommands(
             new ParallelCommandGroup(
                 new IntakeCommandGroup(robot.intakeSubsystem, robot.hopperSubsystem),
-                new DriveRamsete(robot.driveSubsystem, "Pos" + initialPos + "_2Ball"),
+                new DriveRamsete(robot.driveSubsystem, "Pos" + initialPos + "_2Ball")
             ),
             new ShootCommandGroup(robot.shooterSubsystem, robot.limelightSubsystem, robot.hopperSubsystem)
         );

@@ -61,17 +61,12 @@ public final class Constants {
         public static final double kP = 0;
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final PIDController leftFeedback = new PIDController(kP, kI, kD);
-        public static final PIDController rightFeedback = new PIDController(kP, kI, kD);
+        
         
         // Feedforward
         public static final double kS = 0;
         public static final double kV = 0;
         public static final double kA = 0;
-        public static final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
-
-        // Kinematics
-        public static final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
         
         // Path Following
         public static final int maxVel = 8;

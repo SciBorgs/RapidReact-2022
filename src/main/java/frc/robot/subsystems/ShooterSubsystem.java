@@ -79,7 +79,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setDesiredAngle(double angle) {
         // signs are reversed because the encoder returns negative values
         if (angle > 0 || angle < ShooterConstants.MAX) {
-            new PrintCommand("BOUNDARY");
+            System.out.println("BOUNDARY");
             return;
         }
         targetAngle = angle;
