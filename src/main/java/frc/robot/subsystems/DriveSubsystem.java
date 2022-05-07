@@ -11,7 +11,6 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -55,13 +54,10 @@ public class DriveSubsystem extends SubsystemBase {
             rightGroup);
 
     private DifferentialDriveOdometry odometry;
-    private DifferentialDriveKinematics kinematics;
     
-
-    private final PIDController leftFeedback = new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD);
-    private final PIDController rightFeedback = new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD);
-    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.DriveConstants.kS, Constants.DriveConstants.kV, Constants.DriveConstants.kA);
-    public RamseteController ramseteController;
+    private PIDController leftPIDController = new PIDController(1, 0, 0);
+    private PIDController rightPIDController = new PIDController(1, 0, 0);
+    
 
     public enum DriveMode {
         TANK,
@@ -82,8 +78,7 @@ public class DriveSubsystem extends SubsystemBase {
         drive.setDeadband(0.05);
 
         odometry = new DifferentialDriveOdometry(getRotation(), AutoProfile.STARTING_POSE);
-        kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
-        ramseteController = new RamseteController(); // b and zeta
+        
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -93,8 +88,8 @@ public class DriveSubsystem extends SubsystemBase {
     }    
 
     public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
-        double leftFeedForward = feedforward.calculate(speeds.leftMetersPerSecond);
-        double rightFeedForward = feedforward.calculate(speeds.rightMetersPerSecond);
+        double leftFeedForward = Constants.DriveConstants.feedForward.calculate(speeds.leftMetersPerSecond);
+        double rightFeedForward = Constants.DriveConstants.feedForward.calculate(speeds.rightMetersPerSecond);
 
         double leftOutput = leftFeedback.calculate(lEncoder.getSpeed(), speeds.leftMetersPerSecond);
         double rightOutput = rightFeedback.calculate(rEncoder.getSpeed(), speeds.rightMetersPerSecond);
@@ -143,6 +138,20 @@ public class DriveSubsystem extends SubsystemBase {
         return new DifferentialDriveWheelSpeeds(getLeftAverageVelocity(), getRightAverageVelocity());
     }
 
+    public void updateOdometry() {
+        odometry.update(getRotation(), lEncoder.getDistance(), rEncoder.getDistance());
+    }
+
+    public void resetEncoders() {
+        lEncoder.reset();
+        rEncoder.reset();
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+        odometry.resetPosition(pose, getRotation());
+    }
+
     public static <T> double getAverageOfArray(T[] array, java.util.function.ToDoubleFunction<? super T> arg0) {
         return Arrays.stream(array).mapToDouble(arg0).average().orElse(Double.NaN);
     }
@@ -179,27 +188,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     public boolean isStalling() {
         return isLeftStalling() || isRightStalling();
-    }
-
-    public Command getRamseteCommand(String pathName) {
-        Trajectory trajectory = PathPlanner.loadPath(pathName, 8, 5);
-        RamseteCommand ramseteCommand = new RamseteCommand(
-                trajectory,
-                this::getPose,
-                ramseteController,
-                feedforward,
-                kinematics,
-                this::getWheelSpeeds,
-                leftFeedback,
-                rightFeedback,
-                this::tankDriveVolts,
-                this);
-
-        return ramseteCommand.andThen(() -> tankDriveVolts(0, 0));
-    }
-
-    public void updateOdometry() {
-        odometry.update(getRotation(), lEncoder.getDistance(), rEncoder.getDistance());
     }
 
     @Override

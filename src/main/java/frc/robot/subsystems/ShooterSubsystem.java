@@ -44,9 +44,12 @@ public class ShooterSubsystem extends SubsystemBase {
     private ShuffleboardTab mainTab;
 
     public ShooterSubsystem() {
-
+        // shuffleboard
         mainTab = Shuffleboard.getTab("Shootr ");
-        mainTab.addNumber("Hood Angle", this::getHoodAngle);
+        mainTab.addNumber("Current Hood Angle", this::getCurrentHoodAngle);
+        mainTab.addNumber("Target Hood Angle", this::getTargetHoodAngle);
+        mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
+        mainTab.addNumber("Target Flywheel Speed", this::getTargetFlywheelSpeed);
 
         hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
         rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
@@ -136,7 +139,7 @@ public class ShooterSubsystem extends SubsystemBase {
         double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
         rmotor.setVoltage(flywheelFB + flywheelFF);
         
-        double hoodFB = hoodFeedback.calculate(flywheelEncoder.getSpeed(), targetSpeed);
+        double hoodFB = hoodFeedback.calculate(hoodEncoder.getSpeed(), targetAngle);
         double hoodFF = hoodFeedforward.calculate(targetSpeed);
         rmotor.setVoltage(hoodFB + hoodFF);
     }
