@@ -57,6 +57,12 @@ public class SciEncoder {
         return this.getRawDistance() * this.factor;
     }
 
+    public void reset() {
+        for (RelativeEncoder encoder : this.encoders) {
+            encoder.setPosition(0);
+        }
+    }
+
     public double getSpeed() {
         return this.getRawSpeed() * this.factor;
     }

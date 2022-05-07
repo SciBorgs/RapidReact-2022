@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import frc.robot.util.Point;
 
 /**
@@ -59,10 +61,19 @@ public final class Constants {
         public static final double kP = 0;
         public static final double kI = 0;
         public static final double kD = 0;
+        
         // Feedforward
         public static final double kS = 0;
         public static final double kV = 0;
         public static final double kA = 0;
+
+        // Kinematics
+        public static final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
+        public static final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
+
+        // Path Following
+        public static final int maxVel = 8;
+        public static final int maxAccel = 5;
     }
 
     public static final class ShooterConstants {
