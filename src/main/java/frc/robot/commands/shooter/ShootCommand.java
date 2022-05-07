@@ -21,18 +21,18 @@ public class ShootCommand extends CommandBase {
     @Override
     public void initialize() {
         shooterSubsystem.resetDistanceSpun();
+        shooterSubsystem.setTargetFlywheelSpeed(POWER);
     }
 
     @Override
     public void execute() {
-        shooterSubsystem.runFlywheel(POWER);
-        writeData();
+        // writeData();
     }
 
     public void writeData() {
         CSVWriter writer = new CSVWriter("/home/lvuser/logging.csv");
         writer.addData(
-            shooterSubsystem.translateFromEncoder(shooterSubsystem.getHoodAngle()),
+            shooterSubsystem.translateFromEncoder(shooterSubsystem.getCurrentHoodAngle()),
             limeLightSubsystem.getDistance(),
             POWER,
             "",

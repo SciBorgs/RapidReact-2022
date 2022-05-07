@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
@@ -34,6 +35,8 @@ public class TurretSubsystem extends SubsystemBase {
 
 
     public TurretSubsystem() {
+        feedback.setTolerance(0.2);
+
         mainTab = Shuffleboard.getTab("turret  ");
         mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
         mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
@@ -47,7 +50,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setTargetAngle(double targetAngle) {
-        this.targetAngle = targetAngle;
+        this.targetAngle = MathUtil.clamp(targetAngle, -TurretConstants.LIMIT, TurretConstants.LIMIT);
     }
 
     public double getCurrentAngle() {
@@ -56,6 +59,10 @@ public class TurretSubsystem extends SubsystemBase {
 
     public double getTargetAngle() {
         return targetAngle;
+    }
+
+    public boolean isAtTarget() {
+        return feedback.atGoal();
     }
 
     @Override

@@ -6,40 +6,29 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class AimTurretCommand extends CommandBase {
-    private TurretSubsystem turretSubsystem;
-    private LimeLightSubsystem limeLightSubsystem;
-    private static int unknownCount = 0;
-    public static final int UNKNOWN_LIMIT = 60;
+    private TurretSubsystem turret;
+    private LimeLightSubsystem limelight;
 
-    public AimTurretCommand(TurretSubsystem turretSubsystem, LimeLightSubsystem limeLightSubsystem) {
-        this.turretSubsystem = turretSubsystem;
-        this.limeLightSubsystem = limeLightSubsystem;
-        addRequirements(turretSubsystem, limeLightSubsystem);
+    public AimTurretCommand(TurretSubsystem turret, LimeLightSubsystem limelight) {
+        this.turret = turret;
+        this.limelight = limelight;
+        addRequirements(turret, limelight);
     }
     
     @Override
     public void execute() {
-        limeLightSubsystem.setCameraParams(limeLightSubsystem.getTable(), "pipeline", 0);
-        NetworkTable table = limeLightSubsystem.getTable();
-        double tv = limeLightSubsystem.getTableData(table, "tv");
-        double tx = limeLightSubsystem.getTableData(table, "tx");
+        limelight.setCameraParams(limelight.getTable(), "pipeline", 0);
+        NetworkTable table = limelight.getTable();
+        double tv = limelight.getTableData(table, "tv");
+        double tx = limelight.getTableData(table, "tx");
 
         if (tv == 1) {
-            unknownCount = 0;
-            turretSubsystem.pointTowardsTarget(tx);
-        } else if (unknownCount > UNKNOWN_LIMIT) {
-            turretSubsystem.stop();
-        } else {
-            unknownCount++;
+            turret.setTargetAngle(turret.getCurrentAngle() + tx);
         }
     }
     
     @Override
     public boolean isFinished() {
-        if (Math.abs(turretSubsystem.getAngle() - turretSubsystem.getTarget()) < 0.1) {
-            turretSubsystem.stop();
-            return true;
-        }
-        return false;
+        return turret.isAtTarget();
     }
 }

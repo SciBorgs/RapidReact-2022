@@ -4,9 +4,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,6 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private ShuffleboardTab mainTab;
 
     public ShooterSubsystem() {
+        
         // shuffleboard
         mainTab = Shuffleboard.getTab("Shootr ");
         mainTab.addNumber("Current Hood Angle", this::getCurrentHoodAngle);
@@ -54,8 +55,12 @@ public class ShooterSubsystem extends SubsystemBase {
         rmotor.burnFlash();
         lmotor.burnFlash();
 
-        flywheelEncoder = new SciEncoder(ShooterConstants.FLYWHEEL_GEAR_RATIO, ShooterConstants.FLYWHEEL_CIRCUMFERENCE, rmotor.getEncoder());
-        hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, ShooterConstants.HOOD_GEAR_RATIO, ShooterConstants.OFFSET);
+        flywheelEncoder = new SciEncoder(ShooterConstants.FLYWHEEL_GEAR_RATIO, ShooterConstants.FLYWHEEL_CIRCUMFERENCE,
+                rmotor.getEncoder());
+        hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, ShooterConstants.HOOD_GEAR_RATIO,
+                ShooterConstants.OFFSET);
+
+        hoodFeedback.setTolerance(0.2);
     }
     
     // FLYWHEEL
@@ -77,12 +82,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // HOOD ANGLE
     public void setTargetHoodAngle(double angle) {
-        // signs are reversed because the encoder returns negative values
-        if (angle > 0 || angle < ShooterConstants.MAX) {
-            System.out.println("BOUNDARY");
-            return;
-        }
-        targetAngle = angle;
+        targetAngle = MathUtil.clamp(angle, ShooterConstants.MAX, 0);
     }
 
     public double getCurrentHoodAngle() {
@@ -95,6 +95,10 @@ public class ShooterSubsystem extends SubsystemBase {
     
     public void resetDistanceSpun() {
         flywheelEncoder.setDistance(0);
+    }
+
+    public boolean isAtTarget() {
+        return hoodFeedback.atSetpoint();
     }
 
     @Override
