@@ -54,4 +54,48 @@ public final class Constants {
     public static final double HEIGHT_DIFF = 2.08534;
     public static final double CAM_MOUNT_ANGLE = 30;
     
+    public static final class DriveConstants {
+        // PID (for left and motor groups)
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        // Feedforward
+        public static final double kS = 0;
+        public static final double kV = 0;
+        public static final double kA = 0;
+    }
+
+    public static final class ShooterConstants {
+        // Hood FF
+        public static final double hS = 0;
+        public static final double hV = 0;
+        public static final double hA = 0;
+        // Hood PID
+        public static final double hP = 6.0/360;
+        public static final double hI = 0;
+        public static final double hD = 0;
+        // Flywheel FF
+        public static final double fS = 0;
+        public static final double fV = 0;
+        public static final double fA = 0;
+        // Flywheel PID
+        public static final double fP = 0;
+        public static final double fI = 0;
+        public static final double fD = 0;
+    
+    }
+
+    public static final class TurretConstants {
+        // Feedforward
+        public static final double kS = 0;
+        public static final double kV = 0;
+        public static final double kA = 0;
+        // PID
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        // Trapezoidal motion profile constraints
+        public static final double maxA = 0; // acceleration
+        public static final double maxV = 0; // velocity
+    }
 }

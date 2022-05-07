@@ -5,10 +5,12 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.sciSensorsActuators.SciEncoder;
@@ -18,23 +20,20 @@ import frc.robot.util.ShufflePID;
 
 @Blockable
 public class ShooterSubsystem extends SubsystemBase {
-    private double h_P = 6.0/360, h_I = 0, h_D = 0;
-    private double f_P = 0, f_I = 0, f_D = 0;
-    private final PID hoodPID = new PID(h_P, h_I, h_D);
-    private final PID flywheelPID = new PID(f_P, f_I, f_D);
+    private final PID hoodPID = new PID(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
+
+    private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ShooterConstants.maxV, ShooterConstants.maxA);
+    private final ProfiledPIDController controller = new ProfiledPIDController(ShooterConstants.fP, ShooterConstants.fP, ShooterConstants.fP, constraints);
     
-    private CANSparkMax hood, lmotor, rmotor;
-    private SciEncoder flywheelEncoder;
-    private SciAbsoluteEncoder hoodEncoder;
+    private final CANSparkMax hood, lmotor, rmotor;
+    private final SciEncoder flywheelEncoder;
+    private final SciAbsoluteEncoder hoodEncoder;
 
     private final double LOWER_LIMIT = 35.5;
     private final double UPPER_LIMIT = 9.2;
     private final double SPEED_LIMIT = 0.1;
 
     private ShuffleboardTab mainTab;
-
-    // hood angle, adjusted by raise and lower hood commands
-    public double goToHoodAngle = 15;
 
     public ShooterSubsystem() {
 
