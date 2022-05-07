@@ -4,17 +4,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
 import frc.robot.sciSensorsActuators.SciEncoder;
@@ -26,10 +22,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax hood, lmotor, rmotor;
     private final SciEncoder flywheelEncoder;
     private final SciAbsoluteEncoder hoodEncoder;
-
-    private final double LOWER_LIMIT = 35.5;
-    private final double UPPER_LIMIT = 9.2;
-    private final double SPEED_LIMIT = 0.1;
     
     // Hood control
     private final PIDController hoodFeedback = new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
@@ -62,8 +54,8 @@ public class ShooterSubsystem extends SubsystemBase {
         rmotor.burnFlash();
         lmotor.burnFlash();
 
-        flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
-        hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
+        flywheelEncoder = new SciEncoder(ShooterConstants.FLYWHEEL_GEAR_RATIO, ShooterConstants.FLYWHEEL_CIRCUMFERENCE, rmotor.getEncoder());
+        hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, ShooterConstants.HOOD_GEAR_RATIO, ShooterConstants.OFFSET);
     }
     
     // FLYWHEEL
@@ -85,10 +77,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // HOOD ANGLE
     public void setDesiredAngle(double angle) {
-        angle = translateToEncoder(angle);
-
         // signs are reversed because the encoder returns negative values
-        if (angle < UPPER_LIMIT || angle > LOWER_LIMIT) {
+        if (angle > 0 || angle < ShooterConstants.MAX) {
             new PrintCommand("BOUNDARY");
             return;
         }
@@ -107,40 +97,14 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelEncoder.setDistance(0);
     }
 
-    // temp
-    // public void setHoodSpeed(double speed) {
-    //     System.out.println("Curr ang: " + getHoodAngle() + " speed " + speed);
-    //     if (speed > 0 && getHoodAngle() > LOWER_LIMIT) {
-    //         // No up
-    //         System.out.println("Top boundary; cannot go up!");
-    //         speed = 0;
-    //     } else if (speed < 0 && getHoodAngle() < UPPER_LIMIT) {
-    //         // No down
-    //         System.out.println("Bottom boundary; cannot go down!");
-    //         speed = 0;
-    //     }
-    //     hood.set(speed);
-    // }
-
-    // TODO fix hood encoder
-    // normal -> crazy encoder
-    private double translateToEncoder(double encoderVal) {
-        return LOWER_LIMIT - encoderVal;
-    }
-
-    // crazy encoder -> normal
-    public double translateFromEncoder(double val) {
-        return val - LOWER_LIMIT;
-    }
-
     @Override
     public void periodic() {
         double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getSpeed(), targetSpeed);
         double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
         rmotor.setVoltage(flywheelFB + flywheelFF);
         
-        double hoodFB = hoodFeedback.calculate(hoodEncoder.getSpeed(), targetAngle);
+        double hoodFB = hoodFeedback.calculate(hoodEncoder.getAngle(), targetAngle);
         double hoodFF = hoodFeedforward.calculate(targetSpeed);
-        rmotor.setVoltage(hoodFB + hoodFF);
+        hood.setVoltage(hoodFB + hoodFF);
     }
 }

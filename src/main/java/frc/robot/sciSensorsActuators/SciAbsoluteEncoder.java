@@ -2,30 +2,22 @@ package frc.robot.sciSensorsActuators;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
-public class SciAbsoluteEncoder {
-    private DutyCycleEncoder absEncoder;
-    public double offset;
+public class SciAbsoluteEncoder extends DutyCycleEncoder {
     private double factor;
+    public double offset;
+
+    public SciAbsoluteEncoder(int port, double gearRatio, double offset) {
+        super(port);
+        this.factor = gearRatio * 360;
+        this.offset = offset;
+    }
 
     public SciAbsoluteEncoder(int port, double gearRatio) {
-        this.absEncoder = new DutyCycleEncoder(port);
-        factor = gearRatio * 360;
+        this(port, gearRatio, 0.0);
     }
 
-    public boolean connected() {
-        return this.absEncoder.isConnected();
+    public double getAngle() {
+        return getAbsolutePosition() * factor - offset;
     }
-
-    /*
-    public void setOffset(double offset) {this.offset = offset;}
-    public double getOffset(double angle) {return this.offset = angle - absEncoder.getDistance();}
-
-    public void setOffset(double offset) { absEncoder.setPositionOffset(offset); }
-    public double getOffset() { return absEncoder.getPositionOffset(); }
-    */
-
-    //returns the angle the hood is currently at:
-    public double getAngle() { return absEncoder.getAbsolutePosition() * factor; }
-    public void reset() { absEncoder.reset(); }
 
 }

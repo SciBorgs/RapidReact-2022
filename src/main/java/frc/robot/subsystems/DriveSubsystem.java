@@ -54,10 +54,6 @@ public class DriveSubsystem extends SubsystemBase {
             rightGroup);
 
     private DifferentialDriveOdometry odometry;
-    
-    private PIDController leftPIDController = new PIDController(1, 0, 0);
-    private PIDController rightPIDController = new PIDController(1, 0, 0);
-    
 
     public enum DriveMode {
         TANK,
@@ -91,8 +87,8 @@ public class DriveSubsystem extends SubsystemBase {
         double leftFeedForward = Constants.DriveConstants.feedForward.calculate(speeds.leftMetersPerSecond);
         double rightFeedForward = Constants.DriveConstants.feedForward.calculate(speeds.rightMetersPerSecond);
 
-        double leftOutput = leftFeedback.calculate(lEncoder.getSpeed(), speeds.leftMetersPerSecond);
-        double rightOutput = rightFeedback.calculate(rEncoder.getSpeed(), speeds.rightMetersPerSecond);
+        double leftOutput = Constants.DriveConstants.leftFeedback.calculate(lEncoder.getSpeed(), speeds.leftMetersPerSecond);
+        double rightOutput = Constants.DriveConstants.rightFeedback.calculate(rEncoder.getSpeed(), speeds.rightMetersPerSecond);
 
         leftGroup.setVoltage(leftOutput + leftFeedForward);
         rightGroup.setVoltage(rightOutput + rightFeedForward);

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import frc.robot.util.Point;
@@ -32,7 +33,6 @@ public final class Constants {
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
     public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
     public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
-    public static final double TOTAL_HOOD_GEAR_RATIO = 36.0  / 334.0;
     public static final double TURRET_GEAR_RATIO = 26.0 / 300;
     // 1.0 / 230.0;
 
@@ -47,7 +47,7 @@ public final class Constants {
     public static final Point[] BLUE_BALLS = new Point[] {
         new Point(10.629, 0.958), new Point(12.144, 5.042), new Point(7.368, 7.490),
         new Point(4.968, 6.194), new Point(5.03, 1.864), new Point(7.582, 0.283)};
-    public static final double FLYWHEEL_GEAR_RATIO = 1;
+    
     public static final double FENDER_RADIUS = 1.0;
 
     //public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
@@ -61,22 +61,31 @@ public final class Constants {
         public static final double kP = 0;
         public static final double kI = 0;
         public static final double kD = 0;
+        public static final PIDController leftFeedback = new PIDController(kP, kI, kD);
+        public static final PIDController rightFeedback = new PIDController(kP, kI, kD);
         
         // Feedforward
         public static final double kS = 0;
         public static final double kV = 0;
         public static final double kA = 0;
+        public static final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
 
         // Kinematics
         public static final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
-        public static final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
-
+        
         // Path Following
         public static final int maxVel = 8;
         public static final int maxAccel = 5;
     }
 
     public static final class ShooterConstants {
+        // Gear ratios
+        public static final double FLYWHEEL_GEAR_RATIO = 1;
+        public static final double FLYWHEEL_CIRCUMFERENCE = 1;
+        public static final double HOOD_GEAR_RATIO = 36.0  / 334.0;
+        // Through Bore Encoder offset
+        public static final double OFFSET = 32.5;
+        public static final double MAX = -23.3;
         // Hood FF
         public static final double hS = 0;
         public static final double hV = 0;
