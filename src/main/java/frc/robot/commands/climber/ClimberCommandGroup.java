@@ -4,11 +4,11 @@ import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimberCommandGroup extends SequentialCommandGroup {
     // TODO incomplete
-    public ClimberCommandGroup(ClimberSubsystem climberSubsystem) {
+    public ClimberCommandGroup(ClimberSubsystem climber) {
         addCommands(
-            new RunTelescopeCommand(false).withTimeout(2.0), 
-            new RunArmCommand(true).withTimeout(2.0),
-            new RunTelescopeCommand(true).withTimeout(2.0)
+            new RunTelescopeCommand(climber, false).withTimeout(2.0), 
+            new RunArmCommand(climber, true).withTimeout(2.0),
+            new RunTelescopeCommand(climber, true).withTimeout(2.0)
         );
     }
 }

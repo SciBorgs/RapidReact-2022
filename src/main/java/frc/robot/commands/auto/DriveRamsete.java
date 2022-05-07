@@ -4,7 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import com.pathplanner.lib.PathPlanner;
 
@@ -17,11 +17,11 @@ public class DriveRamsete extends RamseteCommand {
             trajectory,
             ds::getPose,
             new RamseteController(),
-            Constants.DriveConstants.feedForward,
-            Constants.DriveConstants.kinematics,
+            DriveConstants.feedForward,
+            DriveConstants.kinematics,
             ds::getWheelSpeeds,
-            new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD),
-            new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD),
+            new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
+            new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
             ds::tankDriveVolts,
             ds
         );
@@ -31,7 +31,7 @@ public class DriveRamsete extends RamseteCommand {
     }
 
     public DriveRamsete(DriveSubsystem ds, String pathName) {
-        this(ds, PathPlanner.loadPath(pathName, Constants.DriveConstants.maxVel, Constants.DriveConstants.maxAccel));
+        this(ds, PathPlanner.loadPath(pathName, DriveConstants.maxVel, DriveConstants.maxAccel));
     }
 
     @Override
