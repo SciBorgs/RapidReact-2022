@@ -28,6 +28,7 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/DriveSubsystem": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/LimeLightSubsystem": "Subsystem",
       "/LiveWindow/LocalizationSubsystem": "Subsystem",
       "/LiveWindow/PhotonVisionSubsystem": "Subsystem",
@@ -46,6 +47,7 @@
       "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
+      "/LiveWindow/Ungrouped/Pigeon IMU [1]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
@@ -115,7 +117,7 @@
     "Plot <0>": {
       "plots": [
         {
-          "height": 190,
+          "height": 130,
           "series": [
             {
               "color": [
@@ -163,7 +165,7 @@
     "Plot <1>": {
       "plots": [
         {
-          "height": 91,
+          "height": 35,
           "series": [
             {
               "color": [

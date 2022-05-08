@@ -21,6 +21,7 @@ import frc.robot.sciSensors.SciPigeon;
 import frc.robot.sciSensors.SciSpark;
 import frc.robot.util.Blockable;
 import frc.robot.util.Util;
+import frc.robot.Robot;
 
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
@@ -73,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
         leftGroup.setInverted(true);
         drive.setDeadband(0.05);
 
-        odometry = new DifferentialDriveOdometry(getRotation());
+        odometry = new DifferentialDriveOdometry(Robot.isReal() ? pigeon.getRotation2d() : new Rotation2d());
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -122,8 +123,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getRotation() {
-        return new Rotation2d();
-        // pigeon.getAngle()
+        return Robot.isReal() ? pigeon.getRotation2d() : new Rotation2d();
     }
 
     public Pose2d getPose() {
@@ -178,6 +178,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     public DifferentialDriveKinematics getKinematics() {
         return kinematics;
+    }
+
+    public Iterable<SciSpark> getAllSparks() {
+        return allSparks;
     }
 
     public boolean isLeftStalling() {

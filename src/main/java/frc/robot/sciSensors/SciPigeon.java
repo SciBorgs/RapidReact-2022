@@ -1,8 +1,8 @@
 package frc.robot.sciSensors;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
-public class SciPigeon extends PigeonIMU {
+public class SciPigeon extends WPI_PigeonIMU {
     
     public SciPigeon(int id) {
         super(id);
