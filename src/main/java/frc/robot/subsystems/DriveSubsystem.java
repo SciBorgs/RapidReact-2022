@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -12,6 +13,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -27,6 +29,7 @@ import frc.robot.Robot;
 public class DriveSubsystem extends SubsystemBase {
     private SciEncoder lEncoder, rEncoder;
     public SciPigeon pigeon;
+    private BasePigeonSimCollection pigeonSim;
 
     private final SciSpark[] leftSparks = {
             new SciSpark(PortMap.LEFT_FRONT_SPARK),
@@ -55,6 +58,8 @@ public class DriveSubsystem extends SubsystemBase {
     private PIDController rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
     
+    private Field2d field2d;
+
     public enum DriveMode {
         TANK,
         ARCADE,
@@ -74,7 +79,11 @@ public class DriveSubsystem extends SubsystemBase {
         leftGroup.setInverted(true);
         drive.setDeadband(0.05);
 
-        odometry = new DifferentialDriveOdometry(Robot.isReal() ? pigeon.getRotation2d() : new Rotation2d());
+        pigeon = new SciPigeon(PortMap.PIGEON_ID);
+        pigeonSim = pigeon.getSimCollection();
+        
+        odometry = new DifferentialDriveOdometry(pigeon.getRotation2d());
+        field2d = new Field2d();
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -123,7 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getRotation() {
-        return Robot.isReal() ? pigeon.getRotation2d() : new Rotation2d();
+        return pigeon.getRotation2d();
     }
 
     public Pose2d getPose() {
@@ -205,5 +214,6 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
+        field2d.setRobotPose(odometry.getPoseMeters());
     }
 }

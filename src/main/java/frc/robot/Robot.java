@@ -22,7 +22,9 @@ import frc.robot.sciSensors.SciSpark;
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVPhysicsSim;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,14 +38,6 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   // ****** SIMULATION ******
-  
-  WPI_PigeonIMU pigeon = new WPI_PigeonIMU(1);
-  private BasePigeonSimCollection pigeonSim = pigeon.getSimCollection();
-
-  
-  
-  private Field2d field2d = new Field2d();
-  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(pigeon.getRotation2d());
 
 
   /**
@@ -72,7 +66,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    odometry.update(pigeon.getRotation2d(), leftDistanceMeters, rightDistanceMeters)
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
