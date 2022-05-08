@@ -59,7 +59,6 @@ public class PortMap {
     public static final class XboxController {
         // BUTTONS
 
-
         public static final int XBOX_A = 1;
         public static final int XBOX_B = 2;
         public static final int XBOX_X = 3;

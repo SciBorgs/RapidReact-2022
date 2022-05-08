@@ -54,7 +54,7 @@ public final class Constants {
     
     public static final class DriveConstants {
         // PID (for left and motor groups)
-        public static final double kP = 9;
+        public static final double kP = 0;
         public static final double kI = 0;
         public static final double kD = 0;
 
@@ -64,8 +64,8 @@ public final class Constants {
         public static final double kA = 0;
         
         // Path Following
-        public static final int maxVel = 100;
-        public static final int maxAccel = 100;
+        public static final int maxVel = 8;
+        public static final int maxAccel = 5;
     }
 
     public static final class ShooterConstants {

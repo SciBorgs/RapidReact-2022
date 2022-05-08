@@ -41,23 +41,6 @@ public class Robot extends TimedRobot {
   private Field2d field2d = new Field2d();
   private RobotContainer m_robotContainer;
  
-  
-  // ****** SIMULATION ******
-
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {
-    for(SciSpark spark : m_robotContainer.driveSubsystem.getAllSparks()) {
-      REVPhysicsSim.getInstance().addSparkMax(spark, DCMotor.getNEO(1));
-    }
-  } 
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {
-    REVPhysicsSim.getInstance().run();
-  }
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -96,7 +79,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    CommandScheduler.getInstance().schedule(new DriveRamsete(m_robotContainer.driveSubsystem, "Pos1_2Ball"));
+    CommandScheduler.getInstance().schedule(m_robotContainer.getAutonomousCommand());
   }
  
   /** This function is called periodically during autonomous. */
@@ -119,6 +102,21 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {}
+
+  /** This function is called once when the robot is first started up. */
+  @Override
+  public void simulationInit() {
+    for(SciSpark spark : m_robotContainer.driveSubsystem.getAllSparks()) {
+      REVPhysicsSim.getInstance().addSparkMax(spark, DCMotor.getNEO(1));
+    }
+  } 
+
+  /** This function is called periodically whilst in simulation. */
+  @Override
+  public void simulationPeriodic() {
+    REVPhysicsSim.getInstance().run();
+  }
+
 
   @Override
   public void testInit() {

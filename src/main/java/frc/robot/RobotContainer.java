@@ -83,12 +83,14 @@ public class RobotContainer {
     configureButtonBindings();
 
     // drives robot in tank drive according to the joysticks
-    // driveSubsystem.setDefaultCommand(new RunCommand(
-    //     () -> driveSubsystem.driveRobot(
-    //         DriveMode.TANK,
-    //         oi.leftStick.getY(),
-    //         oi.rightStick.getY()),
-    //     driveSubsystem));
+    if(Robot.isReal()) {
+      driveSubsystem.setDefaultCommand(new RunCommand(
+        () -> driveSubsystem.driveRobot(
+            DriveMode.TANK,
+            oi.leftStick.getY(),
+            oi.rightStick.getY()),
+        driveSubsystem));
+    }
   }
 
   /**

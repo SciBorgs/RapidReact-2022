@@ -93,11 +93,9 @@ public class DriveSubsystem extends SubsystemBase {
         else {
             for (SciSpark s : leftSparks) {
                 s.setVoltage(leftVolts);
-                System.out.println(s.get());
             } 
             for (SciSpark s : rightSparks) {
                 s.setVoltage(rightVolts);
-                System.out.println(s.get()); 
             }  
         }
 
@@ -117,11 +115,9 @@ public class DriveSubsystem extends SubsystemBase {
     public void drive(double left, double right) {
         for (SciSpark s : leftSparks) {
             s.setVoltage(left);
-            System.out.println(s.get());
         } 
         for (SciSpark s : rightSparks) {
             s.setVoltage(right);
-            System.out.println(s.get()); 
         }  
 
     }

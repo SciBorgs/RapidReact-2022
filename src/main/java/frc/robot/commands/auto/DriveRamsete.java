@@ -26,7 +26,6 @@ public class DriveRamsete extends RamseteCommand {
             ds
         );
         
-        
         this.driveSubsystem = ds;
         this.trajectory = trajectory;
     }
@@ -38,7 +37,6 @@ public class DriveRamsete extends RamseteCommand {
     @Override
     public void initialize() {
         super.initialize();
-        System.out.println("init: " + trajectory.getInitialPose()); 
         driveSubsystem.resetOdometry(trajectory.getInitialPose()); 
     }
 
