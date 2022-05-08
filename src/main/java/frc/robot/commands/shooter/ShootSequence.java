@@ -2,7 +2,6 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.commands.hopper.StartElevatorCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -36,7 +35,11 @@ public class ShootSequence extends SequentialCommandGroup {
                     () -> shooter.setTargetFlywheelSpeed(0),
                     shooter
                 ).withTimeout(timeout),
-                new StartElevatorCommand(hopper)
+                new StartEndCommand(
+                    () -> hopper.startElevator(), 
+                    () -> hopper.stopElevator(), 
+                    hopper
+                )
             )
         );
 

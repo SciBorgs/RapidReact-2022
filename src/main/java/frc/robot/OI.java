@@ -48,8 +48,7 @@ public class OI {
         if (isXbox) {
             // Intake
             this.intakeBalls       = new JoystickButton(this.xboxController, XBOX_B);
-            this.lowerIntakeArms   = new JoystickButton(this.xboxController, XBOX_Y);
-            this.raiseIntakeArms   = new JoystickButton(this.xboxController, XBOX_BACK);
+            this.toggleIntake      = new JoystickButton(this.xboxController, XBOX_Y);
 
             // Intake-Hopper-Compressor
             this.startHopper       = new JoystickButton(this.xboxController, XBOX_STICK_LEFT_BUTTON);
@@ -67,8 +66,7 @@ public class OI {
         } else {
             // Intake
             this.intakeBalls       = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
-            this.lowerIntakeArms   = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
-            this.raiseIntakeArms   = new JoystickButton(this.leftStick, JOYSTICK_CENTER_BUTTON);
+            this.toggleIntake      = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
 
             // Intake-Hopper-Compressor
             // this.startHopper       = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
