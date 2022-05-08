@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.sciSensorsActuators.SciPigeon;
+import frc.robot.sciSensors.SciPigeon;
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -34,8 +35,8 @@ public class Robot extends TimedRobot {
   private PigeonIMU pigeon = new PigeonIMU(4);
   private BasePigeonSimCollection pigeonSim = pigeon.getSimCollection();
   
-  private EncoderSim lEncoderSim = new EncoderSim(new Encoder(96, 97));
-  private EncoderSim rEncoderSim = new EncoderSim(new Encoder(98, 99));
+  private EncoderSim lEncoderSim = new EncoderSim(new Encoder(6, 7));
+  private EncoderSim rEncoderSim = new EncoderSim(new Encoder(8, 9));
   
   private final int kCountsPerRev = 4096;  
   private final double kSensorGearRatio = 1;
@@ -132,7 +133,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
