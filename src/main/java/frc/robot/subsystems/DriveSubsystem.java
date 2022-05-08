@@ -85,9 +85,22 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        leftGroup.setVoltage(leftVolts);
-        rightGroup.setVoltage(rightVolts);
-        drive.feed();
+        if(Robot.isReal()) {
+            leftGroup.setVoltage(leftVolts);
+            rightGroup.setVoltage(rightVolts);
+            drive.feed();
+        }
+        else {
+            for (SciSpark s : leftSparks) {
+                s.setVoltage(leftVolts);
+                System.out.println(s.get());
+            } 
+            for (SciSpark s : rightSparks) {
+                s.setVoltage(rightVolts);
+                System.out.println(s.get()); 
+            }  
+        }
+
     }    
 
     public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
@@ -103,11 +116,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void drive(double left, double right) {
         for (SciSpark s : leftSparks) {
-            s.set(left);
+            s.setVoltage(left);
             System.out.println(s.get());
         } 
         for (SciSpark s : rightSparks) {
-            s.set(right);
+            s.setVoltage(right);
             System.out.println(s.get()); 
         }  
 

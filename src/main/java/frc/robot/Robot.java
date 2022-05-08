@@ -96,9 +96,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    CommandScheduler.getInstance().schedule(new RunCommand(
-      () -> m_robotContainer.driveSubsystem.drive(1, 1),
-      m_robotContainer.driveSubsystem));
+    CommandScheduler.getInstance().schedule(new DriveRamsete(m_robotContainer.driveSubsystem, "Pos1_2Ball"));
   }
  
   /** This function is called periodically during autonomous. */
