@@ -16,7 +16,7 @@ public class OI {
     public XboxController xboxController;
 
     // Buttons | Intake
-    public JoystickButton intakeBalls, lowerIntakeArms, retractIntakeArms;
+    public JoystickButton intakeBalls, toggleIntake;
     
     // Buttons | Hopper-Pneumatics
     public JoystickButton startHopper, toggleCompressor;
@@ -28,8 +28,7 @@ public class OI {
     public JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
 
     // Buttons | Shooter
-    public JoystickButton aimButton, shootButton;
-    public JoystickButton lowerHoodButton, raiseHoodButton;
+    public JoystickButton shootButton;
 
     public OI(boolean isXbox) {
         this.isXbox = isXbox;
@@ -50,7 +49,7 @@ public class OI {
             // Intake
             this.intakeBalls       = new JoystickButton(this.xboxController, XBOX_B);
             this.lowerIntakeArms   = new JoystickButton(this.xboxController, XBOX_Y);
-            this.retractIntakeArms = new JoystickButton(this.xboxController, XBOX_BACK);
+            this.raiseIntakeArms   = new JoystickButton(this.xboxController, XBOX_BACK);
 
             // Intake-Hopper-Compressor
             this.startHopper       = new JoystickButton(this.xboxController, XBOX_STICK_LEFT_BUTTON);
@@ -64,13 +63,12 @@ public class OI {
             this.retractArm = new JoystickButton(this.xboxController, XBOX_BUMPER_RIGHT);
 
             // Shooter
-            this.aimButton   = new JoystickButton(this.xboxController, XBOX_A);
             this.shootButton = new JoystickButton(this.xboxController, XBOX_X);
         } else {
             // Intake
             this.intakeBalls       = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
             this.lowerIntakeArms   = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
-            this.retractIntakeArms = new JoystickButton(this.leftStick, JOYSTICK_CENTER_BUTTON);
+            this.raiseIntakeArms   = new JoystickButton(this.leftStick, JOYSTICK_CENTER_BUTTON);
 
             // Intake-Hopper-Compressor
             // this.startHopper       = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
@@ -84,11 +82,7 @@ public class OI {
             this.retractArm = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][1]);
 
             // Shooter
-            this.aimButton   = new JoystickButton(this.rightStick, JOYSTICK_CENTER_BUTTON);
             this.shootButton = new JoystickButton(this.rightStick, JOYSTICK_TRIGGER);
-
-            this.lowerHoodButton = new JoystickButton(this.xboxController, XBOX_A);
-            this.raiseHoodButton = new JoystickButton(this.xboxController, XBOX_B);
         }
     }
 }

@@ -1,28 +1,15 @@
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeBallsCommand extends CommandBase {
-    private IntakeSubsystem intakeSubsystem;
-    private HopperSubsystem hopperSubsystem;
-
-    public IntakeBallsCommand(IntakeSubsystem intakeSubsystem, HopperSubsystem hopperSubsystem) {
-        this.intakeSubsystem = intakeSubsystem;
-        this.hopperSubsystem = hopperSubsystem;
-        addRequirements(intakeSubsystem, hopperSubsystem);
+public class IntakeBallsCommand extends ParallelCommandGroup {
+    public IntakeBallsCommand(IntakeSubsystem intake, HopperSubsystem hopper) {
+        addCommands(
+            new StartEndCommand(() -> intake.startSuck(), () -> intake.stopSuck(), intake),
+            new StartEndCommand(() -> hopper.startSuck(), () -> hopper.stopSuck(), hopper)
+        );
     }
- 
-    @Override
-    public void execute() {
-        intakeSubsystem.startSuck();
-        hopperSubsystem.startSuck();
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        intakeSubsystem.stopSuck();
-        hopperSubsystem.stopSuck();
-    }    
 }

@@ -1,14 +1,10 @@
 package frc.robot.subsystems;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.PortMap;
-import frc.robot.Robot;
 import frc.robot.util.Blockable;
-import frc.robot.util.Util;
 
 @Blockable
 public class HopperSubsystem implements Subsystem {

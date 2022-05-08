@@ -1,28 +1,24 @@
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
-import com.revrobotics.CANSparkMax;
-
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
-import frc.robot.Robot;
 import frc.robot.util.Blockable;
 
 @Blockable
-public class IntakeSubsystem implements Subsystem {
+public class IntakeSubsystem extends SubsystemBase {
 
     private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
     private CANSparkMax suckSpark; // motor used for intaking balls
     private boolean lastLimit = false;
 
-    public DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
-    public int amountOfBalls = 0;
-    public final int WAIT_TIME = 1000; //in miliseconds
-    public long lastActivated = 0;
+    private DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
+    private int amountOfBalls = 0;
+    private final int WAIT_TIME = 1000; //in miliseconds
+    private long lastActivated = 0;
     
     private final double INTAKE_SPEED = 0.5;
 
@@ -31,7 +27,8 @@ public class IntakeSubsystem implements Subsystem {
         this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
         // this.suckSpark.setInverted(true); // invert the motor
         this.limitSwitch = new DigitalInput(PortMap.LIMIT_SWITCH_INTAKE);
-        
+
+        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
     // ONLY WORKS IF LIMIT SWITCH IS IN INTAKE AND NOT HOPPER balsucker//
     public void updateBallCounter(){
@@ -59,12 +56,8 @@ public class IntakeSubsystem implements Subsystem {
         return limitSwitch.get();
     }
 
-    public void extendArm() { 
-        this.armSolenoid.set(DoubleSolenoid.Value.kForward);
-    }
-    
-    public void retractArm() {
-        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+    public void toggleArm() { 
+        this.armSolenoid.toggle();
     }
 
     public void startSuck() {
@@ -78,5 +71,5 @@ public class IntakeSubsystem implements Subsystem {
     public double getIntakeSpeed() {
         return this.suckSpark.get();
     }
-    
+
 }

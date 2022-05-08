@@ -9,10 +9,14 @@ import java.util.Set;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.intake.IntakeBallsCommand;
+import frc.robot.commands.intake.LowerIntakeArmCommand;
+import frc.robot.commands.pneumatics.ToggleCompressorCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
 import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.shooter.ShootSequence.Target;
@@ -62,20 +66,10 @@ public class RobotContainer {
       climberSubsystem, monitorSubsystem, rumbleSubsystem);
 
   // COMMANDS
-  // climber
-
-  // drive
-  // not sure what's going on with drive commands right now
-
-  // hopper
-
-  // intake
+  private final ToggleCompressorCommand toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
   private final IntakeBallsCommand intakeBallsCommand = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
-  // pneumatics
-  // shooter
   private final ShootSequence shootSequence = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
-  // turret
-  private final AimTurretCommand aimTurretCommand = new AimTurretCommand(turretSubsystem, limelightSubsystem);
+
   // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
 
   // blocker
@@ -104,14 +98,19 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    oi.toggleCompressor.whenPressed(toggleCompressorCommand);
+    
     // Intake
     // this.intakeBalls.whenHeld(new IntakeBallsCommand());
+    oi.intakeBalls.whenHeld(intakeBallsCommand);
+    oi.toggleIntake.whenPressed(
+      new InstantCommand(() -> intakeSubsystem.toggleArm())
+    );
     // this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
     // this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
 
     // Intake-Hopper-Compressor
-    // this.startHopper.whenHeld(new StartHopperCommand());
-    // this.hopper.whileHeld(new StartHopperCommand());
+    oi.startHopper.whenHeld(new StartHopperCommand());
 
     // Climber
     oi.extendTelescope.whenHeld(
