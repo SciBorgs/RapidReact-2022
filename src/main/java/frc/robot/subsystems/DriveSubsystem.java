@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.sciSensorsActuators.SciEncoder;
-import frc.robot.sciSensorsActuators.SciPigeon;
-import frc.robot.sciSensorsActuators.SciSpark;
+import frc.robot.sciSensors.SciEncoder;
+import frc.robot.sciSensors.SciPigeon;
+import frc.robot.sciSensors.SciSpark;
 import frc.robot.util.Blockable;
 import frc.robot.util.Util;
 

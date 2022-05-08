@@ -4,30 +4,31 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+import java.util.Set;
+
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autoProfile.AutoProfile;
-import frc.robot.commands.climber.RunArmCommand;
-import frc.robot.commands.climber.RunTelescopeCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
 import frc.robot.commands.shooter.ResetTurretCommand;
 import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.shooter.ShootSequence.Target;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
+import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.MonitorSubsystem;
+import frc.robot.subsystems.PhotonVisionSubsystem;
+import frc.robot.subsystems.PneumaticsSubsystem;
+import frc.robot.subsystems.RumbleSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.util.Util;
-
-import static frc.robot.PortMap.*;
-import static frc.robot.PortMap.Joystick.*;
-import static frc.robot.PortMap.XboxController.*;
-
-import java.util.Set;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -137,6 +138,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return AutoProfile.getAutoCommand();
+    return new RunCommand(
+      () -> driveSubsystem.driveRobot(
+          DriveMode.TANK,
+          0.5,
+          0.5),
+      driveSubsystem).withTimeout(5);
   }
 }

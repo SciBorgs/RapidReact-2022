@@ -1,4 +1,4 @@
-package frc.robot.sciSensorsActuators;
+package frc.robot.sciSensors;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
