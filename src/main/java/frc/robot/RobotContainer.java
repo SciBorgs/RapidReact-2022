@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autoProfile.AutoProfile;
+import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.climber.RunArmCommand;
 import frc.robot.commands.climber.RunTelescopeCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
-import frc.robot.commands.shooter.ResetTurretCommand;
+// import frc.robot.commands.shooter.ResetTurretCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.Util;
@@ -24,6 +24,7 @@ import frc.robot.util.Util;
 import static frc.robot.PortMap.*;
 import static frc.robot.PortMap.Joystick.*;
 import static frc.robot.PortMap.XboxController.*;
+
 
 import java.util.Set;
 
@@ -72,7 +73,7 @@ public class RobotContainer {
   // shooter
   // turret
   private final AimTurretCommand aimTurretCommand = new AimTurretCommand(turretSubsystem, limelightSubsystem);
-  private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
+  // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
 
   // blocker
   private final Command block = Util.blockSubsystems(subsystems);
@@ -124,7 +125,7 @@ public class RobotContainer {
     );
 
     // Shooter
-    oi.aimButton.whenPressed(command)
+    // oi.aimButton.whenPressed(command)
     // this.aimButton.whenPressed(new AimCommandGroup());
     // this.shootButton.whenPressed(new ShootSequence());
 
@@ -139,6 +140,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return AutoProfile.getAutoCommand();
+    return new TwoBallAuto(this, "1");
   }
 }
