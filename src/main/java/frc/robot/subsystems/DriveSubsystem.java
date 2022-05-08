@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.Arrays;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -16,8 +14,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.PortMap;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.PortMap;
 import frc.robot.sciSensors.SciEncoder;
 import frc.robot.sciSensors.SciPigeon;
 import frc.robot.sciSensors.SciSpark;
@@ -75,7 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
         leftGroup.setInverted(true);
         drive.setDeadband(0.05);
 
-        odometry = new DifferentialDriveOdometry(getRotation(), AutoProfile.STARTING_POSE);
+        odometry = new DifferentialDriveOdometry(getRotation());
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -124,7 +122,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getRotation() {
-        return new Rotation2d(pigeon.getAngle());
+        return new Rotation2d();
+        // pigeon.getAngle()
     }
 
     public Pose2d getPose() {

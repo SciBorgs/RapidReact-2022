@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
-import frc.robot.commands.shooter.ResetTurretCommand;
 import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.shooter.ShootSequence.Target;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -76,7 +76,7 @@ public class RobotContainer {
   private final ShootSequence shootSequence = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
   // turret
   private final AimTurretCommand aimTurretCommand = new AimTurretCommand(turretSubsystem, limelightSubsystem);
-  private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
+  // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
 
   // blocker
   private final Command block = Util.blockSubsystems(subsystems);
@@ -138,11 +138,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new RunCommand(
-      () -> driveSubsystem.driveRobot(
-          DriveMode.TANK,
-          0.5,
-          0.5),
-      driveSubsystem).withTimeout(5);
+    return new TwoBallAuto(this, "1");
   }
 }

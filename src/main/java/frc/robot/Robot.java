@@ -5,9 +5,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.sciSensorsActuators.SciPigeon;
+import com.ctre.phoenix.sensors.BasePigeonSimCollection;
+import com.ctre.phoenix.sensors.PigeonIMU;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,6 +28,33 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  // ****** SIMULATION ******\
+  
+  private PigeonIMU pigeon = new PigeonIMU(4);
+  private BasePigeonSimCollection pigeonSim = pigeon.getSimCollection();
+  
+  private EncoderSim lEncoderSim = new EncoderSim(new Encoder(96, 97));
+  private EncoderSim rEncoderSim = new EncoderSim(new Encoder(98, 99));
+  
+  private final int kCountsPerRev = 4096;  
+  private final double kSensorGearRatio = 1;
+  private final double kGearRatio = 10.71; 
+  private final double kWheelRadiusInches = 3;
+  private final int k100msPerSecond = 10;
+  
+  private Field2d field2d = new Field2d();
+
+  DifferentialDrivetrainSim driveSim = new DifferentialDrivetrainSim(
+    DCMotor.getNEO(2),
+    kGearRatio,
+    2.1,
+    26.5,
+    Units.inchesToMeters(kWheelRadiusInches),
+    0.546,
+
+    null
+  );
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -100,5 +136,15 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    driveSim.setInputs(-1, 1);
+    driveSim.update(0.02);
+
+    lEncoderSim.setDistance(driveSim.getLeftPositionMeters());
+    lEncoderSim.setRate(driveSim.getLeftVelocityMetersPerSecond());
+    rEncoderSim.setDistance(driveSim.getRightPositionMeters());
+    rEncoderSim.setRate(driveSim.getRightVelocityMetersPerSecond());
+    pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
+
+  }
 }
