@@ -73,7 +73,7 @@ public class RobotContainer {
   // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
 
   // blocker
-  private final Command block = Util.blockSubsystems(subsystems);
+  // private final Command block = Util.blockSubsystems(subsystems); 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -83,12 +83,12 @@ public class RobotContainer {
     configureButtonBindings();
 
     // drives robot in tank drive according to the joysticks
-    driveSubsystem.setDefaultCommand(new RunCommand(
-        () -> driveSubsystem.driveRobot(
-            DriveMode.TANK,
-            oi.leftStick.getY(),
-            oi.rightStick.getY()),
-        driveSubsystem));
+    // driveSubsystem.setDefaultCommand(new RunCommand(
+    //     () -> driveSubsystem.driveRobot(
+    //         DriveMode.TANK,
+    //         oi.leftStick.getY(),
+    //         oi.rightStick.getY()),
+    //     driveSubsystem));
   }
 
   /**

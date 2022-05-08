@@ -7,7 +7,7 @@ import edu.wpi.first.math.MathUtil;
 public class SciSpark extends CANSparkMax {
 
     private static double MAX_JERK = 0.15; // stalling hurt ear :(
-    private boolean hasFailed = true;
+    private boolean hasFailed = false;
 
     public SciSpark(int port) {
         super(port, MotorType.kBrushless);

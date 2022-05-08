@@ -52,6 +52,8 @@
       "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[8]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[9]": "PIDController",
       "/LiveWindow/Ungrouped/Pigeon IMU [1]": "Gyro",
       "/LiveWindow/Ungrouped/Pigeon IMU [42]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
@@ -68,13 +70,24 @@
             0.0,
             255.0
           ],
+          "arrowSize": 100,
+          "arrows": false,
           "color": [
             1.0,
-            0.911392331123352,
-            0.0,
+            1.0,
+            1.0,
             255.0
-          ]
+          ],
+          "image": "./PathWeaver/robot.png",
+          "length": 0.7110000252723694,
+          "selectable": false,
+          "style": "Box/Image",
+          "weight": 10.0,
+          "width": 0.5580000281333923
         },
+        "height": 8.229599952697754,
+        "image": "./PathWeaver/field.png",
+        "width": 16.459199905395508,
         "window": {
           "name": "have fun watching the robot move back and forth for all eternity",
           "visible": true
@@ -116,7 +129,8 @@
     "SmartDashboard": {
       "Field": {
         "open": true
-      }
+      },
+      "open": true
     }
   },
   "Plot": {

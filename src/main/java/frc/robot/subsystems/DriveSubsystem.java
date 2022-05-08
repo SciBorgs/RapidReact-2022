@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -43,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
             new SciSpark(PortMap.RIGHT_BACK_SPARK)
     };
 
-    private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
+    private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks); 
     private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
     private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
 
@@ -51,14 +52,12 @@ public class DriveSubsystem extends SubsystemBase {
             leftGroup,
             rightGroup);
 
-    private DifferentialDriveOdometry odometry;
+    public DifferentialDriveOdometry odometry;
     private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
 
     private PIDController leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     private PIDController rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
-    
-    private Field2d field2d;
 
     public enum DriveMode {
         TANK,
@@ -83,7 +82,6 @@ public class DriveSubsystem extends SubsystemBase {
         pigeonSim = pigeon.getSimCollection();
         
         odometry = new DifferentialDriveOdometry(pigeon.getRotation2d());
-        field2d = new Field2d();
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -101,6 +99,18 @@ public class DriveSubsystem extends SubsystemBase {
 
         leftGroup.setVoltage(leftOutput + leftFeedForward);
         rightGroup.setVoltage(rightOutput + rightFeedForward);
+    }
+
+    public void drive(double left, double right) {
+        for (SciSpark s : leftSparks) {
+            s.set(left);
+            System.out.println(s.get());
+        } 
+        for (SciSpark s : rightSparks) {
+            s.set(right);
+            System.out.println(s.get()); 
+        }  
+
     }
 
     public void driveRobot(DriveMode mode, double left, double right) {
@@ -189,7 +199,7 @@ public class DriveSubsystem extends SubsystemBase {
         return kinematics;
     }
 
-    public Iterable<SciSpark> getAllSparks() {
+    public Iterable<SciSpark> getAllSparks() { 
         return allSparks;
     }
 
@@ -213,7 +223,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        for(SciSpark s : allSparks) {
+            boolean fail = s.updateFailState();
+            if(fail) System.out.println("failed");
+        }
+
         updateOdometry();
-        field2d.setRobotPose(odometry.getPoseMeters());
-    }
+    } 
 }
