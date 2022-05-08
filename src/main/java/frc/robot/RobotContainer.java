@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.auto.TwoBallAuto;
+import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
-import frc.robot.commands.intake.LowerIntakeArmCommand;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
 import frc.robot.commands.shooter.ShootSequence;
@@ -110,7 +110,7 @@ public class RobotContainer {
     // this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
 
     // Intake-Hopper-Compressor
-    oi.startHopper.whenHeld(new StartHopperCommand());
+    oi.startHopper.whenHeld(new StartHopperCommand(hopperSubsystem));
 
     // Climber
     oi.extendTelescope.whenHeld(

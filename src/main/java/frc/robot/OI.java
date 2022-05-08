@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.util.DPadButton;
 
 import static frc.robot.PortMap.*;
 import static frc.robot.PortMap.Joystick.*;
@@ -56,10 +57,12 @@ public class OI {
             this.toggleCompressor  = new JoystickButton(this.xboxController, XBOX_START);
 
             // Climber
-            this.extendTelescope  = new JoystickButton(this.xboxController, XBOX_TRIGGER_LEFT);
-            this.retractTelescope = new JoystickButton(this.xboxController, XBOX_TRIGGER_RIGHT);
-            this.extendArm  = new JoystickButton(this.xboxController, XBOX_BUMPER_LEFT);
-            this.retractArm = new JoystickButton(this.xboxController, XBOX_BUMPER_RIGHT);
+            this.extendTelescope  = new DPadButton(this.xboxController, DPadButton.Direction.UP);
+            this.retractTelescope = new DPadButton(this.xboxController, DPadButton.Direction.DOWN);
+            // TODO: make sure extend and retract are actually forward and backward relative to the center of the robot
+            // (we probably mixed them up)
+            this.extendArm  = new DPadButton(this.xboxController, DPadButton.Direction.LEFT);
+            this.retractArm = new DPadButton(this.xboxController, DPadButton.Direction.RIGHT);
 
             // Shooter
             this.shootButton = new JoystickButton(this.xboxController, XBOX_X);
