@@ -17,6 +17,8 @@ import frc.robot.commands.climber.RunTelescopeCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
 import frc.robot.commands.shooter.ResetTurretCommand;
+import frc.robot.commands.shooter.ShootSequence;
+import frc.robot.commands.shooter.ShootSequence.Target;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.Util;
@@ -70,6 +72,7 @@ public class RobotContainer {
   private final IntakeBallsCommand intakeBallsCommand = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
   // pneumatics
   // shooter
+  private final ShootSequence shootSequence = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
   // turret
   private final AimTurretCommand aimTurretCommand = new AimTurretCommand(turretSubsystem, limelightSubsystem);
   private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
@@ -124,12 +127,7 @@ public class RobotContainer {
     );
 
     // Shooter
-    oi.aimButton.whenPressed(command)
-    // this.aimButton.whenPressed(new AimCommandGroup());
-    // this.shootButton.whenPressed(new ShootSequence());
-
-    // this.lowerHoodButton.whenHeld(new LowerHoodCommand());
-    // this.raiseHoodButton.whenHeld(new RaiseHoodCommand());
+    oi.shootButton.whenPressed(shootSequence);
   }
 
   /**
