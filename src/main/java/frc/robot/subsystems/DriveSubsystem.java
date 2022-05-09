@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -14,7 +13,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -29,7 +27,7 @@ import frc.robot.Robot;
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
     private SciEncoder lEncoder, rEncoder;
-    public SciPigeon pigeon;
+    private SciPigeon pigeon;
     private BasePigeonSimCollection pigeonSim;
 
     private final SciSpark[] leftSparks = {
@@ -84,6 +82,10 @@ public class DriveSubsystem extends SubsystemBase {
         odometry = new DifferentialDriveOdometry(pigeon.getRotation2d());
     }
 
+    public void setSideVoltage(double voltage, SciSpark[] sparks) {
+        for (SciSpark s : sparks) s.setVoltage(voltage);
+    }
+
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         if(Robot.isReal()) {
             leftGroup.setVoltage(leftVolts);
@@ -91,12 +93,8 @@ public class DriveSubsystem extends SubsystemBase {
             drive.feed();
         }
         else {
-            for (SciSpark s : leftSparks) {
-                s.setVoltage(leftVolts);
-            } 
-            for (SciSpark s : rightSparks) {
-                s.setVoltage(rightVolts);
-            }  
+            setSideVoltage(leftVolts, leftSparks);
+            setSideVoltage(rightVolts, rightSparks);
         }
 
     }    
@@ -110,16 +108,6 @@ public class DriveSubsystem extends SubsystemBase {
 
         leftGroup.setVoltage(leftOutput + leftFeedForward);
         rightGroup.setVoltage(rightOutput + rightFeedForward);
-    }
-
-    public void drive(double left, double right) {
-        for (SciSpark s : leftSparks) {
-            s.setVoltage(left);
-        } 
-        for (SciSpark s : rightSparks) {
-            s.setVoltage(right);
-        }  
-
     }
 
     public void driveRobot(DriveMode mode, double left, double right) {

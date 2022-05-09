@@ -28,6 +28,7 @@ public class DriveRamsete extends RamseteCommand {
         
         this.driveSubsystem = ds;
         this.trajectory = trajectory;
+        addRequirements(driveSubsystem);
     }
 
     public DriveRamsete(DriveSubsystem ds, String pathName) {
