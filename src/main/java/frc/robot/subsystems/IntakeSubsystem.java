@@ -13,10 +13,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
     private CANSparkMax suckSpark; // motor used for intaking balls
-    private boolean lastLimit = false;
 
     private DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
-    private int amountOfBalls = 0;
+    private int amountOfBalls = 0; // TODO: impliment ball count tracking 
     private final int WAIT_TIME = 1000; //in miliseconds
     private long lastActivated = 0;
     

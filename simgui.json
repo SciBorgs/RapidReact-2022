@@ -139,7 +139,7 @@
     "Plot <0>": {
       "plots": [
         {
-          "height": 130,
+          "height": -6,
           "series": [
             {
               "color": [
@@ -187,7 +187,7 @@
     "Plot <1>": {
       "plots": [
         {
-          "height": 34,
+          "height": -6,
           "series": [
             {
               "color": [

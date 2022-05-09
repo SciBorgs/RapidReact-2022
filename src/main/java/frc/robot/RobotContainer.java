@@ -12,11 +12,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.commands.RumbleCommand;
+import frc.robot.commands.auto.DriveRamsete;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
+import frc.robot.commands.shooter.ResetTurretCommand;
 import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.shooter.ShootSequence.Target;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -66,6 +69,7 @@ public class RobotContainer {
   private final ToggleCompressorCommand toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
   private final IntakeBallsCommand intakeBallsCommand = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
   private final ShootSequence shootSequence = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
+  public  final RumbleCommand rumbleCommand = new RumbleCommand(driveSubsystem, rumbleSubsystem);
 
   // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
 
@@ -126,7 +130,8 @@ public class RobotContainer {
     );
 
     // Shooter
-    oi.shootButton.whenPressed(shootSequence);
+    // oi.shootButton.whenPressed(shootSequence);
+    oi.shootButton.whenPressed(new ResetTurretCommand(turretSubsystem));
   }
 
   /**
@@ -136,6 +141,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TwoBallAuto(this, "1");
+    return new DriveRamsete(driveSubsystem, "Testing");
   }
 }
