@@ -136,6 +136,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TwoBallAuto(this, "1");
+    return new TwoBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
   }
 }
