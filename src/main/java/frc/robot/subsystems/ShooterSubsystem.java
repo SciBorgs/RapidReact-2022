@@ -15,6 +15,7 @@ import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.sciSensors.SciEncoder;
 import frc.robot.PortMap;
 import frc.robot.util.Blockable;
+import frc.robot.util.CombinedCorrection;
 
 @Blockable
 public class ShooterSubsystem extends SubsystemBase {
@@ -23,12 +24,11 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SciEncoder flywheelEncoder;
     private final SciAbsoluteEncoder hoodEncoder;
     
-    // Hood control
-    private final PIDController hoodFeedback = new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
-    private final SimpleMotorFeedforward hoodFeedforward = new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA);
-    // Flywheel control
-    private final PIDController flywheelFeedback = new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD);
-    private final SimpleMotorFeedforward flywheelFeedforward = new SimpleMotorFeedforward(ShooterConstants.fS, ShooterConstants.fV, ShooterConstants.fA);
+    CombinedCorrection hoodCorrect = new CombinedCorrection(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA),
+    new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD), 0.2);
+
+    CombinedCorrection flywheelCorrect = new CombinedCorrection(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA), 
+    new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD));
     
     private double targetSpeed; // desired speed of the flywheel
     private double targetAngle; // desired angle of the hood
@@ -59,8 +59,6 @@ public class ShooterSubsystem extends SubsystemBase {
                 rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, ShooterConstants.HOOD_GEAR_RATIO,
                 ShooterConstants.OFFSET);
-
-        hoodFeedback.setTolerance(0.2);
     }
     
     // FLYWHEEL
@@ -98,17 +96,12 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean isAtTarget() {
-        return hoodFeedback.atSetpoint();
+        return hoodCorrect.accessPID().atSetpoint();
     }
 
     @Override
     public void periodic() {
-        double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getSpeed(), targetSpeed);
-        double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
-        rmotor.setVoltage(flywheelFB + flywheelFF);
-        
-        double hoodFB = hoodFeedback.calculate(hoodEncoder.getAngle(), targetAngle);
-        double hoodFF = hoodFeedforward.calculate(0);
-        hood.setVoltage(hoodFB + hoodFF);
+        rmotor.setVoltage(flywheelCorrect.getVoltage(flywheelEncoder.getSpeed(), targetSpeed));
+        hood.setVoltage(hoodCorrect.getVoltage(hoodEncoder.getAngle(), targetAngle));
     }
 }

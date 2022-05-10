@@ -79,7 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
         pigeon = new SciPigeon(PortMap.PIGEON_ID);
         pigeonSim = pigeon.getSimCollection();
         
-        odometry = new DifferentialDriveOdometry(pigeon.getRotation2d());
+        odometry = new DifferentialDriveOdometry(getRotation());
     }
 
     public void setSideVoltage(double voltage, SciSpark[] sparks) {
@@ -146,6 +146,10 @@ public class DriveSubsystem extends SubsystemBase {
         return odometry.getPoseMeters();
     }
 
+    public double getHeading() {
+        return getRotation().getDegrees();
+    }
+
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
         return new DifferentialDriveWheelSpeeds(getLeftAverageVelocity(), getRightAverageVelocity());
     }
@@ -160,6 +164,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
+        pigeon.reset();
         resetEncoders();
         odometry.resetPosition(pose, getRotation());
     }
@@ -224,7 +229,6 @@ public class DriveSubsystem extends SubsystemBase {
             boolean fail = s.updateFailState();
             if(fail) System.out.println("failed");
         }
-
         updateOdometry();
     } 
 }
