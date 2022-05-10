@@ -1,22 +1,24 @@
 package frc.robot.sciSensors;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 public class SciAbsoluteEncoder extends DutyCycleEncoder {
-    private double factor;
+    private double ratio;
     public double offset;
 
-    public SciAbsoluteEncoder(int port, double gearRatio, double offset) {
+    public SciAbsoluteEncoder(int port, double ratio, double offset) {
         super(port);
-        this.factor = gearRatio * 360;
+        this.ratio = ratio;
         this.offset = offset;
     }
 
-    public SciAbsoluteEncoder(int port, double gearRatio) {
-        this(port, gearRatio, 0.0);
+    public SciAbsoluteEncoder(int port, double ratio) {
+        this(port, ratio, 0.0);
     }
 
+    // degrees
     public double getAngle() {
-        return getAbsolutePosition() * factor - offset;
+        return Units.rotationsToDegrees(getAbsolutePosition() * ratio) - offset;
     }
 }

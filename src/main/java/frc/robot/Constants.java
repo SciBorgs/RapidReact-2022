@@ -22,10 +22,6 @@ public final class Constants {
     public static final double DUTY_CYCLE_THRESHOLD = 0;
     public static final double VELOCITY_THRESHOLD = 0;
     
-    //**************** ROBOT DIMENSIONS *******************//
-    public static final double ROBOT_WIDTH = 0.5588; 
-    public static final double WHEEL_CIRCUMFERENCE = 0.4787787204; //..... :)
-    
     //***************** GEAR RATIOS ***********************//
     public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
     public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
@@ -53,6 +49,11 @@ public final class Constants {
     public static final double CAM_MOUNT_ANGLE = 30;
     
     public static final class DriveConstants {
+        // ratios
+        // "gear ratio" : 13.7 ?
+        public static final double ROBOT_WIDTH = 0.5588; 
+        public static final double DISTANCE_PER_PULSE = 1; // TODO update
+        public static final double WHEEL_CIRCUMFERENCE = 0.4787787204; // is this true?
         // PID (for left and motor groups)
         public static final double kP = 4;
         public static final double kI = 2;
@@ -69,10 +70,10 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        // Gear ratios
+        // ratios
         public static final double FLYWHEEL_GEAR_RATIO = 1;
         public static final double FLYWHEEL_CIRCUMFERENCE = 1;
-        public static final double HOOD_GEAR_RATIO = 36.0  / 334.0;
+        public static final double HOOD_GEAR_RATIO = 36.0 / 334.0;
         // Through Bore Encoder offset
         public static final double OFFSET = 32.5;
         public static final double MAX = -23.3;
@@ -96,8 +97,10 @@ public final class Constants {
     }
 
     public static final class TurretConstants {
-        // Gear ratios
-        public static final double TURRET_GEAR_RATIO = 26.0 / 300.0;
+        // ratios
+        public static final double DISTANCE_PER_PULSE = 1.0 / 2048.0;
+        public static final double GEAR_RATIO = 26.0 / 300.0;
+        public static final double TEST = DISTANCE_PER_PULSE * GEAR_RATIO * 360;
         // Physical constraints
         public static final double LIMIT = 85;
         // Through Bore Encoder offset

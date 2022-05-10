@@ -13,14 +13,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TurretConstants;
-import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.PortMap;
+import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.util.Blockable;
 
 @Blockable
 public class TurretSubsystem extends SubsystemBase {
     private final CANSparkMax turret = new CANSparkMax(PortMap.TURRET_SPARK, MotorType.kBrushless);
-    private final SciAbsoluteEncoder encoder = new SciAbsoluteEncoder(PortMap.TURRET_ENCODER, TurretConstants.TURRET_GEAR_RATIO, TurretConstants.OFFSET);
+    private final SciAbsoluteEncoder encoder = new SciAbsoluteEncoder(PortMap.TURRET_ENCODER, TurretConstants.GEAR_RATIO * TurretConstants.DISTANCE_PER_PULSE, TurretConstants.OFFSET);
 
     private final Constraints constraints = new Constraints(TurretConstants.maxV, TurretConstants.maxA);
     private final ProfiledPIDController feedback = new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, constraints);
