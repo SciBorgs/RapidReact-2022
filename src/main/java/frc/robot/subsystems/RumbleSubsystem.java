@@ -17,4 +17,10 @@ public class RumbleSubsystem extends SubsystemBase {
         controller.setRumble(RumbleType.kRightRumble, 0.5);
     }
 
+    public void stopRumble() {
+        controller.setRumble(RumbleType.kLeftRumble, 0);
+        controller.setRumble(RumbleType.kRightRumble, 0);
+
+    }
+
 }
