@@ -21,8 +21,6 @@ public class CombinedCorrection {
         feedback.setTolerance(tolr);
         //since updating trapeoid profile requires recreating it over and over
         this.constraints = constraints;
-        this.goal = goal;
-
         trapezoidal = new TrapezoidProfile(constraints, goal, initalState);
         check();
     }
