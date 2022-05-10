@@ -13,6 +13,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -56,6 +60,13 @@ public class DriveSubsystem extends SubsystemBase {
     private PIDController leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     private PIDController rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
+
+    public DifferentialDrivetrainSim m_driveSim = DifferentialDrivetrainSim.createKitbotSim(
+        KitbotMotor.kDualCIMPerSide, // 2 CIMs per side.
+        KitbotGearing.k10p71,        // 10.71:1
+        KitbotWheelSize.SixInch,     // 6" diameter wheels.
+        null                         // No measurement noise.
+    );
 
     public enum DriveMode {
         TANK,
@@ -229,6 +240,9 @@ public class DriveSubsystem extends SubsystemBase {
             boolean fail = s.updateFailState();
             if(fail) System.out.println("failed");
         }
+
+        System.out.println(leftSparks[0].getAppliedOutput());
+
         updateOdometry();
     } 
 }

@@ -54,8 +54,8 @@ public final class Constants {
     
     public static final class DriveConstants {
         // PID (for left and motor groups)
-        public static final double kP = 1;
-        public static final double kI = 0;
+        public static final double kP = 4;
+        public static final double kI = 2;
         public static final double kD = 4;
 
         // Feedforward

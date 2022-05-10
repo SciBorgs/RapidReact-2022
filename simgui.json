@@ -1,10 +1,46 @@
 {
+  "HALProvider": {
+    "Encoders": {
+      "window": {
+        "visible": true
+      }
+    },
+    "Other Devices": {
+      "Pigeon IMU[1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [19]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [6]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [9]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/DriveSubsystem": "Subsystem",
+      "/LiveWindow/ExampleSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/LimeLightSubsystem": "Subsystem",
+      "/LiveWindow/LocalizationSubsystem": "Subsystem",
       "/LiveWindow/PhotonVisionSubsystem": "Subsystem",
       "/LiveWindow/RumbleSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
@@ -13,15 +49,196 @@
       "/LiveWindow/Ungrouped/DigitalInput[2]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[4]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[6]": "Digital Input",
+      "/LiveWindow/Ungrouped/PIDController[10]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[11]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[12]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[13]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[14]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[15]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[16]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[17]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[8]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[9]": "PIDController",
+      "/LiveWindow/Ungrouped/Pigeon IMU [1]": "Gyro",
       "/LiveWindow/Ungrouped/Pigeon IMU [42]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
-      "/SmartDashboard/Field": "Field2d"
+      "/SmartDashboard/Auto Chooser": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "Robot": {
+          "arrowColor": [
+            0.30801689624786377,
+            0.2963200509548187,
+            0.0,
+            255.0
+          ],
+          "arrowSize": 100,
+          "arrows": false,
+          "color": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "image": "./PathWeaver/robot.png",
+          "length": 0.7110000252723694,
+          "selectable": false,
+          "style": "Box/Image",
+          "weight": 10.0,
+          "width": 0.5580000281333923
+        },
+        "height": 8.229599952697754,
+        "image": "./PathWeaver/field.png",
+        "width": 16.459199905395508,
+        "window": {
+          "name": "have fun watching the robot move back and forth for all eternity",
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "Shuffleboard": {
+      "FollowPath PID": {
+        "open": true
+      },
+      "FollowPoint Distance PID": {
+        "open": true
+      },
+      "FollowPoint Heading PID": {
+        "open": true
+      },
+      "Head PID": {
+        "open": true
+      },
+      "Spin Heading PID": {
+        "open": true
+      },
+      "axis test": {
+        "open": true
+      },
+      "axis test [dist pid]": {
+        "open": true
+      },
+      "axis test [head pid]": {
+        "open": true
+      },
+      "open": true,
+      "test": {
+        "open": true
+      }
+    },
+    "SmartDashboard": {
+      "Field": {
+        "open": true
+      },
+      "open": true
+    }
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": -6,
+          "series": [
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/axis test [head pid]/pid der"
+            },
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/axis test [head pid]/pid err"
+            },
+            {
+              "color": [
+                0.3333333432674408,
+                0.658823549747467,
+                0.4078431725502014,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/axis test [head pid]/pid int"
+            },
+            {
+              "color": [
+                0.7686275243759155,
+                0.30588236451148987,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/axis test [head pid]/pid output"
+            }
+          ]
+        }
+      ],
+      "window": {
+        "name": "Heading PID"
+      }
+    },
+    "Plot <1>": {
+      "plots": [
+        {
+          "height": -6,
+          "series": [
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/axis test [dist pid]/pid err"
+            },
+            {
+              "color": [
+                0.3333333432674408,
+                0.658823549747467,
+                0.4078431725502014,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/axis test [dist pid]/pid int"
+            },
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/axis test/run distance"
+            },
+            {
+              "color": [
+                0.7686275243759155,
+                0.30588236451148987,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/Shuffleboard/axis test [dist pid]/pid output"
+            }
+          ]
+        }
+      ]
     }
   }
 }
