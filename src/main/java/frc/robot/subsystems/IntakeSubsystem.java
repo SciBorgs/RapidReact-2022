@@ -13,10 +13,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
     private CANSparkMax suckSpark; // motor used for intaking balls
-    private boolean lastLimit = false;
 
     private DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
-    private int amountOfBalls = 0;
+    private int amountOfBalls = 1; // assume we start with a preloaded ball
     private final int WAIT_TIME = 1000; //in miliseconds
     private long lastActivated = 0;
     
@@ -51,6 +50,15 @@ public class IntakeSubsystem extends SubsystemBase {
             lastActivated = System.currentTimeMillis();
         }
     }
+
+    public void decrementBallCount() {
+        amountOfBalls--;
+    }
+
+    public int getBallCount() {
+        return amountOfBalls;
+    }
+
 
     public boolean getLimitSwitchState(){
         return limitSwitch.get();

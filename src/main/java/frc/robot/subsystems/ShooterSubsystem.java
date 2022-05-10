@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +26,11 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SciAbsoluteEncoder hoodEncoder;
     
     CombinedCorrection hoodCorrect = new CombinedCorrection(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA),
-    new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD), 0.2);
+    new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD),
+    new TrapezoidProfile.Constraints(0, 0), //dont know what this should be set to
+    new TrapezoidProfile.State(0,0), //goal and inital are 0 
+    new TrapezoidProfile.State(0,0),
+     0.2);
 
     CombinedCorrection flywheelCorrect = new CombinedCorrection(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA), 
     new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD));
@@ -102,6 +107,6 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         rmotor.setVoltage(flywheelCorrect.getVoltage(flywheelEncoder.getSpeed(), targetSpeed));
-        hood.setVoltage(hoodCorrect.getVoltage(hoodEncoder.getAngle(), targetAngle));
+        hood.setVoltage(hoodCorrect.getVoltage(hoodEncoder.getAngle(), targetAngle)); //idk what to set acceleration to so I just dont
     }
 }

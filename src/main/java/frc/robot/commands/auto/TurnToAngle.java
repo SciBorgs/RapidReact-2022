@@ -6,6 +6,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 
+
 public class TurnToAngle extends PIDCommand {
     public TurnToAngle(double targetDegrees, DriveSubsystem drive) {
         super(
@@ -16,7 +17,7 @@ public class TurnToAngle extends PIDCommand {
                 drive);
 
         getController().enableContinuousInput(-180, 180);
-
+        getController().setTolerance(0.2);
         // TODO: Remember to set tolerance
     }
 
