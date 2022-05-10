@@ -26,20 +26,19 @@ import frc.robot.Robot;
 
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
-    private SciEncoder lEncoder, rEncoder;
     private SciPigeon pigeon;
     private BasePigeonSimCollection pigeonSim;
 
     private final SciSpark[] leftSparks = {
-            new SciSpark(PortMap.LEFT_FRONT_SPARK),
-            new SciSpark(PortMap.LEFT_MIDDLE_SPARK),
-            new SciSpark(PortMap.LEFT_BACK_SPARK)
+        new SciSpark(PortMap.LEFT_FRONT_SPARK),
+        new SciSpark(PortMap.LEFT_MIDDLE_SPARK),
+        new SciSpark(PortMap.LEFT_BACK_SPARK)
     };
 
     private final SciSpark[] rightSparks = {
-            new SciSpark(PortMap.RIGHT_FRONT_SPARK),
-            new SciSpark(PortMap.RIGHT_MIDDLE_SPARK),
-            new SciSpark(PortMap.RIGHT_BACK_SPARK)
+        new SciSpark(PortMap.RIGHT_FRONT_SPARK),
+        new SciSpark(PortMap.RIGHT_MIDDLE_SPARK),
+        new SciSpark(PortMap.RIGHT_BACK_SPARK)
     };
 
     private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks); 
@@ -47,11 +46,15 @@ public class DriveSubsystem extends SubsystemBase {
     private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
 
     private final DifferentialDrive drive = new DifferentialDrive(
-            leftGroup,
-            rightGroup);
+        leftGroup,
+        rightGroup
+    );
+
+    private final SciEncoder lEncoder = new SciEncoder(1, 1, leftSparks);
+    private final SciEncoder rEncoder = new SciEncoder(1, 1, rightSparks);
 
     public DifferentialDriveOdometry odometry;
-    private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
+    private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
     private PIDController leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     private PIDController rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
@@ -64,8 +67,6 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public DriveSubsystem() {
-        lEncoder = new SciEncoder(1, 1, leftSparks);
-        rEncoder = new SciEncoder(1, 1, rightSparks);
         resetEncoders();
         
         for (SciSpark motor : allSparks) {
