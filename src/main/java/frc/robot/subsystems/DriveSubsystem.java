@@ -32,7 +32,6 @@ import frc.robot.Robot;
 public class DriveSubsystem extends SubsystemBase {
     private SciEncoder lEncoder, rEncoder;
     private SciPigeon pigeon;
-    private BasePigeonSimCollection pigeonSim;
 
     private final SciSpark[] leftSparks = {
             new SciSpark(PortMap.LEFT_FRONT_SPARK),
@@ -62,12 +61,9 @@ public class DriveSubsystem extends SubsystemBase {
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
             DriveConstants.kA);
 
-    public DifferentialDrivetrainSim m_driveSim = DifferentialDrivetrainSim.createKitbotSim(
-            KitbotMotor.kDualCIMPerSide, // 2 CIMs per side.
-            KitbotGearing.k10p71, // 10.71:1
-            KitbotWheelSize.SixInch, // 6" diameter wheels.
-            null // No measurement noise.
-    );
+    // SIMULATION
+    private DifferentialDrivetrainSim driveSim;
+    private BasePigeonSimCollection pigeonSim;
 
     public enum DriveMode {
         TANK,
@@ -91,6 +87,14 @@ public class DriveSubsystem extends SubsystemBase {
         pigeon = new SciPigeon(PortMap.PIGEON_ID);
         pigeonSim = pigeon.getSimCollection();
 
+        // Will change once we get more information on our drivetrain
+        driveSim = DifferentialDrivetrainSim.createKitbotSim(
+            KitbotMotor.kDualCIMPerSide, 
+            KitbotGearing.k10p71, 
+            KitbotWheelSize.SixInch, 
+            null 
+        );
+
         odometry = new DifferentialDriveOdometry(getRotation());
     }
 
@@ -105,6 +109,10 @@ public class DriveSubsystem extends SubsystemBase {
         rightGroup.setVoltage(rightVolts);
         drive.feed();
 
+        if(!Robot.isReal()) { // Meant for sim ONLY
+            setSideVoltage(leftVolts, leftSparks);
+            setSideVoltage(rightVolts, rightSparks);
+        }
     }
 
     public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
@@ -239,10 +247,9 @@ public class DriveSubsystem extends SubsystemBase {
                 System.out.println("failed");
         }
         
-        m_driveSim.setInputs(leftGroup.get(), rightGroup.get());
-        m_driveSim.update(0.02);
-        System.out.println(m_driveSim.getHeading().getDegrees());
-        pigeonSim.setRawHeading(-m_driveSim.getHeading().getDegrees());
+        driveSim.setInputs(leftGroup.get(), rightGroup.get());
+        driveSim.update(0.02);
+        pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
         updateOdometry();
     }
 }
