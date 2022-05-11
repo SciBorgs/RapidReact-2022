@@ -65,7 +65,7 @@ public class RobotContainer {
   // COMMANDS
   private final ToggleCompressorCommand toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
   private final IntakeBallsCommand intakeBallsCommand = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
-  private final ShootSequence shootSequence = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
+  private final ShootSequence shootSequence = new ShootSequence(shooterSubsystem, turretSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
   public  final RumbleCommand rumbleCommand = new RumbleCommand(driveSubsystem, rumbleSubsystem);
 
   // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
