@@ -26,14 +26,11 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SciEncoder flywheelEncoder;
     private final SciAbsoluteEncoder hoodEncoder;
     //NOTE TO SHOOTER PEOPLE: set constraints properly because i dont know what to put there
-    CombinedCorrection hoodCorrect = new CombinedCorrection(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA),
-    new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD),
-    new TrapezoidProfile.Constraints(0,0),
-    CombinedCorrection.correctionType.DISTANCE,
-    0.2);
+    CombinedCorrection<ProfiledPIDController> hoodCorrect = new CombinedCorrection<ProfiledPIDController>(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA),
+    new ProfiledPIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD, new TrapezoidProfile.Constraints(0,0)), 0.2);
 
-    CombinedCorrection flywheelCorrect = new CombinedCorrection(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA), 
-    new ProfiledPIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD, new TrapezoidProfile.Constraints(0, 0)), CombinedCorrection.correctionType.VELOCITY);
+    CombinedCorrection<PIDController> flywheelCorrect = new CombinedCorrection<PIDController>(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA), 
+    new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD));
     
     private double targetSpeed; // desired speed of the flywheel
     private double targetAngle; // desired angle of the hood

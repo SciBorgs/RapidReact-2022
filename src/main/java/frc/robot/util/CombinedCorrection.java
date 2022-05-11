@@ -5,53 +5,66 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-public class CombinedCorrection {
-    private ProfiledPIDController feedback;
+public class CombinedCorrection<PIDModel> {
+    private PIDModel feedback;
     private SimpleMotorFeedforward feedforward;
-    private correctionType type;
 
     public static enum correctionType{
         DISTANCE,
         VELOCITY
     }
 
-    //super extended constructor, if this was C, this would've been named 'CombinedCorrectionEx' teehee C banter
-    public CombinedCorrection(SimpleMotorFeedforward feedforward, PIDController feedback, TrapezoidProfile.Constraints constraints, correctionType type, double tolr){
-        this.feedforward = feedforward;
-        this.feedback = new ProfiledPIDController(feedback.getP(),feedback.getI(),feedback.getD(), constraints);
-        this.type = type;
-        feedback.setTolerance(tolr);
-    }
-    public CombinedCorrection(SimpleMotorFeedforward feedforward, ProfiledPIDController feedback, double tolr, correctionType type){
+    private correctionType type;
+
+    public CombinedCorrection(SimpleMotorFeedforward feedforward, PIDModel feedback, double tolr){
         this.feedforward = feedforward;
         this.feedback = feedback;
-        this.type = type;
-        feedback.setTolerance(tolr);
+        check(feedback, tolr);
     }
-    public CombinedCorrection(SimpleMotorFeedforward feedforward, ProfiledPIDController feedback, correctionType type){
+    public CombinedCorrection(SimpleMotorFeedforward feedforward, PIDModel feedback){
         this.feedforward = feedforward;
         this.feedback = feedback;
-        this.type = type;
+        check(feedback);
+    }
+    private void check(PIDModel checkback, double tolr) throws IllegalStateException{
+        if(checkback instanceof PIDController){
+            type = correctionType.VELOCITY;
+            ((PIDController)feedback).setTolerance(tolr);
+        }
+        else if(checkback instanceof ProfiledPIDController){
+            type = correctionType.DISTANCE;
+            ((ProfiledPIDController)feedback).setTolerance(tolr);
+        }
+        else
+            throw new IllegalStateException("<PIDModel> of CombinedCorrection is not PIDController or ProfiledPIDController. This is not allowed.");
+    }
+    private void check(PIDModel checkback){
+        if(checkback instanceof PIDController)
+            type = correctionType.VELOCITY;
+        else if(checkback instanceof ProfiledPIDController)
+            type = correctionType.DISTANCE;
+        else
+            throw new IllegalStateException("<PIDModel> of CombinedCorrection is not PIDController or ProfiledPIDController. This is not allowed.");
     }
     //in this overload, type may be VELOCITY or DISTANCE
     public double getVoltage(double proccess, double setPoint){ 
         if(type == correctionType.DISTANCE){
         //it is now assumed that setPoint is distance to target
-        double velocity = feedback.getSetpoint().velocity; 
+        double velocity = ((ProfiledPIDController)feedback).getSetpoint().velocity; 
         //now pid and ff are used to try and reach this velocity as close as possible since it is assumed that profilepid is correct in required velocity to reach target
-        return feedback.calculate(proccess, new TrapezoidProfile.State(setPoint, 0)) +  feedforward.calculate(velocity); //assume that you want to reach setPoint with no remaining velocity
+        return ((ProfiledPIDController)feedback).calculate(proccess, new TrapezoidProfile.State(setPoint, 0)) +  feedforward.calculate(velocity); //assume that you want to reach setPoint with no remaining velocity
         }
         else
-            return feedback.calculate(proccess, setPoint) + feedforward.calculate(setPoint); //acceleration
+            return ((PIDController)feedback).calculate(proccess, setPoint) + feedforward.calculate(setPoint); //acceleration
     }
     //in this overload, it is assumed that type = VELOCITY, exception thrown if not the case
     public double getVoltage(double proccess, double setVelocity, double setAcceleration) throws IllegalStateException{ 
         if(type == correctionType.DISTANCE)
             throw new IllegalStateException("Function overload of \'getVoltage\' with arguments (double process, double setVelocity, double setAcceleration is only allowed with CombinedCorrection.type = VELOCITY");
         else
-            return feedback.calculate(proccess, setVelocity) + feedforward.calculate(setVelocity, setAcceleration);
+            return ((PIDController)feedback).calculate(proccess, setVelocity) + feedforward.calculate(setVelocity, setAcceleration);
     }
-    public ProfiledPIDController accessPID(){
+    public PIDModel accessPID(){
         return feedback;
     }
     public SimpleMotorFeedforward accessFeedForward(){
