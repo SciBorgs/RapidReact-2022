@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -22,7 +23,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
-import frc.robot.sciSensors.SciEncoder;
 import frc.robot.sciSensors.SciPigeon;
 import frc.robot.sciSensors.SciSpark;
 import frc.robot.util.Blockable;
@@ -53,8 +53,8 @@ public class DriveSubsystem extends SubsystemBase {
         rightGroup
     );
 
-    private final SciEncoder lEncoder = new SciEncoder(1, 1, leftSparks);
-    private final SciEncoder rEncoder = new SciEncoder(1, 1, rightSparks);
+    private final RelativeEncoder lEncoder;
+    private final RelativeEncoder rEncoder;
 
     public DifferentialDriveOdometry odometry;
     private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
@@ -75,6 +75,12 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public DriveSubsystem() {
+        lEncoder = leftSparks[0].getEncoder();
+        rEncoder = rightSparks[0].getEncoder();
+        System.out.println(lEncoder.getCountsPerRevolution() + " | " + rEncoder.getCountsPerRevolution());
+        lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
+        // lEncoder.setVelocityConversionFactor(DriveConstants.) TODO set correct value for this and rEncoder
+        rEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
         resetEncoders();
 
         for (SciSpark motor : allSparks) {
@@ -120,8 +126,8 @@ public class DriveSubsystem extends SubsystemBase {
         double leftFeedForward = feedforward.calculate(speeds.leftMetersPerSecond);
         double rightFeedForward = feedforward.calculate(speeds.rightMetersPerSecond);
 
-        double leftOutput = leftFeedback.calculate(lEncoder.getSpeed(), speeds.leftMetersPerSecond);
-        double rightOutput = rightFeedback.calculate(rEncoder.getSpeed(), speeds.rightMetersPerSecond);
+        double leftOutput = leftFeedback.calculate(lEncoder.getVelocity(), speeds.leftMetersPerSecond);
+        double rightOutput = rightFeedback.calculate(rEncoder.getVelocity(), speeds.rightMetersPerSecond);
 
         leftGroup.setVoltage(leftOutput + leftFeedForward);
         rightGroup.setVoltage(rightOutput + rightFeedForward);
@@ -172,12 +178,12 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void updateOdometry() {
-        odometry.update(getRotation(), lEncoder.getDistance(), rEncoder.getDistance());
+        odometry.update(getRotation(), lEncoder.getPosition(), rEncoder.getPosition());
     }
 
     public void resetEncoders() {
-        lEncoder.reset();
-        rEncoder.reset();
+        lEncoder.setPosition(0);
+        rEncoder.setPosition(0);
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -226,14 +232,14 @@ public class DriveSubsystem extends SubsystemBase {
     public boolean isLeftStalling() {
         boolean current = getLeftCurrentAmps() > Constants.CURRENT_THRESHOLD;
         boolean output = Math.abs(getLeftAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
-        boolean velocity = Math.abs(lEncoder.getSpeed()) < Constants.VELOCITY_THRESHOLD;
+        boolean velocity = Math.abs(lEncoder.getVelocity()) < Constants.VELOCITY_THRESHOLD;
         return (current || output) && velocity;
     }
 
     public boolean isRightStalling() {
         boolean current = getRightCurrentAmps() > Constants.CURRENT_THRESHOLD;
         boolean output = Math.abs(getRightAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
-        boolean velocity = Math.abs(rEncoder.getSpeed()) < Constants.VELOCITY_THRESHOLD;
+        boolean velocity = Math.abs(rEncoder.getVelocity()) < Constants.VELOCITY_THRESHOLD;
         return (current || output) && velocity;
     }
 
@@ -250,9 +256,9 @@ public class DriveSubsystem extends SubsystemBase {
         }
         
         driveSim.update(0.02);
-        
+        driveSim.setInputs(leftSparks[1].get(), rightSparks[1].get());
+        System.out.println(leftSparks[1].get());
         pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
-        System.out.println(leftSparks[0].get());
         updateOdometry();
     }
 }

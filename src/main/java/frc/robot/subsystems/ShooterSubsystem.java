@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -11,16 +12,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.sciSensors.SciAbsoluteEncoder;
-import frc.robot.sciSensors.SciEncoder;
 import frc.robot.PortMap;
+import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.util.Blockable;
 
 @Blockable
 public class ShooterSubsystem extends SubsystemBase {
 
     private final CANSparkMax hood, lmotor, rmotor;
-    private final SciEncoder flywheelEncoder;
+    private final RelativeEncoder flywheelEncoder;
     private final SciAbsoluteEncoder hoodEncoder;
     
     // Hood control
@@ -55,8 +55,8 @@ public class ShooterSubsystem extends SubsystemBase {
         rmotor.burnFlash();
         lmotor.burnFlash();
 
-        flywheelEncoder = new SciEncoder(ShooterConstants.FLYWHEEL_GEAR_RATIO, ShooterConstants.FLYWHEEL_CIRCUMFERENCE,
-                rmotor.getEncoder());
+        flywheelEncoder = rmotor.getEncoder();
+        flywheelEncoder.setVelocityConversionFactor(ShooterConstants.FLYWHEEL_GEAR_RATIO); // TODO add pulses if necessary?
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, ShooterConstants.HOOD_GEAR_RATIO,
                 ShooterConstants.OFFSET);
 
@@ -69,7 +69,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public double getCurrentFlywheelSpeed() {
-        return flywheelEncoder.getSpeed();
+        return flywheelEncoder.getVelocity();
     }
 
     public double getTargetFlywheelSpeed() {
@@ -77,7 +77,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getDistanceSpun() {
-        return flywheelEncoder.getDistance();
+        return flywheelEncoder.getPosition();
     }
 
     // HOOD ANGLE
@@ -94,7 +94,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public void resetDistanceSpun() {
-        flywheelEncoder.setDistance(0);
+        flywheelEncoder.setPosition(0);
     }
 
     public boolean isAtTarget() {
@@ -103,7 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getSpeed(), targetSpeed);
+        double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
         double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
         rmotor.setVoltage(flywheelFB + flywheelFF);
         
