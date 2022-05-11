@@ -30,43 +30,43 @@ import frc.robot.Robot;
 
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
-    private SciEncoder lEncoder, rEncoder;
     private SciPigeon pigeon;
-    private BasePigeonSimCollection pigeonSim;
 
     private final SciSpark[] leftSparks = {
-            new SciSpark(PortMap.LEFT_FRONT_SPARK),
-            new SciSpark(PortMap.LEFT_MIDDLE_SPARK),
-            new SciSpark(PortMap.LEFT_BACK_SPARK)
+        new SciSpark(PortMap.LEFT_FRONT_SPARK),
+        new SciSpark(PortMap.LEFT_MIDDLE_SPARK),
+        new SciSpark(PortMap.LEFT_BACK_SPARK)
     };
 
     private final SciSpark[] rightSparks = {
-            new SciSpark(PortMap.RIGHT_FRONT_SPARK),
-            new SciSpark(PortMap.RIGHT_MIDDLE_SPARK),
-            new SciSpark(PortMap.RIGHT_BACK_SPARK)
+        new SciSpark(PortMap.RIGHT_FRONT_SPARK),
+        new SciSpark(PortMap.RIGHT_MIDDLE_SPARK),
+        new SciSpark(PortMap.RIGHT_BACK_SPARK)
     };
 
-    private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks); 
+    private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
     private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
     private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
 
     private final DifferentialDrive drive = new DifferentialDrive(
-            leftGroup,
-            rightGroup);
+        leftGroup,
+        rightGroup
+    );
+
+    private final SciEncoder lEncoder = new SciEncoder(1, 1, leftSparks);
+    private final SciEncoder rEncoder = new SciEncoder(1, 1, rightSparks);
 
     public DifferentialDriveOdometry odometry;
-    private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.ROBOT_WIDTH);
+    private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
     private PIDController leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     private PIDController rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
+            DriveConstants.kA);
 
-    public DifferentialDrivetrainSim m_driveSim = DifferentialDrivetrainSim.createKitbotSim(
-        KitbotMotor.kDualCIMPerSide, // 2 CIMs per side.
-        KitbotGearing.k10p71,        // 10.71:1
-        KitbotWheelSize.SixInch,     // 6" diameter wheels.
-        null                         // No measurement noise.
-    );
+    // SIMULATION
+    private DifferentialDrivetrainSim driveSim;
+    private BasePigeonSimCollection pigeonSim;
 
     public enum DriveMode {
         TANK,
@@ -75,10 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public DriveSubsystem() {
-        lEncoder = new SciEncoder(1, 1, leftSparks);
-        rEncoder = new SciEncoder(1, 1, rightSparks);
         resetEncoders();
-        
+
         for (SciSpark motor : allSparks) {
             motor.setIdleMode(IdleMode.kBrake);
             motor.setSmartCurrentLimit(20);
@@ -89,26 +87,34 @@ public class DriveSubsystem extends SubsystemBase {
 
         pigeon = new SciPigeon(PortMap.PIGEON_ID);
         pigeonSim = pigeon.getSimCollection();
-        
+
+        // Will change once we get more information on our drivetrain
+        driveSim = DifferentialDrivetrainSim.createKitbotSim(
+            KitbotMotor.kDualCIMPerSide, 
+            KitbotGearing.k10p71, 
+            KitbotWheelSize.SixInch, 
+            null 
+        );
+
         odometry = new DifferentialDriveOdometry(getRotation());
     }
 
     public void setSideVoltage(double voltage, SciSpark[] sparks) {
-        for (SciSpark s : sparks) s.setVoltage(voltage);
+        for (SciSpark s : sparks)
+            s.setVoltage(voltage);
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        if(Robot.isReal()) {
-            leftGroup.setVoltage(leftVolts);
-            rightGroup.setVoltage(rightVolts);
-            drive.feed();
-        }
-        else {
+
+        leftGroup.setVoltage(leftVolts);
+        rightGroup.setVoltage(rightVolts);
+        drive.feed();
+
+        if(!Robot.isReal()) { // Meant for sim ONLY
             setSideVoltage(leftVolts, leftSparks);
             setSideVoltage(rightVolts, rightSparks);
         }
-
-    }    
+    }
 
     public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
         double leftFeedForward = feedforward.calculate(speeds.leftMetersPerSecond);
@@ -212,7 +218,7 @@ public class DriveSubsystem extends SubsystemBase {
         return kinematics;
     }
 
-    public Iterable<SciSpark> getAllSparks() { 
+    public Iterable<SciSpark> getAllSparks() {
         return allSparks;
     }
 
@@ -236,13 +242,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        for(SciSpark s : allSparks) {
+        for (SciSpark s : allSparks) {
             boolean fail = s.updateFailState();
-            if(fail) System.out.println("failed");
+            if (fail)
+                System.out.println("failed");
         }
-
-        System.out.println(leftSparks[0].getAppliedOutput());
-
+        
+        driveSim.setInputs(leftGroup.get(), rightGroup.get());
+        driveSim.update(0.02);
+        pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
         updateOdometry();
-    } 
+    }
 }
