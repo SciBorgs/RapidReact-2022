@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
@@ -183,6 +184,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void resetOdometry(Pose2d pose) {
         pigeon.reset();
         resetEncoders();
+        pigeonSim.setRawHeading(0);
         odometry.resetPosition(pose, getRotation());
     }
 
@@ -221,7 +223,7 @@ public class DriveSubsystem extends SubsystemBase {
     public Iterable<SciSpark> getAllSparks() {
         return allSparks;
     }
-
+    
     public boolean isLeftStalling() {
         boolean current = getLeftCurrentAmps() > Constants.CURRENT_THRESHOLD;
         boolean output = Math.abs(getLeftAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
@@ -248,9 +250,10 @@ public class DriveSubsystem extends SubsystemBase {
                 System.out.println("failed");
         }
         
-        driveSim.setInputs(leftGroup.get(), rightGroup.get());
         driveSim.update(0.02);
+        
         pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
+        System.out.println(leftSparks[0].get());
         updateOdometry();
     }
 }

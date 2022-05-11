@@ -90,6 +90,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
+  
   public void simulationInit() {
     for(SciSpark spark : m_robotContainer.driveSubsystem.getAllSparks()) {
       REVPhysicsSim.getInstance().addSparkMax(spark, DCMotor.getNEO(1));

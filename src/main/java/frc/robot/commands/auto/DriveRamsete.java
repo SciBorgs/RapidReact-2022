@@ -41,4 +41,9 @@ public class DriveRamsete extends RamseteCommand {
         driveSubsystem.resetOdometry(trajectory.getInitialPose()); 
     }
 
+    @Override 
+    public void end(boolean interrupted) {
+        driveSubsystem.tankDriveVolts(0, 0);
+    }
+
 }

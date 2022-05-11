@@ -56,7 +56,7 @@ public final class Constants {
         public static final double WHEEL_CIRCUMFERENCE = 0.4787787204; // is this true?
         // PID (for left and motor groups)
         public static final double kP = 4;
-        public static final double kI = 2;
+        public static final double kI = 4;
         public static final double kD = 4;
 
         // Feedforward

@@ -1,12 +1,14 @@
 package frc.robot.sciSensors;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxRelativeEncoder;
 
 public class SciEncoder {
     private RelativeEncoder[] encoders;
     private boolean[] inverted;
 
+    // this number is suspiciously close to 360
+    // imagine if it really is 360...
+    // it's probably being caused by not converting from radians to degrees, meaning it is 360
     private static final double ROYS_CONSTANT = 365.831868022;
     private double factor;
 
@@ -15,7 +17,7 @@ public class SciEncoder {
 
         this.encoders = new RelativeEncoder[sparks.length];
         for (int i = 0; i < sparks.length; i++) {
-            encoders[i] = sparks[i].getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 4096); // TODO fix
+            encoders[i] = sparks[i].getEncoder();
             encoders[i].setPosition(0);
         }
         this.inverted = new boolean[this.encoders.length];
