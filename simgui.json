@@ -16,11 +16,6 @@
           "open": true
         }
       },
-      "SPARK MAX [22]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [30]": {
         "header": {
           "open": true
@@ -68,6 +63,8 @@
       "/LiveWindow/Ungrouped/PIDController[15]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[16]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[17]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[18]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[19]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
@@ -130,6 +127,9 @@
         "open": true
       },
       "Head PID": {
+        "open": true
+      },
+      "Main": {
         "open": true
       },
       "Spin Heading PID": {
