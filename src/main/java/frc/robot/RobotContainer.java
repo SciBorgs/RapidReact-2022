@@ -4,14 +4,8 @@
 
 package frc.robot;
 
-import java.util.List;
 import java.util.Set;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,13 +14,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.auto.DriveRamsete;
-import frc.robot.commands.auto.TurnToAngle;
-import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
-import frc.robot.commands.shooter.AimTurretCommand;
-import frc.robot.commands.shooter.ResetTurretCommand;
 import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.shooter.ShootSequence.Target;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -138,7 +128,7 @@ public class RobotContainer {
 
     // Shooter
     // oi.shootButton.whenPressed(shootSequence);
-    oi.shootButton.whenPressed(new ResetTurretCommand(turretSubsystem));
+    oi.shootButton.whenPressed(shootSequence);
   }
 
   /**
