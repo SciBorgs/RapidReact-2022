@@ -15,9 +15,10 @@ public class IntakeSubsystem extends SubsystemBase {
     private CANSparkMax suckSpark; // motor used for intaking balls
 
     private DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
+    private boolean lastLimit;
+    private long lastFallingEdge;
     private int amountOfBalls = 1; // assume we start with a preloaded ball
     private final int WAIT_TIME = 1000; //in miliseconds
-    private long lastActivated = 0;
     
     private final double INTAKE_SPEED = 0.5;
 
@@ -29,28 +30,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
         this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
-    // ONLY WORKS IF LIMIT SWITCH IS IN INTAKE AND NOT HOPPER balsucker//
+    // ONLY WORKS IF LIMIT SWITCH IS IN INTAKE AND NOT HOPPER balsucker// 
     public void updateBallCounter(){
 
-        // // Should also work
-        // if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end (falling edge = turning off)
-        //     lastFallingEdge = System.currentTimeMillis();
+    if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end (falling edge = turning off)
+        lastFallingEdge = System.currentTimeMillis();
 
-        // if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
-        //     if(System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) //so we know ball did not shake around in intake
-        //         amountOfBalls += 1;
+    if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
+        if(System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) //so we know ball did not shake around in intake
+        amountOfBalls += 1;
 
-        // lastLimit = this.getLimitSwitchState();
-        
-
-        if (this.getLimitSwitchState()) {
-            if (System.currentTimeMillis() - lastActivated > WAIT_TIME) {
-                amountOfBalls++;
-            }
-            lastActivated = System.currentTimeMillis();
-        }
+        lastLimit = this.getLimitSwitchState();
     }
-
+    //should only really be called by shooter
     public void decrementBallCount() {
         amountOfBalls--;
     }

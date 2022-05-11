@@ -20,7 +20,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new IntakeBallsCommand(intake, hopper),
                         new DriveRamsete(drive, "Pos" + initialPos + "_2Ball")),
-                new ShootSequence(shooter, turret, hopper, limelight,
+                new ShootSequence(shooter, turret, intake, hopper, limelight,
                         Target.HIGH));
     }
 }

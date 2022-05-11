@@ -26,6 +26,7 @@ import frc.robot.Robot;
 import frc.robot.sciSensors.SciPigeon;
 import frc.robot.sciSensors.SciSpark;
 import frc.robot.util.Blockable;
+import frc.robot.util.EncoderSim;
 import frc.robot.util.Util;
 
 @Blockable
@@ -67,6 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
     // SIMULATION
     private DifferentialDrivetrainSim driveSim;
     private BasePigeonSimCollection pigeonSim;
+    private EncoderSim lEncoderSim, rEncoderSim;
 
     public enum DriveMode {
         TANK,
@@ -75,8 +77,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public DriveSubsystem() {
-        lEncoder = leftSparks[0].getEncoder();
-        rEncoder = rightSparks[0].getEncoder();
+        lEncoder = leftSparks[1].getEncoder();
+        rEncoder = rightSparks[1].getEncoder();
         System.out.println(lEncoder.getCountsPerRevolution() + " | " + rEncoder.getCountsPerRevolution());
         lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
         // lEncoder.setVelocityConversionFactor(DriveConstants.) TODO set correct value for this and rEncoder
@@ -102,6 +104,9 @@ public class DriveSubsystem extends SubsystemBase {
             null 
         );
 
+        lEncoderSim = new EncoderSim(PortMap.LEFT_MIDDLE_SPARK);
+        rEncoderSim = new EncoderSim(PortMap.RIGHT_MIDDLE_SPARK);
+
         odometry = new DifferentialDriveOdometry(getRotation());
     }
 
@@ -116,10 +121,10 @@ public class DriveSubsystem extends SubsystemBase {
         rightGroup.setVoltage(rightVolts);
         drive.feed();
 
-        if(!Robot.isReal()) { // Meant for sim ONLY
-            setSideVoltage(leftVolts, leftSparks);
-            setSideVoltage(rightVolts, rightSparks);
-        }
+        // if(!Robot.isReal()) { // Meant for sim ONLY
+        //     setSideVoltage(leftVolts, leftSparks);
+        //     setSideVoltage(rightVolts, rightSparks);
+        // }
     }
 
     public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
@@ -254,11 +259,21 @@ public class DriveSubsystem extends SubsystemBase {
             if (fail)
                 System.out.println("failed");
         }
-        
-        driveSim.update(0.02);
-        driveSim.setInputs(leftSparks[1].get(), rightSparks[1].get());
-        System.out.println(leftSparks[1].get());
-        pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
         updateOdometry();
     }
+
+    @Override
+    public void simulationPeriodic() {
+        driveSim.setInputs(leftSparks[1].get(), rightSparks[1].get());
+        driveSim.update(0.02);
+
+        lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
+        lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
+        rEncoderSim.setPosition(driveSim.getRightPositionMeters());
+        rEncoderSim.setVelocity(driveSim.getRightVelocityMetersPerSecond());
+        
+        System.out.println(leftSparks[1].get());
+        pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
+    }
+
 }

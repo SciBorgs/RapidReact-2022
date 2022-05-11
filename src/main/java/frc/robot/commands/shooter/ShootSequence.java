@@ -3,6 +3,7 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
@@ -14,7 +15,7 @@ public class ShootSequence extends SequentialCommandGroup {
         HIGH
     }
 
-    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper, LimeLightSubsystem limelight, Target target) {
+    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, IntakeSubsystem intake, HopperSubsystem hopper, LimeLightSubsystem limelight, Target target) {
         switch(target) {
             case LOW:
                 break;
@@ -37,7 +38,7 @@ public class ShootSequence extends SequentialCommandGroup {
                 ).withTimeout(timeout),
                 new StartEndCommand(
                     () -> hopper.startElevator(), 
-                    () -> hopper.stopElevator(), 
+                    () -> {hopper.stopElevator(); intake.decrementBallCount();}, //safeset place to decrement balls since when the elevator stops the ball should entirely not be in the hopper anymore
                     hopper
                 )
             )
