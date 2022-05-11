@@ -46,7 +46,7 @@ public class CombinedCorrection<PIDModel> {
         else
             throw new IllegalStateException("<PIDModel> of CombinedCorrection is not PIDController or ProfiledPIDController. This is not allowed.");
     }
-    //in this overload, type may be VELOCITY or DISTANCE
+
     public double getVoltage(double proccess, double setPoint){ 
         if(type == correctionType.DISTANCE){
         //it is now assumed that setPoint is distance to target
@@ -57,12 +57,16 @@ public class CombinedCorrection<PIDModel> {
         else
             return ((PIDController)feedback).calculate(proccess, setPoint) + feedforward.calculate(setPoint); //acceleration
     }
-    //in this overload, it is assumed that type = VELOCITY, exception thrown if not the case
-    public double getVoltage(double proccess, double setVelocity, double setAcceleration) throws IllegalStateException{ 
-        if(type == correctionType.DISTANCE)
-            throw new IllegalStateException("Function overload of \'getVoltage\' with arguments (double process, double setVelocity, double setAcceleration is only allowed with CombinedCorrection.type = VELOCITY");
+
+    public double getVoltage(double proccess, double setPoint, double setAcceleration){ 
+        if(type == correctionType.DISTANCE){
+        //it is now assumed that setPoint is distance to target
+        double velocity = ((ProfiledPIDController)feedback).getSetpoint().velocity; 
+        //now pid and ff are used to try and reach this velocity as close as possible since it is assumed that profilepid is correct in required velocity to reach target
+        return ((ProfiledPIDController)feedback).calculate(proccess, new TrapezoidProfile.State(setPoint, 0)) +  feedforward.calculate(velocity, setAcceleration); //assume that you want to reach setPoint with no remaining velocity
+        }
         else
-            return ((PIDController)feedback).calculate(proccess, setVelocity) + feedforward.calculate(setVelocity, setAcceleration);
+        return ((PIDController)feedback).calculate(proccess, setPoint) + feedforward.calculate(setPoint, setAcceleration); //acceleration
     }
     public PIDModel accessPID(){
         return feedback;

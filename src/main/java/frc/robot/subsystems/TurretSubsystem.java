@@ -16,15 +16,15 @@ import frc.robot.Constants.TurretConstants;
 import frc.robot.PortMap;
 import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.util.Blockable;
+import frc.robot.util.CombinedCorrection;
 
 @Blockable
 public class TurretSubsystem extends SubsystemBase {
     private final CANSparkMax turret = new CANSparkMax(PortMap.TURRET_SPARK, MotorType.kBrushless);
     private final SciAbsoluteEncoder encoder = new SciAbsoluteEncoder(PortMap.TURRET_ENCODER, TurretConstants.GEAR_RATIO * TurretConstants.DISTANCE_PER_PULSE, TurretConstants.OFFSET);
 
-    private final Constraints constraints = new Constraints(TurretConstants.maxV, TurretConstants.maxA);
-    private final ProfiledPIDController feedback = new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, constraints);
-    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(TurretConstants.kS, TurretConstants.kV, TurretConstants.kA);
+    CombinedCorrection<ProfiledPIDController> correction = new CombinedCorrection<ProfiledPIDController>(new SimpleMotorFeedforward(TurretConstants.kS, TurretConstants.kV, TurretConstants.kA),
+    new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, new Constraints(TurretConstants.maxV, TurretConstants.maxA)), 0.2);
 
     private double targetAngle;
     // used for calculating acceleration
@@ -35,8 +35,6 @@ public class TurretSubsystem extends SubsystemBase {
 
 
     public TurretSubsystem() {
-        feedback.setTolerance(0.2);
-
         mainTab = Shuffleboard.getTab("turret  ");
         mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
         mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
@@ -62,19 +60,15 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public boolean isAtTarget() {
-        return feedback.atGoal();
+        return correction.accessPID().atGoal();
     }
 
     @Override
     public void periodic() {
-        double accel = (feedback.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
+        double accel = (correction.accessPID().getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
+        turret.setVoltage(correction.getVoltage(getCurrentAngle(), targetAngle, accel));
 
-        double fb = feedback.calculate(getCurrentAngle(), targetAngle);
-        double ff = feedforward.calculate(feedback.getSetpoint().velocity, accel);
-
-        lastSpeed = feedback.getSetpoint().velocity;
+        lastSpeed = correction.accessPID().getSetpoint().velocity;
         lastTime = Timer.getFPGATimestamp();
-
-        turret.setVoltage(fb + ff);
     }
 }
