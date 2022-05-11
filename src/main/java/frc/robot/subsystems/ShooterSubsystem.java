@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -24,16 +25,15 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax hood, lmotor, rmotor;
     private final SciEncoder flywheelEncoder;
     private final SciAbsoluteEncoder hoodEncoder;
-    
+    //NOTE TO SHOOTER PEOPLE: set constraints properly because i dont know what to put there
     CombinedCorrection hoodCorrect = new CombinedCorrection(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA),
     new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD),
-    new TrapezoidProfile.Constraints(0, 0), //dont know what this should be set to
-    new TrapezoidProfile.State(0,0), //goal and inital are 0 
-    new TrapezoidProfile.State(0,0),
-     0.2);
+    new TrapezoidProfile.Constraints(0,0),
+    CombinedCorrection.correctionType.DISTANCE,
+    0.2);
 
     CombinedCorrection flywheelCorrect = new CombinedCorrection(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA), 
-    new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD));
+    new ProfiledPIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD, new TrapezoidProfile.Constraints(0, 0)), CombinedCorrection.correctionType.VELOCITY);
     
     private double targetSpeed; // desired speed of the flywheel
     private double targetAngle; // desired angle of the hood

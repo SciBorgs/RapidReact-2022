@@ -1,73 +1,57 @@
 package frc.robot.util;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.shuffleboard.api.util.Time;
 
 public class CombinedCorrection {
-    private PIDController feedback;
+    private ProfiledPIDController feedback;
     private SimpleMotorFeedforward feedforward;
-    private TrapezoidProfile trapezoidal;
-    private TrapezoidProfile.Constraints constraints;
-    private long aux;
+    private correctionType type;
 
-    //assumes to init profile like in docs
+    public static enum correctionType{
+        DISTANCE,
+        VELOCITY
+    }
+
     //super extended constructor, if this was C, this would've been named 'CombinedCorrectionEx' teehee C banter
-    public CombinedCorrection(SimpleMotorFeedforward feedforward, PIDController feedback, TrapezoidProfile.Constraints constraints, 
-    TrapezoidProfile.State initalState, TrapezoidProfile.State goal, double tolr){
+    public CombinedCorrection(SimpleMotorFeedforward feedforward, PIDController feedback, TrapezoidProfile.Constraints constraints, correctionType type, double tolr){
         this.feedforward = feedforward;
-        this.feedback = feedback;
+        this.feedback = new ProfiledPIDController(feedback.getP(),feedback.getI(),feedback.getD(), constraints);
+        this.type = type;
         feedback.setTolerance(tolr);
-        //since updating trapeoid profile requires recreating it over and over
-        this.constraints = constraints;
-        trapezoidal = new TrapezoidProfile(constraints, goal, initalState);
-        check();
     }
-
-    public CombinedCorrection(SimpleMotorFeedforward feedforward, PIDController feedback, double tolr){
+    public CombinedCorrection(SimpleMotorFeedforward feedforward, ProfiledPIDController feedback, double tolr, correctionType type){
         this.feedforward = feedforward;
         this.feedback = feedback;
+        this.type = type;
         feedback.setTolerance(tolr);
-        check();
     }
-    
-    public CombinedCorrection(SimpleMotorFeedforward feedforward, PIDController feedback){
+    public CombinedCorrection(SimpleMotorFeedforward feedforward, ProfiledPIDController feedback, correctionType type){
         this.feedforward = feedforward;
         this.feedback = feedback;
-        check();
+        this.type = type;
     }
-    //may need to check more things in future, this is called in all constructor overloads
-    private void check(){ 
-        if(trapezoidal != null)
-            aux = System.currentTimeMillis(); //start time for the trapazoidal thing
-    }
-    
+    //in this overload, type may be VELOCITY or DISTANCE
     public double getVoltage(double proccess, double setPoint){ 
-        if(trapezoidal == null)
-            return feedback.calculate(proccess, setPoint) + feedforward.calculate(setPoint);
+        if(type == correctionType.DISTANCE){
         //it is now assumed that setPoint is distance to target
-        double velocity = (trapezoidal.calculate(((double)(System.currentTimeMillis() - aux)) / 1000)).velocity; //get 'wanted' velocity from trapezoid thing
-        //now pid and ff are used to try and reach this velocity as close as possible since it is assumed that trap is correct in required veloicty to reach target
-        double returnedFeedForward = feedforward.calculate(velocity);
-        double returnedFeedBack = feedback.calculate(proccess, velocity);
-        //update trap as specified in docs, this is the reason goal and constraints are stored
-        trapezoidal = new TrapezoidProfile(constraints, new TrapezoidProfile.State(setPoint, 0), new TrapezoidProfile.State(proccess, velocity));
-        return returnedFeedBack + returnedFeedForward; //(assumed that you want to reach your setpoint and have 0 remaining veloicty, also assumed that setPoint is in the same 'space' as inital)
+        double velocity = feedback.getSetpoint().velocity; 
+        //now pid and ff are used to try and reach this velocity as close as possible since it is assumed that profilepid is correct in required velocity to reach target
+        return feedback.calculate(proccess, new TrapezoidProfile.State(setPoint, 0)) +  feedforward.calculate(velocity); //assume that you want to reach setPoint with no remaining velocity
+        }
+        else
+            return feedback.calculate(proccess, setPoint) + feedforward.calculate(setPoint); //acceleration
     }
-    public double getVoltage(double proccess, double setPoint, double setAcceleration){ 
-        if(trapezoidal == null)
-            return feedback.calculate(proccess, setPoint) + feedforward.calculate(setPoint, setAcceleration);
-        //it is now assumed that setPoint is distance to target
-        double velocity = (trapezoidal.calculate(((double)(System.currentTimeMillis() - aux)) / 1000)).velocity; //get 'wanted' velocity from trapezoid thing
-        //now pid and ff are used to try and reach this velocity as close as possible since it is assumed that trap is correct in required veloicty to reach target
-        double returnedFeedForward = feedforward.calculate(velocity, setAcceleration);
-        double returnedFeedBack = feedback.calculate(proccess, velocity);
-        //update trap as specified in docs, this is the reason goal and constraints are stored
-        trapezoidal = new TrapezoidProfile(constraints, new TrapezoidProfile.State(setPoint, 0), new TrapezoidProfile.State(proccess, velocity));
-        return returnedFeedBack + returnedFeedForward; //(assumed that you want to reach your setpoint and have 0 remaining veloicty, also assumed that setPoint is in the same 'space' as inital)
+    //in this overload, it is assumed that type = VELOCITY, exception thrown if not the case
+    public double getVoltage(double proccess, double setVelocity, double setAcceleration) throws IllegalStateException{ 
+        if(type == correctionType.DISTANCE)
+            throw new IllegalStateException("Function overload of \'getVoltage\' with arguments (double process, double setVelocity, double setAcceleration is only allowed with CombinedCorrection.type = VELOCITY");
+        else
+            return feedback.calculate(proccess, setVelocity) + feedforward.calculate(setVelocity, setAcceleration);
     }
-    public PIDController accessPID(){
+    public ProfiledPIDController accessPID(){
         return feedback;
     }
     public SimpleMotorFeedforward accessFeedForward(){
