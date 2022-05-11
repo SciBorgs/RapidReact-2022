@@ -256,9 +256,9 @@ public class DriveSubsystem extends SubsystemBase {
         }
         
         driveSim.update(0.02);
-        
+        driveSim.setInputs(leftSparks[1].get(), rightSparks[1].get());
+        System.out.println(leftSparks[1].get());
         pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
-        System.out.println(leftSparks[0].get());
         updateOdometry();
     }
 }
