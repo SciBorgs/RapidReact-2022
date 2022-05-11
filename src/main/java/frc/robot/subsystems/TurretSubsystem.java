@@ -13,18 +13,18 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TurretConstants;
-import frc.robot.PortMap;
 import frc.robot.sciSensors.SciAbsoluteEncoder;
+import frc.robot.PortMap;
 import frc.robot.util.Blockable;
-import frc.robot.util.CombinedCorrection;
 
 @Blockable
 public class TurretSubsystem extends SubsystemBase {
     private final CANSparkMax turret = new CANSparkMax(PortMap.TURRET_SPARK, MotorType.kBrushless);
-    private final SciAbsoluteEncoder encoder = new SciAbsoluteEncoder(PortMap.TURRET_ENCODER, TurretConstants.GEAR_RATIO * TurretConstants.DISTANCE_PER_PULSE, TurretConstants.OFFSET);
+    private final SciAbsoluteEncoder encoder = new SciAbsoluteEncoder(PortMap.TURRET_ENCODER, TurretConstants.TURRET_GEAR_RATIO, TurretConstants.OFFSET);
 
-    CombinedCorrection<ProfiledPIDController> correction = new CombinedCorrection<ProfiledPIDController>(new SimpleMotorFeedforward(TurretConstants.kS, TurretConstants.kV, TurretConstants.kA),
-    new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, new Constraints(TurretConstants.maxV, TurretConstants.maxA)), 0.2);
+    private final Constraints constraints = new Constraints(TurretConstants.maxV, TurretConstants.maxA);
+    private final ProfiledPIDController feedback = new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, constraints);
+    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(TurretConstants.kS, TurretConstants.kV, TurretConstants.kA);
 
     private double targetAngle;
     // used for calculating acceleration
@@ -35,6 +35,8 @@ public class TurretSubsystem extends SubsystemBase {
 
 
     public TurretSubsystem() {
+        feedback.setTolerance(0.2);
+
         mainTab = Shuffleboard.getTab("turret  ");
         mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
         mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
@@ -60,15 +62,19 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public boolean isAtTarget() {
-        return correction.accessPID().atGoal();
+        return feedback.atGoal();
     }
 
     @Override
     public void periodic() {
-        double accel = (correction.accessPID().getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        turret.setVoltage(correction.getVoltage(getCurrentAngle(), targetAngle, accel));
+        double accel = (feedback.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
 
-        lastSpeed = correction.accessPID().getSetpoint().velocity;
+        double fb = feedback.calculate(getCurrentAngle(), targetAngle);
+        double ff = feedforward.calculate(feedback.getSetpoint().velocity, accel);
+
+        lastSpeed = feedback.getSetpoint().velocity;
         lastTime = Timer.getFPGATimestamp();
+
+        turret.setVoltage(fb + ff);
     }
 }

@@ -6,9 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +15,6 @@ import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.sciSensors.SciEncoder;
 import frc.robot.PortMap;
 import frc.robot.util.Blockable;
-import frc.robot.util.CombinedCorrection;
 
 @Blockable
 public class ShooterSubsystem extends SubsystemBase {
@@ -25,12 +22,13 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax hood, lmotor, rmotor;
     private final SciEncoder flywheelEncoder;
     private final SciAbsoluteEncoder hoodEncoder;
-    //NOTE TO SHOOTER PEOPLE: set constraints properly because i dont know what to put there
-    CombinedCorrection<ProfiledPIDController> hoodCorrect = new CombinedCorrection<ProfiledPIDController>(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA),
-    new ProfiledPIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD, new TrapezoidProfile.Constraints(0,0)), 0.2);
-
-    CombinedCorrection<PIDController> flywheelCorrect = new CombinedCorrection<PIDController>(new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA), 
-    new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD));
+    
+    // Hood control
+    private final PIDController hoodFeedback = new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
+    private final SimpleMotorFeedforward hoodFeedforward = new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA);
+    // Flywheel control
+    private final PIDController flywheelFeedback = new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD);
+    private final SimpleMotorFeedforward flywheelFeedforward = new SimpleMotorFeedforward(ShooterConstants.fS, ShooterConstants.fV, ShooterConstants.fA);
     
     private double targetSpeed; // desired speed of the flywheel
     private double targetAngle; // desired angle of the hood
@@ -61,6 +59,8 @@ public class ShooterSubsystem extends SubsystemBase {
                 rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, ShooterConstants.HOOD_GEAR_RATIO,
                 ShooterConstants.OFFSET);
+
+        hoodFeedback.setTolerance(0.2);
     }
     
     // FLYWHEEL
@@ -98,12 +98,17 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean isAtTarget() {
-        return hoodCorrect.accessPID().atSetpoint();
+        return hoodFeedback.atSetpoint();
     }
 
     @Override
     public void periodic() {
-        rmotor.setVoltage(flywheelCorrect.getVoltage(flywheelEncoder.getSpeed(), targetSpeed));
-        hood.setVoltage(hoodCorrect.getVoltage(hoodEncoder.getAngle(), targetAngle)); //idk what to set acceleration to so I just dont
+        double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getSpeed(), targetSpeed);
+        double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
+        rmotor.setVoltage(flywheelFB + flywheelFF);
+        
+        double hoodFB = hoodFeedback.calculate(hoodEncoder.getAngle(), targetAngle);
+        double hoodFF = hoodFeedforward.calculate(0);
+        hood.setVoltage(hoodFB + hoodFF);
     }
 }
