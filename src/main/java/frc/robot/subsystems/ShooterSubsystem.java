@@ -8,6 +8,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,7 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final CANSparkMax hood, lmotor, rmotor;
     private final RelativeEncoder flywheelEncoder;
-    private final SciAbsoluteEncoder hoodEncoder;
+    private final DutyCycleEncoder hoodEncoder;
     
     // Hood control
     private final PIDController hoodFeedback = new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
@@ -57,8 +58,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         flywheelEncoder = rmotor.getEncoder();
         flywheelEncoder.setVelocityConversionFactor(ShooterConstants.FLYWHEEL_GEAR_RATIO); // TODO add pulses if necessary?
-        hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, ShooterConstants.HOOD_GEAR_RATIO,
-                ShooterConstants.OFFSET);
+        hoodEncoder = new DutyCycleEncoder(PortMap.HOOD_ENCODER);
+        hoodEncoder.setDistancePerRotation(ShooterConstants.HOOD_GEAR_RATIO);
 
         hoodFeedback.setTolerance(0.2);
     }
@@ -86,7 +87,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getCurrentHoodAngle() {
-        return hoodEncoder.getAngle();
+        return hoodEncoder.getDistance();
     }
 
     public double getTargetHoodAngle() {
@@ -107,7 +108,7 @@ public class ShooterSubsystem extends SubsystemBase {
         double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
         rmotor.setVoltage(flywheelFB + flywheelFF);
         
-        double hoodFB = hoodFeedback.calculate(hoodEncoder.getAngle(), targetAngle);
+        double hoodFB = hoodFeedback.calculate(hoodEncoder.getDistance(), targetAngle);
         double hoodFF = hoodFeedforward.calculate(0);
         hood.setVoltage(hoodFB + hoodFF);
     }
