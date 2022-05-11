@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.sciSensors.SciAbsoluteEncoder;
-import frc.robot.sciSensors.SciEncoder;
+import frc.robot.sciSensors.SciEncoderGroup;
 import frc.robot.PortMap;
 import frc.robot.util.Blockable;
 
@@ -20,7 +20,7 @@ import frc.robot.util.Blockable;
 public class ShooterSubsystem extends SubsystemBase {
 
     private final CANSparkMax hood, lmotor, rmotor;
-    private final SciEncoder flywheelEncoder;
+    private final SciEncoderGroup flywheelEncoder;
     private final SciAbsoluteEncoder hoodEncoder;
     
     // Hood control
@@ -55,7 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
         rmotor.burnFlash();
         lmotor.burnFlash();
 
-        flywheelEncoder = new SciEncoder(ShooterConstants.FLYWHEEL_GEAR_RATIO, ShooterConstants.FLYWHEEL_CIRCUMFERENCE,
+        flywheelEncoder = new SciEncoderGroup(ShooterConstants.FLYWHEEL_GEAR_RATIO, ShooterConstants.FLYWHEEL_CIRCUMFERENCE,
                 rmotor.getEncoder());
         hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, ShooterConstants.HOOD_GEAR_RATIO,
                 ShooterConstants.OFFSET);
