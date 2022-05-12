@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -69,6 +70,7 @@ public class DriveSubsystem extends SubsystemBase {
     private DifferentialDrivetrainSim driveSim;
     private BasePigeonSimCollection pigeonSim;
     private EncoderSim lEncoderSim, rEncoderSim;
+    public Field2d field2d = new Field2d();
 
     public enum DriveMode {
         TANK,
@@ -98,9 +100,9 @@ public class DriveSubsystem extends SubsystemBase {
 
         // Will change once we get more information on our drivetrain
         driveSim = DifferentialDrivetrainSim.createKitbotSim(
-            KitbotMotor.kDualCIMPerSide, 
-            KitbotGearing.k10p71, 
-            KitbotWheelSize.SixInch, 
+            KitbotMotor.kDoubleNEOPerSide, 
+            KitbotGearing.k8p45, 
+            KitbotWheelSize.kSixInch, 
             null 
         );
 
@@ -116,7 +118,6 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-
         leftGroup.setVoltage(leftVolts);
         rightGroup.setVoltage(rightVolts);
         drive.feed();
@@ -223,7 +224,7 @@ public class DriveSubsystem extends SubsystemBase {
         return kinematics;
     }
 
-    public Iterable<SciSpark> getAllSparks() {
+    public Iterable<SciSpark> getAllSparks() {  
         return allSparks;
     }
     
@@ -257,14 +258,16 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void simulationPeriodic() {
-        driveSim.setInputs(leftGroup.get(), rightGroup.get());
+        driveSim.setInputs(-leftSparks[1].get(), rightSparks[1].get());
         driveSim.update(0.02);
-
+        
         lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
-        lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
         rEncoderSim.setPosition(driveSim.getRightPositionMeters());
+        lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
         rEncoderSim.setVelocity(driveSim.getRightVelocityMetersPerSecond());
         pigeonSim.setRawHeading(driveSim.getHeading().getDegrees());
+        System.out.println(driveSim.getHeading().getDegrees());
+        field2d.setRobotPose(odometry.getPoseMeters());
     }
 
 }

@@ -55,9 +55,9 @@ public final class Constants {
         public static final double DISTANCE_PER_PULSE = 1; // TODO update
         public static final double WHEEL_CIRCUMFERENCE = 0.4787787204; // is this true?
         // PID (for left and motor groups)
-        public static final double kP = 4;
-        public static final double kI = 4;
-        public static final double kD = 4;
+        public static final double kP = 2;
+        public static final double kI = 0;
+        public static final double kD = 0;
 
         // Feedforward
         public static final double kS = 1; 

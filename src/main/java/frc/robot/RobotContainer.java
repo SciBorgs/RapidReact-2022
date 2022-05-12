@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import java.io.IOException;
 import java.util.Set;
 
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -140,7 +144,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     // return new TurnToAngle(180, driveSubsystem);
-    // return new DriveRamsete(driveSubsystem, "Testing");
-    return new TwoBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
+    // String pathName = "paths/output/Test-Circle.wpilb.json";
+    // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
+    return new DriveRamsete(driveSubsystem, "Testing4");
+    // return new TwoBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
   }
 }
