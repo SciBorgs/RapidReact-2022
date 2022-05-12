@@ -13,7 +13,7 @@ public class TurnToAngle extends PIDCommand {
                 new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
                 drive::getHeading,
                 targetDegrees,
-                output -> drive.driveRobot(DriveMode.TANK, output, -output),
+                output -> drive.driveRobot(DriveMode.TANK, -output, output),
                 drive);
 
         getController().enableContinuousInput(-180, 180);

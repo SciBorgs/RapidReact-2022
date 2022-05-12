@@ -120,11 +120,6 @@ public class DriveSubsystem extends SubsystemBase {
         leftGroup.setVoltage(leftVolts);
         rightGroup.setVoltage(rightVolts);
         drive.feed();
-
-        // if(!Robot.isReal()) { // Meant for sim ONLY
-        //     setSideVoltage(leftVolts, leftSparks);
-        //     setSideVoltage(rightVolts, rightSparks);
-        // }
     }
 
     public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
@@ -192,9 +187,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
-        pigeon.reset();
         resetEncoders();
-        pigeonSim.setRawHeading(0);
         odometry.resetPosition(pose, getRotation());
     }
 
@@ -264,16 +257,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void simulationPeriodic() {
-        driveSim.setInputs(leftSparks[1].get(), rightSparks[1].get());
+        driveSim.setInputs(leftGroup.get(), rightGroup.get());
         driveSim.update(0.02);
 
         lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
         lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
         rEncoderSim.setPosition(driveSim.getRightPositionMeters());
         rEncoderSim.setVelocity(driveSim.getRightVelocityMetersPerSecond());
-        
-        System.out.println(leftSparks[1].get());
-        pigeonSim.setRawHeading(-driveSim.getHeading().getDegrees());
+        pigeonSim.setRawHeading(driveSim.getHeading().getDegrees());
     }
 
 }

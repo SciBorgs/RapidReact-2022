@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.auto.DriveRamsete;
+import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
@@ -139,7 +140,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     // return new TurnToAngle(180, driveSubsystem);
-    return new DriveRamsete(driveSubsystem, "Testing");
-    // return new TwoBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
+    // return new DriveRamsete(driveSubsystem, "Testing");
+    return new TwoBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
   }
 }
