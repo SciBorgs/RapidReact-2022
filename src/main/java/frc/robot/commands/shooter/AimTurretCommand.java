@@ -1,29 +1,23 @@
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class AimTurretCommand extends CommandBase {
     private TurretSubsystem turret;
-    private VisionSubsystem limelight;
+    private VisionSubsystem vision;
 
-    public AimTurretCommand(TurretSubsystem turret, VisionSubsystem limelight) {
+    public AimTurretCommand(TurretSubsystem turret, VisionSubsystem vision) {
         this.turret = turret;
-        this.limelight = limelight;
-        addRequirements(turret, limelight);
+        this.vision = vision;
+        addRequirements(turret);
     }
     
     @Override
     public void execute() {
-        limelight.setCameraParams(limelight.getTable(), "pipeline", 0);
-        NetworkTable table = limelight.getTable();
-        double tv = limelight.getTableData(table, "tv");
-        double tx = limelight.getTableData(table, "tx");
-
-        if (tv == 1) {
-            turret.setTargetAngle(turret.getCurrentAngle() + tx);
+        if (vision.hasTarget()) {
+            turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset());
         }
     }
     

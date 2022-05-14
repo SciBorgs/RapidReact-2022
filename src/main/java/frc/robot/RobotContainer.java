@@ -4,12 +4,8 @@
 
 package frc.robot;
 
-import java.io.IOException;
 import java.util.Set;
 
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,26 +13,24 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.RumbleCommand;
-import frc.robot.commands.auto.DriveRamsete;
+import frc.robot.commands.ShootSequence;
+import frc.robot.commands.ShootSequence.Target;
 import frc.robot.commands.auto.TurnToAngle;
-import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
-import frc.robot.commands.shooter.ShootSequence;
-import frc.robot.commands.shooter.ShootSequence.Target;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a

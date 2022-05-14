@@ -16,6 +16,7 @@ public class VisionSubsystem extends SubsystemBase {
     private double yOffset;
 
     public VisionSubsystem() {
+        setCameraParams(getTable(), "pipeline", 0);
         reset();
     }
 
@@ -44,6 +45,10 @@ public class VisionSubsystem extends SubsystemBase {
 
     public double getYOffset() {
         return yOffset;
+    }
+
+    public boolean hasTarget() {
+        return getLimelightData("tv") == 1;
     }
 
     // gets the distance from the limelight to the target

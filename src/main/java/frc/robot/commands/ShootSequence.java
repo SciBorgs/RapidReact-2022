@@ -1,14 +1,15 @@
-package frc.robot.commands.shooter;
-
-import java.util.function.DoubleSupplier;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import frc.robot.commands.shooter.AimHoodCommand;
+import frc.robot.commands.shooter.AimTurretCommand;
+import frc.robot.commands.shooter.ResetTurretCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class ShootSequence extends SequentialCommandGroup {
     private int timeout = 5;
@@ -17,7 +18,7 @@ public class ShootSequence extends SequentialCommandGroup {
         HIGH
     }
 
-    public ShootSequence(DoubleSupplier rpm, DoubleSupplier angle, ShooterSubsystem shooter, TurretSubsystem turret, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, Target target) {
+    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, Target target) {
         switch(target) {
             case LOW:
                 break;
@@ -25,7 +26,7 @@ public class ShootSequence extends SequentialCommandGroup {
                 addCommands(
                     parallel(
                         new AimTurretCommand(turret, limelight),
-                        new AimHoodCommand(shooter)
+                        new AimHoodCommand(shooter, limelight)
                     )
                 );
         }
