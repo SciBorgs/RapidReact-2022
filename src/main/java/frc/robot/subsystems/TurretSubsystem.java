@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.PortMap;
-import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.util.Blockable;
 
 @Blockable
@@ -34,7 +33,6 @@ public class TurretSubsystem extends SubsystemBase {
     private double lastTime;
 
     private ShuffleboardTab mainTab;
-
 
     public TurretSubsystem() {
         feedback.setTolerance(0.2);
