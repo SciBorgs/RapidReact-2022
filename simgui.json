@@ -49,7 +49,7 @@
       "/LiveWindow/DriveSubsystem": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
-      "/LiveWindow/LimeLightSubsystem": "Subsystem",
+      "/LiveWindow/VisionSubsystem": "Subsystem",
       "/LiveWindow/LocalizationSubsystem": "Subsystem",
       "/LiveWindow/PhotonVisionSubsystem": "Subsystem",
       "/LiveWindow/RumbleSubsystem": "Subsystem",

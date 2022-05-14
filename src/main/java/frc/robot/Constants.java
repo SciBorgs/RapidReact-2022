@@ -44,10 +44,6 @@ public final class Constants {
 
     //public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
     
-    //***************** FIELD DATA ************************//
-    public static final double HEIGHT_DIFF = 2.08534;
-    public static final double CAM_MOUNT_ANGLE = 30;
-    
     public static final class DriveConstants {
         // ratios
         // "gear ratio" : 13.7 ?
@@ -114,5 +110,14 @@ public final class Constants {
         // Trapezoidal motion profile constraints
         public static final double maxA = 0; // acceleration
         public static final double maxV = 0; // velocity
+    }
+
+    public static final class VisionConstants {
+        public static final double HEIGHT_DIFF = 2.08534; // TODO what distance is this?
+        public static final double MOUNT_ANGLE = 30;
+        // see: https://docs.wpilib.org/en/stable/docs/software/advanced-controls/filters/linear-filter.html#singlepoleiir
+        // possibly change to movingAverage
+        public static final double TIMESCALE = 0.1;
+        public static final double PERIOD = 0.02;
     }
 }

@@ -8,13 +8,13 @@ import frc.robot.commands.shooter.ShootSequence.Target;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class TwoBallAuto extends SequentialCommandGroup {
     public TwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper,
-            LimeLightSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
+            VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
 
         addCommands(
                 // new TurnToAngle(180, drive),

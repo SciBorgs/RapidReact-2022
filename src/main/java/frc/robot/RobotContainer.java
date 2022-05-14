@@ -30,7 +30,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
@@ -52,7 +52,7 @@ public class RobotContainer {
 
   // SUBSYSTEMS
   public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  public final LimeLightSubsystem    limelightSubsystem    = new LimeLightSubsystem();
+  public final VisionSubsystem    limelightSubsystem    = new VisionSubsystem();
   public final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
   public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
-import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.util.Blockable;
 
 @Blockable
