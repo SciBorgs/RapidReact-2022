@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,12 +13,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -32,6 +32,7 @@ import frc.robot.util.Util;
 
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
+
     private SciPigeon pigeon;
 
     private final SciSpark[] leftSparks = {
@@ -79,8 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public DriveSubsystem() {
-        lEncoder = leftSparks[1].getEncoder();
-        rEncoder = rightSparks[1].getEncoder();
+        lEncoder = leftSparks[0].getEncoder();
+        rEncoder = rightSparks[0].getEncoder();
         System.out.println(lEncoder.getCountsPerRevolution() + " | " + rEncoder.getCountsPerRevolution());
         lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
         // lEncoder.setVelocityConversionFactor(DriveConstants.) TODO set correct value for this and rEncoder
@@ -99,15 +100,18 @@ public class DriveSubsystem extends SubsystemBase {
         pigeonSim = pigeon.getSimCollection();
 
         // Will change once we get more information on our drivetrain
-        driveSim = DifferentialDrivetrainSim.createKitbotSim(
-            KitbotMotor.kDoubleNEOPerSide, 
-            KitbotGearing.k8p45, 
-            KitbotWheelSize.kSixInch, 
-            null 
-        );
+        driveSim = new DifferentialDrivetrainSim(
+            DCMotor.getNEO(2),
+            7.29,
+            7.5,
+            60.0,
+            Units.inchesToMeters(3),
+            0.7112,                  
+          
+            VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 
-        lEncoderSim = new EncoderSim(PortMap.LEFT_MIDDLE_SPARK);
-        rEncoderSim = new EncoderSim(PortMap.RIGHT_MIDDLE_SPARK);
+        lEncoderSim = new EncoderSim(PortMap.LEFT_FRONT_SPARK);
+        rEncoderSim = new EncoderSim(PortMap.RIGHT_FRONT_SPARK);
 
         odometry = new DifferentialDriveOdometry(getRotation());
     }
@@ -118,8 +122,14 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        leftGroup.setVoltage(leftVolts);
-        rightGroup.setVoltage(rightVolts);
+        if(Robot.isReal()) {
+            leftGroup.setVoltage(leftVolts);
+            rightGroup.setVoltage(rightVolts);
+        }
+        else { // lmao
+            leftSparks[0].setVoltage(leftVolts);
+            rightSparks[0].setVoltage(rightVolts);
+        }
         drive.feed();
     }
 
@@ -189,6 +199,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
+        // pigeon.setAngle(pose.getRotation().getDegrees());
         odometry.resetPosition(pose, getRotation());
     }
 
@@ -248,25 +259,20 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        for (SciSpark s : allSparks) {
-            boolean fail = s.updateFailState();
-            if (fail)
-                System.out.println("failed");
-        }
         updateOdometry();
     }
 
     @Override
     public void simulationPeriodic() {
-        driveSim.setInputs(-leftSparks[1].get(), rightSparks[1].get());
-        driveSim.update(0.02);
+        driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
         
         lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
-        rEncoderSim.setPosition(driveSim.getRightPositionMeters());
         lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
+        rEncoderSim.setPosition(driveSim.getRightPositionMeters());
         rEncoderSim.setVelocity(driveSim.getRightVelocityMetersPerSecond());
         pigeonSim.setRawHeading(driveSim.getHeading().getDegrees());
-        System.out.println(driveSim.getHeading().getDegrees());
+        
+        driveSim.update(0.02);
         field2d.setRobotPose(odometry.getPoseMeters());
     }
 

@@ -90,15 +90,13 @@ public class Robot extends TimedRobot {
   @Override
   
   public void simulationInit() {
-    for(SciSpark spark : m_robotContainer.driveSubsystem.getAllSparks()) {
-      REVPhysicsSim.getInstance().addSparkMax(spark, DCMotor.getNEO(1));
-    }
+
   } 
 
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    REVPhysicsSim.getInstance().run();
+
   }
 
 
