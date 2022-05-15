@@ -76,8 +76,6 @@ public final class Constants {
         }
         
         // ratios
-        public static final double FLYWHEEL_GEAR_RATIO = 1;
-        public static final double FLYWHEEL_CIRCUMFERENCE = 1;
         public static final double HOOD_GEAR_RATIO = 36.0 / 334.0;
         // Through Bore Encoder offset
         public static final double OFFSET = 32.5;

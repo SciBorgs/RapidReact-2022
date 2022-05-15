@@ -37,16 +37,17 @@ public class TurretSubsystem extends SubsystemBase {
     public TurretSubsystem() {
         feedback.setTolerance(0.2);
 
-        // tmp, move out of sci abs encoder
         encoder.setDistancePerRotation(TurretConstants.GEAR_RATIO);
+
         mainTab = Shuffleboard.getTab("turret  ");
         mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
         mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
 
         turret.setIdleMode(IdleMode.kCoast);
         
-        targetAngle = 0;
+        targetAngle = 0; // (deg)
 
+        // used for calculating acceleration
         lastSpeed = 0;
         lastTime = Timer.getFPGATimestamp();
     }

@@ -30,8 +30,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final PIDController flywheelFeedback = new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD);
     private final SimpleMotorFeedforward flywheelFeedforward = new SimpleMotorFeedforward(ShooterConstants.fS, ShooterConstants.fV, ShooterConstants.fA);
     
-    private double targetSpeed; // desired speed of the flywheel
-    private double targetAngle; // desired angle of the hood
+    private double targetSpeed; // desired speed of the flywheel (rpm)
+    private double targetAngle; // desired angle of the hood (deg)
 
     private ShuffleboardTab mainTab;
 
@@ -56,7 +56,6 @@ public class ShooterSubsystem extends SubsystemBase {
         lmotor.burnFlash();
 
         flywheelEncoder = rmotor.getEncoder();
-        flywheelEncoder.setVelocityConversionFactor(ShooterConstants.FLYWHEEL_GEAR_RATIO); // TODO add pulses if necessary?
         hoodEncoder = new DutyCycleEncoder(PortMap.HOOD_ENCODER);
         hoodEncoder.setDistancePerRotation(ShooterConstants.HOOD_GEAR_RATIO);
 
