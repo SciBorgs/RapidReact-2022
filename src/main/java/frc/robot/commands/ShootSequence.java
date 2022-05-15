@@ -20,6 +20,7 @@ public class ShootSequence extends SequentialCommandGroup {
     }
 
     public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem vision, Target target) {
+        vision.reset();
         switch(target) {
             case LOW:
                 break;
