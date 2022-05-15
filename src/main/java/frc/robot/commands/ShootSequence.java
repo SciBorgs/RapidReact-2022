@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.shooter.AimHoodCommand;
 import frc.robot.commands.shooter.AimTurretCommand;
 import frc.robot.commands.shooter.ResetTurretCommand;
+import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -18,27 +19,22 @@ public class ShootSequence extends SequentialCommandGroup {
         HIGH
     }
 
-    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, Target target) {
+    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem vision, Target target) {
         switch(target) {
             case LOW:
                 break;
             case HIGH:
                 addCommands(
                     parallel(
-                        new AimTurretCommand(turret, limelight),
-                        new AimHoodCommand(shooter, limelight)
+                        new AimTurretCommand(turret, vision),
+                        new AimHoodCommand(shooter, vision)
                     )
                 );
         }
         
-        double speed = 0.8; // TODO add variable speed
         addCommands(
             race(
-                new StartEndCommand(
-                    () -> shooter.setTargetFlywheelSpeed(speed),
-                    () -> shooter.setTargetFlywheelSpeed(0),
-                    shooter
-                ).withTimeout(timeout),
+                new ShootCommand(shooter, vision).withTimeout(timeout),
                 new StartEndCommand(
                     () -> hopper.startElevator(), 
                     () -> {hopper.stopElevator(); intake.decrementBallCount();}, //safeset place to decrement balls since when the elevator stops the ball should entirely not be in the hopper anymore

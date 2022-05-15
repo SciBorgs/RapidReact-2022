@@ -5,11 +5,11 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class AimHoodCommand extends CommandBase {
+public class ShootCommand extends CommandBase {
     private ShooterSubsystem shooter;
     private VisionSubsystem vision;
 
-    public AimHoodCommand(ShooterSubsystem shooter, VisionSubsystem vision) {
+    public ShootCommand(ShooterSubsystem shooter, VisionSubsystem vision) {
         this.shooter = shooter;
         this.vision = vision;
         addRequirements(shooter);
@@ -18,12 +18,12 @@ public class AimHoodCommand extends CommandBase {
     @Override
     public void execute() {
         double distance = vision.getDistance();
-        double angle = ShooterConstants.getHoodAngle(distance);
-        shooter.setTargetHoodAngle(angle);
+        double angle = ShooterConstants.getRPM(distance);
+        shooter.setTargetFlywheelSpeed(angle);
     }
 
     @Override
-    public boolean isFinished(){
-        return shooter.isAtTarget();
+    public void end(boolean interrupted) {
+        shooter.setTargetFlywheelSpeed(0);
     }
 }

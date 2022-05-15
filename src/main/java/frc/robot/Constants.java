@@ -66,6 +66,15 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
+        // quartic regressions
+        public static final double getHoodAngle(double distance) {
+            return 0;
+        }
+
+        public static final double getRPM(double distance) {
+            return 0;
+        }
+        
         // ratios
         public static final double FLYWHEEL_GEAR_RATIO = 1;
         public static final double FLYWHEEL_CIRCUMFERENCE = 1;

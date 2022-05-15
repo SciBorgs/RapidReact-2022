@@ -2,6 +2,10 @@ package frc.robot.util;
 
 import java.util.ArrayList;
 
+/**
+ * methods to help with loading and interpolating between shooter data points
+ * this will only be used if a quartic regression is unsuccessful
+ */
 public class ShooterData {
     
     // Converts CSV data into 2D array of doubles to pass into calcHoodAngle()
