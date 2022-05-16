@@ -77,9 +77,10 @@ public final class Constants {
         
         // ratios
         public static final double HOOD_GEAR_RATIO = 36.0 / 460.0;
+        public static final double DISTANCE_PER_PULSE = 1.0 / 2048.0;
         // Through Bore Encoder offset
         public static final double OFFSET = 32.5;
-        public static final double MAX = -23.3;
+        public static final double MAX = 22;
         // Hood FF
         public static final double hS = 0;
         public static final double hV = 0;
@@ -108,11 +109,11 @@ public final class Constants {
         // Through Bore Encoder offset
         public static final double OFFSET = 0;
         // Feedforward
-        public static final double kS = 0;
-        public static final double kV = 0;
-        public static final double kA = 0;
+        public static final double kS = -6.3892;
+        public static final double kV = 0.038939;
+        public static final double kA = 1.2411;
         // PID
-        public static final double kP = 0;
+        public static final double kP = 0.031976;
         public static final double kI = 0;
         public static final double kD = 0;
         // Trapezoidal motion profile constraints

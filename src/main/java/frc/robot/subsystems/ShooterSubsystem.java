@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final CANSparkMax hood, lmotor, rmotor;
     private final RelativeEncoder flywheelEncoder;
-    private final DutyCycleEncoder hoodEncoder;
+    private final Encoder hoodEncoder;
     
     // Hood control
     private final PIDController hoodFeedback = new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
@@ -57,8 +58,9 @@ public class ShooterSubsystem extends SubsystemBase {
         lmotor.burnFlash();
 
         flywheelEncoder = rmotor.getEncoder();
-        hoodEncoder = new DutyCycleEncoder(PortMap.HOOD_ENCODER);
-        hoodEncoder.setDistancePerRotation(ShooterConstants.HOOD_GEAR_RATIO);
+        hoodEncoder = new Encoder(PortMap.HOOD_ENCODER_A, PortMap.HOOD_ENCODER_B);
+        hoodEncoder.setDistancePerPulse(ShooterConstants.DISTANCE_PER_PULSE);
+        // hoodEncoder.setDistancePerRotation(ShooterConstants.HOOD_GEAR_RATIO);
 
         hoodFeedback.setTolerance(0.2);
     }
@@ -82,11 +84,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // HOOD ANGLE
     public void setTargetHoodAngle(double angle) {
-        targetAngle = MathUtil.clamp(angle, ShooterConstants.MAX, 0);
+        targetAngle = MathUtil.clamp(angle, 0, ShooterConstants.MAX);
     }
 
     public double getCurrentHoodAngle() {
-        return Units.rotationsToDegrees(hoodEncoder.getDistance());
+        return Units.rotationsToDegrees(hoodEncoder.getDistance() * ShooterConstants.HOOD_GEAR_RATIO);
     }
 
     public double getTargetHoodAngle() {
