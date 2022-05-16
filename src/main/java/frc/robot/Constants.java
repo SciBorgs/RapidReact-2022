@@ -120,7 +120,7 @@ public final class Constants {
     }
 
     public static final class VisionConstants {
-        public static final double HEIGHT_DIFF = 2.08534; // TODO what distance is this?
+        public static final double HEIGHT_DIFF = 2.08534; // TODO what unit is this?
         public static final double MOUNT_ANGLE = 30;
         // see: https://docs.wpilib.org/en/stable/docs/software/advanced-controls/filters/linear-filter.html#singlepoleiir
         // possibly change to movingAverage
