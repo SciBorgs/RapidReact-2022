@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -274,6 +275,10 @@ public class DriveSubsystem extends SubsystemBase {
         
         driveSim.update(0.02);
         field2d.setRobotPose(odometry.getPoseMeters());
+    }
+
+    public void putTrajectory(Trajectory t, String name) {
+        field2d.getObject("Trajectory").setTrajectory(t);
     }
 
     // reset everything
