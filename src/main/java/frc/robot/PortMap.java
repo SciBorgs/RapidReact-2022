@@ -18,11 +18,11 @@ public class PortMap {
     public static final int HOOD_SPARK = 4;
     public static final int FLYWHEEL_LEFT_SPARK = 30;
     public static final int FLYWHEEL_RIGHT_SPARK = 5;
-    public static final int TURRET_SPARK = 11;
+    public static final int TURRET_SPARK = 3;
 
     // *******************SWITCHES******************//
     public static final int INTAKE_SWITCH = 6;
-    public static final int LIMIT_SWITCH_INTAKE = 4;
+    public static final int LIMIT_SWITCH_INTAKE = 5;
 
     // *******************HOPPER******************//
 
@@ -43,8 +43,9 @@ public class PortMap {
     public static final int CLIMBER_ARMS = 20;
 
     // ******************ENCODERS******************//
-    public static final int TURRET_ENCODER = 2;
-    public static final int HOOD_ENCODER = 3;
+    public static final int TURRET_ENCODER_A = 3;
+    public static final int TURRET_ENCODER_B = 4;
+    public static final int HOOD_ENCODER = 0;
 
     public static final class Joystick {
         public static final int JOYSTICK_TRIGGER = 1;

@@ -76,7 +76,7 @@ public final class Constants {
         }
         
         // ratios
-        public static final double HOOD_GEAR_RATIO = 36.0 / 334.0;
+        public static final double HOOD_GEAR_RATIO = 36.0 / 460.0;
         // Through Bore Encoder offset
         public static final double OFFSET = 32.5;
         public static final double MAX = -23.3;
@@ -102,6 +102,7 @@ public final class Constants {
     public static final class TurretConstants {
         // ratios
         public static final double GEAR_RATIO = 26.0 / 300.0;
+        public static final double DISTANCE_PER_PULSE = 1.0 / 2048.0;
         // Physical constraints
         public static final double LIMIT = 85;
         // Through Bore Encoder offset
@@ -121,7 +122,7 @@ public final class Constants {
 
     public static final class VisionConstants {
         public static final double HEIGHT_DIFF = 2.08534; // TODO what unit is this?
-        public static final double MOUNT_ANGLE = 30;
+        public static final double MOUNT_ANGLE = 30; // (deg)
         // see: https://docs.wpilib.org/en/stable/docs/software/advanced-controls/filters/linear-filter.html#singlepoleiir
         // possibly change to movingAverage
         public static final double TIMESCALE = 0.1;
