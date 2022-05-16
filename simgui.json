@@ -87,8 +87,16 @@
       "/LiveWindow/VisionSubsystem": "Subsystem",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Reset Drive": "Command",
       "/SmartDashboard/Yup": "Command",
-      "/SmartDashboard/field": "Field2d"
+      "/SmartDashboard/field": "Field2d",
+      "/SmartDashboard/traj-blue": "String Chooser",
+      "/SmartDashboard/traj-green": "String Chooser",
+      "/SmartDashboard/traj-orange": "String Chooser",
+      "/SmartDashboard/traj-purple": "String Chooser",
+      "/SmartDashboard/traj-red": "String Chooser",
+      "/SmartDashboard/traj-white": "String Chooser",
+      "/SmartDashboard/traj-yellow": "String Chooser"
     },
     "windows": {
       "/SmartDashboard/Auto Chooser": {
@@ -119,15 +127,111 @@
           "weight": 10.0,
           "width": 0.5580000281333923
         },
+        "Trajectory": {
+          "arrows": false,
+          "color": [
+            0.7401961088180542,
+            0.7401961088180542,
+            0.41363900899887085,
+            255.0
+          ],
+          "length": 0.0010000000474974513,
+          "style": "Line",
+          "width": 0.0010000000474974513
+        },
         "height": 8.229599952697754,
         "image": "./PathWeaver/field.png",
+        "traj-black": {
+          "arrows": false,
+          "color": [
+            0.0,
+            0.0,
+            0.0,
+            255.0
+          ],
+          "style": "Line"
+        },
+        "traj-blue": {
+          "arrows": false,
+          "color": [
+            0.18718759715557098,
+            0.537392258644104,
+            0.9313725233078003,
+            255.0
+          ],
+          "style": "Line"
+        },
+        "traj-green": {
+          "arrows": false,
+          "color": [
+            0.4134962260723114,
+            0.7892156839370728,
+            0.29789024591445923,
+            255.0
+          ],
+          "style": "Line"
+        },
+        "traj-orange": {
+          "arrows": false,
+          "color": [
+            0.906862735748291,
+            0.5643050074577332,
+            0.32451462745666504,
+            255.0
+          ],
+          "style": "Line"
+        },
+        "traj-purple": {
+          "arrows": false,
+          "color": [
+            0.696013331413269,
+            0.2797962427139282,
+            0.8039215803146362,
+            255.0
+          ],
+          "style": "Line"
+        },
+        "traj-red": {
+          "arrows": false,
+          "style": "Line"
+        },
+        "traj-white": {
+          "arrows": false,
+          "color": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "style": "Line"
+        },
+        "traj-yellow": {
+          "arrows": false,
+          "color": [
+            0.823974609375,
+            0.8382352590560913,
+            0.3533737063407898,
+            255.0
+          ],
+          "style": "Line"
+        },
         "width": 16.459199905395508,
         "window": {
           "name": "have fun watching the robot move back and forth for all eternity",
           "visible": true
         }
       },
-      "/SmartDashboard/Yup": {
+      "/SmartDashboard/Reset Drive": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/traj-blue": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/traj-green": {
         "window": {
           "visible": true
         }
@@ -135,39 +239,6 @@
     }
   },
   "NetworkTables": {
-    "Shuffleboard": {
-      "FollowPath PID": {
-        "open": true
-      },
-      "FollowPoint Distance PID": {
-        "open": true
-      },
-      "FollowPoint Heading PID": {
-        "open": true
-      },
-      "Head PID": {
-        "open": true
-      },
-      "Main": {
-        "open": true
-      },
-      "Spin Heading PID": {
-        "open": true
-      },
-      "axis test": {
-        "open": true
-      },
-      "axis test [dist pid]": {
-        "open": true
-      },
-      "axis test [head pid]": {
-        "open": true
-      },
-      "open": true,
-      "test": {
-        "open": true
-      }
-    },
     "SmartDashboard": {
       "Auto Chooser": {
         "open": true
