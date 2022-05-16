@@ -1,6 +1,9 @@
 package frc.robot.util;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -13,6 +16,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -466,5 +472,35 @@ public class Util {
                 };
 			}
         };
+    }
+
+    public static List<String> getPathPlannerPathNames() {
+        try (Stream<java.nio.file.Path> walk 
+                = Files.walk(Filesystem.getDeployDirectory()
+                                       .toPath()
+                                       .resolve("pathplanner/"))) {
+            return walk.filter(p -> !Files.isDirectory(p))
+                       .map(p -> p.toString().split("\\\\"))
+                       .map(arr -> arr[arr.length-1])
+                       .filter(f -> f.endsWith(".path"))
+                       .map(p -> p.substring(0, p.length() - 5))
+                       .collect(Collectors.toList());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            DriverStation.reportError("Could not load path names!", true);
+            return List.of();
+        }
+    }
+
+    public static SendableChooser<String> getPathTestChooser() {
+        List<String> names = getPathPlannerPathNames();
+        SendableChooser<String> chooser = new SendableChooser<>();
+        for (String name : names) {
+            chooser.addOption(name, name);
+        }
+        if (names.size() > 0) {
+            chooser.setDefaultOption(names.get(0), names.get(0));
+        }
+        return chooser;
     }
 }

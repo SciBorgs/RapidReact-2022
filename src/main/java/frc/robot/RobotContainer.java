@@ -8,6 +8,7 @@ import java.util.Set;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.ShootSequence;
 import frc.robot.commands.ShootSequence.Target;
+import frc.robot.commands.auto.DriveRamsete;
 import frc.robot.commands.auto.TurnToAngle;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
@@ -22,6 +24,7 @@ import frc.robot.commands.pneumatics.ToggleCompressorCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
+import frc.robot.util.Util;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
@@ -72,6 +75,9 @@ public class RobotContainer {
 
   // blocker
   // private final Command block = Util.blockSubsystems(subsystems); 
+
+  // AUTO CHOOSER
+  private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -131,6 +137,10 @@ public class RobotContainer {
     oi.shootButton.whenPressed(shootSequence);
   }
 
+  public SendableChooser<String> getAutoChooser() {
+    return this.autoChooser;
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -138,10 +148,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() { 
     // An ExampleCommand will run in autonomous
-    return new TurnToAngle(180, driveSubsystem);
+    // return new TurnToAngle(180, driveSubsystem);
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    // return new DriveRamsete(driveSubsystem, "Testing2");
+    return new DriveRamsete(driveSubsystem, autoChooser.getSelected());
     // return new TwoBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
   }
 }

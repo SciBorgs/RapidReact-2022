@@ -40,6 +40,9 @@
         "header": {
           "open": true
         }
+      },
+      "window": {
+        "visible": false
       }
     }
   },
@@ -49,7 +52,6 @@
       "/LiveWindow/DriveSubsystem": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
-      "/LiveWindow/VisionSubsystem": "Subsystem",
       "/LiveWindow/LocalizationSubsystem": "Subsystem",
       "/LiveWindow/PhotonVisionSubsystem": "Subsystem",
       "/LiveWindow/RumbleSubsystem": "Subsystem",
@@ -82,11 +84,17 @@
       "/LiveWindow/Ungrouped/Pigeon IMU [1]": "Gyro",
       "/LiveWindow/Ungrouped/Pigeon IMU [42]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/VisionSubsystem": "Subsystem",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/field": "Field2d"
     },
     "windows": {
+      "/SmartDashboard/Auto Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "Robot": {
           "arrowColor": [
@@ -114,8 +122,7 @@
         "image": "./PathWeaver/field.png",
         "width": 16.459199905395508,
         "window": {
-          "name": "have fun watching the robot move back and forth for all eternity",
-          "visible": true
+          "name": "have fun watching the robot move back and forth for all eternity"
         }
       }
     }
@@ -155,105 +162,13 @@
       }
     },
     "SmartDashboard": {
-      "Field": {
+      "Auto Chooser": {
         "open": true
       },
       "open": true
     }
   },
-  "Plot": {
-    "Plot <0>": {
-      "plots": [
-        {
-          "height": 190,
-          "series": [
-            {
-              "color": [
-                0.2980392277240753,
-                0.44705885648727417,
-                0.6901960968971252,
-                1.0
-              ],
-              "id": "NT:/Shuffleboard/axis test [head pid]/pid der"
-            },
-            {
-              "color": [
-                0.8666667342185974,
-                0.5176470875740051,
-                0.32156863808631897,
-                1.0
-              ],
-              "id": "NT:/Shuffleboard/axis test [head pid]/pid err"
-            },
-            {
-              "color": [
-                0.3333333432674408,
-                0.658823549747467,
-                0.4078431725502014,
-                1.0
-              ],
-              "id": "NT:/Shuffleboard/axis test [head pid]/pid int"
-            },
-            {
-              "color": [
-                0.7686275243759155,
-                0.30588236451148987,
-                0.32156863808631897,
-                1.0
-              ],
-              "id": "NT:/Shuffleboard/axis test [head pid]/pid output"
-            }
-          ]
-        }
-      ],
-      "window": {
-        "name": "Heading PID"
-      }
-    },
-    "Plot <1>": {
-      "plots": [
-        {
-          "height": 91,
-          "series": [
-            {
-              "color": [
-                0.8666667342185974,
-                0.5176470875740051,
-                0.32156863808631897,
-                1.0
-              ],
-              "id": "NT:/Shuffleboard/axis test [dist pid]/pid err"
-            },
-            {
-              "color": [
-                0.3333333432674408,
-                0.658823549747467,
-                0.4078431725502014,
-                1.0
-              ],
-              "id": "NT:/Shuffleboard/axis test [dist pid]/pid int"
-            },
-            {
-              "color": [
-                0.2980392277240753,
-                0.44705885648727417,
-                0.6901960968971252,
-                1.0
-              ],
-              "id": "NT:/Shuffleboard/axis test/run distance"
-            },
-            {
-              "color": [
-                0.7686275243759155,
-                0.30588236451148987,
-                0.32156863808631897,
-                1.0
-              ],
-              "id": "NT:/Shuffleboard/axis test [dist pid]/pid output"
-            }
-          ]
-        }
-      ]
-    }
+  "NetworkTables View": {
+    "visible": false
   }
 }

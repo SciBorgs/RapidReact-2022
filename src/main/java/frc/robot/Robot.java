@@ -5,10 +5,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.Util;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,7 +32,9 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     SmartDashboard.putData("Field", m_robotContainer.driveSubsystem.field2d);
+    SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
     CommandScheduler.getInstance().schedule(m_robotContainer.rumbleCommand);
+    System.out.println(Util.getPathPlannerPathNames());
   }
 
   /**
@@ -100,6 +104,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    m_robotContainer.driveSubsystem.setSpeed(new DifferentialDriveWheelSpeeds());
   }
 
   /** This function is called periodically during test mode. */
