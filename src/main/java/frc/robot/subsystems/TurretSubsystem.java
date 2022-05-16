@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -10,6 +11,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -21,8 +23,7 @@ import frc.robot.util.Blockable;
 @Blockable
 public class TurretSubsystem extends SubsystemBase {
     private final CANSparkMax turret = new CANSparkMax(PortMap.TURRET_SPARK, MotorType.kBrushless);
-    private final DutyCycleEncoder encoder = new DutyCycleEncoder(PortMap.TURRET_ENCODER);
-
+    private final Encoder encoder = new Encoder(PortMap.TURRET_ENCODER_A, PortMap.TURRET_ENCODER_B);
     private final Constraints constraints = new Constraints(TurretConstants.maxV, TurretConstants.maxA);
     private final ProfiledPIDController feedback = new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, constraints);
     private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(TurretConstants.kS, TurretConstants.kV, TurretConstants.kA);
@@ -37,7 +38,7 @@ public class TurretSubsystem extends SubsystemBase {
     public TurretSubsystem() {
         feedback.setTolerance(0.2);
 
-        encoder.setDistancePerRotation(TurretConstants.GEAR_RATIO);
+        encoder.setDistancePerPulse(TurretConstants.DISTANCE_PER_PULSE);
 
         mainTab = Shuffleboard.getTab("turret  ");
         mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
@@ -57,7 +58,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public double getCurrentAngle() {
-        return Units.rotationsToDegrees(encoder.getDistance());
+        return Units.rotationsToDegrees(encoder.getDistance() * TurretConstants.GEAR_RATIO);
     }
 
     public double getTargetAngle() {

@@ -102,6 +102,7 @@ public final class Constants {
     public static final class TurretConstants {
         // ratios
         public static final double GEAR_RATIO = 26.0 / 300.0;
+        public static final double DISTANCE_PER_PULSE = 1.0 / 2048.0;
         // Physical constraints
         public static final double LIMIT = 85;
         // Through Bore Encoder offset
