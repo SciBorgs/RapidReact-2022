@@ -87,6 +87,7 @@
       "/LiveWindow/VisionSubsystem": "Subsystem",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Yup": "Command",
       "/SmartDashboard/field": "Field2d"
     },
     "windows": {
@@ -122,7 +123,13 @@
         "image": "./PathWeaver/field.png",
         "width": 16.459199905395508,
         "window": {
-          "name": "have fun watching the robot move back and forth for all eternity"
+          "name": "have fun watching the robot move back and forth for all eternity",
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Yup": {
+        "window": {
+          "visible": true
         }
       }
     }

@@ -276,4 +276,21 @@ public class DriveSubsystem extends SubsystemBase {
         field2d.setRobotPose(odometry.getPoseMeters());
     }
 
+    // reset everything
+    public void reset() {
+        lEncoderSim = new EncoderSim(PortMap.LEFT_FRONT_SPARK);
+        rEncoderSim = new EncoderSim(PortMap.RIGHT_FRONT_SPARK);
+
+        odometry = new DifferentialDriveOdometry(getRotation());
+        kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
+
+        leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+        rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+        feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
+            DriveConstants.kA);
+        
+        driveSim.setPose(odometry.getPoseMeters());
+        field2d.setRobotPose(odometry.getPoseMeters());
+    }
+
 }

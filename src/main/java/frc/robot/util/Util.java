@@ -480,7 +480,7 @@ public class Util {
                                        .toPath()
                                        .resolve("pathplanner/"))) {
             return walk.filter(p -> !Files.isDirectory(p))
-                       .map(p -> p.toString().split("\\\\"))
+                       .map(p -> p.toString().split("(\\\\|/)"))
                        .map(arr -> arr[arr.length-1])
                        .filter(f -> f.endsWith(".path"))
                        .map(p -> p.substring(0, p.length() - 5))

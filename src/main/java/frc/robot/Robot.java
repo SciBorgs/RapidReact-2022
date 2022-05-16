@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ResetDriveCommand;
 import frc.robot.util.Util;
 
 /**
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     SmartDashboard.putData("Field", m_robotContainer.driveSubsystem.field2d);
     SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
+    SmartDashboard.putData("Reset Drive", new ResetDriveCommand(m_robotContainer.driveSubsystem));
     CommandScheduler.getInstance().schedule(m_robotContainer.rumbleCommand);
     System.out.println(Util.getPathPlannerPathNames());
   }
@@ -104,7 +106,6 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    m_robotContainer.driveSubsystem.setSpeed(new DifferentialDriveWheelSpeeds());
   }
 
   /** This function is called periodically during test mode. */
