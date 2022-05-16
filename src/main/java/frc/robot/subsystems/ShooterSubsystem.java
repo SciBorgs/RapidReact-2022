@@ -8,6 +8,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -85,7 +86,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getCurrentHoodAngle() {
-        return hoodEncoder.getDistance();
+        return Units.rotationsToDegrees(hoodEncoder.getDistance());
     }
 
     public double getTargetHoodAngle() {
@@ -106,7 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
         double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
         rmotor.setVoltage(flywheelFB + flywheelFF);
         
-        double hoodFB = hoodFeedback.calculate(hoodEncoder.getDistance(), targetAngle);
+        double hoodFB = hoodFeedback.calculate(getCurrentHoodAngle(), targetAngle);
         double hoodFF = hoodFeedforward.calculate(0);
         hood.setVoltage(hoodFB + hoodFF);
     }
