@@ -7,8 +7,8 @@ public class RunArmCommand extends CommandBase {
     private ClimberSubsystem climberSubsystem;
     private boolean reversed;
 
-    public RunArmCommand(ClimberSubsystem climberSubsystem, boolean reversed) {
-        this.climberSubsystem = climberSubsystem;
+    public RunArmCommand(ClimberSubsystem climber, boolean reversed) {
+        this.climberSubsystem = climber;
         this.reversed = reversed;
         addRequirements(climberSubsystem);
     }

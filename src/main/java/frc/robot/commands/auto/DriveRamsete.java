@@ -13,21 +13,21 @@ public class DriveRamsete extends RamseteCommand {
     private DriveSubsystem driveSubsystem;
     private Trajectory trajectory;
 
-    public DriveRamsete(DriveSubsystem ds, Trajectory trajectory) {
+    public DriveRamsete(DriveSubsystem drive, Trajectory trajectory) {
         super(
             trajectory,
-            ds::getPose,
+            drive::getPose,
             new RamseteController(),
-            ds.getFeedforward(),
-            ds.getKinematics(),
-            ds::getWheelSpeeds,
+            drive.getFeedforward(),
+            drive.getKinematics(),
+            drive::getWheelSpeeds,
             new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
             new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
-            ds::tankDriveVolts,
-            ds
+            drive::tankDriveVolts,
+            drive
         );
         
-        this.driveSubsystem = ds;
+        this.driveSubsystem = drive;
         this.trajectory = trajectory;
         addRequirements(driveSubsystem);
     }
