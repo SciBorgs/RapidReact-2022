@@ -15,12 +15,13 @@ import frc.robot.subsystems.TurretSubsystem;
 public class TwoBallAuto extends SequentialCommandGroup {
     public TwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper,
             VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret) {
-
         addCommands(
-                new DriveUntilIntake(drive, intake),
-                new TurnToAngle(180, drive),
-                new ShootSequence(shooter, turret, intake, hopper, limelight,
-                Target.HIGH)
+            new ParallelCommandGroup(
+                new IntakeBallsCommand(intake, hopper),
+                new DriveUntilIntake(drive, intake)
+            ),
+            new TurnToAngle(180, drive),
+            new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
         );
     }
 }
