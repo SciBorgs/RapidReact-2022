@@ -117,8 +117,8 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
         // Trapezoidal motion profile constraints
-        public static final double maxA = 0; // acceleration
-        public static final double maxV = 0; // velocity
+        public static final double maxA = 20; // acceleration
+        public static final double maxV = 40; // velocity
     }
 
     public static final class VisionConstants {

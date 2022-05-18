@@ -23,7 +23,7 @@ import frc.robot.util.Blockable;
 @Blockable
 public class TurretSubsystem extends SubsystemBase {
     private final CANSparkMax turret = new CANSparkMax(PortMap.TURRET_SPARK, MotorType.kBrushless);
-    private final Encoder encoder = new Encoder(PortMap.TURRET_ENCODER_A, PortMap.TURRET_ENCODER_B);
+    private final Encoder encoder = new Encoder(PortMap.TURRET_ENCODER_A, PortMap.TURRET_ENCODER_B, true);
     private final Constraints constraints = new Constraints(TurretConstants.maxV, TurretConstants.maxA);
     private final ProfiledPIDController feedback = new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, constraints);
     private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(TurretConstants.kS, TurretConstants.kV, TurretConstants.kA);
@@ -72,7 +72,7 @@ public class TurretSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         double accel = (feedback.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        System.out.println("target " + targetAngle);
+        System.out.println("target " + targetAngle + "current" + getCurrentAngle());
         double fb = feedback.calculate(getCurrentAngle(), targetAngle);
         double ff = feedforward.calculate(feedback.getSetpoint().velocity, accel);
 
