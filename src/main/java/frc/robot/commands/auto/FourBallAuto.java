@@ -28,10 +28,10 @@ public class FourBallAuto extends SequentialCommandGroup {
         addCommands(
             new ParallelCommandGroup(
                 new IntakeBallsCommand(intake, hopper),
-                new DriveRamsete(drive, "Pos" + initialPos + "_4Ball"),
-                new TurnToAngle(180, drive),
-                new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
-            )
+                new DriveRamsete(drive, "Pos" + initialPos + "_4Ball")
+            ),
+            new TurnToAngle(180, drive),
+            new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
         );
 
     }
