@@ -72,7 +72,7 @@ public class TurretSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         double accel = (feedback.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-
+        System.out.println("target " + targetAngle);
         double fb = feedback.calculate(getCurrentAngle(), targetAngle);
         double ff = feedforward.calculate(feedback.getSetpoint().velocity, accel);
 
