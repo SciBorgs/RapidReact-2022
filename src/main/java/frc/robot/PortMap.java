@@ -38,15 +38,15 @@ public class PortMap {
     public static final int INTAKE_ARM_REVERSE_CHANNEL = 1;
     public static final int INTAKE_SUCK_SPARK = 23;
 
-    // *******************CLIMBER******************//
+    // *******************CLIMsBER******************//
     public static final int CLIMBER_TELESCOPE = 19;
     public static final int CLIMBER_ARMS = 20;
 
     // ******************ENCODERS******************//
-    public static final int TURRET_ENCODER_A = 0;
-    public static final int TURRET_ENCODER_B = 1;
-    public static final int HOOD_ENCODER_A = 3;
-    public static final int HOOD_ENCODER_B = 4;
+    public static final int TURRET_ENCODER_A = 3;
+    public static final int TURRET_ENCODER_B = 4;
+    public static final int HOOD_ENCODER_A = 0;
+    public static final int HOOD_ENCODER_B = 1;
 
     public static final class Joystick {
         public static final int JOYSTICK_TRIGGER = 1;
