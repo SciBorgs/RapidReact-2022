@@ -109,11 +109,11 @@ public final class Constants {
         // Through Bore Encoder offset
         public static final double OFFSET = 0;
         // Feedforward
-        public static final double kS = -0.37119;
-        public static final double kV = 0.040568;
-        public static final double kA = 0.065596;
+        public static final double kS = 0.13273;
+        public static final double kV = 0.038686;
+        public static final double kA = 0.012488;
         // PID
-        public static final double kP = 0.058903;
+        public static final double kP = 0.055773;
         public static final double kI = 0;
         public static final double kD = 0;
         // Trapezoidal motion profile constraints
