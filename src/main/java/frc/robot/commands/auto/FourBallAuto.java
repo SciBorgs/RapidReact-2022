@@ -21,10 +21,11 @@ public class FourBallAuto extends SequentialCommandGroup {
                 new DriveUntilIntake(drive, intake)
             ),
             new TurnToAngle(180, drive),
-            new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH),
-            new TurnToAngle(0, drive)
+            new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
         );
 
+        if(initialPos == "1") addCommands(new TurnToAngle(0, drive));
+        
         addCommands(
             new ParallelCommandGroup(
                 new IntakeBallsCommand(intake, hopper),

@@ -256,6 +256,11 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/traj-white": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },
