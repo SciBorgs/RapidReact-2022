@@ -37,15 +37,15 @@ public class DriveSubsystem extends SubsystemBase {
     private SciPigeon pigeon;
 
     private final SciSpark[] leftSparks = {
-        new SciSpark(PortMap.LEFT_FRONT_SPARK),
-        new SciSpark(PortMap.LEFT_MIDDLE_SPARK),
-        new SciSpark(PortMap.LEFT_BACK_SPARK)
+            new SciSpark(PortMap.LEFT_FRONT_SPARK),
+            new SciSpark(PortMap.LEFT_MIDDLE_SPARK),
+            new SciSpark(PortMap.LEFT_BACK_SPARK)
     };
 
     private final SciSpark[] rightSparks = {
-        new SciSpark(PortMap.RIGHT_FRONT_SPARK),
-        new SciSpark(PortMap.RIGHT_MIDDLE_SPARK),
-        new SciSpark(PortMap.RIGHT_BACK_SPARK)
+            new SciSpark(PortMap.RIGHT_FRONT_SPARK),
+            new SciSpark(PortMap.RIGHT_MIDDLE_SPARK),
+            new SciSpark(PortMap.RIGHT_BACK_SPARK)
     };
 
     private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
@@ -53,9 +53,8 @@ public class DriveSubsystem extends SubsystemBase {
     private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
 
     private final DifferentialDrive drive = new DifferentialDrive(
-        leftGroup,
-        rightGroup
-    );
+            leftGroup,
+            rightGroup);
 
     private final RelativeEncoder lEncoder;
     private final RelativeEncoder rEncoder;
@@ -85,7 +84,8 @@ public class DriveSubsystem extends SubsystemBase {
         rEncoder = rightSparks[0].getEncoder();
         System.out.println(lEncoder.getCountsPerRevolution() + " | " + rEncoder.getCountsPerRevolution());
         lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
-        // lEncoder.setVelocityConversionFactor(DriveConstants.) TODO set correct value for this and rEncoder
+        // lEncoder.setVelocityConversionFactor(DriveConstants.) TODO set correct value
+        // for this and rEncoder
         rEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
         resetEncoders();
 
@@ -102,14 +102,14 @@ public class DriveSubsystem extends SubsystemBase {
 
         // Will change once we get more information on our drivetrain
         driveSim = new DifferentialDrivetrainSim(
-            DCMotor.getNEO(2),
-            7.29,
-            7.5,
-            60.0,
-            Units.inchesToMeters(3),
-            0.7112,                  
-          
-            VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
+                DCMotor.getNEO(2),
+                7.29,
+                7.5,
+                60.0,
+                Units.inchesToMeters(3),
+                0.7112,
+
+                VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 
         lEncoderSim = new EncoderSim(PortMap.LEFT_FRONT_SPARK);
         rEncoderSim = new EncoderSim(PortMap.RIGHT_FRONT_SPARK);
@@ -123,11 +123,10 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        if(Robot.isReal()) {
+        if (Robot.isReal()) {
             leftGroup.setVoltage(leftVolts);
             rightGroup.setVoltage(rightVolts);
-        }
-        else { // lmao
+        } else { // lmao
             leftSparks[0].setVoltage(leftVolts);
             rightSparks[0].setVoltage(rightVolts);
         }
@@ -236,10 +235,10 @@ public class DriveSubsystem extends SubsystemBase {
         return kinematics;
     }
 
-    public Iterable<SciSpark> getAllSparks() {  
+    public Iterable<SciSpark> getAllSparks() {
         return allSparks;
     }
-    
+
     public boolean isLeftStalling() {
         boolean current = getLeftCurrentAmps() > Constants.CURRENT_THRESHOLD;
         boolean output = Math.abs(getLeftAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
@@ -266,13 +265,13 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void simulationPeriodic() {
         driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
-        
+
         lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
         lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
         rEncoderSim.setPosition(driveSim.getRightPositionMeters());
         rEncoderSim.setVelocity(driveSim.getRightVelocityMetersPerSecond());
         pigeonSim.setRawHeading(driveSim.getHeading().getDegrees());
-        
+
         driveSim.update(0.02);
         field2d.setRobotPose(odometry.getPoseMeters());
     }
@@ -292,8 +291,8 @@ public class DriveSubsystem extends SubsystemBase {
         leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
         rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
         feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
-            DriveConstants.kA);
-        
+                DriveConstants.kA);
+
         driveSim.setPose(odometry.getPoseMeters());
         field2d.setRobotPose(odometry.getPoseMeters());
     }

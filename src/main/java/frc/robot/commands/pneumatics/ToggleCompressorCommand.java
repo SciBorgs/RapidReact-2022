@@ -6,8 +6,8 @@ import frc.robot.subsystems.PneumaticsSubsystem;
 public class ToggleCompressorCommand extends CommandBase {
     private PneumaticsSubsystem pneumaticsSubsystem;
 
-    public ToggleCompressorCommand(PneumaticsSubsystem pneumaticsSubsystem) {
-        this.pneumaticsSubsystem = pneumaticsSubsystem;
+    public ToggleCompressorCommand(PneumaticsSubsystem pneumatics) {
+        this.pneumaticsSubsystem = pneumatics;
         addRequirements(pneumaticsSubsystem);
     }
 

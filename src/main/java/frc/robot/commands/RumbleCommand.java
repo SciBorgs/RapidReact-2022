@@ -8,9 +8,9 @@ public class RumbleCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private RumbleSubsystem rumbleSubsystem;
 
-    public RumbleCommand(DriveSubsystem driveSubsystem, RumbleSubsystem rumbleSubsystem) {
-        this.driveSubsystem = driveSubsystem;
-        this.rumbleSubsystem = rumbleSubsystem;
+    public RumbleCommand(DriveSubsystem drive, RumbleSubsystem rumble) {
+        this.driveSubsystem = drive;
+        this.rumbleSubsystem = rumble;
         // addRequirements(driveSubsystem, rumbleSubsystem);
     }
     public void execute() {

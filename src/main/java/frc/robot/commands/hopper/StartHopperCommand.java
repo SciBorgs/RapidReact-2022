@@ -7,8 +7,8 @@ public class StartHopperCommand extends CommandBase {
     private HopperSubsystem hopperSubsystem;
     // WARNING: THIS COMMAND NEVER FINISHES BY ITSELF. USE WITH TIMEOUT OR OTHER END CONDITION.
     
-    public StartHopperCommand(HopperSubsystem hopperSubsystem) {
-        this.hopperSubsystem = hopperSubsystem;
+    public StartHopperCommand(HopperSubsystem hopper) {
+        this.hopperSubsystem = hopper;
         addRequirements(hopperSubsystem);
     }
 

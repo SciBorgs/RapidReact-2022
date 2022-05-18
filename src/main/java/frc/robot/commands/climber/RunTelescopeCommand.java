@@ -7,8 +7,8 @@ public class RunTelescopeCommand extends CommandBase {
     private ClimberSubsystem climberSubsystem;
     private boolean reversed;
 
-    public RunTelescopeCommand(ClimberSubsystem climberSubsystem, boolean reversed) {
-        this.climberSubsystem = climberSubsystem;
+    public RunTelescopeCommand(ClimberSubsystem climber, boolean reversed) {
+        this.climberSubsystem = climber;
         this.reversed = reversed;
         addRequirements(climberSubsystem);
     }

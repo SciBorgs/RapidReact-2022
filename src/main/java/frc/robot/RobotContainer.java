@@ -18,7 +18,9 @@ import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.ShootSequence;
 import frc.robot.commands.ShootSequence.Target;
 import frc.robot.commands.auto.DriveRamsete;
+import frc.robot.commands.auto.FourBallAuto;
 import frc.robot.commands.auto.TurnToAngle;
+import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommand;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
@@ -156,6 +158,6 @@ public class RobotContainer {
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     return new DriveRamsete(driveSubsystem, autoChooser.getSelected());
-    // return new TwoBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
+    // return new FourBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
   }
 }

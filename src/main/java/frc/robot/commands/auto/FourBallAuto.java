@@ -12,9 +12,9 @@ import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
-public class TwoBallAuto extends SequentialCommandGroup {
-    public TwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper,
-            VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret) {
+public class FourBallAuto extends SequentialCommandGroup {
+    public FourBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper,
+            VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
         addCommands(
             new ParallelCommandGroup(
                 new IntakeBallsCommand(intake, hopper),
@@ -23,5 +23,17 @@ public class TwoBallAuto extends SequentialCommandGroup {
             new TurnToAngle(180, drive),
             new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
         );
+
+        if(initialPos == "1") addCommands(new TurnToAngle(0, drive));
+        
+        addCommands(
+            new ParallelCommandGroup(
+                new IntakeBallsCommand(intake, hopper),
+                new DriveRamsete(drive, "Pos" + initialPos + "_4Ball")
+            ),
+            new TurnToAngle(180, drive),
+            new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
+        );
+
     }
 }
