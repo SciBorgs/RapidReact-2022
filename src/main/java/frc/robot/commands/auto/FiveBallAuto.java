@@ -16,7 +16,6 @@ import frc.robot.subsystems.TurretSubsystem;
 public class FiveBallAuto extends SequentialCommandGroup {
     public FiveBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
         
-        // 
         addCommands(
             new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH),
             new TurnToAngle(180, drive),
@@ -32,8 +31,9 @@ public class FiveBallAuto extends SequentialCommandGroup {
             new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
         );
         
+        if(initialPos == "2") addCommands(new TurnToAngle(180, drive));
+
         addCommands(
-            new TurnToAngle(180, drive),
             new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage2"),
             new TurnToAngle(0, drive),
             new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
