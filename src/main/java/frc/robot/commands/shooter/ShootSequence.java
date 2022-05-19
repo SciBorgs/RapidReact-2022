@@ -1,11 +1,7 @@
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.commands.shooter.AimHoodCommand;
-import frc.robot.commands.shooter.AimTurretCommand;
-import frc.robot.commands.shooter.ResetTurretCommand;
-import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
