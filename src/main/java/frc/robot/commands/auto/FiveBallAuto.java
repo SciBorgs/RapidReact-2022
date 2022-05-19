@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ShootSequence;
 import frc.robot.commands.ShootSequence.Target;
@@ -18,10 +19,15 @@ public class FiveBallAuto extends SequentialCommandGroup {
         addCommands(
                 new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH),
                 new TurnToAngle(180, drive),
-                new DriveUntilIntake(drive, intake),
+                new ParallelRaceGroup(
+                    new IntakeBallsCommand(intake, hopper),
+                    new DriveUntilIntake(drive, intake)
+                ),
+                
                 new TurnToAngle(0, drive),
                 new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage1"),
                 new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH),
+                
                 new TurnToAngle(180, drive),
                 new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage2"),
                 new TurnToAngle(0, drive),

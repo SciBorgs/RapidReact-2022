@@ -24,7 +24,7 @@ public class DriveUntilIntake extends CommandBase {
 
     @Override
     public void execute() {
-        drive.driveRobot(DriveMode.TANK, -0.2, 0.2); // drive backwards
+        drive.driveRobot(DriveMode.TANK, -0.2, -0.2); // drive backwards
     }
 
     @Override
@@ -34,7 +34,7 @@ public class DriveUntilIntake extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        drive.tankDriveVolts(0, 0);
+        drive.driveRobot(DriveMode.TANK, 0, 0);
     }
 
 }

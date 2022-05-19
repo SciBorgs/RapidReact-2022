@@ -51,7 +51,6 @@ public class IntakeSubsystem extends SubsystemBase {
         return amountOfBalls;
     }
 
-
     public boolean getLimitSwitchState(){
         return limitSwitch.get();
     }

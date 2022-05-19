@@ -1,6 +1,6 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ShootSequence;
 import frc.robot.commands.ShootSequence.Target;
@@ -16,7 +16,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
     public TwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper,
             VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret) {
         addCommands(
-            new ParallelCommandGroup(
+            new ParallelRaceGroup(
                 new IntakeBallsCommand(intake, hopper),
                 new DriveUntilIntake(drive, intake)
             ),
