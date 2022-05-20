@@ -5,6 +5,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -93,9 +95,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
-  
   public void simulationInit() {
-
+    m_robotContainer.driveSubsystem.resetOdometry(new Pose2d(10.89, 6.12, new Rotation2d(-2.8773498048)));
   } 
 
   /** This function is called periodically whilst in simulation. */

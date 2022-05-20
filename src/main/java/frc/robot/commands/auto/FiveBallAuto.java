@@ -3,6 +3,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.intake.IntakeBallsCommandGroup;
 import frc.robot.commands.intake.IntakeForever;
 import frc.robot.commands.intake.IntakeStop;
@@ -35,6 +36,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
             new TurnToAngle(0, drive),
             new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage1")
             // new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
+            // new WaitCommand(2)
         );
         
         if(initialPos == "2") addCommands(new TurnToAngle(180, drive));
@@ -42,12 +44,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage2"),
             new TurnToAngle(0, drive),
-            new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
-        );
-
-        // end 
-
-        addCommands(
+            new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH),
             new IntakeStop(intake)
         );
 

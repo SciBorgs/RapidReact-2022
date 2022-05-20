@@ -39,7 +39,7 @@ public class DriveRamsete extends RamseteCommand {
     @Override
     public void initialize() {
         super.initialize();
-        driveSubsystem.resetOdometry(trajectory.getInitialPose()); 
+        // driveSubsystem.resetOdometry(trajectory.getInitialPose()); 
     }
 
     @Override 
