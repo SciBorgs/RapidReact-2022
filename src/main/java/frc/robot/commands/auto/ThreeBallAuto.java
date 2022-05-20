@@ -29,7 +29,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         if(initialPos == "2") addCommands(new TurnToAngle(0, drive));
         
         addCommands(
-            new DriveRamsete(drive, "Pos" + initialPos + "_3Ball"),
+            new DriveRamsete(drive, "Pos" + initialPos + "_3Ball", true),
             new TurnToAngle(0, drive), // TODO: need to put accurate angle here
             new ShootSequence(shooter, turret, hopper, intake, limelight),
             new IntakeStop(intake)

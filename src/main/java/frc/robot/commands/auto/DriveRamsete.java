@@ -12,8 +12,9 @@ import com.pathplanner.lib.PathPlanner;
 public class DriveRamsete extends RamseteCommand {
     private DriveSubsystem driveSubsystem;
     private Trajectory trajectory;
+    private boolean resetOdometry;
 
-    public DriveRamsete(DriveSubsystem drive, Trajectory trajectory) {
+    public DriveRamsete(DriveSubsystem drive, Trajectory trajectory, boolean resetOdometry) {
         super(
             trajectory,
             drive::getPose,
@@ -29,17 +30,18 @@ public class DriveRamsete extends RamseteCommand {
         
         this.driveSubsystem = drive;
         this.trajectory = trajectory;
+        this.resetOdometry = resetOdometry; 
         addRequirements(driveSubsystem);
     }
 
-    public DriveRamsete(DriveSubsystem ds, String pathName) {
-        this(ds, PathPlanner.loadPath(pathName, DriveConstants.maxVel, DriveConstants.maxAccel));
+    public DriveRamsete(DriveSubsystem drive, String pathName, boolean resetOdometry) {
+        this(drive, PathPlanner.loadPath(pathName, DriveConstants.maxVel, DriveConstants.maxAccel), resetOdometry);
     }
 
     @Override
     public void initialize() {
         super.initialize();
-        // driveSubsystem.resetOdometry(trajectory.getInitialPose()); 
+        if(resetOdometry) driveSubsystem.resetOdometry(trajectory.getInitialPose()); 
     }
 
     @Override 

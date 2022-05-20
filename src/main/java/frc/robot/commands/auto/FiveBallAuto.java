@@ -29,7 +29,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
         
         addCommands(
             new TurnToAngle(0, drive),
-            new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage1")
+            new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage1", true)
             // new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
             // new WaitCommand(2)
         );
@@ -37,7 +37,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
         if(initialPos == "2") addCommands(new TurnToAngle(180, drive));
 
         addCommands(
-            new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage2"),
+            new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage2", false),
             new TurnToAngle(0, drive),
             new ShootSequence(shooter, turret, hopper, intake, limelight),
             new IntakeStop(intake)
