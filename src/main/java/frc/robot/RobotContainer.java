@@ -12,24 +12,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.ShootSequence;
-import frc.robot.commands.ShootSequence.Target;
-import frc.robot.commands.auto.DriveRamsete;
 import frc.robot.commands.auto.FiveBallAuto;
-import frc.robot.commands.auto.FourBallAuto;
-import frc.robot.commands.auto.TurnToAngle;
-import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommandGroup;
 import frc.robot.commands.intake.ToggleIntakeArm;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.DriveSubsystem.DriveMode;
-import frc.robot.util.Util;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
@@ -39,6 +31,7 @@ import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.Util;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -74,7 +67,7 @@ public class RobotContainer {
   private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
   private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intakeSubsystem, hopperSubsystem);
   private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intakeSubsystem);
-  private final ShootSequence             shootSequence           = new ShootSequence(shooterSubsystem, turretSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
+  private final ShootSequence             shootSequence           = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, intakeSubsystem, limelightSubsystem);
   public  final RumbleCommand             rumbleCommand           = new RumbleCommand(driveSubsystem, rumbleSubsystem);
 
   // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
