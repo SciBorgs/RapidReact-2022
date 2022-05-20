@@ -3,7 +3,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.intake.IntakeBallsCommand;
+import frc.robot.commands.intake.IntakeBallsCommandGroup;
 import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.shooter.ShootSequence.Target;
 import frc.robot.subsystems.DriveSubsystem;
@@ -18,7 +18,7 @@ public class FourBallAuto extends SequentialCommandGroup {
         
         addCommands(
             new ParallelRaceGroup(
-                new IntakeBallsCommand(intake, hopper),
+                new IntakeBallsCommandGroup(intake, hopper),
                 new DriveUntilIntake(drive, intake)
             ),
             new TurnToAngle(180, drive),
@@ -29,7 +29,7 @@ public class FourBallAuto extends SequentialCommandGroup {
         
         addCommands(
             new ParallelRaceGroup(
-                new IntakeBallsCommand(intake, hopper),
+                new IntakeBallsCommandGroup(intake, hopper),
                 new DriveRamsete(drive, "Pos" + initialPos + "_4Ball")
             ),
             new TurnToAngle(180, drive),

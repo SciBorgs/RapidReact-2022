@@ -16,11 +16,13 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.auto.DriveRamsete;
+import frc.robot.commands.auto.FiveBallAuto;
 import frc.robot.commands.auto.FourBallAuto;
 import frc.robot.commands.auto.TurnToAngle;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
-import frc.robot.commands.intake.IntakeBallsCommand;
+import frc.robot.commands.intake.IntakeBallsCommandGroup;
+import frc.robot.commands.intake.ToggleIntakeArm;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
 import frc.robot.commands.shooter.ShootSequence;
 import frc.robot.commands.shooter.ShootSequence.Target;
@@ -69,10 +71,11 @@ public class RobotContainer {
       climberSubsystem, monitorSubsystem, rumbleSubsystem);
 
   // COMMANDS
-  private final ToggleCompressorCommand toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
-  private final IntakeBallsCommand intakeBallsCommand = new IntakeBallsCommand(intakeSubsystem, hopperSubsystem);
-  private final ShootSequence shootSequence = new ShootSequence(shooterSubsystem, turretSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
-  public  final RumbleCommand rumbleCommand = new RumbleCommand(driveSubsystem, rumbleSubsystem);
+  private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
+  private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intakeSubsystem, hopperSubsystem);
+  private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intakeSubsystem);
+  private final ShootSequence             shootSequence           = new ShootSequence(shooterSubsystem, turretSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, Target.HIGH);
+  public  final RumbleCommand             rumbleCommand           = new RumbleCommand(driveSubsystem, rumbleSubsystem);
 
   // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
 
@@ -112,9 +115,7 @@ public class RobotContainer {
     // Intake
     // this.intakeBalls.whenHeld(new IntakeBallsCommand());
     oi.intakeBalls.whenHeld(intakeBallsCommand);
-    oi.toggleIntake.whenPressed(
-      new InstantCommand(() -> intakeSubsystem.toggleArm())
-    );
+    oi.toggleIntake.whenPressed(toggleArmCommand);
     // this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
     // this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
 
@@ -157,7 +158,7 @@ public class RobotContainer {
     // return new TurnToAngle(180, driveSubsystem);
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    return new DriveRamsete(driveSubsystem, autoChooser.getSelected());
-    // return new FourBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
+    // return new DriveRamsete(driveSubsystem, autoChooser.getSelected());
+    return new FiveBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
   }
 }
