@@ -130,11 +130,7 @@ public class RobotContainer {
     );
 
     // Shooter
-    // oi.shootButton.whenPressed(shootSequence);
-    oi.shootButton.whenHeld(
-      new InstantCommand(
-       () -> turretSubsystem.setTargetAngle(15), turretSubsystem)
-    );
+    oi.shootButton.whenPressed(shootSequence);
   }
 
   public SendableChooser<String> getAutoChooser() {

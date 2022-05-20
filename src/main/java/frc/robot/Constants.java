@@ -122,6 +122,12 @@ public final class Constants {
         public static final double maxV = 40; // velocity
     }
 
+    public static final class HopperConstants {
+        public static final double SUCK_SPEED = 0.35;
+        public static final double ELEVATOR_SPEED = 0.5;
+        public static final double MAX_SPEED = 0.8;
+    }
+
     public static final class VisionConstants {
         public static final double HEIGHT_DIFF = 2.08534; // (meters)
         public static final double MOUNT_ANGLE = 30; // (deg)

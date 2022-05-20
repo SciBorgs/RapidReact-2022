@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -10,10 +11,13 @@ public class VisionSubsystem extends SubsystemBase {
     // filters to smooth x and y difference values
     private final LinearFilter xFilter = LinearFilter.singlePoleIIR(VisionConstants.TIMESCALE, VisionConstants.PERIOD);
     private final LinearFilter yFilter = LinearFilter.singlePoleIIR(VisionConstants.TIMESCALE, VisionConstants.PERIOD);
+    // debouncer to smooth the tv value
+    private final Debouncer vFilter = new Debouncer(VisionConstants.TIMESCALE, Debouncer.DebounceType.kBoth);
 
-    // last values for offset
+    // last values for filters
     private double xOffset;
     private double yOffset;
+    private boolean visible;
 
     public VisionSubsystem() {
         setCameraParams(getTable(), "pipeline", 0);
@@ -48,7 +52,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public boolean hasTarget() {
-        return getLimelightData("tv") == 1;
+        return visible;
     }
 
     // gets the distance from the limelight to the target
@@ -68,5 +72,6 @@ public class VisionSubsystem extends SubsystemBase {
     public void periodic() {
         xOffset = xFilter.calculate(getLimelightData("tx"));
         yOffset = yFilter.calculate(getLimelightData("ty"));
+        visible = vFilter.calculate(getLimelightData("tv") == 1);
     }
 }
