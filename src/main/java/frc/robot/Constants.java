@@ -45,6 +45,7 @@ public final class Constants {
     //public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
     
     public static final class DriveConstants {
+        public static final double DEFAULT_RPM = 40;
         // ratios
         // "gear ratio" : 13.7 ?
         public static final double ROBOT_WIDTH = 0.5588; 

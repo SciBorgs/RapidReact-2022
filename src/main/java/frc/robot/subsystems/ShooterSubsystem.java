@@ -63,6 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // hoodEncoder.setDistancePerRotation(ShooterConstants.HOOD_GEAR_RATIO);
 
         hoodFeedback.setTolerance(0.2);
+        flywheelFeedback.setTolerance(0.2, 0.2);
     }
     
     // FLYWHEEL
@@ -99,8 +100,12 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelEncoder.setPosition(0);
     }
 
-    public boolean isAtTarget() {
+    public boolean isAtTargetAngle() {
         return hoodFeedback.atSetpoint();
+    }
+
+    public boolean isAtTargetRPM() {
+        return flywheelFeedback.atSetpoint();
     }
 
     @Override
