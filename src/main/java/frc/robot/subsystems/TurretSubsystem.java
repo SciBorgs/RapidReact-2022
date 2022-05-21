@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -10,7 +9,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -65,14 +63,14 @@ public class TurretSubsystem extends SubsystemBase {
         return targetAngle;
     }
 
-    public boolean isAtTarget() {
+    public boolean atTarget() {
         return feedback.atGoal();
     }
 
     @Override
     public void periodic() {
         double accel = (feedback.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        System.out.println("target " + targetAngle + "current" + getCurrentAngle());
+        // System.out.println("target " + targetAngle + "current" + getCurrentAngle());
         double fb = feedback.calculate(getCurrentAngle(), targetAngle);
         double ff = feedforward.calculate(feedback.getSetpoint().velocity, accel);
 

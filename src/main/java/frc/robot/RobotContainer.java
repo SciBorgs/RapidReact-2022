@@ -31,6 +31,7 @@ import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.BallCounter;
 import frc.robot.util.Util;
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -58,10 +59,10 @@ public class RobotContainer {
   public final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
   public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
 
-  private final Set<Subsystem> subsystems = Set.of(
-      driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
-      shooterSubsystem, intakeSubsystem, hopperSubsystem, pneumaticsSubsystem,
-      climberSubsystem, monitorSubsystem, rumbleSubsystem);
+  // private final Set<Subsystem> subsystems = Set.of(
+  //     driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
+  //     shooterSubsystem, intakeSubsystem, hopperSubsystem, pneumaticsSubsystem,
+  //     climberSubsystem, monitorSubsystem, rumbleSubsystem);
 
   // COMMANDS
   private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
@@ -70,7 +71,8 @@ public class RobotContainer {
   private final ShootSequence             shootSequence           = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, intakeSubsystem, limelightSubsystem);
   public  final RumbleCommand             rumbleCommand           = new RumbleCommand(driveSubsystem, rumbleSubsystem);
 
-  // private final ResetTurretCommand resetTurretCommand = new ResetTurretCommand(turretSubsystem);
+  // Ball count
+  private final BallCounter ballCount = new BallCounter();
 
   // blocker
   // private final Command block = Util.blockSubsystems(subsystems); 

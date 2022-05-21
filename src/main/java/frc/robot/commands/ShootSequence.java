@@ -39,11 +39,10 @@ public class ShootSequence extends CommandBase {
         shooter.setTargetFlywheelSpeed(ShooterConstants.getRPM(dist));
         turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset());
         
-        if (shooter.isAtTargetAngle() && shooter.isAtTargetRPM() && turret.isAtTarget()) {
+        if (shooter.atTargetAngle() && shooter.atTargetRPM() && turret.atTarget()) {
             hopper.startElevator();
-            intake.decrementBallCount();
         } else {
-            hopper.stopElevator();
+            hopper.stopElevator(); // TODO might cause serious issues during testing. if it does, add a Debouncer or some other kind of delay
         }
     }
 
@@ -55,6 +54,6 @@ public class ShootSequence extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return intake.getBallCount() < 1; // ball count may or may not work, try
+        return intake.getBallCount() < 1; // ball count may or may not work, use with timeout
     }
 }

@@ -9,7 +9,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -63,7 +62,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // hoodEncoder.setDistancePerRotation(ShooterConstants.HOOD_GEAR_RATIO);
 
         hoodFeedback.setTolerance(0.2);
-        flywheelFeedback.setTolerance(0.2, 0.2);
+        flywheelFeedback.setTolerance(0.2, 0.3); // TODO possibly update | if shooting never finishes, this is probably why
     }
     
     // FLYWHEEL
@@ -100,14 +99,14 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheelEncoder.setPosition(0);
     }
 
-    public boolean isAtTargetAngle() {
+    public boolean atTargetAngle() {
         return hoodFeedback.atSetpoint();
     }
 
-    public boolean isAtTargetRPM() {
+    public boolean atTargetRPM() {
         return flywheelFeedback.atSetpoint();
     }
-
+    
     @Override
     public void periodic() {
         double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
