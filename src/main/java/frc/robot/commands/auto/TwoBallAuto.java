@@ -14,7 +14,7 @@ import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.BallCounter;
 
 public class TwoBallAuto extends SequentialCommandGroup {
-    public TwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, BallCounter count) {
+    public TwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret) {
         
         addCommands(
             new ToggleIntakeArm(intake),
@@ -22,7 +22,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
         );
 
         addCommands(
-            new DriveUntilIntake(drive, count),
+            new DriveUntilIntake(drive, intake),
             new TurnToAngle(180, drive),
             new ShootSequence(shooter, turret, hopper, limelight),
             new IntakeStop(intake)
