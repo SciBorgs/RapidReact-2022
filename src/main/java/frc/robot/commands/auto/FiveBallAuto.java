@@ -21,17 +21,16 @@ public class FiveBallAuto extends SequentialCommandGroup {
             new IntakeForever(intake)
         );
 
-        // addCommands(
-        //     new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH),
-        //     new TurnToAngle(180, drive)
-        //     // new DriveUntilIntake(drive, intake)
-        // );
+        addCommands(
+            new ShootSequence(shooter, turret, hopper, limelight),
+            new TurnToAngle(180, drive),
+            new DriveUntilIntake(drive, intake)
+        );
         
         addCommands(
             new TurnToAngle(0, drive),
-            new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage1", true)
-            // new ShootSequence(shooter, turret, intake, hopper, limelight, Target.HIGH)
-            // new WaitCommand(2)
+            new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage1", true),
+            new ShootSequence(shooter, turret, hopper, limelight)
         );
         
         if(initialPos == "2") addCommands(new TurnToAngle(180, drive));
