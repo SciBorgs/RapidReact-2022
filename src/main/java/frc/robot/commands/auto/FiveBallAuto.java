@@ -11,9 +11,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.BallCounter;
 
 public class FiveBallAuto extends SequentialCommandGroup {
-    public FiveBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
+    public FiveBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, BallCounter count, String initialPos) {
         
         // init
         addCommands(
@@ -39,7 +40,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage2", false),
             new TurnToAngle(0, drive),
-            new ShootSequence(shooter, turret, hopper, intake, limelight),
+            new ShootSequence(shooter, turret, hopper, limelight, count),
             new IntakeStop(intake)
         );
 

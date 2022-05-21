@@ -25,7 +25,7 @@ public class BallCounter {
         count = val;
     }
 
-    public int getCount() {
+    public int get() {
         return count;
     }
 }

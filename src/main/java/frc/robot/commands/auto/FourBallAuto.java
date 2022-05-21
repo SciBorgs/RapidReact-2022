@@ -9,11 +9,12 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.BallCounter;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class FourBallAuto extends SequentialCommandGroup {
-    public FourBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
+    public FourBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, BallCounter count, String initialPos) {
         
         addCommands(
             new ToggleIntakeArm(intake),
@@ -21,9 +22,9 @@ public class FourBallAuto extends SequentialCommandGroup {
         );
 
         addCommands(
-            new DriveUntilIntake(drive, intake),
+            new DriveUntilIntake(drive, count),
             new TurnToAngle(180, drive),
-            new ShootSequence(shooter, turret, hopper, intake, limelight)
+            new ShootSequence(shooter, turret, hopper, limelight, count)
         );
 
         if(initialPos == "1") addCommands(new TurnToAngle(0, drive));
@@ -31,7 +32,7 @@ public class FourBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveRamsete(drive, "Pos" + initialPos + "_4Ball", true),
             new TurnToAngle(180, drive),
-            new ShootSequence(shooter, turret, hopper, intake, limelight),
+            new ShootSequence(shooter, turret, hopper, limelight, count),
             new IntakeStop(intake)
         );
 

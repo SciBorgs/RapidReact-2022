@@ -3,25 +3,25 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.BallCounter;
 
 public class ShootSequence extends CommandBase {
     private ShooterSubsystem shooter;
     private TurretSubsystem turret;
     private HopperSubsystem hopper;
-    private IntakeSubsystem intake;
     private VisionSubsystem vision;
+    private BallCounter count;
 
-    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper, IntakeSubsystem intake, VisionSubsystem vision) {
+    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper, VisionSubsystem vision, BallCounter count) {
         this.shooter = shooter;
         this.turret = turret;
         this.hopper = hopper;
-        this.intake = intake;
         this.vision = vision;
-        addRequirements(shooter, turret, hopper, intake, vision);
+        this.count = count;
+        addRequirements(shooter, turret, hopper, vision);
     }
 
     @Override
@@ -54,6 +54,6 @@ public class ShootSequence extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return intake.getBallCount() < 1; // ball count may or may not work, use with timeout
+        return count.get() < 1; // ball count may or may not work, use with timeout
     }
 }

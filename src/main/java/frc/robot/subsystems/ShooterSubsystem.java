@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
+import frc.robot.util.BallCounter;
 import frc.robot.util.Blockable;
 
 @Blockable
@@ -36,7 +37,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private ShuffleboardTab mainTab;
 
-    public ShooterSubsystem() {
+    private BallCounter count;
+
+    public ShooterSubsystem(BallCounter count) {
         
         // shuffleboard
         mainTab = Shuffleboard.getTab("Shootr ");
@@ -63,6 +66,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         hoodFeedback.setTolerance(0.2);
         flywheelFeedback.setTolerance(0.2, 0.3); // TODO possibly update | if shooting never finishes, this is probably why
+        
+        this.count = count;
     }
     
     // FLYWHEEL

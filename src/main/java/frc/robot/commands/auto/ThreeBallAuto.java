@@ -11,9 +11,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.BallCounter;
 
 public class ThreeBallAuto extends SequentialCommandGroup {
-    public ThreeBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
+    public ThreeBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, BallCounter count, String initialPos) {
         
         addCommands(
             new ToggleIntakeArm(intake),
@@ -21,9 +22,9 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         );
 
         addCommands(
-            new ShootSequence(shooter, turret, hopper, intake, limelight),
+            new ShootSequence(shooter, turret, hopper, limelight, count),
             new TurnToAngle(180, drive),
-            new DriveUntilIntake(drive, intake)
+            new DriveUntilIntake(drive, count)
         );
 
         if(initialPos == "2") addCommands(new TurnToAngle(0, drive));
@@ -31,7 +32,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveRamsete(drive, "Pos" + initialPos + "_3Ball", true),
             new TurnToAngle(0, drive), // TODO: need to put accurate angle here
-            new ShootSequence(shooter, turret, hopper, intake, limelight),
+            new ShootSequence(shooter, turret, hopper, limelight, count),
             new IntakeStop(intake)
         );
     }
