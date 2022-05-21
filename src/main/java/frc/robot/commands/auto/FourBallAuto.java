@@ -24,7 +24,7 @@ public class FourBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveUntilIntake(drive, count),
             new TurnToAngle(180, drive),
-            new ShootSequence(shooter, turret, hopper, limelight, count)
+            new ShootSequence(shooter, turret, hopper, limelight)
         );
 
         if(initialPos == "1") addCommands(new TurnToAngle(0, drive));
@@ -32,7 +32,7 @@ public class FourBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveRamsete(drive, "Pos" + initialPos + "_4Ball", true),
             new TurnToAngle(180, drive),
-            new ShootSequence(shooter, turret, hopper, limelight, count),
+            new ShootSequence(shooter, turret, hopper, limelight),
             new IntakeStop(intake)
         );
 

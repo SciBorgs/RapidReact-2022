@@ -6,21 +6,18 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.util.BallCounter;
 
 public class ShootSequence extends CommandBase {
     private ShooterSubsystem shooter;
     private TurretSubsystem turret;
     private HopperSubsystem hopper;
     private VisionSubsystem vision;
-    private BallCounter count;
 
-    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper, VisionSubsystem vision, BallCounter count) {
+    public ShootSequence(ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper, VisionSubsystem vision) {
         this.shooter = shooter;
         this.turret = turret;
         this.hopper = hopper;
         this.vision = vision;
-        this.count = count;
         addRequirements(shooter, turret, hopper, vision);
     }
 
@@ -54,6 +51,6 @@ public class ShootSequence extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return count.get() < 1; // ball count may or may not work, use with timeout
+        return shooter.get() < 1; // ball count may or may not work, use with timeout
     }
 }

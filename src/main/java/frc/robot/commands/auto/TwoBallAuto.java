@@ -24,7 +24,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveUntilIntake(drive, count),
             new TurnToAngle(180, drive),
-            new ShootSequence(shooter, turret, hopper, limelight, count),
+            new ShootSequence(shooter, turret, hopper, limelight),
             new IntakeStop(intake)
         );
     }

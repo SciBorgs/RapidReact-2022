@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
-import frc.robot.util.BallCounter;
 import frc.robot.util.Blockable;
+import frc.robot.util.Counter;
 
 @Blockable
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase implements Counter {
 
     private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
     private CANSparkMax suckSpark; // motor used for intaking balls
@@ -22,16 +22,13 @@ public class IntakeSubsystem extends SubsystemBase {
     
     private final double INTAKE_SPEED = 0.5;
 
-    private BallCounter count;
-
-    public IntakeSubsystem(BallCounter count) {
+    public IntakeSubsystem() {
         this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL); 
         this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
         // this.suckSpark.setInverted(true); // invert the motor
         this.limitSwitch = new DigitalInput(PortMap.LIMIT_SWITCH_INTAKE);
 
         this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
-        this.count = count;
     }
 
     // TODO remove, move updating to periodic
@@ -67,9 +64,29 @@ public class IntakeSubsystem extends SubsystemBase {
         return this.suckSpark.get();
     }
 
+    // counter
+    @Override
+    public void increment() {
+        count.increment();
+        
+    }
+
+    @Override
+    public void decrement() {
+        count.decrement();
+        
+    }
+
+    @Override
+    public int get() {
+        return count.get();
+    }
+
     @Override
     public void periodic() {
         // TODO Auto-generated method stub
         super.periodic();
     }
+
+    
 }

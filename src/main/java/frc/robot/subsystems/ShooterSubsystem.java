@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
-import frc.robot.util.BallCounter;
 import frc.robot.util.Blockable;
+import frc.robot.util.Counter;
 
 @Blockable
-public class ShooterSubsystem extends SubsystemBase {
+public class ShooterSubsystem extends SubsystemBase implements Counter {
 
     private final CANSparkMax hood, lmotor, rmotor;
     private final RelativeEncoder flywheelEncoder;
@@ -37,9 +37,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private ShuffleboardTab mainTab;
 
-    private BallCounter count;
+    // keeping track of ejected balls
+    private boolean shooting;
 
-    public ShooterSubsystem(BallCounter count) {
+    public ShooterSubsystem() {
         
         // shuffleboard
         mainTab = Shuffleboard.getTab("Shootr ");
@@ -66,8 +67,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         hoodFeedback.setTolerance(0.2);
         flywheelFeedback.setTolerance(0.2, 0.3); // TODO possibly update | if shooting never finishes, this is probably why
-        
-        this.count = count;
+
+        shooting = false;
     }
     
     // FLYWHEEL
@@ -111,15 +112,47 @@ public class ShooterSubsystem extends SubsystemBase {
     public boolean atTargetRPM() {
         return flywheelFeedback.atSetpoint();
     }
+
+    // ball count
+
+    @Override
+    public void increment() {
+        count.increment();
+        
+    }
+
+    @Override
+    public void decrement() {
+        count.decrement();
+    }
+
+    @Override
+    public int get() {
+        return count.get();
+    }
     
     @Override
     public void periodic() {
-        double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
-        double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
-        rmotor.setVoltage(flywheelFB + flywheelFF);
-        
+
+        // updating controllers for hood
         double hoodFB = hoodFeedback.calculate(getCurrentHoodAngle(), targetAngle);
         double hoodFF = hoodFeedforward.calculate(0);
         hood.setVoltage(hoodFB + hoodFF);
+
+        // updating controllers for flywheel
+        double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
+        double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
+        double voltage = flywheelFB + flywheelFF;
+        rmotor.setVoltage(voltage);
+
+        // updating ball count
+        if (flywheelFeedback.getSetpoint() > 0) {
+            if (!shooting && voltage > ShooterConstants.VOLTAGE_THRESHOLD);
+                decrement();
+            // else 
+            shooting = true;
+        } else {
+            shooting = false;
+        }
     }
 }

@@ -14,7 +14,7 @@ public class OneBallAuto extends SequentialCommandGroup {
 
         addCommands(
             // TODO our limelight may not be able to see the hub from the tarmac
-            new ShootSequence(shooter, turret, hopper, limelight, count),
+            new ShootSequence(shooter, turret, hopper, limelight),
             new DriveUntilIntake(drive, count) // move off tarmac
         );
     }

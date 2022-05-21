@@ -4,15 +4,11 @@
 
 package frc.robot;
 
-import java.util.Set;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.ShootSequence;
 import frc.robot.commands.auto.FiveBallAuto;
@@ -31,7 +27,6 @@ import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.util.BallCounter;
 import frc.robot.util.Util;
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -46,18 +41,13 @@ public class RobotContainer {
   // CONTROLLERS
   private final OI oi = new OI(true);
 
-  // Ball count
-  // due to lack of internal color sensors,
-  // we assume that we start with 1 preloaded ball
-  private final BallCounter ballCount = new BallCounter(1); 
-
   // SUBSYSTEMS
   public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
   public final VisionSubsystem    limelightSubsystem    = new VisionSubsystem();
   public final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
-  public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem(ballCount);
-  public final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem(ballCount);
+  public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
+  public final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
   public final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
   public final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
   public final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
@@ -73,7 +63,7 @@ public class RobotContainer {
   private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
   private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intakeSubsystem, hopperSubsystem);
   private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intakeSubsystem);
-  private final ShootSequence             shootSequence           = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem, ballCount);
+  private final ShootSequence             shootSequence           = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem);
   public  final RumbleCommand             rumbleCommand           = new RumbleCommand(driveSubsystem, rumbleSubsystem);
 
   // blocker
@@ -152,6 +142,6 @@ public class RobotContainer {
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     // return new DriveRamsete(driveSubsystem, autoChooser.getSelected());
-    return new FiveBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, ballCount, "1");
+    return new FiveBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
   }
 }
