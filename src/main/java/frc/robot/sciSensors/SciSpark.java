@@ -2,11 +2,8 @@ package frc.robot.sciSensors;
 
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.math.MathUtil;
-
 public class SciSpark extends CANSparkMax {
 
-    private static double MAX_JERK = 0.15; // stalling hurt ear :(
     private boolean hasFailed = false;
 
     public SciSpark(int port) {
@@ -14,9 +11,7 @@ public class SciSpark extends CANSparkMax {
     }
 
     public void set(double speed) {
-        double currSpeed = super.get();
-        double jerk = MathUtil.clamp(speed - currSpeed, -MAX_JERK, MAX_JERK);
-        super.set(this.hasFailed ? 0 : (currSpeed + jerk));
+        super.set(this.hasFailed ? 0 : speed);
     }
 
     @Override

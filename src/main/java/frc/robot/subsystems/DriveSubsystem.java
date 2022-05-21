@@ -6,8 +6,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -62,10 +62,10 @@ public class DriveSubsystem extends SubsystemBase {
     public DifferentialDriveOdometry odometry;
     private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
-    private PIDController leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
-    private PIDController rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
             DriveConstants.kA);
+
+    private SlewRateLimiter filter = new SlewRateLimiter(DriveConstants.MAX_JERK);
 
     // SIMULATION
     private DifferentialDrivetrainSim driveSim;
@@ -84,9 +84,8 @@ public class DriveSubsystem extends SubsystemBase {
         rEncoder = rightSparks[0].getEncoder();
         System.out.println(lEncoder.getCountsPerRevolution() + " | " + rEncoder.getCountsPerRevolution());
         lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
-        // lEncoder.setVelocityConversionFactor(DriveConstants.) TODO set correct value
-        // for this and rEncoder
         rEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
+        
         resetEncoders();
 
         for (SciSpark motor : allSparks) {
@@ -117,44 +116,34 @@ public class DriveSubsystem extends SubsystemBase {
         odometry = new DifferentialDriveOdometry(getRotation());
     }
 
-    public void setSideVoltage(double voltage, SciSpark[] sparks) {
-        for (SciSpark s : sparks)
-            s.setVoltage(voltage);
-    }
-
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         if (Robot.isReal()) {
             leftGroup.setVoltage(leftVolts);
             rightGroup.setVoltage(rightVolts);
-        } else { // lmao
+        } else { // sim workaround
             leftSparks[0].setVoltage(leftVolts);
             rightSparks[0].setVoltage(rightVolts);
         }
         drive.feed();
     }
 
-    public void setSpeed(DifferentialDriveWheelSpeeds speeds) {
-        double leftFeedForward = feedforward.calculate(speeds.leftMetersPerSecond);
-        double rightFeedForward = feedforward.calculate(speeds.rightMetersPerSecond);
-
-        double leftOutput = leftFeedback.calculate(lEncoder.getVelocity(), speeds.leftMetersPerSecond);
-        double rightOutput = rightFeedback.calculate(rEncoder.getVelocity(), speeds.rightMetersPerSecond);
-
-        leftGroup.setVoltage(leftOutput + leftFeedForward);
-        rightGroup.setVoltage(rightOutput + rightFeedForward);
-    }
-
-    public void driveRobot(DriveMode mode, double left, double right) {
+    /**
+     * Drives the robot according to provided DriveMode
+     * @param mode
+     * @param first Left input in TANK, speed in ARCADE or CURVATURE
+     * @param second Right input in TANK, rotation in ARCADE or CURVATURE
+     */
+    public void driveRobot(DriveMode mode, double first, double second) {
         // Controller interface
         switch (mode) {
             case TANK:
-                drive.tankDrive(left, right, true);
+                drive.tankDrive(first, second);
                 break;
             case ARCADE:
-                drive.arcadeDrive(left, right);
+                drive.arcadeDrive(filter.calculate(first), second);
                 break;
             case CURVATURE:
-                drive.curvatureDrive(left, right, true);
+                drive.curvatureDrive(filter.calculate(first), second, true);
                 break;
         }
     }
@@ -218,15 +207,7 @@ public class DriveSubsystem extends SubsystemBase {
     public double getRightAverageVelocity() {
         return Util.getAverageOfArray(rightSparks, CANSparkMax::get);
     }
-
-    public PIDController getLeftFeedback() {
-        return leftFeedback;
-    }
-
-    public PIDController getRightFeedback() {
-        return rightFeedback;
-    }
-
+    
     public SimpleMotorFeedforward getFeedforward() {
         return feedforward;
     }
@@ -288,8 +269,6 @@ public class DriveSubsystem extends SubsystemBase {
         odometry = new DifferentialDriveOdometry(getRotation());
         kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
-        leftFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
-        rightFeedback = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
         feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
                 DriveConstants.kA);
 
