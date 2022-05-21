@@ -38,7 +38,7 @@ public class ShooterSubsystem extends SubsystemBase implements Counter {
     private ShuffleboardTab mainTab;
 
     // keeping track of ejected balls
-    private boolean shooting;
+    private double previousVelocity;
 
     public ShooterSubsystem() {
         
@@ -68,7 +68,7 @@ public class ShooterSubsystem extends SubsystemBase implements Counter {
         hoodFeedback.setTolerance(0.2);
         flywheelFeedback.setTolerance(0.2, 0.3); // TODO possibly update | if shooting never finishes, this is probably why
 
-        shooting = false;
+        previousVelocity = 0.0;
     }
     
     // FLYWHEEL
@@ -114,11 +114,9 @@ public class ShooterSubsystem extends SubsystemBase implements Counter {
     }
 
     // ball count
-
     @Override
     public void increment() {
         count.increment();
-        
     }
 
     @Override
@@ -142,17 +140,12 @@ public class ShooterSubsystem extends SubsystemBase implements Counter {
         // updating controllers for flywheel
         double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
         double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
-        double voltage = flywheelFB + flywheelFF;
-        rmotor.setVoltage(voltage);
+        rmotor.setVoltage(flywheelFB + flywheelFF);
 
         // updating ball count
-        if (flywheelFeedback.getSetpoint() > 0) {
-            if (!shooting && voltage > ShooterConstants.VOLTAGE_THRESHOLD);
-                decrement();
-            // else 
-            shooting = true;
-        } else {
-            shooting = false;
+        if (flywheelFeedback.getSetpoint() > 0 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VOLTAGE_THRESHOLD) {
+            decrement();
         }
+        previousVelocity = flywheelEncoder.getVelocity();
     }
 }
