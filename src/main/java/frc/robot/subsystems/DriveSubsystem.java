@@ -220,6 +220,7 @@ public class DriveSubsystem extends SubsystemBase {
         return allSparks;
     }
 
+    // thanks stuy
     public boolean isLeftStalling() {
         boolean current = getLeftCurrentAmps() > Constants.CURRENT_THRESHOLD;
         boolean output = Math.abs(getLeftAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
