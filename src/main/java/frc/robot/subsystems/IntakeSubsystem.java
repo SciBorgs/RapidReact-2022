@@ -10,7 +10,7 @@ import frc.robot.util.Blockable;
 import frc.robot.util.Counter;
 
 @Blockable
-public class IntakeSubsystem extends SubsystemBase implements Counter {
+public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
     private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
     private CANSparkMax suckSpark; // motor used for intaking balls
@@ -62,24 +62,6 @@ public class IntakeSubsystem extends SubsystemBase implements Counter {
 
     public double getIntakeSpeed() {
         return this.suckSpark.get();
-    }
-
-    // counter
-    @Override
-    public void increment() {
-        count.increment();
-        
-    }
-
-    @Override
-    public void decrement() {
-        count.decrement();
-        
-    }
-
-    @Override
-    public int get() {
-        return count.get();
     }
 
     @Override
