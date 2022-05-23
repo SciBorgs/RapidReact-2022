@@ -48,8 +48,7 @@ public final class Constants {
         public static final double MAX_JERK = 0.15;
         // ratios
         public static final double GEAR_RATIO = 1 / 13.7;
-        public static final double ROBOT_WIDTH = 0.7398; // (meters) 
-        public static final double DISTANCE_PER_PULSE = 1; // TODO update
+        public static final double ROBOT_WIDTH = 0.7398; // (meters)
         public static final double WHEEL_RADIUS = 0.0766; // (meters)
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_RADIUS * 2 * Math.PI;
         
@@ -78,7 +77,7 @@ public final class Constants {
             return 0;
         }
         
-        public static final int DELTA_VOLTAGE_THRESHOLD = 20;
+        public static final int DELTA_VELOCITY_THRESHOLD = 20;
         // ratios
         public static final double HOOD_GEAR_RATIO = 36.0 / 460.0;
         public static final double DISTANCE_PER_PULSE = 1.0 / 2048.0;

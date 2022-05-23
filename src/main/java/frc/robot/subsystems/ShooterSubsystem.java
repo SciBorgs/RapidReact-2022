@@ -19,7 +19,7 @@ import frc.robot.util.Blockable;
 import frc.robot.util.Counter;
 
 @Blockable
-public class ShooterSubsystem extends SubsystemBase implements Counter {
+public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
     private final CANSparkMax hood, lmotor, rmotor;
     private final RelativeEncoder flywheelEncoder;
@@ -112,22 +112,6 @@ public class ShooterSubsystem extends SubsystemBase implements Counter {
     public boolean atTargetRPM() {
         return flywheelFeedback.atSetpoint();
     }
-
-    // ball count
-    @Override
-    public void increment() {
-        count.increment();
-    }
-
-    @Override
-    public void decrement() {
-        count.decrement();
-    }
-
-    @Override
-    public int get() {
-        return count.get();
-    }
     
     @Override
     public void periodic() {
@@ -143,8 +127,8 @@ public class ShooterSubsystem extends SubsystemBase implements Counter {
         rmotor.setVoltage(flywheelFB + flywheelFF);
 
         // updating ball count
-        if (flywheelFeedback.getSetpoint() > 0 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VOLTAGE_THRESHOLD) {
-            decrement();
+        if (flywheelFeedback.getSetpoint() > 0 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VELOCITY_THRESHOLD) {
+            decrementBallCount();
         }
         previousVelocity = flywheelEncoder.getVelocity();
     }

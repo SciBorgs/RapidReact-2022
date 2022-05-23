@@ -1,31 +1,19 @@
 package frc.robot.util;
 
-public class BallCounter {
-    private int count;
 
-    public BallCounter(int count) {
-        this.count = count;
+public interface BallCounter {
+    // due to lack of internal color sensors,
+    // we assume that we start with 1 preloaded ball
+    AtomicInteger count = new AtomicInteger(1); // ball count starts at 1
+
+    default void incrementBallCount() {
+        count.incrementAndGet();
+    }
+    default void decrementBallCount() {
+        count.decrementAndGet();
     }
 
-    public BallCounter() {
-        this(0);
-    }
-
-    public void increment() {
-        count++;
-    }
-
-    public void decrement() {
-        if (count < 0) {
-            count--;
-        }
-    }
-
-    public void setCount(int val) {
-        count = val;
-    }
-
-    public int get() {
-        return count;
+    default int getBallCount() {
+        return count.get();
     }
 }
