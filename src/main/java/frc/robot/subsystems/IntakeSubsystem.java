@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.util.Blockable;
-import frc.robot.util.Counter;
+import frc.robot.util.BallCounter;
 
 @Blockable
 public class IntakeSubsystem extends SubsystemBase implements BallCounter {

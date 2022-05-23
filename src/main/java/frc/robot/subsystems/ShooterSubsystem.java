@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
 import frc.robot.util.Blockable;
-import frc.robot.util.Counter;
+import frc.robot.util.BallCounter;
 
 @Blockable
 public class ShooterSubsystem extends SubsystemBase implements BallCounter {
