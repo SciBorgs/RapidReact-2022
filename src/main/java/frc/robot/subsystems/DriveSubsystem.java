@@ -84,8 +84,10 @@ public class DriveSubsystem extends SubsystemBase {
         lEncoder = leftSparks[0].getEncoder();
         rEncoder = rightSparks[0].getEncoder();
         System.out.println(lEncoder.getCountsPerRevolution() + " | " + rEncoder.getCountsPerRevolution());
-        lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
-        rEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE);
+        lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
+        lEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
+        rEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
+        rEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
         
         resetEncoders();
 
