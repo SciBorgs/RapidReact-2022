@@ -128,7 +128,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
         // updating ball count
         if (flywheelFeedback.getSetpoint() > 0 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VELOCITY_THRESHOLD) {
-            decrementBallCount();
+            decrement();
         }
         previousVelocity = flywheelEncoder.getVelocity();
     }

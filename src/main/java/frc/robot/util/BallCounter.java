@@ -8,14 +8,14 @@ public interface BallCounter {
     // atomic integer is a hack to have an int that can be incremented and decremented in an interface
     AtomicInteger count = new AtomicInteger(1); // ball count starts at 1
 
-    default void incrementBallCount() {
+    default void increment() {
         count.incrementAndGet();
     }
-    default void decrementBallCount() {
+    default void decrement() {
         count.decrementAndGet();
     }
 
-    default int getBallCount() {
+    default int get() {
         return count.get();
     }
 }
