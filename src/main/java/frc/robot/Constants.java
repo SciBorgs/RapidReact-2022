@@ -51,6 +51,8 @@ public final class Constants {
         public static final double ROBOT_WIDTH = 0.7398; // (meters) 
         public static final double DISTANCE_PER_PULSE = 1; // TODO update
         public static final double WHEEL_RADIUS = 0.0766 // (meters)
+        public static final double WHEEL_CIRCUMFERENCE = WHEEL_RADIUS * 2 * Math.PI;
+        
         // PID (for left and motor groups)
         public static final double kP = 1;
         public static final double kI = 0;
