@@ -65,7 +65,8 @@ public class DriveSubsystem extends SubsystemBase {
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
             DriveConstants.kA);
 
-    private SlewRateLimiter filter = new SlewRateLimiter(DriveConstants.MAX_JERK);
+    private SlewRateLimiter filter1 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for speed in arcade and curvature, left track in tank
+    private SlewRateLimiter filter2 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for right track in tank
 
     // SIMULATION
     private DifferentialDrivetrainSim driveSim;
@@ -137,13 +138,13 @@ public class DriveSubsystem extends SubsystemBase {
         // Controller interface
         switch (mode) {
             case TANK:
-                drive.tankDrive(first, second);
+                drive.tankDrive(filter1.calculate(first), filter2.calculate(second));
                 break;
             case ARCADE:
-                drive.arcadeDrive(filter.calculate(first), second);
+                drive.arcadeDrive(filter1.calculate(first), second);
                 break;
             case CURVATURE:
-                drive.curvatureDrive(filter.calculate(first), second, true);
+                drive.curvatureDrive(filter1.calculate(first), second, true);
                 break;
         }
     }
