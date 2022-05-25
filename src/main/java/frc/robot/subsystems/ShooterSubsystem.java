@@ -50,6 +50,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         mainTab.addNumber("Target Flywheel Speed", this::getTargetFlywheelSpeed);
 
         hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
+        hood.setInverted(true);
         rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
         lmotor = new CANSparkMax(PortMap.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless);
         lmotor.follow(rmotor, true);
