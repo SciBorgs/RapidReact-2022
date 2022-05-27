@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.ShootSequence;
 import frc.robot.commands.auto.DriveRamsete;
@@ -82,12 +84,12 @@ public class RobotContainer {
 
     // drives robot in tank drive according to the joysticks
     if(Robot.isReal()) {
-      // driveSubsystem.setDefaultCommand(new RunCommand(
-      //   () -> driveSubsystem.driveRobot(
-      //       DriveMode.TANK,
-      //       oi.leftStick.getY(),
-      //       oi.rightStick.getY()),
-      //   driveSubsystem));
+      driveSubsystem.setDefaultCommand(new RunCommand(
+        () -> driveSubsystem.driveRobot(
+            DriveSubsystem.DriveMode.TANK,
+            oi.leftStick.getY(),
+            oi.rightStick.getY()),
+        driveSubsystem));
     }
   }
 
@@ -142,7 +144,14 @@ public class RobotContainer {
     // return new TurnToAngle(180, driveSubsystem);
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    return new DriveRamsete(driveSubsystem, autoChooser.getSelected(), true);
+    // return new DriveRamsete(driveSubsystem, autoChooser.getSelected(), true);
     // return new FiveBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
+
+    // testing shooter
+    return new SequentialCommandGroup(
+      new RunCommand(() -> shooterSubsystem.setTargetHoodAngle(15), shooterSubsystem),
+      new RunCommand(() -> turretSubsystem.setTargetAngle(15), turretSubsystem),
+      new RunCommand(() -> shooterSubsystem.setTargetFlywheelSpeed(15), shooterSubsystem)
+    );
   }
 }
