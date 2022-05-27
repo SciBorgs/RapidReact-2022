@@ -130,6 +130,11 @@ public final class Constants {
         public static final double MAX_SPEED = 0.8;
     }
 
+    public static final class IntakeConstants { 
+        public static final double INTAKE_SPEED = 0.5;
+        public static final double WAIT_TIME = 1000; // in milliseconds, used for the ball counter 
+    }
+
     public static final class VisionConstants {
         public static final double HEIGHT_DIFF = 2.08534; // (meters)
         public static final double MOUNT_ANGLE = 30; // (deg)

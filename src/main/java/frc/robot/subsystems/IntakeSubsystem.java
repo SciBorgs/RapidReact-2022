@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.util.Blockable;
 import frc.robot.util.BallCounter;
+import frc.robot.Constants;
 
 @Blockable
 public class IntakeSubsystem extends SubsystemBase implements BallCounter {
@@ -18,9 +19,8 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
     private DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
     private boolean lastLimit;
     private long lastFallingEdge;
-    private final int WAIT_TIME = 1000; //in miliseconds
-    
-    private final double INTAKE_SPEED = 0.5;
+
+    private double intakeSpeed;
 
     public IntakeSubsystem() {
         this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL); 
@@ -29,6 +29,8 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
         this.limitSwitch = new DigitalInput(PortMap.LIMIT_SWITCH_INTAKE);
 
         this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+
+        this.intakeSpeed = 0;
     }
 
     // TODO remove, move updating to periodic
@@ -38,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
             lastFallingEdge = System.currentTimeMillis();
 
         if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
-            if(System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) //so we know ball did not shake around in intake
+            if(System.currentTimeMillis() - lastFallingEdge > Constants.IntakeConstants.WAIT_TIME) //so we know ball did not shake around in intake
             // amountOfBalls += 1;
 
         lastLimit = this.getLimitSwitchState();
@@ -53,11 +55,11 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
     }
 
     public void startSuck() {
-        this.suckSpark.set(this.INTAKE_SPEED);
+        this.intakeSpeed = Constants.IntakeConstants.INTAKE_SPEED;
     }
 
     public void stopSuck() {
-        this.suckSpark.set(0);
+        this.intakeSpeed = 0;
     }
 
     public double getIntakeSpeed() {
@@ -66,8 +68,10 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
     @Override
     public void periodic() {
-        // TODO Auto-generated method stub
         super.periodic();
+        this.suckSpark.set(this.intakeSpeed);
+        updateBallCounter();
+
     }
 
     
