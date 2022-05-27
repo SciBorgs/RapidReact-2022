@@ -85,19 +85,19 @@ public final class Constants {
         public static final double OFFSET = 32.5;
         public static final double MAX = 22;
         // Hood FF
-        public static final double hS = 0;
-        public static final double hV = 0;
-        public static final double hA = 0;
+        public static final double hS = 0.019979;
+        public static final double hV = 0.096612;
+        public static final double hA = 0.02141;
         // Hood PID
-        public static final double hP = 6.0/360;
+        public static final double hP = 0.10865;
         public static final double hI = 0;
         public static final double hD = 0;
         // Flywheel FF
-        public static final double fS = 0;
-        public static final double fV = 0;
-        public static final double fA = 0;
+        public static final double fS = 0.13419;
+        public static final double fV = 0.10694;
+        public static final double fA = 0.016833;
         // Flywheel PID
-        public static final double fP = 0;
+        public static final double fP = 0.012401;
         public static final double fI = 0;
         public static final double fD = 0;
     

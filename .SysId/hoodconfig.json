@@ -10,8 +10,8 @@
   "motor controllers": [
     "SPARK MAX (Brushless)"
   ],
-  "number of samples per average": 1,
-  "primary encoder inverted": false,
+  "number of samples per average": 5,
+  "primary encoder inverted": true,
   "primary encoder ports": [
     0,
     1
