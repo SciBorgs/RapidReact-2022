@@ -45,7 +45,7 @@ public final class Constants {
     //public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
     
     public static final class DriveConstants {
-        public static final double MAX_JERK = 0.15;
+        public static final double MAX_JERK = 0.99;
         // ratios
         public static final double GEAR_RATIO = 1 / 13.7;
         public static final double ROBOT_WIDTH = 0.7398; // (meters)
@@ -85,11 +85,11 @@ public final class Constants {
         public static final double OFFSET = 32.5;
         public static final double MAX = 22;
         // Hood FF
-        public static final double hS = 0.019979;
-        public static final double hV = 0.096612;
+        public static final double hS = 0.029979;
+        public static final double hV = 0.106612;
         public static final double hA = 0.02141;
         // Hood PID
-        public static final double hP = 0.10865;
+        public static final double hP = 0.40865;
         public static final double hI = 0;
         public static final double hD = 0;
         // Flywheel FF

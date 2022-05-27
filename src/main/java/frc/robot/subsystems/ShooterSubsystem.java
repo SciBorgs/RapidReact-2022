@@ -64,11 +64,12 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         flywheelEncoder = rmotor.getEncoder();
         hoodEncoder = new Encoder(PortMap.HOOD_ENCODER_A, PortMap.HOOD_ENCODER_B);
         hoodEncoder.setDistancePerPulse(ShooterConstants.DISTANCE_PER_PULSE);
-        // hoodEncoder.setDistancePerRotation(ShooterConstants.HOOD_GEAR_RATIO);
 
         hoodFeedback.setTolerance(0.2);
         flywheelFeedback.setTolerance(0.2, 0.3); // TODO possibly update | if shooting never finishes, this is probably why
 
+        targetSpeed = 0.0;
+        targetAngle = 0.0;
         previousVelocity = 0.0;
     }
     
