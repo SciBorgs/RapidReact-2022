@@ -5,10 +5,10 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.PortMap;
-import frc.robot.util.Blockable;
 import frc.robot.util.BallCounter;
-import frc.robot.Constants;
+import frc.robot.util.Blockable;
 
 @Blockable
 public class IntakeSubsystem extends SubsystemBase implements BallCounter {
@@ -40,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
             lastFallingEdge = System.currentTimeMillis();
 
         if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
-            if(System.currentTimeMillis() - lastFallingEdge > Constants.IntakeConstants.WAIT_TIME) //so we know ball did not shake around in intake
+            if(System.currentTimeMillis() - lastFallingEdge > IntakeConstants.WAIT_TIME) //so we know ball did not shake around in intake
             // amountOfBalls += 1;
 
         lastLimit = this.getLimitSwitchState();
@@ -55,7 +55,7 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
     }
 
     public void startSuck() {
-        this.intakeSpeed = Constants.IntakeConstants.INTAKE_SPEED;
+        this.intakeSpeed = IntakeConstants.INTAKE_SPEED;
     }
 
     public void stopSuck() {
@@ -68,11 +68,7 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
     @Override
     public void periodic() {
-        super.periodic();
-        this.suckSpark.set(this.intakeSpeed);
+        suckSpark.set(intakeSpeed);
         updateBallCounter();
-
     }
-
-    
 }
