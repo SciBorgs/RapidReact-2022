@@ -48,8 +48,8 @@ public class RobotContainer {
   public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
   // public final VisionSubsystem    limelightSubsystem    = new VisionSubsystem();
   // public final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
-  public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
-  public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
+  // public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
+  // public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
   // public final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
   // public final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
   // public final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
@@ -144,14 +144,7 @@ public class RobotContainer {
     // return new TurnToAngle(180, driveSubsystem);
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    // return new DriveRamsete(driveSubsystem, autoChooser.getSelected(), true);
+    return new DriveRamsete(driveSubsystem, autoChooser.getSelected(), true);
     // return new FiveBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
-
-    // testing shooter
-    return new SequentialCommandGroup(
-      new RunCommand(() -> shooterSubsystem.setTargetHoodAngle(15), shooterSubsystem),
-      new RunCommand(() -> turretSubsystem.setTargetAngle(12), turretSubsystem),
-      new RunCommand(() -> shooterSubsystem.setTargetFlywheelSpeed(15), shooterSubsystem)
-    );
   }
 }
