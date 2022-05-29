@@ -7,47 +7,54 @@ public class PortMap {
     public static final int JOYSTICK_RIGHT = 1;
     public static final int XBOX_CONTROLLER = 2;
 
-    // *******************SPARKS******************//
-    public static final int LEFT_FRONT_SPARK = 21; 
-    public static final int LEFT_MIDDLE_SPARK = 22;
-    public static final int LEFT_BACK_SPARK = 7;
-    public static final int RIGHT_FRONT_SPARK = 14;
-    public static final int RIGHT_MIDDLE_SPARK = 26;
-    public static final int RIGHT_BACK_SPARK = 10;
+    //*******************2019********************//
+    //*******************SPARKS******************//
 
-    public static final int HOOD_SPARK = 4;
-    public static final int FLYWHEEL_LEFT_SPARK = 30;
-    public static final int FLYWHEEL_RIGHT_SPARK = 5;
-    public static final int TURRET_SPARK = 11;
+    public static final int LEFT_FRONT_SPARK = 6; 
+    public static final int LEFT_MIDDLE_SPARK = 5; 
+    public static final int LEFT_BACK_SPARK = 4;
 
-    // *******************SWITCHES******************//
-    public static final int INTAKE_SWITCH = 6;
-    public static final int LIMIT_SWITCH_INTAKE = 5;
+    public static final int RIGHT_FRONT_SPARK = 3;
+    public static final int RIGHT_MIDDLE_SPARK = 2;
+    public static final int RIGHT_BACK_SPARK = 1;
 
-    // *******************HOPPER******************//
+    public static final int LIFT_SPARK = 7;
 
-    public static final int HOPPER_SUCK_SPARK = 16;
-    public static final int HOPPER_ELEVATOR_SPARK = 24;
+    //*******************TALONS******************//
 
-    // *******************MISC******************//
-    public static final int PIGEON_ID = 42;
+    public static final int PIGEON_TALON = 9;
 
-    // ******************INTAKE********************//
-    // spark 23 = intake flip
-    public static final int INTAKE_ARM_FORWARD_CHANNEL = 0;
-    public static final int INTAKE_ARM_REVERSE_CHANNEL = 1;
-    public static final int INTAKE_SUCK_SPARK = 23;
+    public static final int ARM_TILT_TALON = 10; // CHANGE TO 10 FOR COMP, 12 FOR PRACTICE
+    public static final int INTAKE_TALON = 11; // CHANGE TO 11 FOR COMP, 10 FOR PRACTICE
 
-    // *******************CLIMsBER******************//
-    public static final int CLIMBER_TELESCOPE = 19;
-    public static final int CLIMBER_ARMS = 20;
+    public static final int LEFT_ZLIFT = 9;
+    public static final int RIGHT_ZLIFT = 8;
 
-    // ******************ENCODERS******************//
-    public static final int TURRET_ENCODER_A = 3;
-    public static final int TURRET_ENCODER_B = 4;
-    public static final int HOOD_ENCODER_A = 0;
-    public static final int HOOD_ENCODER_B = 1;
+    //***************LIMIT*SWITCHES**************//
 
+    public static final int CASCADE_AT_BOTTOM_LIMIT_SWITCH = 1;
+    public static final int ARM_AT_TOP_LIMIT_SWITCH = 3;
+
+    //***************DOUBLE*SOLENOIDS*************//
+
+    public static final int[] GEAR_SHIFTER_SOLENOID = {0, 1};
+    public static final int[] SECURE_HATCH_SOLENOID = {0, 1};
+    public static final int[] ARM_SOLENOID = {4, 5};
+    public static final int[] POP_HATCH_SOLENOID = {6, 7};
+
+    public static final int GEAR_SHIFTER_SOLENOID_PDP = 0;
+    public static final int SECURE_HATCH_SOLENOID_PDP = 1;
+    public static final int ARM_SOLENOID_PDP = 0;
+    public static final int POP_HATCH_SOLENOID_PDP = 0;
+
+    // public static final int[] ZLIFT_SOLENOID = {2,3};
+
+    //*******************MISC********************//
+
+    public static final int PRESSURE_SENSOR = 0;
+    public static final int TARGETING_LIGHT_DIGITAL_OUTPUT = 5;
+
+    //*******************INPUT********************//
     public static final class Joystick {
         public static final int JOYSTICK_TRIGGER = 1;
         public static final int JOYSTICK_CENTER_BUTTON = 2;
@@ -86,4 +93,43 @@ public class PortMap {
         public static final int XBOX_RIGHT_JOY_X = 4;
         public static final int XBOX_RIGHT_JOY_Y = 5;
     }
+
+
+    // *******************2022****************** //
+    // kept so subsystems don't error out
+
+    //*******************SPARKS******************//
+
+    public static final int HOOD_SPARK = 4;
+    public static final int FLYWHEEL_LEFT_SPARK = 30;
+    public static final int FLYWHEEL_RIGHT_SPARK = 5;
+    public static final int TURRET_SPARK = 11;
+
+    // *******************SWITCHES******************//
+    public static final int INTAKE_SWITCH = 6;
+    public static final int LIMIT_SWITCH_INTAKE = 5;
+
+    // *******************HOPPER******************//
+
+    public static final int HOPPER_SUCK_SPARK = 16;
+    public static final int HOPPER_ELEVATOR_SPARK = 24;
+
+    // *******************MISC******************//
+    public static final int PIGEON_ID = 42;
+
+    // ******************INTAKE********************//
+    // spark 23 = intake flip
+    public static final int INTAKE_ARM_FORWARD_CHANNEL = 0;
+    public static final int INTAKE_ARM_REVERSE_CHANNEL = 1;
+    public static final int INTAKE_SUCK_SPARK = 23;
+
+    // *******************CLIMsBER******************//
+    public static final int CLIMBER_TELESCOPE = 19;
+    public static final int CLIMBER_ARMS = 20;
+
+    // ******************ENCODERS******************//
+    public static final int TURRET_ENCODER_A = 3;
+    public static final int TURRET_ENCODER_B = 4;
+    public static final int HOOD_ENCODER_A = 0;
+    public static final int HOOD_ENCODER_B = 1;
 }

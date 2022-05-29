@@ -8,28 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.RumbleCommand;
-import frc.robot.commands.ShootSequence;
 import frc.robot.commands.auto.DriveRamsete;
-import frc.robot.commands.auto.FiveBallAuto;
-import frc.robot.commands.hopper.StartHopperCommand;
-import frc.robot.commands.intake.IntakeBallsCommandGroup;
-import frc.robot.commands.intake.ToggleIntakeArm;
-import frc.robot.commands.pneumatics.ToggleCompressorCommand;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.MonitorSubsystem;
-import frc.robot.subsystems.PhotonVisionSubsystem;
-import frc.robot.subsystems.PneumaticsSubsystem;
-import frc.robot.subsystems.RumbleSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Util;
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -45,32 +26,8 @@ public class RobotContainer {
   private final OI oi = new OI(false);
 
   // SUBSYSTEMS
-  public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  // public final VisionSubsystem    limelightSubsystem    = new VisionSubsystem();
-  // public final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
-  // public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
-  // public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
-  // public final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
-  // public final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
-  // public final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
-  // public final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
-  // public final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
-  // public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
-
-  // private final Set<Subsystem> subsystems = Set.of(
-  //     driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
-  //     shooterSubsystem, intakeSubsystem, hopperSubsystem, pneumaticsSubsystem,
-  //     climberSubsystem, monitorSubsystem, rumbleSubsystem);
-
-  // COMMANDS
-  // private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
-  // private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intakeSubsystem, hopperSubsystem);
-  // private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intakeSubsystem);
-  // private final ShootSequence             shootSequence           = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem);
-  // public  final RumbleCommand             rumbleCommand           = new RumbleCommand(driveSubsystem, rumbleSubsystem);
-
-  // blocker
-  // private final Command block = Util.blockSubsystems(subsystems); 
+  public final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  // public final IntakeSubsystem ntakeSubsystem = new IntakeSubsystem();
 
   // AUTO CHOOSER
   private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
@@ -99,36 +56,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
-    // oi.toggleCompressor.whenPressed(toggleCompressorCommand);
-    
-    // // Intake
-    // // this.intakeBalls.whenHeld(new IntakeBallsCommand());
-    // oi.intakeBalls.whenHeld(intakeBallsCommand);
-    // oi.toggleIntake.whenPressed(toggleArmCommand);
-    // // this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
-    // // this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
-
-    // // Intake-Hopper-Compressor
-    // oi.startHopper.whenHeld(new StartHopperCommand(hopperSubsystem));
-
-    // Climber
-    // oi.extendTelescope.whenHeld(
-    //   new RunCommand(() -> climberSubsystem.runTelescope(false), climberSubsystem)
-    // );
-    // oi.retractTelescope.whenHeld(
-    //   new RunCommand(() -> climberSubsystem.runTelescope(true), climberSubsystem)
-    // );
-    // oi.extendArm.whenHeld(
-    //   new RunCommand(() -> climberSubsystem.runArms(false), climberSubsystem)
-    // );
-    // oi.retractArm.whenHeld(
-    //   new RunCommand(() -> climberSubsystem.runArms(true), climberSubsystem)
-    // );
-
-    // Shooter
-    // oi.shootButton.whenPressed(shootSequence);
-  }
+  private void configureButtonBindings() { }
 
   public SendableChooser<String> getAutoChooser() {
     return this.autoChooser;

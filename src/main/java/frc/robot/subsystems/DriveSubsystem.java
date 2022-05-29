@@ -99,7 +99,7 @@ public class DriveSubsystem extends SubsystemBase {
         rightGroup.setInverted(true);
         drive.setDeadband(0.05);
 
-        pigeon = new SciPigeon(PortMap.PIGEON_ID);
+        pigeon = new SciPigeon(PortMap.PIGEON_TALON);
         pigeonSim = pigeon.getSimCollection();
 
         // Will change once we get more information on our drivetrain
