@@ -48,8 +48,8 @@ public final class Constants {
         public static final double MAX_JERK = 0.99;
         // ratios
         public static final double GEAR_RATIO = 1 / 13.7;
-        public static final double ROBOT_WIDTH = 0.7398; // (meters)
-        public static final double WHEEL_RADIUS = 0.0766; // (meters)
+        public static final double ROBOT_WIDTH = 0.550672; // (meters)
+        public static final double WHEEL_RADIUS = 0.076073; // (meters)
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_RADIUS * 2 * Math.PI;
         
         // PID (for left and motor groups)
