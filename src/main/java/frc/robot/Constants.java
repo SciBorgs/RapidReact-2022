@@ -47,7 +47,7 @@ public final class Constants {
     public static final class DriveConstants {
         public static final double MAX_JERK = 0.99;
         // ratios
-        public static final double GEAR_RATIO = 1 / 13.7;
+        public static final double GEAR_RATIO = 50.0 / 12.0; // 34:50 for high gear stage
         public static final double ROBOT_WIDTH = 0.550672; // (meters)
         public static final double WHEEL_RADIUS = 0.076073; // (meters)
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_RADIUS * 2 * Math.PI;
