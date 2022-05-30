@@ -76,22 +76,26 @@ public final class Constants {
         public static final double getRPM(double distance) {
             return 0;
         }
-        
+
         public static final int DELTA_VELOCITY_THRESHOLD = 20;
         // ratios
         public static final double HOOD_GEAR_RATIO = 36.0 / 460.0;
         public static final double DISTANCE_PER_PULSE = 1.0 / 2048.0;
-        // Through Bore Encoder offset
-        public static final double OFFSET = 32.5;
-        public static final double MAX = 22;
+
+        public static final double MAX_ANGLE = 22;
+        // ISSUE hood is difficult to control because of varying external friction
+        // relative to its current position
         // Hood FF
-        public static final double hS = 0.029979;
-        public static final double hV = 0.106612;
+        public static final double hS = 0.019979;
+        public static final double hV = 0.096612;
         public static final double hA = 0.02141;
         // Hood PID
-        public static final double hP = 0.40865;
+        // public static final double hP = 0.14424;
+        // taken from 2020 constants i guess
+        // this seems like it could make the hood move violently
+        public static final double hP = 0.65;
         public static final double hI = 0;
-        public static final double hD = 0;
+        public static final double hD = 0.14486;
         // Flywheel FF
         public static final double fS = 0.13419;
         public static final double fV = 0.10694;
@@ -100,7 +104,6 @@ public final class Constants {
         public static final double fP = 0.012401;
         public static final double fI = 0;
         public static final double fD = 0;
-    
     }
 
     public static final class TurretConstants {
@@ -116,9 +119,9 @@ public final class Constants {
         public static final double kV = 0.038686;
         public static final double kA = 0.012488;
         // PID
-        public static final double kP = 0.055773;
+        public static final double kP = 0.1461;
         public static final double kI = 0;
-        public static final double kD = 0;
+        public static final double kD = 0.0728;
         // Trapezoidal motion profile constraints
         public static final double maxA = 20; // acceleration
         public static final double maxV = 40; // velocity
