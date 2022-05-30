@@ -92,7 +92,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
     // HOOD ANGLE
     public void setTargetHoodAngle(double angle) {
-        targetAngle = MathUtil.clamp(angle, 0, ShooterConstants.MAX);
+        targetAngle = MathUtil.clamp(angle, 0, ShooterConstants.MAX_ANGLE);
     }
 
     public double getCurrentHoodAngle() {
