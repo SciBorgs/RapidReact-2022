@@ -18,8 +18,14 @@ public class FourBallAuto extends SequentialCommandGroup {
             ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
 
         addCommands(
-                new ToggleIntakeArm(intake),
-                new IntakeForever(intake));
+                new InstantCommand(
+                    () -> intake.toggleArm(),
+                    intake
+                ),
+                new InstantCommand(
+                    () -> intake.startSuck(),
+                    intake
+                ));
 
         addCommands(
                 new DriveUntilIntake(drive, intake),
@@ -35,6 +41,10 @@ public class FourBallAuto extends SequentialCommandGroup {
                 new TurnToAngle(180, drive),
                 new HighShot(shooter, turret, hopper, limelight)
                         .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT),
-                new IntakeStop(intake));
+                new InstantCommand(
+                    () -> intake.stopSuck(),
+                    intake
+                )
+        );
     }
 }

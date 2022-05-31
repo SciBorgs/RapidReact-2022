@@ -19,8 +19,14 @@ public class FiveBallAuto extends SequentialCommandGroup {
 
         // init
         addCommands(
-                new ToggleIntakeArm(intake),
-                new IntakeForever(intake));
+                new InstantCommand(
+                    () -> intake.toggleArm(),
+                    intake
+                ),
+                new InstantCommand(
+                    () -> intake.startSuck(),
+                    intake
+                ));
 
         addCommands(
                 new HighShot(shooter, turret, hopper, limelight).withTimeout(ShooterConstants.SINGLE_BALL_TIMEOUT), // TODO we can't shoot on tarmac
@@ -39,7 +45,11 @@ public class FiveBallAuto extends SequentialCommandGroup {
                 new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage2", false),
                 new TurnToAngle(0, drive),
                 new HighShot(shooter, turret, hopper, limelight).withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT),
-                new IntakeStop(intake));
+                new InstantCommand(
+                    () -> intake.stopSuck(),
+                    intake
+                )
+        );
 
     }
 }

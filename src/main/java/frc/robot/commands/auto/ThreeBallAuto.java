@@ -17,9 +17,14 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     public ThreeBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem limelight, ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
         
         addCommands(
-            new ToggleIntakeArm(intake),
-            new IntakeForever(intake)
-        );
+                new InstantCommand(
+                    () -> intake.toggleArm(),
+                    intake
+                ),
+                new InstantCommand(
+                    () -> intake.startSuck(),
+                    intake
+                ));
 
         addCommands(
             new HighShot(shooter, turret, hopper, limelight).withTimeout(ShooterConstants.SINGLE_BALL_TIMEOUT), // TODO we can't shoot on tarmac
@@ -33,7 +38,10 @@ public class ThreeBallAuto extends SequentialCommandGroup {
             new DriveRamsete(drive, "Pos" + initialPos + "_3Ball", true),
             new TurnToAngle(0, drive), // TODO: need to put accurate angle here
             new HighShot(shooter, turret, hopper, limelight),
-            new IntakeStop(intake)
+            new InstantCommand(
+                    () -> intake.stopSuck(),
+                    intake
+                )
         );
     }
 }
