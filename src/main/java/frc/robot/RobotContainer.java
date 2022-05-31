@@ -19,7 +19,6 @@ import frc.robot.commands.auto.DriveRamsete;
 import frc.robot.commands.auto.FiveBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
 import frc.robot.commands.intake.IntakeBallsCommandGroup;
-import frc.robot.commands.intake.ToggleIntakeArm;
 import frc.robot.commands.pneumatics.ToggleCompressorCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
