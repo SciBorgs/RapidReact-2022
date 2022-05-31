@@ -1,7 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.ShootSequence;
+import frc.robot.commands.HighShot;
 import frc.robot.commands.intake.IntakeForever;
 import frc.robot.commands.intake.IntakeStop;
 import frc.robot.commands.intake.ToggleIntakeArm;
@@ -21,7 +21,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         );
 
         addCommands(
-            new ShootSequence(shooter, turret, hopper, limelight),
+            new HighShot(shooter, turret, hopper, limelight), // TODO @warren
             new TurnToAngle(180, drive),
             new DriveUntilIntake(drive, intake)
         );
@@ -31,7 +31,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveRamsete(drive, "Pos" + initialPos + "_3Ball", true),
             new TurnToAngle(0, drive), // TODO: need to put accurate angle here
-            new ShootSequence(shooter, turret, hopper, limelight),
+            new HighShot(shooter, turret, hopper, limelight),
             new IntakeStop(intake)
         );
     }

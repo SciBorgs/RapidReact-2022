@@ -1,7 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.ShootSequence;
+import frc.robot.commands.HighShot;
 import frc.robot.commands.intake.IntakeForever;
 import frc.robot.commands.intake.IntakeStop;
 import frc.robot.commands.intake.ToggleIntakeArm;
@@ -23,7 +23,7 @@ public class FourBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveUntilIntake(drive, intake),
             new TurnToAngle(180, drive),
-            new ShootSequence(shooter, turret, hopper, limelight)
+            new HighShot(shooter, turret, hopper, limelight)
         );
 
         if(initialPos == "1") addCommands(new TurnToAngle(0, drive));
@@ -31,7 +31,7 @@ public class FourBallAuto extends SequentialCommandGroup {
         addCommands(
             new DriveRamsete(drive, "Pos" + initialPos + "_4Ball", true),
             new TurnToAngle(180, drive),
-            new ShootSequence(shooter, turret, hopper, limelight),
+            new HighShot(shooter, turret, hopper, limelight),
             new IntakeStop(intake)
         );
 

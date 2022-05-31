@@ -66,8 +66,16 @@ public final class Constants {
         public static final int maxVel = 8;
         public static final int maxAccel = 5;
     }
-
+    
     public static final class ShooterConstants {
+        // TODO fill
+        // n | meters | rpm | deg | notes
+        // 1 |   ?    |  ?  |  ?  | closest shot
+        // 2 |   ?    |  ?  |  ?  | tarmac shot
+        // 3 |   ?    |  ?  |  ?  | 
+        // 4 |   ?    |  ?  |  ?  | 
+        // 5 |   ?    |  ?  |  ?  | hanger shot
+
         // quartic regressions
         public static final double getHoodAngle(double distance) {
             return 0;
@@ -76,12 +84,21 @@ public final class Constants {
         public static final double getRPM(double distance) {
             return 0;
         }
-
+        // default shot (tarmac line) TODO set
+        public static final double TARMAC_RPM = 0;
+        public static final double TARMAC_ANGLE = 0;
+        // fender shot (low hub) TODO set
+        public static final double LOW_RPM = 0;
+        public static final double LOW_ANGLE = 0;
+        // ball ejection detection
         public static final int DELTA_VELOCITY_THRESHOLD = 20;
+        // timeouts
+        public static final int SINGLE_BALL_TIMEOUT = 3;
+        public static final int DOUBLE_BALL_TIMEOUT = 6;
         // ratios
         public static final double HOOD_GEAR_RATIO = 36.0 / 460.0;
         public static final double DISTANCE_PER_PULSE = 1.0 / 2048.0;
-
+        // hood bounds
         public static final double MAX_ANGLE = 22;
         // ISSUE hood is difficult to control because of varying external friction
         // relative to its current position
@@ -90,8 +107,9 @@ public final class Constants {
         public static final double hV = 0.096612;
         public static final double hA = 0.02141;
         // Hood PID
+        // old hP acquired from sysid
         // public static final double hP = 0.14424;
-        // taken from 2020 constants i guess
+        // new hP is from 2020 constants i guess...
         // this seems like it could make the hood move violently
         public static final double hP = 0.65;
         public static final double hI = 0;

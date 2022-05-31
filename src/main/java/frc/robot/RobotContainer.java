@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.RumbleCommand;
-import frc.robot.commands.ShootSequence;
+import frc.robot.commands.HighShot;
 import frc.robot.commands.auto.DriveRamsete;
 import frc.robot.commands.auto.FiveBallAuto;
 import frc.robot.commands.hopper.StartHopperCommand;
@@ -149,9 +149,9 @@ public class RobotContainer {
 
     // testing shooter
     return new SequentialCommandGroup(
-      new RunCommand(() -> shooterSubsystem.setTargetHoodAngle(15), shooterSubsystem),
-      new RunCommand(() -> turretSubsystem.setTargetAngle(12), turretSubsystem),
-      new RunCommand(() -> shooterSubsystem.setTargetFlywheelSpeed(15), shooterSubsystem)
+      new InstantCommand(() -> shooterSubsystem.setTargetHoodAngle(12), shooterSubsystem),
+      new InstantCommand(() -> turretSubsystem.setTargetAngle(15), turretSubsystem),
+      new InstantCommand(() -> shooterSubsystem.setTargetFlywheelSpeed(15), shooterSubsystem)
     );
   }
 }
