@@ -23,7 +23,6 @@ public class HighShot extends CommandBase {
         this.hopper = hopper;
         this.vision = vision;
         addRequirements(shooter, turret, hopper, vision);
-        vision.reset();
     }
 
     @Override

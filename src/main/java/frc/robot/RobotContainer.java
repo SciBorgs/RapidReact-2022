@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.RumbleCommand;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.FenderShot;
 import frc.robot.commands.HighShot;
 import frc.robot.commands.auto.DriveRamsete;
 import frc.robot.commands.auto.FiveBallAuto;
@@ -46,12 +48,12 @@ public class RobotContainer {
 
   // SUBSYSTEMS
   public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  // public final VisionSubsystem    limelightSubsystem    = new VisionSubsystem();
+  public final VisionSubsystem    limelightSubsystem    = new VisionSubsystem();
   // public final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
   public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
   public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
   // public final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
-  // public final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
+  public final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
   // public final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
   // public final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
   // public final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
@@ -66,7 +68,6 @@ public class RobotContainer {
   // private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
   // private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intakeSubsystem, hopperSubsystem);
   // private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intakeSubsystem);
-  // private final ShootSequence             shootSequence           = new ShootSequence(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem);
   // public  final RumbleCommand             rumbleCommand           = new RumbleCommand(driveSubsystem, rumbleSubsystem);
 
   // blocker
@@ -127,7 +128,8 @@ public class RobotContainer {
     // );
 
     // Shooter
-    // oi.shootButton.whenPressed(shootSequence);
+    oi.shootButton.whenPressed(new HighShot(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem)
+        .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
   }
 
   public SendableChooser<String> getAutoChooser() {
