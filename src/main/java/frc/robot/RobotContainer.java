@@ -148,9 +148,10 @@ public class RobotContainer {
 
     // testing shooter
     return new SequentialCommandGroup(
+      new InstantCommand(() -> hopper.startElevator(0.8), hopper),
       new InstantCommand(() -> shooter.setTargetHoodAngle(12), shooter),
       new InstantCommand(() -> turret.setTargetAngle(15), turret),
-      new InstantCommand(() -> shooter.setTargetFlywheelSpeed(15), shooter)
+      new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
     );
   }
 
