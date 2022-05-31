@@ -32,10 +32,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    SmartDashboard.putData("Field", m_robotContainer.driveSubsystem.field2d);
+    SmartDashboard.putData("Field", m_robotContainer.drive.field2d);
     SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
-    SmartDashboard.putData("Reset Drive", new ResetDriveCommand(m_robotContainer.driveSubsystem));
-    TrajectoryRegister.setField2d(m_robotContainer.driveSubsystem.field2d);
+    SmartDashboard.putData("Reset Drive", new ResetDriveCommand(m_robotContainer.drive));
+    TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     // CommandScheduler.getInstance().schedule(m_robotContainer.rumbleCommand);
     System.out.println(Util.getPathPlannerPathNames());
   }
@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
-    m_robotContainer.driveSubsystem.reset();
+    m_robotContainer.drive.reset();
     CommandScheduler.getInstance().cancelAll();
   }
 
