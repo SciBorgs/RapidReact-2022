@@ -16,8 +16,8 @@ public class ClimberSubsystem implements Subsystem {
     private static final double ARM_SPEED = 0.5;
 
     public ClimberSubsystem() {
-        this.telescope = new CANSparkMax(PortMap.CLIMBER_TELESCOPE, MotorType.kBrushless);
-        this.arms = new CANSparkMax(PortMap.CLIMBER_ARMS, MotorType.kBrushless);
+        this.telescope = new CANSparkMax(PortMap.Climber.TELESCOPE_SPARK, MotorType.kBrushless);
+        this.arms = new CANSparkMax(PortMap.Climber.ARMS_SPARK, MotorType.kBrushless);
 
         this.telescope.setIdleMode(IdleMode.kBrake);
         this.arms.setIdleMode(IdleMode.kBrake);

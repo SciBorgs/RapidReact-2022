@@ -68,6 +68,12 @@ public class RobotContainer {
   // private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intake, hopper);
   // private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intake);
   // public  final RumbleCommand             rumbleCommand           = new RumbleCommand(drive, rumble);
+  public  final RunCommand                joystickDriveCommand    = new RunCommand(
+    () -> drive.driveRobot(
+      DriveSubsystem.DriveMode.TANK,
+      oi.leftStick.getY(),
+      oi.rightStick.getY()),
+    drive);
 
   // blocker
   // private final Command block = Util.blockSubsystems(subsystems); 
@@ -85,14 +91,6 @@ public class RobotContainer {
   }
 
   private void configureSubsystemDefaults() {
-    // driving
-    drive.setDefaultCommand(
-      new RunCommand(
-        () -> drive.driveRobot(
-          DriveSubsystem.DriveMode.TANK,
-          oi.leftStick.getY(),
-          oi.rightStick.getY()),
-        drive));
     // turret auto following
     // turret.setDefaultCommand(
     //   new RunCommand(

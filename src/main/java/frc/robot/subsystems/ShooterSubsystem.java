@@ -49,10 +49,10 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
         mainTab.addNumber("Target Flywheel Speed", this::getTargetFlywheelSpeed);
 
-        hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
+        hood = new CANSparkMax(PortMap.Shooter.HOOD_SPARK, MotorType.kBrushless);
         hood.setInverted(true);
-        rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
-        lmotor = new CANSparkMax(PortMap.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless);
+        rmotor = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[1], MotorType.kBrushless);
+        lmotor = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[0], MotorType.kBrushless);
         lmotor.follow(rmotor, true);
 
         rmotor.setIdleMode(IdleMode.kCoast);
@@ -62,7 +62,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         lmotor.burnFlash();
 
         flywheelEncoder = rmotor.getEncoder();
-        hoodEncoder = new Encoder(PortMap.HOOD_ENCODER_A, PortMap.HOOD_ENCODER_B);
+        hoodEncoder = new Encoder(PortMap.Shooter.HOOD_ENCODER_QUADRATURE[0], PortMap.Shooter.HOOD_ENCODER_QUADRATURE[1]);
         hoodEncoder.setDistancePerPulse(ShooterConstants.DISTANCE_PER_PULSE);
 
         hoodFeedback.setTolerance(0.2);

@@ -37,15 +37,15 @@ public class DriveSubsystem extends SubsystemBase {
     private SciPigeon pigeon;
 
     private final SciSpark[] leftSparks = {
-            new SciSpark(PortMap.LEFT_FRONT_SPARK),
-            new SciSpark(PortMap.LEFT_MIDDLE_SPARK),
-            new SciSpark(PortMap.LEFT_BACK_SPARK)
+            new SciSpark(PortMap.Drivetrain.LEFT_FRONT_SPARK),
+            new SciSpark(PortMap.Drivetrain.LEFT_MIDDLE_SPARK),
+            new SciSpark(PortMap.Drivetrain.LEFT_BACK_SPARK)
     };
 
     private final SciSpark[] rightSparks = {
-            new SciSpark(PortMap.RIGHT_FRONT_SPARK),
-            new SciSpark(PortMap.RIGHT_MIDDLE_SPARK),
-            new SciSpark(PortMap.RIGHT_BACK_SPARK)
+            new SciSpark(PortMap.Drivetrain.RIGHT_FRONT_SPARK),
+            new SciSpark(PortMap.Drivetrain.RIGHT_MIDDLE_SPARK),
+            new SciSpark(PortMap.Drivetrain.RIGHT_BACK_SPARK)
     };
 
     private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
@@ -99,7 +99,7 @@ public class DriveSubsystem extends SubsystemBase {
         rightGroup.setInverted(true);
         drive.setDeadband(0.05);
 
-        pigeon = new SciPigeon(PortMap.PIGEON_ID);
+        pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
         pigeonSim = pigeon.getSimCollection();
 
         // Will change once we get more information on our drivetrain
@@ -113,8 +113,8 @@ public class DriveSubsystem extends SubsystemBase {
 
                 VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 
-        lEncoderSim = new EncoderSim(PortMap.LEFT_FRONT_SPARK);
-        rEncoderSim = new EncoderSim(PortMap.RIGHT_FRONT_SPARK);
+        lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
+        rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
 
         odometry = new DifferentialDriveOdometry(getRotation());
     }
@@ -267,8 +267,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     // reset everything
     public void reset() {
-        lEncoderSim = new EncoderSim(PortMap.LEFT_FRONT_SPARK);
-        rEncoderSim = new EncoderSim(PortMap.RIGHT_FRONT_SPARK);
+        lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
+        rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
 
         odometry = new DifferentialDriveOdometry(getRotation());
         kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);

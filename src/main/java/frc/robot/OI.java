@@ -6,84 +6,82 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.DPadButton;
 
 import static frc.robot.PortMap.*;
-import static frc.robot.PortMap.Joystick.*;
-import static frc.robot.PortMap.XboxController.*;
 
 public class OI {
     public boolean isXbox;
 
     // Controllers
-    public Joystick leftStick, rightStick;
-    public XboxController xboxController;
+    public final Joystick leftStick, rightStick;
+    public final XboxController xboxController;
+
+    // Final so we don't forget to map a button.
 
     // Buttons | Intake
-    public JoystickButton intakeBalls, toggleIntake;
-    
+    public final JoystickButton intakeBalls, toggleIntake;
+
     // Buttons | Hopper-Pneumatics
-    public JoystickButton startHopper, toggleCompressor;
+    public final JoystickButton startHopper, toggleCompressor;
 
     // Buttons | Intake + Hopper
-    public JoystickButton intakeHopperGroup;
-    
+    public final JoystickButton intakeHopperGroup;
+
     // Buttons | Climber
-    public JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
+    public final JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
 
     // Buttons | Shooter
-    public JoystickButton shootButton;
+    public final JoystickButton shootButton;
 
     public OI(boolean isXbox) {
         this.isXbox = isXbox;
 
-        // Controllers
-        if (isXbox) {
-            this.xboxController = new XboxController(XBOX_CONTROLLER);
-        } else {
-            this.leftStick  = new Joystick(JOYSTICK_LEFT);
-            this.rightStick = new Joystick(JOYSTICK_RIGHT);
-        }
+        // Unconditionally initialize the input devices. Not being present is fine, and
+        // it'll make sure we don't forget to init them (ie. the previous behavior was
+        // to only init Xbox if we were using Xbox, but we need joysticks to drive).
 
-        ////////////////////
-        // INITIALIZATION //
-        ////////////////////
+        this.leftStick = new Joystick(InputDevices.JOYSTICK_LEFT);
+        this.rightStick = new Joystick(InputDevices.JOYSTICK_RIGHT);
+
+        this.xboxController = new XboxController(InputDevices.XBOX_CONTROLLER);
 
         if (isXbox) {
             // Intake
-            this.intakeBalls       = new JoystickButton(this.xboxController, XBOX_B);
-            this.toggleIntake      = new JoystickButton(this.xboxController, XBOX_Y);
+            this.intakeBalls = new JoystickButton(this.xboxController, XboxControllerMap.Button.B);
+            this.toggleIntake = new JoystickButton(this.xboxController, XboxControllerMap.Button.Y);
 
             // Intake-Hopper-Compressor
-            this.startHopper       = new JoystickButton(this.xboxController, XBOX_STICK_LEFT_BUTTON);
-            this.intakeHopperGroup = new JoystickButton(this.xboxController, XBOX_STICK_RIGHT_BUTTON);
-            this.toggleCompressor  = new JoystickButton(this.xboxController, XBOX_START);
+            this.startHopper = new JoystickButton(this.xboxController, XboxControllerMap.Button.STICK_LEFT);
+            this.intakeHopperGroup = new JoystickButton(this.xboxController, XboxControllerMap.Button.STICK_RIGHT);
+            this.toggleCompressor = new JoystickButton(this.xboxController, XboxControllerMap.Button.START);
 
             // Climber
-            this.extendTelescope  = new DPadButton(this.xboxController, DPadButton.Direction.UP);
+            this.extendTelescope = new DPadButton(this.xboxController, DPadButton.Direction.UP);
             this.retractTelescope = new DPadButton(this.xboxController, DPadButton.Direction.DOWN);
-            // TODO: make sure extend and retract are actually forward and backward relative to the center of the robot
+            // TODO: make sure extend and retract are actually forward and backward relative
+            // to the center of the robot
             // (we probably mixed them up)
-            this.extendArm  = new DPadButton(this.xboxController, DPadButton.Direction.LEFT);
+            this.extendArm = new DPadButton(this.xboxController, DPadButton.Direction.LEFT);
             this.retractArm = new DPadButton(this.xboxController, DPadButton.Direction.RIGHT);
 
             // Shooter
-            this.shootButton = new JoystickButton(this.xboxController, XBOX_X);
+            this.shootButton = new JoystickButton(this.xboxController, XboxControllerMap.Button.X);
         } else {
             // Intake
-            this.intakeBalls       = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
-            this.toggleIntake      = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
+            this.intakeBalls = new JoystickButton(this.leftStick, JoystickMap.Button.LEFT);
+            this.toggleIntake = new JoystickButton(this.leftStick, JoystickMap.Button.RIGHT);
 
             // Intake-Hopper-Compressor
-            // this.startHopper       = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
-            this.intakeHopperGroup = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
-            this.toggleCompressor  = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
+            this.startHopper = new JoystickButton(this.leftStick, JoystickMap.Button.TRIGGER);
+            this.intakeHopperGroup = new JoystickButton(this.leftStick, JoystickMap.Button.CENTER);
+            this.toggleCompressor = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER);
 
             // Climber
-            this.extendTelescope  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][0]);
-            this.retractTelescope = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][1]);
-            this.extendArm  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][0]);
-            this.retractArm = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][1]);
+            this.extendTelescope = new DPadButton(this.rightStick, DPadButton.Direction.UP);
+            this.retractTelescope = new DPadButton(this.rightStick, DPadButton.Direction.DOWN);
+            this.extendArm = new DPadButton(this.rightStick, DPadButton.Direction.LEFT);
+            this.retractArm = new DPadButton(this.rightStick, DPadButton.Direction.RIGHT);
 
-            // Shooter
-            this.shootButton = new JoystickButton(this.rightStick, JOYSTICK_TRIGGER);
+            // Shooterl
+            this.shootButton = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
         }
     }
 }

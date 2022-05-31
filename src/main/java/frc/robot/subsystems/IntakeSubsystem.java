@@ -23,10 +23,10 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
     private double intakeSpeed;
 
     public IntakeSubsystem() {
-        this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL); 
-        this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
+        this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.Intake.ARM_CHANNELS[0], PortMap.Intake.ARM_CHANNELS[1]); 
+        this.suckSpark = new CANSparkMax(PortMap.Intake.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
         // this.suckSpark.setInverted(true); // invert the motor
-        this.limitSwitch = new DigitalInput(PortMap.LIMIT_SWITCH_INTAKE);
+        this.limitSwitch = new DigitalInput(PortMap.Intake.LIMIT_SWITCH);
 
         this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
 

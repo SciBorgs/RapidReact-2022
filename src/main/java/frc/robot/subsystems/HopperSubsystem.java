@@ -17,8 +17,8 @@ public class HopperSubsystem implements Subsystem {
     private double elevatorSpeed;
 
     public HopperSubsystem() {
-        this.suck = new CANSparkMax(PortMap.HOPPER_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
-        this.elevator = new CANSparkMax(PortMap.HOPPER_ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
+        this.suck = new CANSparkMax(PortMap.Hopper.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
+        this.elevator = new CANSparkMax(PortMap.Hopper.ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
 
         suckSpeed = 0;
         elevatorSpeed = 0;
