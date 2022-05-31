@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.FenderShot;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -14,7 +15,7 @@ public class OneBallAuto extends SequentialCommandGroup {
     public OneBallAuto(DriveSubsystem drive, HopperSubsystem hopper, IntakeSubsystem intake, ShooterSubsystem shooter) {
 
         addCommands(
-                new FenderShot(shooter, hopper),
+                new FenderShot(shooter, hopper).withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT),
                 new DriveUntilIntake(drive, intake) // TODO move off tarmac backwards
         );
     }

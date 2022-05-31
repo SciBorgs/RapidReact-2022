@@ -23,10 +23,9 @@ public class TwoBallAuto extends SequentialCommandGroup {
 
         addCommands(
                 new DriveUntilIntake(drive, intake),
-                parallel(
-                        new TurnToAngle(180, drive),
-                        new HighShot(shooter, turret, hopper, limelight))
-                                .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT),
+                new TurnToAngle(180, drive),
+                new HighShot(shooter, turret, hopper, limelight)
+                        .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT),
                 new IntakeStop(intake));
     }
 }

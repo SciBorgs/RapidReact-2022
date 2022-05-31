@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.HighShot;
 import frc.robot.commands.intake.IntakeForever;
 import frc.robot.commands.intake.IntakeStop;
@@ -21,7 +22,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         );
 
         addCommands(
-            new HighShot(shooter, turret, hopper, limelight), // TODO @warren
+            new HighShot(shooter, turret, hopper, limelight).withTimeout(ShooterConstants.SINGLE_BALL_TIMEOUT), // TODO we can't shoot on tarmac
             new TurnToAngle(180, drive),
             new DriveUntilIntake(drive, intake)
         );
