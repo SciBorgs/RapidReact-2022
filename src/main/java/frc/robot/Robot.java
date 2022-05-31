@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       //m_autonomousCommand.cancel();
     }
-    CommandScheduler.getInstance().schedule(m_robotContainer.joystickDriveCommand);
+    m_robotContainer.setTeleopCommands();
   }
 
   /** This function is called periodically during operator control. */

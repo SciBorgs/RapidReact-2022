@@ -11,15 +11,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.PortMap.Climber;
 import frc.robot.commands.RumbleCommand;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.FenderShot;
-import frc.robot.commands.HighShot;
-import frc.robot.commands.auto.DriveRamsete;
-import frc.robot.commands.auto.FiveBallAuto;
-import frc.robot.commands.hopper.StartHopperCommand;
-import frc.robot.commands.intake.IntakeBallsCommandGroup;
-import frc.robot.commands.pneumatics.ToggleCompressorCommand;
+import frc.robot.commands.ToggleCompressorCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -48,15 +42,15 @@ public class RobotContainer {
   // SUBSYSTEMS
   public final DriveSubsystem         drive        = new DriveSubsystem();
   public final VisionSubsystem        vision       = new VisionSubsystem();
-  // public final PhotonVisionSubsystem  photonVision = new PhotonVisionSubsystem();
+  public final PhotonVisionSubsystem  photonVision = new PhotonVisionSubsystem();
   public final TurretSubsystem        turret       = new TurretSubsystem();
   public final ShooterSubsystem       shooter      = new ShooterSubsystem();
-  // public final IntakeSubsystem        intake       = new IntakeSubsystem();
+  public final IntakeSubsystem        intake       = new IntakeSubsystem();
   public final HopperSubsystem        hopper       = new HopperSubsystem();
-  // public final PneumaticsSubsystem    pneumatics   = new PneumaticsSubsystem();
-  // public final ClimberSubsystem       climber      = new ClimberSubsystem();
-  // public final MonitorSubsystem       monitor      = new MonitorSubsystem();
-  // public final RumbleSubsystem        rumble       = new RumbleSubsystem(oi.xboxController);
+  public final PneumaticsSubsystem    pneumatics   = new PneumaticsSubsystem();
+  public final ClimberSubsystem       climber      = new ClimberSubsystem();
+  public final MonitorSubsystem       monitor      = new MonitorSubsystem();
+  public final RumbleSubsystem        rumble       = new RumbleSubsystem(oi.xboxController);
 
   // private final Set<Subsystem> subsystems = Set.of(
   //     drive, vision, photonVision, turret,
@@ -64,16 +58,8 @@ public class RobotContainer {
   //     climber, monitor, rumble);
 
   // COMMANDS
-  // private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumatics);
-  // private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intake, hopper);
-  // private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intake);
-  // public  final RumbleCommand             rumbleCommand           = new RumbleCommand(drive, rumble);
-  public  final RunCommand                joystickDriveCommand    = new RunCommand(
-    () -> drive.driveRobot(
-      DriveSubsystem.DriveMode.TANK,
-      oi.leftStick.getY(),
-      oi.rightStick.getY()),
-    drive);
+  private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumatics);
+  public  final RumbleCommand             rumbleCommand           = new RumbleCommand(drive, rumble);
 
   // blocker
   // private final Command block = Util.blockSubsystems(subsystems); 
@@ -110,17 +96,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // oi.toggleCompressor.whenPressed(toggleCompressorCommand);
+    oi.toggleCompressor.whenPressed(toggleCompressorCommand);
     
-    // // Intake
-    // // this.intakeBalls.whenHeld(new IntakeBallsCommand());
-    // oi.intakeBalls.whenHeld(intakeBallsCommand);
-    // oi.toggleIntake.whenPressed(toggleArmCommand);
-    // // this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
-    // // this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
+    // Intake
+    // oi.intakeBalls.whenHeld()
 
-    // // Intake-Hopper-Compressor
-    // oi.startHopper.whenHeld(new StartHopperCommand(hopper));
+    // oi.toggleIntake.whenPressed(
+    //   new InstantCommand(
+    //     () -> intake.toggleArm()));
+
+    // Intake-Hopper-Compressor
+    // oi.startHopper.whenHeld();
 
     // Climber
     // oi.extendTelescope.whenHeld(
@@ -137,8 +123,8 @@ public class RobotContainer {
     // );
 
     // Shooter
-    oi.shootButton.whenPressed(new HighShot(shooter, turret, hopper, vision)
-        .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
+    // oi.shootButton.whenPressed(new HighShot(shooter, turret, hopper, vision)
+    //     .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
   }
 
   public SendableChooser<String> getAutoChooser() {
@@ -164,5 +150,18 @@ public class RobotContainer {
       new InstantCommand(() -> turret.setTargetAngle(15), turret),
       new InstantCommand(() -> shooter.setTargetFlywheelSpeed(15), shooter)
     );
+  }
+
+  /**
+   * sets default commands during teleop
+   */
+  public void setTeleopCommands() {
+    drive.setDefaultCommand(
+      new RunCommand(
+        () -> drive.driveRobot(
+          DriveSubsystem.DriveMode.TANK,
+          oi.leftStick.getY(),
+          oi.rightStick.getY()),
+        drive));
   }
 }
