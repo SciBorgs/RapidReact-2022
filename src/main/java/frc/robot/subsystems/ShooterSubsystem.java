@@ -57,6 +57,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
         rmotor.setIdleMode(IdleMode.kCoast);
         lmotor.setIdleMode(IdleMode.kCoast);
+        hood.setIdleMode(IdleMode.kBrake);
 
         rmotor.burnFlash();
         lmotor.burnFlash();
@@ -66,7 +67,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         hoodEncoder.setDistancePerPulse(ShooterConstants.DISTANCE_PER_PULSE);
 
         hoodFeedback.setTolerance(0.2);
-        flywheelFeedback.setTolerance(0.2, 0.3); // TODO possibly update | if shooting never finishes, this is probably why
+        flywheelFeedback.setTolerance(0.2, 200); // TODO possibly update | if shooting never finishes, this is probably why
 
         targetSpeed = 0.0;
         targetAngle = 0.0;

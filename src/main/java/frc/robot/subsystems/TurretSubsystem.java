@@ -42,7 +42,7 @@ public class TurretSubsystem extends SubsystemBase {
         mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
         mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
 
-        turret.setIdleMode(IdleMode.kCoast);
+        turret.setIdleMode(IdleMode.kBrake);
         
         targetAngle = 0; // (deg)
 

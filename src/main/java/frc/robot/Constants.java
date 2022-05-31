@@ -51,6 +51,8 @@ public final class Constants {
         // 4 |   ?    |  ?  |  ?  | 
         // 5 |   ?    |  ?  |  ?  | hanger shot
 
+        // 145 in | max power (1) | 0 deg
+
         // quartic regressions
         public static final double getHoodAngle(double distance) {
             return 12;
