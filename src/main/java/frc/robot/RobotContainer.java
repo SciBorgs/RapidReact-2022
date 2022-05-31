@@ -47,28 +47,28 @@ public class RobotContainer {
   private final OI oi = new OI(false);
 
   // SUBSYSTEMS
-  public final DriveSubsystem        driveSubsystem        = new DriveSubsystem();
-  public final VisionSubsystem    limelightSubsystem    = new VisionSubsystem();
-  // public final PhotonVisionSubsystem photonVisionSubsystem = new PhotonVisionSubsystem();
-  public final TurretSubsystem       turretSubsystem       = new TurretSubsystem();
-  public final ShooterSubsystem      shooterSubsystem      = new ShooterSubsystem();
-  // public final IntakeSubsystem       intakeSubsystem       = new IntakeSubsystem();
-  public final HopperSubsystem       hopperSubsystem       = new HopperSubsystem();
-  // public final PneumaticsSubsystem   pneumaticsSubsystem   = new PneumaticsSubsystem();
-  // public final ClimberSubsystem      climberSubsystem      = new ClimberSubsystem();
-  // public final MonitorSubsystem      monitorSubsystem      = new MonitorSubsystem();
-  // public final RumbleSubsystem       rumbleSubsystem       = new RumbleSubsystem(oi.xboxController);
+  public final DriveSubsystem         drive        = new DriveSubsystem();
+  public final VisionSubsystem        vision       = new VisionSubsystem();
+  // public final PhotonVisionSubsystem  photonVision = new PhotonVisionSubsystem();
+  public final TurretSubsystem        turret       = new TurretSubsystem();
+  public final ShooterSubsystem       shooter      = new ShooterSubsystem();
+  // public final IntakeSubsystem        intake       = new IntakeSubsystem();
+  public final HopperSubsystem        hopper       = new HopperSubsystem();
+  // public final PneumaticsSubsystem    pneumatics   = new PneumaticsSubsystem();
+  // public final ClimberSubsystem       climber      = new ClimberSubsystem();
+  // public final MonitorSubsystem       monitor      = new MonitorSubsystem();
+  // public final RumbleSubsystem        rumble       = new RumbleSubsystem(oi.xboxController);
 
   // private final Set<Subsystem> subsystems = Set.of(
-  //     driveSubsystem, limelightSubsystem, photonVisionSubsystem, turretSubsystem,
-  //     shooterSubsystem, intakeSubsystem, hopperSubsystem, pneumaticsSubsystem,
-  //     climberSubsystem, monitorSubsystem, rumbleSubsystem);
+  //     drive, vision, photonVision, turret,
+  //     shooter, intake, hopper, pneumatics,
+  //     climber, monitor, rumble);
 
   // COMMANDS
-  // private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumaticsSubsystem);
-  // private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intakeSubsystem, hopperSubsystem);
-  // private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intakeSubsystem);
-  // public  final RumbleCommand             rumbleCommand           = new RumbleCommand(driveSubsystem, rumbleSubsystem);
+  // private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumatics);
+  // private final IntakeBallsCommandGroup   intakeBallsCommand      = new IntakeBallsCommandGroup(intake, hopper);
+  // private final ToggleIntakeArm           toggleArmCommand        = new ToggleIntakeArm(intake);
+  // public  final RumbleCommand             rumbleCommand           = new RumbleCommand(drive, rumble);
 
   // blocker
   // private final Command block = Util.blockSubsystems(subsystems); 
@@ -80,20 +80,32 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
+    vision.reset();
     configureButtonBindings();
-
-    // drives robot in tank drive according to the joysticks
-    if(Robot.isReal()) {
-      driveSubsystem.setDefaultCommand(new RunCommand(
-        () -> driveSubsystem.driveRobot(
-            DriveSubsystem.DriveMode.TANK,
-            oi.leftStick.getY(),
-            oi.rightStick.getY()),
-        driveSubsystem));
-    }
+    configureSubsystemDefaults();
   }
 
+  private void configureSubsystemDefaults() {
+    // driving
+    drive.setDefaultCommand(
+      new RunCommand(
+        () -> drive.driveRobot(
+          DriveSubsystem.DriveMode.TANK,
+          oi.leftStick.getY(),
+          oi.rightStick.getY()),
+        drive));
+    // turret auto following
+    // turret.setDefaultCommand(
+    //   new RunCommand(
+    //     () -> {
+    //       if (vision.hasTarget())
+    //         turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset());
+    //       else
+    //         turret.setTargetAngle(0);
+    //       },
+    //     turret));
+  }
+  
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -111,24 +123,24 @@ public class RobotContainer {
     // // this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
 
     // // Intake-Hopper-Compressor
-    // oi.startHopper.whenHeld(new StartHopperCommand(hopperSubsystem));
+    // oi.startHopper.whenHeld(new StartHopperCommand(hopper));
 
     // Climber
     // oi.extendTelescope.whenHeld(
-    //   new RunCommand(() -> climberSubsystem.runTelescope(false), climberSubsystem)
+    //   new RunCommand(() -> climber.runTelescope(false), climber)
     // );
     // oi.retractTelescope.whenHeld(
-    //   new RunCommand(() -> climberSubsystem.runTelescope(true), climberSubsystem)
+    //   new RunCommand(() -> climber.runTelescope(true), climber)
     // );
     // oi.extendArm.whenHeld(
-    //   new RunCommand(() -> climberSubsystem.runArms(false), climberSubsystem)
+    //   new RunCommand(() -> climber.runArms(false), climber)
     // );
     // oi.retractArm.whenHeld(
-    //   new RunCommand(() -> climberSubsystem.runArms(true), climberSubsystem)
+    //   new RunCommand(() -> climber.runArms(true), climber)
     // );
 
     // Shooter
-    oi.shootButton.whenPressed(new HighShot(shooterSubsystem, turretSubsystem, hopperSubsystem, limelightSubsystem)
+    oi.shootButton.whenPressed(new HighShot(shooter, turret, hopper, vision)
         .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
   }
 
@@ -143,17 +155,17 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() { 
     // An ExampleCommand will run in autonomous
-    // return new TurnToAngle(180, driveSubsystem);
+    // return new TurnToAngle(180, drive);
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    // return new DriveRamsete(driveSubsystem, autoChooser.getSelected(), true);
-    // return new FiveBallAuto(driveSubsystem, intakeSubsystem, hopperSubsystem, limelightSubsystem, shooterSubsystem, turretSubsystem, "1");
+    // return new DriveRamsete(drive, autoChooser.getSelected(), true);
+    // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
 
     // testing shooter
     return new SequentialCommandGroup(
-      new InstantCommand(() -> shooterSubsystem.setTargetHoodAngle(12), shooterSubsystem),
-      new InstantCommand(() -> turretSubsystem.setTargetAngle(15), turretSubsystem),
-      new InstantCommand(() -> shooterSubsystem.setTargetFlywheelSpeed(15), shooterSubsystem)
+      new InstantCommand(() -> shooter.setTargetHoodAngle(12), shooter),
+      new InstantCommand(() -> turret.setTargetAngle(15), turret),
+      new InstantCommand(() -> shooter.setTargetFlywheelSpeed(15), shooter)
     );
   }
 }

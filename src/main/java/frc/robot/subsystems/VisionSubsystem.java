@@ -31,7 +31,11 @@ public class VisionSubsystem extends SubsystemBase {
 
     // gets specific value from the limelight's network table
     public double getLimelightData(String var) {
-        return getTable().getEntry(var).getDouble(0.0);
+        return getLimelightData(var, 0.0);
+    }
+
+    public double getLimelightData(String var, double defaultVal) {
+        return getTable().getEntry(var).getDouble(defaultVal);
     }
 
     // sets a camera paramter
@@ -70,8 +74,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        xOffset = xFilter.calculate(getLimelightData("tx"));
-        yOffset = yFilter.calculate(getLimelightData("ty"));
+        xOffset = xFilter.calculate(getLimelightData("tx", xOffset));
+        yOffset = yFilter.calculate(getLimelightData("ty", yOffset));
         visible = vFilter.calculate(getLimelightData("tv") == 1);
     }
 }
