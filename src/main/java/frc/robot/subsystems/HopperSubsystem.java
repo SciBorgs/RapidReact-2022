@@ -3,12 +3,13 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.Constants.HopperConstants;
 import frc.robot.util.Blockable;
 
 @Blockable
-public class HopperSubsystem implements Subsystem {
+public class HopperSubsystem extends SubsystemBase {
 
     private CANSparkMax suck;
     private CANSparkMax elevator;
@@ -41,7 +42,9 @@ public class HopperSubsystem implements Subsystem {
     }
     
     public void startElevator(double newSpeed) {
+        System.out.println("Setting Elevator");
         elevatorSpeed = MathUtil.clamp(newSpeed, -HopperConstants.MAX_SPEED, HopperConstants.MAX_SPEED);
+        System.out.println("Clamped to " + elevatorSpeed);
     }
 
     public void stopElevator() {
@@ -66,7 +69,9 @@ public class HopperSubsystem implements Subsystem {
     
     @Override
     public void periodic() {
+        // System.out.println("elvatorSpeed: " + elevatorSpeed);
         elevator.set(elevatorSpeed);
-        suck.set(suckSpeed);
+        // System.out.println("elvatorSpeed: " + elevatorSpeed);
+        // suck.set(suckSpeed);
     }
 }

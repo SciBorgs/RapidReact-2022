@@ -42,7 +42,8 @@ public class TurretSubsystem extends SubsystemBase {
         mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
         mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
 
-        turret.setIdleMode(IdleMode.kCoast);
+        turret.setIdleMode(IdleMode.kBrake);
+        turret.setSmartCurrentLimit(30);
         
         targetAngle = 0; // (deg)
 
@@ -77,6 +78,6 @@ public class TurretSubsystem extends SubsystemBase {
         lastSpeed = feedback.getSetpoint().velocity;
         lastTime = Timer.getFPGATimestamp();
 
-        turret.setVoltage(fb + ff);
+        // turret.setVoltage(fb + ff);
     }
 }
