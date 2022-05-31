@@ -16,35 +16,12 @@ import frc.robot.util.Point;
  */
 public final class Constants {
 
-    //*********************** OTHER ***********************//
-    public static final double SECONDS_PER_TICK = 0.02;
-    public static final double CURRENT_THRESHOLD = 0;
-    public static final double DUTY_CYCLE_THRESHOLD = 0;
-    public static final double VELOCITY_THRESHOLD = 0;
-    
-    //***************** GEAR RATIOS ***********************//
-    public static final double WHEEL_ENCODER_GEAR_RATIO = 13.7;
-    public static final double LEFT_ENCODER_GEAR_RATIO = 13.7;
-    public static final double RIGHT_ENCODER_GEAR_RATIO = 13.7;
-    // 1.0 / 230.0;
-
-    //***************** FIELD DATA ************************//
-    public static final double FIELD_WIDTH = 8.2296;
-    public static final double FIELD_LENGTH = 16.4592;
-    public static final double BALL_PLACEMENT_RADIUS = 3.885;
-    public static final Point POINT_HUB = new Point(FIELD_LENGTH / 2, FIELD_WIDTH / 2);
-    public static final Point[] RED_BALLS = new Point[] {
-        new Point(11.633, 2.028), new Point(11.551, 6.3768), new Point(8.999, 7.973),
-        new Point(6.084, 7.331), new Point(4.52, 3.263), new Point(9.229, 0.332)};
-    public static final Point[] BLUE_BALLS = new Point[] {
-        new Point(10.629, 0.958), new Point(12.144, 5.042), new Point(7.368, 7.490),
-        new Point(4.968, 6.194), new Point(5.03, 1.864), new Point(7.582, 0.283)};
-    
-    public static final double FENDER_RADIUS = 1.0;
-
-    //public static final List<Point> PATH_TEST = new PathSmoother(PATH_TEST_RAW, 20).getFinalPath();
-    
     public static final class DriveConstants {
+        // for stalling detection
+        public static final double CURRENT_THRESHOLD = 0;
+        public static final double DUTY_CYCLE_THRESHOLD = 0;
+        public static final double VELOCITY_THRESHOLD = 0;
+        // for slew rate limiter
         public static final double MAX_JERK = 0.99;
         // ratios
         public static final double GEAR_RATIO = 1 / 13.7;

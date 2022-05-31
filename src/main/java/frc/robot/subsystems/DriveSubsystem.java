@@ -225,16 +225,16 @@ public class DriveSubsystem extends SubsystemBase {
 
     // thanks stuy
     public boolean isLeftStalling() {
-        boolean current = getLeftCurrentAmps() > Constants.CURRENT_THRESHOLD;
-        boolean output = Math.abs(getLeftAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
-        boolean velocity = Math.abs(lEncoder.getVelocity()) < Constants.VELOCITY_THRESHOLD;
+        boolean current = getLeftCurrentAmps() > DriveConstants.CURRENT_THRESHOLD;
+        boolean output = Math.abs(getLeftAverageVelocity()) > DriveConstants.DUTY_CYCLE_THRESHOLD;
+        boolean velocity = Math.abs(lEncoder.getVelocity()) < DriveConstants.VELOCITY_THRESHOLD;
         return (current || output) && velocity;
     }
 
     public boolean isRightStalling() {
-        boolean current = getRightCurrentAmps() > Constants.CURRENT_THRESHOLD;
-        boolean output = Math.abs(getRightAverageVelocity()) > Constants.DUTY_CYCLE_THRESHOLD;
-        boolean velocity = Math.abs(rEncoder.getVelocity()) < Constants.VELOCITY_THRESHOLD;
+        boolean current = getRightCurrentAmps() > DriveConstants.CURRENT_THRESHOLD;
+        boolean output = Math.abs(getRightAverageVelocity()) > DriveConstants.DUTY_CYCLE_THRESHOLD;
+        boolean velocity = Math.abs(rEncoder.getVelocity()) < DriveConstants.VELOCITY_THRESHOLD;
         return (current || output) && velocity;
     }
 
