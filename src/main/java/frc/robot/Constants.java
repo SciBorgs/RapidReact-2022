@@ -53,11 +53,11 @@ public final class Constants {
 
         // quartic regressions
         public static final double getHoodAngle(double distance) {
-            return 0;
+            return 12;
         }
 
         public static final double getRPM(double distance) {
-            return 0;
+            return 40;
         }
         // default shot (tarmac line) TODO set
         public static final double TARMAC_RPM = 0;

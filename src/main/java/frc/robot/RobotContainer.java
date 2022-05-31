@@ -11,9 +11,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.Climber;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.ToggleCompressorCommand;
+import frc.robot.commands.HighShot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -60,6 +62,7 @@ public class RobotContainer {
   // COMMANDS
   private final ToggleCompressorCommand   toggleCompressorCommand = new ToggleCompressorCommand(pneumatics);
   public  final RumbleCommand             rumbleCommand           = new RumbleCommand(drive, rumble);
+  
 
   // blocker
   // private final Command block = Util.blockSubsystems(subsystems); 
@@ -123,8 +126,7 @@ public class RobotContainer {
     // );
 
     // Shooter
-    // oi.shootButton.whenPressed(new HighShot(shooter, turret, hopper, vision)
-    //     .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
+    oi.shootButton.whenPressed(new HighShot(shooter, turret, hopper, vision).withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
   }
 
   public SendableChooser<String> getAutoChooser() {
