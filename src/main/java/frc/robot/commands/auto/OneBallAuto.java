@@ -13,10 +13,10 @@ import frc.robot.subsystems.ShooterSubsystem;
  */
 public class OneBallAuto extends SequentialCommandGroup {
     public OneBallAuto(DriveSubsystem drive, HopperSubsystem hopper, IntakeSubsystem intake, ShooterSubsystem shooter) {
-
         addCommands(
                 new FenderShot(shooter, hopper).withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT),
-                new DriveUntilIntake(drive, intake) // TODO move off tarmac backwards
+                new Turn180(drive),
+                new DriveRamsete(drive, "DriveOffTarmac", true)
         );
     }
 }

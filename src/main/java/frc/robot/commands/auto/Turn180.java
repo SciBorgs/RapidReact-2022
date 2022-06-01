@@ -5,16 +5,20 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
+import frc.robot.util.Util;
 
-
-public class TurnToAngle extends PIDCommand {
-    public TurnToAngle(double targetDegrees, DriveSubsystem drive) {
+public class Turn180 extends PIDCommand {
+    public Turn180(DriveSubsystem drive) {
         super(
                 new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
                 drive::getHeading,
-                targetDegrees,
-                output -> drive.driveRobot(DriveMode.TANK, -output, output),
-                drive);
+                Util.normalizeAngle180(drive.getHeading()),
+                // If current heading is less than the desired angle, we spin right. Otherwise, we spin left.
+                output -> drive.driveRobot(DriveMode.TANK,
+                        drive.getHeading() < Util.normalizeAngle180(drive.getHeading()) ? output : -output, 
+                        drive.getHeading() < Util.normalizeAngle180(drive.getHeading()) ? -output : output),
+                drive
+            );
 
         getController().enableContinuousInput(-180, 180);
         getController().setTolerance(0.2);
@@ -24,5 +28,4 @@ public class TurnToAngle extends PIDCommand {
     public boolean isFinished() {
         return getController().atSetpoint();
     }
-
 }

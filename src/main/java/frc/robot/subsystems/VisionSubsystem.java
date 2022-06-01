@@ -4,6 +4,7 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
@@ -19,9 +20,13 @@ public class VisionSubsystem extends SubsystemBase {
     private double yOffset;
     private boolean visible;
 
+    private ShuffleboardTab mainTab;
+
     public VisionSubsystem() {
         setCameraParams(getTable(), "pipeline", 0);
         reset();
+
+        mainTab.addNumber("Limelight Distance", this::getDistance);
     }
 
     // returns limelight network table

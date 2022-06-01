@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.PortMap.Climber;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.ToggleCompressorCommand;
 import frc.robot.commands.HighShot;
