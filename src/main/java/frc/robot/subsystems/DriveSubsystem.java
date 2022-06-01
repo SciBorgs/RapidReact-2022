@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
@@ -29,6 +30,7 @@ import frc.robot.sciSensors.SciSpark;
 import frc.robot.util.Blockable;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.Util;
+
 
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
@@ -78,6 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
         CURVATURE
     }
 
+    private ShuffleboardTab mainTab;
+
     public DriveSubsystem() {
         lEncoder = leftSparks[0].getEncoder();
         rEncoder = rightSparks[0].getEncoder();
@@ -114,6 +118,10 @@ public class DriveSubsystem extends SubsystemBase {
         rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
 
         odometry = new DifferentialDriveOdometry(getRotation());
+
+        mainTab.addNumber("Heading", this::getHeading);
+        mainTab.addNumber("X", this::getX);
+        mainTab.addNumber("Y", this::getY);
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -167,6 +175,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Pose2d getPose() {
         return odometry.getPoseMeters();
+    }
+
+    // just for testing
+    public double getX() {
+        return getPose().getX();
+    }
+
+    public double getY() {
+        return getPose().getY();
     }
 
     public double getHeading() {
