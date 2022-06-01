@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
@@ -35,7 +36,7 @@ import frc.robot.util.Util;
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
 
-    private SciPigeon pigeon;
+    // private SciPigeon pigeon;
 
     private final SciSpark[] leftSparks = {
             new SciSpark(PortMap.Drivetrain.LEFT_FRONT_SPARK),
@@ -101,8 +102,8 @@ public class DriveSubsystem extends SubsystemBase {
         rightGroup.setInverted(true);
         drive.setDeadband(0.05);
 
-        pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
-        pigeonSim = pigeon.getSimCollection();
+        // pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
+        // pigeonSim = pigeon.getSimCollection();
 
         driveSim = new DifferentialDrivetrainSim(
                 DCMotor.getNEO(2),
@@ -118,7 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
         rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
 
         odometry = new DifferentialDriveOdometry(getRotation());
-
+        this.mainTab = Shuffleboard.getTab("Drivetrain");
         mainTab.addNumber("Heading", this::getHeading);
         mainTab.addNumber("X", this::getX);
         mainTab.addNumber("Y", this::getY);
@@ -170,7 +171,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getRotation() {
-        return pigeon.getRotation2d();
+        // return pigeon.getRotation2d();
+        return Rotation2d.fromDegrees(0);
     }
 
     public Pose2d getPose() {

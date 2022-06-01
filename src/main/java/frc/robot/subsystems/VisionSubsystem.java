@@ -4,6 +4,7 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
@@ -25,7 +26,7 @@ public class VisionSubsystem extends SubsystemBase {
     public VisionSubsystem() {
         setCameraParams(getTable(), "pipeline", 0);
         reset();
-
+        this.mainTab = Shuffleboard.getTab("Limelight");
         mainTab.addNumber("Limelight Distance", this::getDistance);
     }
 

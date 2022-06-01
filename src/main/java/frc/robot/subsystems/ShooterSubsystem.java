@@ -9,9 +9,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
@@ -36,20 +38,13 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     private double targetAngle; // desired angle of the hood (deg)
 
     private ShuffleboardTab mainTab;
+    private SimpleWidget targetFlyweelSpeed;
 
     // keeping track of ejected balls
     private double previousVelocity;
 
     public ShooterSubsystem() {
         
-        // shuffleboard
-        mainTab = Shuffleboard.getTab("Shootr ");
-        mainTab.addNumber("Current Hood Angle", this::getCurrentHoodAngle);
-        mainTab.addNumber("Target Hood Angle", this::getTargetHoodAngle);
-        mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
-        mainTab.addNumber("Target Flywheel Speed", this::getTargetFlywheelSpeed);
-        mainTab.addNumber("Ball Count", this::get);
-
         hood = new CANSparkMax(PortMap.Shooter.HOOD_SPARK, MotorType.kBrushless);
         hood.setInverted(true);
         rmotor = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[1], MotorType.kBrushless);
@@ -73,6 +68,20 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         targetSpeed = 0.0;
         targetAngle = 0.0;
         previousVelocity = 0.0;
+        
+        // shuffleboard
+        mainTab = Shuffleboard.getTab("Shooter");
+        mainTab.addNumber("Current Hood Angle", this::getCurrentHoodAngle);
+        mainTab.addNumber("Target Hood Angle", this::getTargetHoodAngle);
+        mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
+        mainTab.addNumber("Ball Count", this::get);
+
+        this.targetFlyweelSpeed = mainTab.add("Target Flywheel Speed", targetSpeed);
+        
+        this.targetFlyweelSpeed.getEntry().addListener(event -> {
+            this.setTargetFlywheelSpeed(event.getEntry().getDouble(this.targetSpeed));
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
     }
     
     // FLYWHEEL
@@ -98,7 +107,8 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     }
 
     public double getCurrentHoodAngle() {
-        return Units.rotationsToDegrees(hoodEncoder.getDistance() * ShooterConstants.HOOD_GEAR_RATIO);
+        double dist = hoodEncoder.getDistance();
+        return Units.rotationsToDegrees(dist * ShooterConstants.HOOD_GEAR_RATIO);
     }
 
     public double getTargetHoodAngle() {
@@ -128,7 +138,10 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         // updating controllers for flywheel
         double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
         double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
-        rmotor.setVoltage(flywheelFB + flywheelFF);
+        if (targetSpeed == 0)
+            rmotor.stopMotor();
+        else
+           rmotor.setVoltage(flywheelFB + flywheelFF);
         
         // System.out.println("feedback : " + flywheelFB + " feedforward: " + flywheelFF);
         // updating ball count

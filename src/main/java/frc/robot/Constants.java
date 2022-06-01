@@ -124,7 +124,7 @@ public final class Constants {
 
     public static final class HopperConstants {
         public static final double SUCK_SPEED = 0.35;
-        public static final double ELEVATOR_SPEED = 0.5;
+        public static final double ELEVATOR_SPEED = 0.65;
         public static final double MAX_SPEED = 0.8;
     }
 

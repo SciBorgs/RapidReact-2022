@@ -1,9 +1,14 @@
 package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.PortMap;
@@ -22,6 +27,9 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
     private double intakeSpeed;
 
+    private ShuffleboardTab mainTab;
+    private SimpleWidget intakeSpeedWidget;
+
     public IntakeSubsystem() {
         this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.Intake.ARM_CHANNELS[0], PortMap.Intake.ARM_CHANNELS[1]); 
         this.suckSpark = new CANSparkMax(PortMap.Intake.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
@@ -31,6 +39,19 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
         this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
 
         this.intakeSpeed = 0;
+
+        
+        this.mainTab = Shuffleboard.getTab("Intake");
+        this.mainTab.addNumber("Intake Suck Speed", this::getIntakeSpeed);
+        this.mainTab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
+        this.mainTab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
+
+
+        this.intakeSpeedWidget = this.mainTab.add("Intake Suck Set", intakeSpeed);
+
+        this.intakeSpeedWidget.getEntry().addListener(event -> {
+            this.startSuck(event.getEntry().getDouble(this.intakeSpeed));
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
     // TODO remove, move updating to periodic
@@ -41,7 +62,7 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
         if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
             if(System.currentTimeMillis() - lastFallingEdge > IntakeConstants.WAIT_TIME) //so we know ball did not shake around in intake
-            // amountOfBalls += 1;
+            increment();
 
         lastLimit = this.getLimitSwitchState();
     }
@@ -56,6 +77,10 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
     public void startSuck() {
         this.intakeSpeed = IntakeConstants.INTAKE_SPEED;
+    }
+
+    public void startSuck(double speed) {
+        this.intakeSpeed = MathUtil.clamp(speed, -1, 1);
     }
 
     public void stopSuck() {
