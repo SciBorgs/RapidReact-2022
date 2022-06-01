@@ -57,6 +57,7 @@ public class HighShot extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return shooter.get() < 1; // ball count may or may not work, use with timeout
+        // return shooter.get() < 1; // ball count may or may not work, use with timeout
+        return false;
     }
 }

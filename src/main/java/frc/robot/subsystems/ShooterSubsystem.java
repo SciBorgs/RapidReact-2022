@@ -48,6 +48,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         mainTab.addNumber("Target Hood Angle", this::getTargetHoodAngle);
         mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
         mainTab.addNumber("Target Flywheel Speed", this::getTargetFlywheelSpeed);
+        mainTab.addNumber("Ball Count", this::get);
 
         hood = new CANSparkMax(PortMap.Shooter.HOOD_SPARK, MotorType.kBrushless);
         hood.setInverted(true);
