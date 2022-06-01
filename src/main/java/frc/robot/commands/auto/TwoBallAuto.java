@@ -17,23 +17,19 @@ public class TwoBallAuto extends SequentialCommandGroup {
 
         addCommands(
                 new InstantCommand(
-                    () -> intake.toggleArm(),
-                    intake
-                ),
+                        () -> intake.toggleArm(),
+                        intake),
                 new InstantCommand(
-                    () -> intake.startSuck(),
-                    intake
-                ));
+                        () -> intake.startSuck(),
+                        intake));
 
         addCommands(
                 new DriveUntilIntake(drive, intake),
-                new TurnToAngle(180, drive),
+                new Turn180(drive),
                 new HighShot(shooter, turret, hopper, limelight)
                         .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT),
                 new InstantCommand(
-                    () -> intake.stopSuck(),
-                    intake
-                )
-        );
+                        () -> intake.stopSuck(),
+                        intake));
     }
 }
