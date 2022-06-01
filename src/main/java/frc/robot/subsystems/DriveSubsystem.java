@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
@@ -62,8 +61,7 @@ public class DriveSubsystem extends SubsystemBase {
     public DifferentialDriveOdometry odometry;
     private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
-            DriveConstants.kA);
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
 
     private SlewRateLimiter filter1 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for speed in arcade and curvature, left track in tank
     private SlewRateLimiter filter2 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for right track in tank
@@ -102,7 +100,6 @@ public class DriveSubsystem extends SubsystemBase {
         pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
         pigeonSim = pigeon.getSimCollection();
 
-        // Will change once we get more information on our drivetrain
         driveSim = new DifferentialDrivetrainSim(
                 DCMotor.getNEO(2),
                 7.29,
@@ -110,8 +107,8 @@ public class DriveSubsystem extends SubsystemBase {
                 60.0,
                 Units.inchesToMeters(3),
                 0.7112,
-
-                VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
+                VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005)
+        );
 
         lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
         rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
@@ -245,6 +242,7 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
+        for(SciSpark s : getAllSparks()) { s.updateFailState(); }
     }
 
     @Override
@@ -273,8 +271,7 @@ public class DriveSubsystem extends SubsystemBase {
         odometry = new DifferentialDriveOdometry(getRotation());
         kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
-        feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
-                DriveConstants.kA);
+        feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
 
         driveSim.setPose(odometry.getPoseMeters());
         field2d.setRobotPose(odometry.getPoseMeters());
