@@ -65,8 +65,8 @@ public final class Constants {
         public static final double TARMAC_RPM = 0;
         public static final double TARMAC_ANGLE = 0;
         // fender shot (low hub) TODO set
-        public static final double LOW_RPM = 0;
-        public static final double LOW_ANGLE = 0;
+        public static final double FENDER_RPM = 2750;
+        public static final double FENDER_ANGLE = 0;
         // ball ejection detection
         public static final int DELTA_VELOCITY_THRESHOLD = 20;
         // timeouts

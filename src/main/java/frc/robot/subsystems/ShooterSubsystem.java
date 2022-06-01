@@ -128,8 +128,8 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         // updating controllers for flywheel
         double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
         double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
-        // rmotor.setVoltage(flywheelFB + flywheelFF);
-        rmotor.set(0.5);
+        rmotor.setVoltage(flywheelFB + flywheelFF);
+        
         // System.out.println("feedback : " + flywheelFB + " feedforward: " + flywheelFF);
         // updating ball count
         if (flywheelFeedback.getSetpoint() > 0 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VELOCITY_THRESHOLD) {

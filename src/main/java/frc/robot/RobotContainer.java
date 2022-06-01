@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.ToggleCompressorCommand;
+import frc.robot.commands.FenderShot;
 import frc.robot.commands.HighShot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -146,12 +147,13 @@ public class RobotContainer {
     // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
 
     // testing shooter
-    return new SequentialCommandGroup(
-      new InstantCommand(() -> hopper.startElevator(0.8), hopper),
-      new InstantCommand(() -> shooter.setTargetHoodAngle(12), shooter),
-      new InstantCommand(() -> turret.setTargetAngle(15), turret),
-      new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
-    );
+    // return new SequentialCommandGroup(
+    //   new InstantCommand(() -> hopper.startElevator(0.8), hopper),
+    //   new InstantCommand(() -> shooter.setTargetHoodAngle(12), shooter),
+    //   new InstantCommand(() -> turret.setTargetAngle(15), turret),
+    //   new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
+    // );
+    return new FenderShot(shooter, hopper);
   }
 
   /**

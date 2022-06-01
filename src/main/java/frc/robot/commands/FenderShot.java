@@ -3,7 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.PortMap.Shooter;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -20,6 +22,8 @@ public class FenderShot extends CommandBase {
 
     @Override
     public void initialize() {
+        shooter.setTargetFlywheelSpeed(ShooterConstants.FENDER_RPM);
+        shooter.setTargetHoodAngle(ShooterConstants.FENDER_ANGLE);
         isShooting = new Debouncer(VisionConstants.TIMESCALE, DebounceType.kFalling);
     }
 
