@@ -29,6 +29,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Util;
+import java_cup.runtime.lr_parser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -62,7 +63,6 @@ public class RobotContainer {
   // climber, monitor, rumble);
 
   // COMMANDS
-  private final ToggleCompressorCommand toggleCompressorCommand = new ToggleCompressorCommand(pneumatics);
   public final RumbleCommand rumbleCommand = new RumbleCommand(drive, rumble);
 
   // blocker
@@ -102,45 +102,108 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // oi.toggleCompressor.whenPressed(toggleCompressorCommand);
+    // run intake (w roller)
+    // run hopper
+    // (high) shoot
+    // aim?
+    // low shoot
+
+    // Compressor
+    oi.toggleCompressor
+      .toggleWhenPressed(
+        new StartEndCommand(
+          pneumatics::start,
+          pneumatics::stop,
+          pneumatics));
 
     // Intake
-    oi.intakeBalls.whenHeld(new StartEndCommand(() -> {
-      intake.startSuck();
-      hopper.startSuck();
-      hopper.startElevator();
-      shooter.setTargetFlywheelSpeed(8000);
-    }, () -> {
-      intake.stopSuck();
-      hopper.stopElevator();
-      hopper.stopSuck();
-      shooter.setTargetFlywheelSpeed(0);
-    }, intake, hopper, shooter));
+    oi.intakeBalls
+      .whenPressed(
+        new InstantCommand(
+          () -> {
+            intake.startSuck();
+            hopper.startSuck();
+          },
+          intake,
+          hopper))
+      .whenReleased(
+        new InstantCommand(
+          () -> {
+            intake.stopSuck();
+            hopper.stopSuck();
+          },
+          intake,
+          hopper));
 
-    // oi.toggleIntake.whenPressed(
-    // new InstantCommand(
-    // () -> intake.toggleArm()));
+    oi.toggleIntake.whenPressed(
+      new InstantCommand(
+        intake::toggleArm));
 
     // Intake-Hopper-Compressor
-    // oi.startHopper.whenHeld();
+    oi.intakeHopperGroup
+      .whenHeld(
+        new InstantCommand(
+          () -> {
+            intake.startSuck();
+            hopper.startSuck();
+            hopper.startElevator();
+          },
+          intake,
+          hopper))
+      .whenReleased(
+        new InstantCommand(
+          () -> {
+            intake.stopSuck();
+            hopper.stopSuck();
+            hopper.stopElevator();
+          },
+          intake,
+          hopper));
 
     // Climber
-    // oi.extendTelescope.whenHeld(
-    // new RunCommand(() -> climber.runTelescope(false), climber)
-    // );
-    // oi.retractTelescope.whenHeld(
-    // new RunCommand(() -> climber.runTelescope(true), climber)
-    // );
-    // oi.extendArm.whenHeld(
-    // new RunCommand(() -> climber.runArms(false), climber)
-    // );
-    // oi.retractArm.whenHeld(
-    // new RunCommand(() -> climber.runArms(true), climber)
-    // );
+    oi.extendTelescope
+      .whenHeld(
+        new InstantCommand(
+          () -> climber.runTelescope(false),
+          climber))
+      .whenReleased(
+        new InstantCommand(
+          climber::stopTelescope,
+          climber));
+
+    oi.retractTelescope
+      .whenHeld(
+        new InstantCommand(
+          () -> climber.runTelescope(true),
+          climber))
+      .whenReleased(
+        new InstantCommand(
+          climber::stopTelescope,
+          climber));
+      
+    oi.extendArm
+      .whenHeld(
+        new InstantCommand(
+          () -> climber.runArms(false),
+          climber))
+      .whenReleased(
+        new InstantCommand(
+          climber::stopArms,
+          climber));
+
+    oi.retractArm
+      .whenHeld(
+        new InstantCommand(
+          () -> climber.runArms(true),
+          climber))
+      .whenReleased(
+        new InstantCommand(
+          climber::stopArms,
+          climber));
 
     // Shooter
-    // oi.shootButton.whenPressed(new HighShot(shooter, turret, hopper,
-    // vision).withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
+    oi.shootButton.whenPressed(new HighShot(shooter, turret, hopper,
+    vision).withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
   }
 
   public SendableChooser<String> getAutoChooser() {

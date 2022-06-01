@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -51,8 +53,6 @@ public final class Constants {
         // 4 |   ?    |  ?  |  ?  | 
         // 5 |   ?    |  ?  |  ?  | hanger shot
 
-        // 145 in | max power (1) | 0 deg
-
         // quartic regressions
         public static final double getHoodAngle(double distance) {
             return 12;
@@ -67,6 +67,12 @@ public final class Constants {
         // fender shot (low hub) TODO set
         public static final double FENDER_RPM = 2750;
         public static final double FENDER_ANGLE = 0;
+        // other shot that works i guess
+        // 145 in | max power (1) | 0 deg
+        public static final double CHANCE_DIST = Units.inchesToMeters(145);
+        public static final double CHANCE_RPM = 5676;
+        public static final double CHANCE_ANGLE = 0;
+
         // ball ejection detection
         public static final int DELTA_VELOCITY_THRESHOLD = 20;
         // timeouts
