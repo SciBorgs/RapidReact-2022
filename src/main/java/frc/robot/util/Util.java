@@ -299,7 +299,7 @@ public class Util {
 
     // Calculates the heading exactly 180 degrees away from current heading and normalizes it between the bounds of the gyroscope
     public static double normalizeAngle180(double angle) {
-        return (angle-180 > -180) ? angle-180 : angle+180;
+        return angle-180 > -180 ? angle-180 : angle+180;
     }
 
     // Testing util

@@ -51,6 +51,7 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/DriveSubsystem": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/HopperSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/LocalizationSubsystem": "Subsystem",
       "/LiveWindow/PhotonVisionSubsystem": "Subsystem",
@@ -269,10 +270,10 @@
       "Auto Chooser": {
         "open": true
       },
+      "Field": {
+        "open": true
+      },
       "open": true
     }
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }
