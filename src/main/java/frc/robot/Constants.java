@@ -89,7 +89,7 @@ public final class Constants {
         // new hP is from 2020 constants i guess...
         // this seems like it could make the hood move violently
         public static final double hP = 0.14424;
-        public static final double hI = 0;
+        public static final double hI = 0.1;
         public static final double hD = 0.14486;
         // Flywheel FF
         public static final double fS = 0.13419;
