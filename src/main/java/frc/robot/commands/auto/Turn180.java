@@ -17,7 +17,8 @@ public class Turn180 extends PIDCommand {
                 output -> drive.driveRobot(DriveMode.TANK,
                         drive.getHeading() < Util.normalizeAngle180(drive.getHeading()) ? output : -output, 
                         drive.getHeading() < Util.normalizeAngle180(drive.getHeading()) ? -output : output),
-                drive);
+                drive
+            );
 
         getController().enableContinuousInput(-180, 180);
         getController().setTolerance(0.2);
