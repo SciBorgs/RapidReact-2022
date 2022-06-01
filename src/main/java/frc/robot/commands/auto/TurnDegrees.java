@@ -6,13 +6,12 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 
-
-public class TurnToAngle extends PIDCommand {
-    public TurnToAngle(double targetDegrees, DriveSubsystem drive) {
+public class TurnDegrees extends PIDCommand {
+    public TurnDegrees(double degrees, DriveSubsystem drive) {
         super(
                 new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
                 drive::getHeading,
-                targetDegrees,
+                drive.getHeading() + degrees,
                 output -> drive.driveRobot(DriveMode.TANK, -output, output),
                 drive);
 
@@ -24,5 +23,4 @@ public class TurnToAngle extends PIDCommand {
     public boolean isFinished() {
         return getController().atSetpoint();
     }
-
 }
