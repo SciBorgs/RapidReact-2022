@@ -7,14 +7,21 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
 /**
  * fender shot
  */
 public class OneBallAuto extends SequentialCommandGroup {
-    public OneBallAuto(DriveSubsystem drive, HopperSubsystem hopper, IntakeSubsystem intake, ShooterSubsystem shooter) {
+    public OneBallAuto(DriveSubsystem drive, HopperSubsystem hopper, IntakeSubsystem intake, ShooterSubsystem shooter, TurretSubsystem turret) {
         addCommands(
-                new Shoot(shooter, hopper).withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT),
+                new Shoot(
+                        () -> ShooterConstants.FENDER_RPM,
+                        () -> ShooterConstants.FENDER_ANGLE,
+                        () -> 0,
+                        shooter,
+                        turret,
+                        hopper),
                 new Turn180(drive),
                 new DriveRamsete(drive, "DriveOffTarmac", true)
         );

@@ -54,7 +54,6 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
-    // TODO remove, move updating to periodic
     public void updateBallCounter(){
 
         if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end (falling edge = turning off)

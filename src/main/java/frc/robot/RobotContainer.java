@@ -232,11 +232,7 @@ public class RobotContainer {
     // new InstantCommand(() -> turret.setTargetAngle(15), turret),
     // new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
     // );
-    return new Shoot(
-      () -> ShooterConstants.FENDER_RPM,
-      () -> ShooterConstants.FENDER_ANGLE,
-      shooter,
-      hopper);
+    return new InstantCommand();
   }
 
   /**

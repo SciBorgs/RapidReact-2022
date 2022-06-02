@@ -64,7 +64,7 @@ public final class Constants {
         // default shot (tarmac line) TODO set
         public static final double TARMAC_RPM = 0;
         public static final double TARMAC_ANGLE = 0;
-        // fender shot (low hub) TODO set
+        // fender shot (low hub)
         public static final double FENDER_RPM = 2750;
         public static final double FENDER_ANGLE = 0;
         // other shot that works i guess
