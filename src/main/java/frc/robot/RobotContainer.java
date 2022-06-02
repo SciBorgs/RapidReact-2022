@@ -10,13 +10,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.RumbleCommand;
-import frc.robot.commands.ToggleCompressorCommand;
-import frc.robot.commands.FenderShot;
-import frc.robot.commands.HighShot;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -29,7 +26,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Util;
-import java_cup.runtime.lr_parser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -202,8 +198,17 @@ public class RobotContainer {
           climber));
 
     // Shooter
-    oi.shootButton.whenPressed(new HighShot(shooter, turret, hopper,
-    vision).withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
+    oi.shootButton.whenPressed(
+      new Shoot(
+        () -> ShooterConstants.getRPM(vision.getDistance()),
+        () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+        shooter,
+        hopper)
+      .raceWith(
+        new RunCommand(
+          () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()),
+          turret))
+      .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
   }
 
   public SendableChooser<String> getAutoChooser() {
@@ -230,7 +235,11 @@ public class RobotContainer {
     // new InstantCommand(() -> turret.setTargetAngle(15), turret),
     // new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
     // );
-    return new FenderShot(shooter, hopper);
+    return new Shoot(
+      () -> ShooterConstants.FENDER_RPM,
+      () -> ShooterConstants.FENDER_ANGLE,
+      shooter,
+      hopper);
   }
 
   /**
