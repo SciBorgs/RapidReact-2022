@@ -26,6 +26,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Util;
+import frc.robot.commands.DriveRamsete;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -220,7 +221,7 @@ public class RobotContainer {
     // return new TurnToAngle(180, drive);
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    // return new DriveRamsete(drive, autoChooser.getSelected(), true);
+    return new DriveRamsete(drive, autoChooser.getSelected(), true);
     // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
 
     // testing shooter
@@ -230,7 +231,7 @@ public class RobotContainer {
     // new InstantCommand(() -> turret.setTargetAngle(15), turret),
     // new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
     // );
-    return new InstantCommand();
+    // return new InstantCommand();
   }
 
   /**
