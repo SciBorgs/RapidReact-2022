@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
 import frc.robot.util.Blockable;
+import frc.robot.util.SafeBangBangController;
 import frc.robot.util.BallCounter;
 
 @Blockable
@@ -31,7 +32,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     private final PIDController hoodFeedback = new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
     private final SimpleMotorFeedforward hoodFeedforward = new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA);
     // Flywheel control
-    private final PIDController flywheelFeedback = new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD);
+    private final SafeBangBangController flywheelFeedback;
     private final SimpleMotorFeedforward flywheelFeedforward = new SimpleMotorFeedforward(ShooterConstants.fS, ShooterConstants.fV, ShooterConstants.fA);
     
     private double targetSpeed; // desired speed of the flywheel (rpm)
@@ -63,7 +64,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         hoodEncoder.setDistancePerPulse(ShooterConstants.DISTANCE_PER_PULSE);
 
         hoodFeedback.setTolerance(0.2);
-        flywheelFeedback.setTolerance(0.2, 200); // TODO possibly update | if shooting never finishes, this is probably why
+        flywheelFeedback = new SafeBangBangController(lmotor, rmotor);
 
         targetSpeed = 0.0;
         targetAngle = 0.0;
