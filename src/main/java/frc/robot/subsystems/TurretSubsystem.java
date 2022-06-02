@@ -78,6 +78,6 @@ public class TurretSubsystem extends SubsystemBase {
         lastSpeed = feedback.getSetpoint().velocity;
         lastTime = Timer.getFPGATimestamp();
 
-        // turret.setVoltage(fb + ff);
+        turret.setVoltage(fb + ff);
     }
 }
