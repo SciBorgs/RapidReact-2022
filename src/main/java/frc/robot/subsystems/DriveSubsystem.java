@@ -50,6 +50,8 @@ public class DriveSubsystem extends SubsystemBase {
             new SciSpark(PortMap.Drivetrain.RIGHT_BACK_SPARK)
     };
 
+    private SciPigeon pigeon;
+
     private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
     private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
     private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
@@ -102,8 +104,8 @@ public class DriveSubsystem extends SubsystemBase {
         rightGroup.setInverted(true);
         drive.setDeadband(0.05);
 
-        // pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
-        // pigeonSim = pigeon.getSimCollection();
+        pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
+        pigeonSim = pigeon.getSimCollection();
 
         driveSim = new DifferentialDrivetrainSim(
                 DCMotor.getNEO(2),
@@ -171,8 +173,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getRotation() {
-        // return pigeon.getRotation2d();
-        return Rotation2d.fromDegrees(0);
+        return pigeon.getRotation2d();
+        // return Rotation2d.fromDegrees(0);
     }
 
     public Pose2d getPose() {
