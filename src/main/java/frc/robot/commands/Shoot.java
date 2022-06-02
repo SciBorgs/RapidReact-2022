@@ -24,7 +24,7 @@ public class Shoot extends SequentialCommandGroup {
      * @param hopper
      */
     public Shoot(DoubleSupplier speed, DoubleSupplier angle, DoubleSupplier horizontalOffset, ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper) {
-        var isShooting = new Debouncer(VisionConstants.TIMESCALE, DebounceType.kFalling);
+        var isShooting = new Debouncer(VisionConstants.TIMESCALE, DebounceType.kBoth);
         var prepare = new FunctionalCommand(
             () -> {},
             // periodic

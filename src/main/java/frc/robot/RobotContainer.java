@@ -205,6 +205,7 @@ public class RobotContainer {
         shooter,
         turret,
         hopper));
+    // need second shooter button
   }
 
   public SendableChooser<String> getAutoChooser() {
@@ -245,10 +246,10 @@ public class RobotContainer {
                 oi.leftStick.getY(),
                 oi.rightStick.getY()),
             drive));
-      rumble.setDefaultCommand(
+    rumble.setDefaultCommand(
         new ConditionalCommand(
-          new InstantCommand(rumble::rumble),
-          new InstantCommand(rumble::stopRumble),
-          drive::isStalling));
+            new InstantCommand(rumble::rumble),
+            new InstantCommand(rumble::stopRumble),
+            drive::isStalling));
   }
 }
