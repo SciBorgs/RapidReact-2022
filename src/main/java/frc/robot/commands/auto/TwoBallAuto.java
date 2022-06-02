@@ -37,6 +37,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
                         hopper),
                 new InstantCommand(
                         () -> intake.stopSuck(),
-                        intake));
+                        intake)
+                );
     }
 }
