@@ -29,7 +29,8 @@ public class OI {
     public final JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
 
     // Buttons | Shooter
-    public final JoystickButton shootButton;
+    public final JoystickButton highShot;
+    public final JoystickButton fenderShot;
 
     public OI(boolean isXbox) {
         this.isXbox = isXbox;
@@ -63,7 +64,8 @@ public class OI {
             this.retractArm = new DPadButton(this.xboxController, DPadButton.Direction.RIGHT);
 
             // Shooter
-            this.shootButton = new JoystickButton(this.xboxController, XboxControllerMap.Button.X);
+            this.highShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.X);
+            this.fenderShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.A);
         } else {
             // Intake
             this.intakeBalls = new JoystickButton(this.leftStick, JoystickMap.Button.LEFT);
@@ -80,8 +82,9 @@ public class OI {
             this.extendArm = new DPadButton(this.rightStick, DPadButton.Direction.LEFT);
             this.retractArm = new DPadButton(this.rightStick, DPadButton.Direction.RIGHT);
 
-            // Shooterl
-            this.shootButton = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
+            // Shooter
+            this.highShot = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
+            this.fenderShot = new DPadButton(this.leftStick, DPadButton.Direction.UP); // TODO possibly change
         }
     }
 }

@@ -197,7 +197,7 @@ public class RobotContainer {
           climber));
 
     // Shooter
-    oi.shootButton.whenPressed(
+    oi.highShot.whenPressed(
       new Shoot(
         () -> ShooterConstants.getRPM(vision.getDistance()),
         () -> ShooterConstants.getHoodAngle(vision.getDistance()),
@@ -205,7 +205,16 @@ public class RobotContainer {
         shooter,
         turret,
         hopper));
-    // need second shooter button
+    
+    oi.fenderShot.whenPressed(
+      new Shoot(
+        () -> ShooterConstants.FENDER_RPM,
+        () -> ShooterConstants.FENDER_ANGLE,
+        () -> 0,
+        shooter,
+        turret,
+        hopper));
+  
   }
 
   public SendableChooser<String> getAutoChooser() {
