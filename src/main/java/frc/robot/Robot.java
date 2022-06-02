@@ -36,7 +36,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
     SmartDashboard.putData("Reset Drive", new ResetDriveCommand(m_robotContainer.drive));
     TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
-    // CommandScheduler.getInstance().schedule(m_robotContainer.rumbleCommand);
     System.out.println(Util.getPathPlannerPathNames());
   }
 
