@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -248,7 +247,7 @@ public class RobotContainer {
       rumble.setDefaultCommand(
         new ConditionalCommand(
           new InstantCommand(rumble::rumble),
-          new InstantCommand(rumble::stopRumble,
+          new InstantCommand(rumble::stopRumble),
           drive::isStalling));
   }
 }

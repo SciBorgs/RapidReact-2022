@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.auto.ResetDriveCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.util.TrajectoryRegister;
 import frc.robot.util.Util;
 
@@ -34,7 +35,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     SmartDashboard.putData("Field", m_robotContainer.drive.field2d);
     SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
-    SmartDashboard.putData("Reset Drive", new ResetDriveCommand(m_robotContainer.drive));
+    SmartDashboard.putData("Reset Drive", new InstantCommand(() -> m_robotContainer.drive.reset()));
     TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     System.out.println(Util.getPathPlannerPathNames());
   }
