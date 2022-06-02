@@ -46,12 +46,11 @@ public class HopperSubsystem extends SubsystemBase {
 
         this.hopperSuckSpeed.getEntry().addListener(event -> {
             this.startSuck(event.getEntry().getDouble(suckSpeed));
-        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+        }, EntryListenerFlags.kUpdate);
 
         this.hopperElevatorSpeed.getEntry().addListener(event -> {
             this.startElevator(event.getEntry().getDouble(elevatorSpeed));
-        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
+        }, EntryListenerFlags.kUpdate);
     }
 
     public void startSuck() {
