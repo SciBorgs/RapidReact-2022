@@ -202,13 +202,10 @@ public class RobotContainer {
       new Shoot(
         () -> ShooterConstants.getRPM(vision.getDistance()),
         () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+        () -> vision.getXOffset(),
         shooter,
-        hopper)
-      .raceWith(
-        new RunCommand(
-          () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()),
-          turret))
-      .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
+        turret,
+        hopper));
   }
 
   public SendableChooser<String> getAutoChooser() {
