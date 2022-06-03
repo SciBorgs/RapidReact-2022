@@ -101,7 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
             motor.setSmartCurrentLimit(20);
         }
 
-        rightGroup.setInverted(true);
+        left.setInverted(true);
         drive.setDeadband(0.05);
 
         pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
@@ -148,7 +148,7 @@ public class DriveSubsystem extends SubsystemBase {
         // Controller interface
         switch (mode) {
             case TANK:
-                drive.tankDrive(first, second);
+                drive.tankDrive(-first, -second);
                 break;
             case ARCADE:
                 drive.arcadeDrive(filter1.calculate(first), second);
