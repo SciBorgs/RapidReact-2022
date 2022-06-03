@@ -257,8 +257,8 @@ public class RobotContainer {
             drive));
     rumble.setDefaultCommand(
         new ConditionalCommand(
-            new InstantCommand(rumble::rumble),
-            new InstantCommand(rumble::stopRumble),
+            new InstantCommand(rumble::rumble, rumble),
+            new InstantCommand(rumble::stopRumble, rumble),
             drive::isStalling));
   }
 }
