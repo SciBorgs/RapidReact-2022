@@ -101,7 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
             motor.setSmartCurrentLimit(20);
         }
 
-        left.setInverted(true);
+        leftGroup.setInverted(true);
         drive.setDeadband(0.05);
 
         pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
