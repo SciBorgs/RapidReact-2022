@@ -66,7 +66,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         hoodEncoder.setDistancePerPulse(ShooterConstants.DISTANCE_PER_PULSE);
 
         hoodFeedback.setTolerance(0.2);
-        flywheelFeedback.setTolerance(0.2, 100);
+        flywheelFeedback.setTolerance(100);
 
         targetSpeed = 0.0;
         targetAngle = 0.0;
