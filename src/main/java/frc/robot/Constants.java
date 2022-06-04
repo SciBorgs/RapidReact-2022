@@ -44,7 +44,7 @@ public final class Constants {
         public static final int maxAccel = 4;
 
         // misc
-        public static final double driveBackSpeeds = -0.8;
+        public static final double driveBackSpeeds = -0.3;
     }
     
     public static final class ShooterConstants {

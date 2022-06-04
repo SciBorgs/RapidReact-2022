@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -63,7 +64,6 @@ public class RobotContainer {
   // shooter, intake, hopper, pneumatics,
   // climber, monitor, rumble);
 
-
   // blocker
   // private final Command block = Util.blockSubsystems(subsystems);
 
@@ -103,111 +103,111 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Compressor
     oi.toggleCompressor
-      .toggleWhenPressed(
-        new StartEndCommand(
-          pneumatics::start,
-          pneumatics::stop,
-          pneumatics));
+        .toggleWhenPressed(
+            new StartEndCommand(
+                pneumatics::start,
+                pneumatics::stop,
+                pneumatics));
 
     // Intake
     oi.runIntake
-      .whenPressed(
-        new InstantCommand(
-          () -> {
-            intake.startSuck();
-            hopper.startSuck();
-          },
-          intake,
-          hopper))
-      .whenReleased(
-        new InstantCommand(
-          () -> {
-            intake.stopSuck();
-            hopper.stopSuck();
-          },
-          intake,
-          hopper));
+        .whenPressed(
+            new InstantCommand(
+                () -> {
+                  intake.startSuck();
+                  hopper.startSuck();
+                },
+                intake,
+                hopper))
+        .whenReleased(
+            new InstantCommand(
+                () -> {
+                  intake.stopSuck();
+                  hopper.stopSuck();
+                },
+                intake,
+                hopper));
 
     oi.actuateIntake.whenPressed(
-      new InstantCommand(
-        intake::toggleArm,
-        intake));
+        new InstantCommand(
+            intake::toggleArm,
+            intake));
 
     // Intake-Hopper-Compressor
     oi.runHopper
-      .whenHeld(
-        new InstantCommand(
-          () -> {
-            hopper.startSuck();
-            hopper.startElevator();
-          },
-          hopper))
-      .whenReleased(
-        new InstantCommand(
-          () -> {
-            hopper.stopSuck();
-            hopper.stopElevator();
-          },
-          hopper));
+        .whenHeld(
+            new InstantCommand(
+                () -> {
+                  hopper.startSuck();
+                  hopper.startElevator();
+                },
+                hopper))
+        .whenReleased(
+            new InstantCommand(
+                () -> {
+                  hopper.stopSuck();
+                  hopper.stopElevator();
+                },
+                hopper));
 
     // Climber
     // oi.extendTelescope
-    //   .whenHeld(
-    //     new InstantCommand(
-    //       () -> climber.runTelescope(false),
-    //       climber))
-    //   .whenReleased(
-    //     new InstantCommand(
-    //       climber::stopTelescope,
-    //       climber));
+    // .whenHeld(
+    // new InstantCommand(
+    // () -> climber.runTelescope(false),
+    // climber))
+    // .whenReleased(
+    // new InstantCommand(
+    // climber::stopTelescope,
+    // climber));
 
     // oi.retractTelescope
-    //   .whenHeld(
-    //     new InstantCommand(
-    //       () -> climber.runTelescope(true),
-    //       climber))
-    //   .whenReleased(
-    //     new InstantCommand(
-    //       climber::stopTelescope,
-    //       climber));
-      
+    // .whenHeld(
+    // new InstantCommand(
+    // () -> climber.runTelescope(true),
+    // climber))
+    // .whenReleased(
+    // new InstantCommand(
+    // climber::stopTelescope,
+    // climber));
+
     // oi.extendArm
-    //   .whenHeld(
-    //     new InstantCommand(
-    //       () -> climber.runArms(false),
-    //       climber))
-    //   .whenReleased(
-    //     new InstantCommand(
-    //       climber::stopArms,
-    //       climber));
+    // .whenHeld(
+    // new InstantCommand(
+    // () -> climber.runArms(false),
+    // climber))
+    // .whenReleased(
+    // new InstantCommand(
+    // climber::stopArms,
+    // climber));
 
     // oi.retractArm
-    //   .whenHeld(
-    //     new InstantCommand(
-    //       () -> climber.runArms(true),
-    //       climber))
-    //   .whenReleased(
-    //     new InstantCommand(
-    //       climber::stopArms,
-    //       climber));
+    // .whenHeld(
+    // new InstantCommand(
+    // () -> climber.runArms(true),
+    // climber))
+    // .whenReleased(
+    // new InstantCommand(
+    // climber::stopArms,
+    // climber));
 
     // Shooter
     oi.highShot.whenPressed(
-      new Shoot(
-        () -> ShooterConstants.getRPM(vision.getDistance()),
-        () -> vision.getXOffset(),
-        shooter,
-        turret,
-        hopper));
-    
+        new Shoot(
+            () -> ShooterConstants.getRPM(vision.getDistance()),
+            () -> vision.getXOffset(),
+            shooter,
+            turret,
+            hopper));
+
     oi.fenderShot.whenPressed(
-      new Shoot(
-        () -> ShooterConstants.FENDER_RPM,
-        () -> 0,
-        shooter,
-        turret,
-        hopper));
-  
+        new Shoot(
+            () -> ShooterConstants.FENDER_RPM,
+            () -> 0,
+            shooter,
+            turret,
+            hopper));
+
   }
 
   public SendableChooser<String> getAutoChooser() {
@@ -225,10 +225,12 @@ public class RobotContainer {
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     // return new Turn180(drive);
-    return new StartEndCommand(
+    return new FunctionalCommand(
+      () -> {},
       () -> {
         drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds, DriveConstants.driveBackSpeeds);}, 
-      () -> drive.driveRobot(DriveMode.TANK, 0, 0), 
+      (interrupted) -> {drive.driveRobot(DriveMode.TANK, 0, 0);}, 
+      () -> false,
       drive).withTimeout(10);
     // return new DriveRamsete(drive, autoChooser.getSelected(), true);
     // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
@@ -247,18 +249,22 @@ public class RobotContainer {
    * sets default commands during teleop
    */
   public void setTeleopCommands() {
-    // why are joysticks 1 to -1. why. why. I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY
+    // why are joysticks 1 to -1. why. why. I AM GOING TO CRY I AM GOING TO CRY I AM
+    // GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING
+    // TO CRY
     drive.setDefaultCommand(
         new RunCommand(
-            () -> {drive.driveRobot(
-                DriveSubsystem.DriveMode.TANK,
-                -oi.leftStick.getY(),
-                -oi.rightStick.getY());},
+            () -> {
+              drive.driveRobot(
+                  DriveSubsystem.DriveMode.TANK,
+                  -oi.leftStick.getY(),
+                  -oi.rightStick.getY());
+            },
             drive));
     // rumble.setDefaultCommand(
-    //     new ConditionalCommand(
-    //         new InstantCommand(rumble::rumble, rumble),
-    //         new InstantCommand(rumble::stopRumble, rumble),
-    //         drive::isStalling));
+    // new ConditionalCommand(
+    // new InstantCommand(rumble::rumble, rumble),
+    // new InstantCommand(rumble::stopRumble, rumble),
+    // drive::isStalling));
   }
 }
