@@ -151,45 +151,45 @@ public class RobotContainer {
           hopper));
 
     // Climber
-    oi.extendTelescope
-      .whenHeld(
-        new InstantCommand(
-          () -> climber.runTelescope(false),
-          climber))
-      .whenReleased(
-        new InstantCommand(
-          climber::stopTelescope,
-          climber));
+    // oi.extendTelescope
+    //   .whenHeld(
+    //     new InstantCommand(
+    //       () -> climber.runTelescope(false),
+    //       climber))
+    //   .whenReleased(
+    //     new InstantCommand(
+    //       climber::stopTelescope,
+    //       climber));
 
-    oi.retractTelescope
-      .whenHeld(
-        new InstantCommand(
-          () -> climber.runTelescope(true),
-          climber))
-      .whenReleased(
-        new InstantCommand(
-          climber::stopTelescope,
-          climber));
+    // oi.retractTelescope
+    //   .whenHeld(
+    //     new InstantCommand(
+    //       () -> climber.runTelescope(true),
+    //       climber))
+    //   .whenReleased(
+    //     new InstantCommand(
+    //       climber::stopTelescope,
+    //       climber));
       
-    oi.extendArm
-      .whenHeld(
-        new InstantCommand(
-          () -> climber.runArms(false),
-          climber))
-      .whenReleased(
-        new InstantCommand(
-          climber::stopArms,
-          climber));
+    // oi.extendArm
+    //   .whenHeld(
+    //     new InstantCommand(
+    //       () -> climber.runArms(false),
+    //       climber))
+    //   .whenReleased(
+    //     new InstantCommand(
+    //       climber::stopArms,
+    //       climber));
 
-    oi.retractArm
-      .whenHeld(
-        new InstantCommand(
-          () -> climber.runArms(true),
-          climber))
-      .whenReleased(
-        new InstantCommand(
-          climber::stopArms,
-          climber));
+    // oi.retractArm
+    //   .whenHeld(
+    //     new InstantCommand(
+    //       () -> climber.runArms(true),
+    //       climber))
+    //   .whenReleased(
+    //     new InstantCommand(
+    //       climber::stopArms,
+    //       climber));
 
     // Shooter
     oi.highShot.whenPressed(
@@ -226,9 +226,10 @@ public class RobotContainer {
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     // return new Turn180(drive);
     return new StartEndCommand(
-      () -> drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds, DriveConstants.driveBackSpeeds), 
-      () -> drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds, DriveConstants.driveBackSpeeds), 
-      drive).withTimeout(3);
+      () -> {
+        drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds, DriveConstants.driveBackSpeeds);}, 
+      () -> drive.driveRobot(DriveMode.TANK, 0, 0), 
+      drive).withTimeout(10);
     // return new DriveRamsete(drive, autoChooser.getSelected(), true);
     // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
     // return new FenderOneBallAuto(drive, intake, hopper, shooter, turret);
@@ -246,12 +247,13 @@ public class RobotContainer {
    * sets default commands during teleop
    */
   public void setTeleopCommands() {
+    // why are joysticks 1 to -1. why. why. I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY
     drive.setDefaultCommand(
         new RunCommand(
-            () -> drive.driveRobot(
+            () -> {drive.driveRobot(
                 DriveSubsystem.DriveMode.TANK,
-                oi.leftStick.getY(),
-                oi.rightStick.getY()),
+                -oi.leftStick.getY(),
+                -oi.rightStick.getY());},
             drive));
     // rumble.setDefaultCommand(
     //     new ConditionalCommand(

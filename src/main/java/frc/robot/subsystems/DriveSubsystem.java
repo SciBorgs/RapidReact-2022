@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
@@ -104,6 +105,9 @@ public class DriveSubsystem extends SubsystemBase {
         leftGroup.setInverted(true);
         drive.setDeadband(0.05);
 
+        for (SciSpark motor : allSparks) {
+            motor.burnFlash();
+        }
         pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
         pigeonSim = pigeon.getSimCollection();
 
@@ -156,7 +160,7 @@ public class DriveSubsystem extends SubsystemBase {
         // Controller interface
         switch (mode) {
             case TANK:
-                drive.tankDrive(-first, -second);
+                drive.tankDrive(first, second);
                 break;
             case ARCADE:
                 drive.arcadeDrive(filter1.calculate(first), second);

@@ -25,23 +25,23 @@ public class Shoot extends SequentialCommandGroup {
      */
     public Shoot(DoubleSupplier speed, DoubleSupplier horizontalOffset, ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper) {
         var isShooting = new Debouncer(VisionConstants.TIMESCALE, DebounceType.kBoth);
-        var prepare = new FunctionalCommand(
-            () -> {},
-            // periodic
-            () -> {
-                shooter.setTargetFlywheelSpeed(speed.getAsDouble());
-                turret.setTargetAngle(turret.getCurrentAngle() + horizontalOffset.getAsDouble());
-            },
-            (interupted) -> {},
-            // end condition
-        () -> isShooting.calculate( shooter.atTargetRPM() && turret.atTarget()),
-            shooter,
-            turret);
-
+        // var prepare = new FunctionalCommand(
+        //     () -> {},
+        //     // periodic
+        //     () -> {
+        //         shooter.setTargetFlywheelSpeed(speed.getAsDouble());
+        //         turret.setTargetAngle(turret.getCurrentAngle() + horizontalOffset.getAsDouble());
+        //     },
+        //     (interupted) -> {},
+        //     // end condition
+        // () -> isShooting.calculate( shooter.atTargetRPM() && turret.atTarget()),
+        //     shooter,
+        //     turret);
         addCommands(
-            prepare, // spin up
+            new InstantCommand(() -> shooter.setTargetFlywheelSpeed(0.7)), // spin up
+            new WaitCommand(2),
             new InstantCommand(hopper::startElevator, hopper), // run elevator, might need double ball timeout
-            new WaitCommand(ShooterConstants.SINGLE_BALL_TIMEOUT),
+            new WaitCommand(2),
             new InstantCommand(
                 () -> {
                     shooter.setTargetFlywheelSpeed(0);

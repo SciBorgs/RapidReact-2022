@@ -51,8 +51,8 @@ public class OI {
             this.toggleCompressor = new JoystickButton(this.xboxController, XboxControllerMap.Button.START);
 
             // Climber
-            this.extendTelescope = new DPadButton(this.xboxController, DPadButton.Direction.UP);
-            this.retractTelescope = new DPadButton(this.xboxController, DPadButton.Direction.DOWN);
+            this.extendTelescope = new JoystickButton(this.xboxController, XboxControllerMap.Button.Y);
+            this.retractTelescope = new JoystickButton(this.xboxController, XboxControllerMap.Button.B);
             // TODO: make sure extend and retract are actually forward and backward relative
             // to the center of the robot
             // (we probably mixed them up)

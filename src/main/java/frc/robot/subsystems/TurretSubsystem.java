@@ -43,7 +43,9 @@ public class TurretSubsystem extends SubsystemBase {
         // mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
 
         turret.setIdleMode(IdleMode.kBrake);
-        turret.setSmartCurrentLimit(30);
+        turret.setSmartCurrentLimit(1);
+
+        turret.burnFlash();
         
         targetAngle = 0; // (deg)
 

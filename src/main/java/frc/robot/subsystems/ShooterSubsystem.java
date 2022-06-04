@@ -47,6 +47,9 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         rmotor.setIdleMode(IdleMode.kCoast);
         lmotor.setIdleMode(IdleMode.kCoast);
 
+        rmotor.setSmartCurrentLimit(30);
+        lmotor.setSmartCurrentLimit(30);
+
         rmotor.burnFlash();
         lmotor.burnFlash();
 
@@ -99,18 +102,14 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     @Override
     public void periodic() {
         // updating controllers for flywheel
-        flywheelFeedback.setSetpoint(getTargetFlywheelSpeed());
-        double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
-        System.out.println("Current: " + getCurrentFlywheelSpeed() + "; Target: " + getTargetFlywheelSpeed()
-                + " feedback : " + flywheelFB);
+        System.out.println("Current: " + getCurrentFlywheelSpeed() + "; Target: " + getTargetFlywheelSpeed());
 
-        setTargetFlywheelSpeed(flywheelFB);
         // System.out.println(flywheelFeedback.getSetpoint() + " " + getTargetFlywheelSpeed());
 
         if (targetSpeed == 0)
             rmotor.stopMotor();
         else
-            rmotor.set(0);
+            rmotor.set(0.7);
         // updating ball count
         if (flywheelFeedback.getSetpoint() > 0
                 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VELOCITY_THRESHOLD) {

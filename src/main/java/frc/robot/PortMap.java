@@ -66,11 +66,11 @@ public final class PortMap {
         }
 
         public static final class Axis {
-            public static final int X = Joystick.AxisType.kX.value;
-            public static final int Y = Joystick.AxisType.kY.value;
+            public static final int X = Joystick.kDefaultXChannel;
+            public static final int Y = Joystick.kDefaultYChannel;
             // i think:
-            public static final int TWIST = Joystick.AxisType.kTwist.value;
-            public static final int THROTTLE = Joystick.AxisType.kThrottle.value;
+            public static final int TWIST = Joystick.kDefaultTwistChannel;
+            public static final int THROTTLE = Joystick.kDefaultThrottleChannel;
 
             public static final int POV = 0; // TODO: populate
         }

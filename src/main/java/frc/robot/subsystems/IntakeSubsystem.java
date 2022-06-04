@@ -36,7 +36,7 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
         // this.suckSpark.setInverted(true); // invert the motor
         this.limitSwitch = new DigitalInput(PortMap.Intake.LIMIT_SWITCH);
 
-        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+        this.armSolenoid.set(DoubleSolenoid.Value.kForward);
 
         this.intakeSpeed = 0;
 
