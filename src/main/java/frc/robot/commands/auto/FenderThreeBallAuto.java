@@ -32,7 +32,7 @@ public class FenderThreeBallAuto extends SequentialCommandGroup {
             new Turn180(drive),
             new Shoot(
                 () -> ShooterConstants.FENDER_RPM,
-                () -> ShooterConstants.FENDER_ANGLE,
+
                 () -> 0,
                 shooter,
                 turret,
@@ -47,7 +47,7 @@ public class FenderThreeBallAuto extends SequentialCommandGroup {
             new Turn180(drive),
             new Shoot(
                 () -> ShooterConstants.FENDER_RPM,
-                () -> ShooterConstants.FENDER_ANGLE,
+
                 () -> 0,
                 shooter,
                 turret,

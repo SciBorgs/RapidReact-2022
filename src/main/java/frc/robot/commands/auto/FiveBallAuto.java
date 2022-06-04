@@ -30,7 +30,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
         addCommands(
                 new Shoot(
                         () -> ShooterConstants.getRPM(vision.getDistance()),
-                        () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+
                         () -> vision.getXOffset(),
                         shooter,
                         turret,
@@ -43,7 +43,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
                 new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage1", true),
                 new Shoot(
                         () -> ShooterConstants.getRPM(vision.getDistance()),
-                        () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+
                         () -> vision.getXOffset(),
                         shooter,
                         turret,
@@ -57,7 +57,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
                 new Turn180(drive),
                 new Shoot(
                         () -> ShooterConstants.getRPM(vision.getDistance()),
-                        () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+
                         () -> vision.getXOffset(),
                         shooter,
                         turret,

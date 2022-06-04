@@ -16,7 +16,7 @@ public class FenderOneBallAuto extends SequentialCommandGroup {
         addCommands(
             // new Shoot(
             //     () -> ShooterConstants.FENDER_RPM,
-            //     () -> ShooterConstants.FENDER_ANGLE,
+
             //     () -> 0,
             //     shooter,
             //     turret,

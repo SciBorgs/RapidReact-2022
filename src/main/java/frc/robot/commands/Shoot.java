@@ -20,25 +20,23 @@ public class Shoot extends SequentialCommandGroup {
     /**
      * Initializes the shoot command group
      * @param speed flywheel rpm
-     * @param angle hood angle
      * @param horizontalOffset distance for the turret to turn
      * @param shooter
      * @param turret
      * @param hopper
      */
-    public Shoot(DoubleSupplier speed, DoubleSupplier angle, DoubleSupplier horizontalOffset, ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper) {
+    public Shoot(DoubleSupplier speed, DoubleSupplier horizontalOffset, ShooterSubsystem shooter, TurretSubsystem turret, HopperSubsystem hopper) {
         var isShooting = new Debouncer(VisionConstants.TIMESCALE, DebounceType.kBoth);
         var prepare = new FunctionalCommand(
             () -> {},
             // periodic
             () -> {
                 shooter.setTargetFlywheelSpeed(speed.getAsDouble());
-                shooter.setTargetHoodAngle(angle.getAsDouble());
                 turret.setTargetAngle(turret.getCurrentAngle() + horizontalOffset.getAsDouble());
             },
             (interupted) -> {},
             // end condition
-        () -> isShooting.calculate(shooter.atTargetAngle() && shooter.atTargetRPM() && turret.atTarget()),
+        () -> isShooting.calculate( shooter.atTargetRPM() && turret.atTarget()),
             shooter,
             turret);
 
@@ -49,7 +47,6 @@ public class Shoot extends SequentialCommandGroup {
             new InstantCommand(
                 () -> {
                     shooter.setTargetFlywheelSpeed(0);
-                    shooter.setTargetHoodAngle(0);
                     turret.setTargetAngle(0);
                     hopper.stopElevator();
                 }));

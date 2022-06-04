@@ -31,7 +31,7 @@ public class FourBallAuto extends SequentialCommandGroup {
                 new Turn180(drive),
                 new Shoot(
                         () -> ShooterConstants.getRPM(vision.getDistance()),
-                        () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+
                         () -> vision.getXOffset(),
                         shooter,
                         turret,
@@ -45,7 +45,7 @@ public class FourBallAuto extends SequentialCommandGroup {
                 new Turn180(drive),
                 new Shoot(
                         () -> ShooterConstants.getRPM(vision.getDistance()),
-                        () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+
                         () -> vision.getXOffset(),
                         shooter,
                         turret,

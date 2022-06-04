@@ -30,7 +30,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         addCommands(
             new Shoot(
                 () -> ShooterConstants.getRPM(vision.getDistance()),
-                () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+
                 () -> vision.getXOffset(),
                 shooter,
                 turret,
@@ -46,7 +46,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
             new Turn180(drive),
             new Shoot(
                 () -> ShooterConstants.getRPM(vision.getDistance()),
-                () -> ShooterConstants.getHoodAngle(vision.getDistance()),
+
                 () -> vision.getXOffset(),
                 shooter,
                 turret,

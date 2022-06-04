@@ -199,7 +199,6 @@ public class RobotContainer {
     oi.highShot.whenPressed(
       new Shoot(
         () -> ShooterConstants.getRPM(vision.getDistance()),
-        () -> ShooterConstants.getHoodAngle(vision.getDistance()),
         () -> vision.getXOffset(),
         shooter,
         turret,
@@ -208,7 +207,6 @@ public class RobotContainer {
     oi.fenderShot.whenPressed(
       new Shoot(
         () -> ShooterConstants.FENDER_RPM,
-        () -> ShooterConstants.FENDER_ANGLE,
         () -> 0,
         shooter,
         turret,
