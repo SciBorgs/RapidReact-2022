@@ -36,7 +36,7 @@ public class Shoot extends SequentialCommandGroup {
             },
             (interupted) -> {},
             // end condition
-            () -> isShooting.calculate(shooter.atTargetAngle() && shooter.atTargetRPM() && turret.atTarget()),
+        () -> isShooting.calculate(shooter.atTargetAngle() && shooter.atTargetRPM() && turret.atTarget()),
             shooter,
             turret);
 
