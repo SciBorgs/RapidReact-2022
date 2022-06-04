@@ -41,8 +41,7 @@ public class Shoot extends SequentialCommandGroup {
 
         addCommands(
             prepare, // spin up
-            new InstantCommand(hopper::startElevator) // run elevator, might need double ball timeout
-                .withTimeout(ShooterConstants.SINGLE_BALL_TIMEOUT),
+            new InstantCommand(hopper::startElevator), // run elevator, might need double ball timeout
             new InstantCommand(
                 () -> {
                     shooter.setTargetFlywheelSpeed(0);
