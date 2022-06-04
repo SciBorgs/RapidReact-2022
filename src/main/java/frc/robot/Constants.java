@@ -42,6 +42,9 @@ public final class Constants {
         // Path Following
         public static final int maxVel = 7;
         public static final int maxAccel = 4;
+
+        // misc
+        public static final double driveBackSpeeds = -0.4;
     }
     
     public static final class ShooterConstants {
