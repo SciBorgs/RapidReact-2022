@@ -17,13 +17,10 @@ public class OI {
     // Final so we don't forget to map a button.
 
     // Buttons | Intake
-    public final JoystickButton intakeBalls, toggleIntake;
+    public final JoystickButton runIntake, actuateIntake;
 
     // Buttons | Hopper-Pneumatics
-    public final JoystickButton startHopper, toggleCompressor;
-
-    // Buttons | Intake + Hopper
-    public final JoystickButton intakeHopperGroup;
+    public final JoystickButton runHopper, toggleCompressor;
 
     // Buttons | Climber
     public final JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
@@ -46,12 +43,11 @@ public class OI {
 
         if (isXbox) {
             // Intake
-            this.intakeBalls = new JoystickButton(this.xboxController, XboxControllerMap.Button.B);
-            this.toggleIntake = new JoystickButton(this.xboxController, XboxControllerMap.Button.Y);
+            this.runIntake = new JoystickButton(this.xboxController, XboxControllerMap.Button.X);
+            this.actuateIntake = new JoystickButton(this.xboxController, XboxControllerMap.Button.BACK);
 
             // Intake-Hopper-Compressor
-            this.startHopper = new JoystickButton(this.xboxController, XboxControllerMap.Button.STICK_LEFT);
-            this.intakeHopperGroup = new JoystickButton(this.xboxController, XboxControllerMap.Button.STICK_RIGHT);
+            this.runHopper = new JoystickButton(this.xboxController, XboxControllerMap.Button.A);
             this.toggleCompressor = new JoystickButton(this.xboxController, XboxControllerMap.Button.START);
 
             // Climber
@@ -64,16 +60,15 @@ public class OI {
             this.retractArm = new DPadButton(this.xboxController, DPadButton.Direction.RIGHT);
 
             // Shooter
-            this.highShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.X);
-            this.fenderShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.A);
+            this.highShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_RIGHT);
+            this.fenderShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_LEFT);
         } else {
             // Intake
-            this.intakeBalls = new JoystickButton(this.leftStick, JoystickMap.Button.LEFT);
-            this.toggleIntake = new JoystickButton(this.leftStick, JoystickMap.Button.RIGHT);
+            this.runIntake = new JoystickButton(this.leftStick, JoystickMap.Button.CENTER);
+            this.actuateIntake = new JoystickButton(this.leftStick, JoystickMap.Button.RIGHT);
 
             // Intake-Hopper-Compressor
-            this.startHopper = new JoystickButton(this.leftStick, JoystickMap.Button.TRIGGER);
-            this.intakeHopperGroup = new JoystickButton(this.leftStick, JoystickMap.Button.CENTER);
+            this.runHopper = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER);
             this.toggleCompressor = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER);
 
             // Climber
@@ -84,7 +79,7 @@ public class OI {
 
             // Shooter
             this.highShot = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
-            this.fenderShot = new DPadButton(this.leftStick, DPadButton.Direction.UP); // TODO possibly change
+            this.fenderShot = new JoystickButton(this.leftStick, JoystickMap.Button.TRIGGER); // TODO possibly change
         }
     }
 }

@@ -62,10 +62,10 @@ public final class Constants {
             return 40;
         }
         // default shot (tarmac line) TODO set
-        public static final double TARMAC_RPM = 0;
+        public static final double TARMAC_RPM = 6000;
         public static final double TARMAC_ANGLE = 0;
         // fender shot (low hub)
-        public static final double FENDER_RPM = 2750;
+        public static final double FENDER_RPM = 4000;
         public static final double FENDER_ANGLE = 0;
         // other shot that works i guess
         // 145 in | max power (1) | 0 deg
@@ -112,7 +112,7 @@ public final class Constants {
         public static final double GEAR_RATIO = 26.0 / 300.0;
         public static final double DISTANCE_PER_PULSE = 1.0 / 2048.0;
         // Physical constraints
-        public static final double LIMIT = 85;
+        public static final double LIMIT = 70;
         // Through Bore Encoder offset
         public static final double OFFSET = 0;
         // Feedforward

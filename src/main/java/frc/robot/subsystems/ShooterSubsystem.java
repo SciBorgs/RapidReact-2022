@@ -134,7 +134,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         // updating controllers for hood
         double hoodFB = hoodFeedback.calculate(getCurrentHoodAngle(), targetAngle);
         double hoodFF = hoodFeedforward.calculate(0);
-        hood.setVoltage(hoodFB + hoodFF);
+        // hood.setVoltage(hoodFB + hoodFF);
 
         // updating controllers for flywheel
         double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
