@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Reset Drive", new InstantCommand(() -> m_robotContainer.drive.reset()));
     TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     System.out.println(Util.getPathPlannerPathNames());
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
   }
 
   /**
@@ -70,7 +71,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    CommandScheduler.getInstance().schedule(m_robotContainer.getAutonomousCommand());
+    CommandScheduler.getInstance().schedule(m_autonomousCommand);
   }
  
   /** This function is called periodically during autonomous. */

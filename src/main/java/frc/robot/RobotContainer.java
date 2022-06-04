@@ -254,10 +254,10 @@ public class RobotContainer {
                 oi.leftStick.getY(),
                 oi.rightStick.getY()),
             drive));
-    rumble.setDefaultCommand(
-        new ConditionalCommand(
-            new InstantCommand(rumble::rumble, rumble),
-            new InstantCommand(rumble::stopRumble, rumble),
-            drive::isStalling));
+    // rumble.setDefaultCommand(
+    //     new ConditionalCommand(
+    //         new InstantCommand(rumble::rumble, rumble),
+    //         new InstantCommand(rumble::stopRumble, rumble),
+    //         drive::isStalling));
   }
 }

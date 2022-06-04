@@ -14,14 +14,14 @@ import frc.robot.Constants.ShooterConstants;
 public class FenderOneBallAuto extends SequentialCommandGroup {
     public FenderOneBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, ShooterSubsystem shooter, TurretSubsystem turret) {
         addCommands(
-            new Shoot(
-                () -> ShooterConstants.FENDER_RPM,
-                () -> ShooterConstants.FENDER_ANGLE,
-                () -> 0,
-                shooter,
-                turret,
-                hopper
-            ),
+            // new Shoot(
+            //     () -> ShooterConstants.FENDER_RPM,
+            //     () -> ShooterConstants.FENDER_ANGLE,
+            //     () -> 0,
+            //     shooter,
+            //     turret,
+            //     hopper
+            // ),
             new Turn180(drive),
             new DriveRamsete(drive, "DriveOffTarmac", false)
         );
