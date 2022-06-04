@@ -7,9 +7,7 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.HopperConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.HopperSubsystem;
@@ -38,7 +36,7 @@ public class Shoot extends SequentialCommandGroup {
             },
             (interupted) -> {},
             // end condition
-            () -> isShooting.calculate(shooter.atTargetAngle() && shooter.atTargetRPM() && turret.atTarget()),
+        () -> isShooting.calculate(shooter.atTargetAngle() && shooter.atTargetRPM() && turret.atTarget()),
             shooter,
             turret);
 
