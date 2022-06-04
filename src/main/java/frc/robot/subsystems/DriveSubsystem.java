@@ -138,6 +138,14 @@ public class DriveSubsystem extends SubsystemBase {
         drive.feed();
     }
 
+    public void driveBack() {
+        driveRobot(DriveMode.TANK, -0.4, -0.4);
+    }
+
+    public void stopRobot() {
+        driveRobot(DriveMode.TANK, 0, 0);
+    }
+
     /**
      * Drives the robot according to provided DriveMode
      * @param mode

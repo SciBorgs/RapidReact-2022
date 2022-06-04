@@ -30,9 +30,9 @@ public final class Constants {
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_RADIUS * 2 * Math.PI;
         
         // PID (for left and motor groups)
-        public static final double kP = 1;
+        public static final double kP = 0.5;
         public static final double kI = 0;
-        public static final double kD = 1;
+        public static final double kD = 0;
 
         // Feedforward
         public static final double kS = 1; 
@@ -42,6 +42,9 @@ public final class Constants {
         // Path Following
         public static final int maxVel = 7;
         public static final int maxAccel = 4;
+
+        // misc
+        public static final double driveBackSpeeds = -0.4;
     }
     
     public static final class ShooterConstants {
@@ -95,7 +98,7 @@ public final class Constants {
         // new hP is from 2020 constants i guess...
         // this seems like it could make the hood move violently
         public static final double hP = 0.14424;
-        public static final double hI = 0.1;
+        public static final double hI = 0.001;
         public static final double hD = 0.14486;
         // Flywheel FF
         public static final double fS = 0.07419;
