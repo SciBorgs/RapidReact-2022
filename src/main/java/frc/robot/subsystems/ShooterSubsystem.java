@@ -72,10 +72,10 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         
         // shuffleboard
         mainTab = Shuffleboard.getTab("Shooter");
-        mainTab.addNumber("Current Hood Angle", this::getCurrentHoodAngle);
-        mainTab.addNumber("Target Hood Angle", this::getTargetHoodAngle);
-        mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
-        mainTab.addNumber("Ball Count", this::get);
+        // mainTab.addNumber("Current Hood Angle", this::getCurrentHoodAngle);
+        // mainTab.addNumber("Target Hood Angle", this::getTargetHoodAngle);
+        // mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
+        // mainTab.addNumber("Ball Count", this::get);
 
         this.targetFlyweelSpeed = mainTab.add("Target Flywheel Speed", targetSpeed);
         

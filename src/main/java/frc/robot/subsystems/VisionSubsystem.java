@@ -27,7 +27,7 @@ public class VisionSubsystem extends SubsystemBase {
         setCameraParams(getTable(), "pipeline", 0);
         reset();
         this.mainTab = Shuffleboard.getTab("Limelight");
-        mainTab.addNumber("Limelight Distance", this::getDistance);
+        // mainTab.addNumber("Limelight Distance", this::getDistance);
     }
 
     // returns limelight network table

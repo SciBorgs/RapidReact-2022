@@ -41,17 +41,17 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
         this.intakeSpeed = 0;
 
         
-        this.mainTab = Shuffleboard.getTab("Intake");
-        this.mainTab.addNumber("Intake Suck Speed", this::getIntakeSpeed);
-        this.mainTab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
-        this.mainTab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
+        // this.mainTab = Shuffleboard.getTab("Intake");
+        // this.mainTab.addNumber("Intake Suck Speed", this::getIntakeSpeed);
+        // this.mainTab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
+        // this.mainTab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
 
 
-        this.intakeSpeedWidget = this.mainTab.add("Intake Suck Set", intakeSpeed);
+        // this.intakeSpeedWidget = this.mainTab.add("Intake Suck Set", intakeSpeed);
 
-        this.intakeSpeedWidget.getEntry().addListener(event -> {
-            this.startSuck(event.getEntry().getDouble(this.intakeSpeed));
-        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+        // this.intakeSpeedWidget.getEntry().addListener(event -> {
+        //     this.startSuck(event.getEntry().getDouble(this.intakeSpeed));
+        // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
     public void updateBallCounter(){

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.Turn180;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -231,7 +232,8 @@ public class RobotContainer {
     // return new TurnToAngle(180, drive);
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    return new DriveRamsete(drive, autoChooser.getSelected(), true);
+    return new Turn180(drive);
+    // return new DriveRamsete(drive, autoChooser.getSelected(), true);
     // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
 
     // testing shooter

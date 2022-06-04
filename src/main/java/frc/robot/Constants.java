@@ -32,7 +32,7 @@ public final class Constants {
         // PID (for left and motor groups)
         public static final double kP = 1;
         public static final double kI = 0;
-        public static final double kD = 0;
+        public static final double kD = 1;
 
         // Feedforward
         public static final double kS = 1; 
@@ -40,8 +40,8 @@ public final class Constants {
         public static final double kA = 1;
         
         // Path Following
-        public static final int maxVel = 8;
-        public static final int maxAccel = 5;
+        public static final int maxVel = 7;
+        public static final int maxAccel = 4;
     }
     
     public static final class ShooterConstants {

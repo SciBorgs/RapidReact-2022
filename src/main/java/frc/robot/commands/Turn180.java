@@ -20,6 +20,8 @@ public class Turn180 extends PIDCommand {
                 drive
             );
 
+        System.out.println("NORMALIZED ANGLE: " + Util.normalizeAngle180(drive.getHeading()));
+
         getController().enableContinuousInput(-180, 180);
         getController().setTolerance(0.2);
     }

@@ -39,8 +39,8 @@ public class TurretSubsystem extends SubsystemBase {
         encoder.setDistancePerPulse(TurretConstants.DISTANCE_PER_PULSE);
 
         mainTab = Shuffleboard.getTab("turret  ");
-        mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
-        mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
+        // mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
+        // mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
 
         turret.setIdleMode(IdleMode.kBrake);
         turret.setSmartCurrentLimit(30);
