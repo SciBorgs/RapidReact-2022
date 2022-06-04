@@ -7,6 +7,8 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import frc.robot.Constants.HopperConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.HopperSubsystem;
@@ -41,7 +43,7 @@ public class Shoot extends SequentialCommandGroup {
 
         addCommands(
             prepare, // spin up
-            new InstantCommand(hopper::startElevator), // run elevator, might need double ball timeout
+            new StartEndCommand(hopper::startElevator, hopper::stopElevator, hopper).withTimeout(ShooterConstants.SINGLE_BALL_TIMEOUT), // run elevator, might need double ball timeout
             new InstantCommand(
                 () -> {
                     shooter.setTargetFlywheelSpeed(0);
