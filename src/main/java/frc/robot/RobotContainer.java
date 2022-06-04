@@ -113,7 +113,7 @@ public class RobotContainer {
           pneumatics));
 
     // Intake
-    oi.intakeBalls
+    oi.runIntake
       .whenPressed(
         new InstantCommand(
           () -> {
@@ -131,29 +131,25 @@ public class RobotContainer {
           intake,
           hopper));
 
-    oi.toggleIntake.whenPressed(
+    oi.actuateIntake.whenPressed(
       new InstantCommand(
         intake::toggleArm));
 
     // Intake-Hopper-Compressor
-    oi.intakeHopperGroup
+    oi.runHopper
       .whenHeld(
         new InstantCommand(
           () -> {
-            intake.startSuck();
             hopper.startSuck();
             hopper.startElevator();
           },
-          intake,
           hopper))
       .whenReleased(
         new InstantCommand(
           () -> {
-            intake.stopSuck();
             hopper.stopSuck();
             hopper.stopElevator();
           },
-          intake,
           hopper));
 
     // Climber

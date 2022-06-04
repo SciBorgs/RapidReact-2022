@@ -257,7 +257,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public boolean isStalling() {
-        return isLeftStalling() || isRightStalling();
+        return true;
+        // return isLeftStalling() || isRightStalling();
     }
 
     @Override
