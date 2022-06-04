@@ -121,7 +121,9 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     }
 
     public boolean atTargetAngle() {
-        return hoodFeedback.atSetpoint();
+        // return hoodFeedback.atSetpoint();
+        // TODO temp fix for not moving hood
+        return true;
     }
 
     public boolean atTargetRPM() {

@@ -134,7 +134,8 @@ public class RobotContainer {
 
     oi.actuateIntake.whenPressed(
       new InstantCommand(
-        intake::toggleArm));
+        intake::toggleArm,
+        intake));
 
     // Intake-Hopper-Compressor
     oi.runHopper
