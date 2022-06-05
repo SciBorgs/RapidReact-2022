@@ -79,7 +79,8 @@ public final class Constants {
         // ball ejection detection
         public static final int DELTA_VELOCITY_THRESHOLD = 20;
         // timeouts
-        public static final int SINGLE_BALL_TIMEOUT = 3;
+        public static final int FLYWHEEL_RAMP_TIMEOUT = 2;
+        public static final int SINGLE_BALL_TIMEOUT = 2;
         public static final int DOUBLE_BALL_TIMEOUT = 6;
         // ratios
         public static final double HOOD_GEAR_RATIO = 36.0 / 460.0;

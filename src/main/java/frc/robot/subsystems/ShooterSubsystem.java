@@ -27,9 +27,6 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     private final CANSparkMax lmotor, rmotor;
     private final RelativeEncoder flywheelEncoder;
 
-    // Flywheel control
-    private final PIDController flywheelFeedback = new PIDController(0.9, 0, 0);
-
     private double targetSpeed; // desired speed of the flywheel (rpm)
 
     private ShuffleboardTab mainTab;
@@ -54,7 +51,6 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         lmotor.burnFlash();
 
         flywheelEncoder = rmotor.getEncoder();
-        flywheelFeedback.setTolerance(100);
 
         targetSpeed = 0.0;
         previousVelocity = 0.0;
@@ -78,25 +74,11 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     }
 
     public double getCurrentFlywheelSpeed() {
-        return flywheelEncoder.getVelocity();
+        return rmotor.get();
     }
 
     public double getTargetFlywheelSpeed() {
         return targetSpeed;
-    }
-
-    public double getDistanceSpun() {
-        return flywheelEncoder.getPosition();
-    }
-
-    public void resetDistanceSpun() {
-        flywheelEncoder.setPosition(0);
-    }
-
-    public boolean atTargetRPM() {
-        for (int i = 0; i <= 100; i++)
-            System.out.println("TargetRPM: " + flywheelFeedback.atSetpoint() + "; Setpoint: " + flywheelFeedback.getSetpoint());
-        return flywheelFeedback.atSetpoint();
     }
 
     @Override
@@ -106,15 +88,10 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
         // System.out.println(flywheelFeedback.getSetpoint() + " " + getTargetFlywheelSpeed());
 
-        if (targetSpeed == 0)
-            rmotor.stopMotor();
-        else
-            rmotor.set(0.7);
-        // updating ball count
-        if (flywheelFeedback.getSetpoint() > 0
-                && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VELOCITY_THRESHOLD) {
-            decrement();
-        }
+        rmotor.set(targetSpeed);
+
+        System.out.println("Current RPM: " + flywheelEncoder.getVelocity());
+
         previousVelocity = flywheelEncoder.getVelocity();
     }
 }
