@@ -90,7 +90,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
         rmotor.set(targetSpeed);
 
-        System.out.println("Current RPM: " + flywheelEncoder.getVelocity());
+        // System.out.println("Current RPM: " + flywheelEncoder.getVelocity());
 
         previousVelocity = flywheelEncoder.getVelocity();
     }

@@ -171,25 +171,26 @@ public class RobotContainer {
     climber::stopTelescope,
     climber));
 
-    // oi.extendArm
-    // .whenHeld(
-    // new InstantCommand(
-    // () -> climber.runArms(false),
-    // climber))
-    // .whenReleased(
-    // new InstantCommand(
-    // climber::stopArms,
-    // climber));
+    // TODO
+    oi.extendArm
+    .whenHeld(
+    new InstantCommand(
+    () -> climber.runArms(false),
+    climber))
+    .whenReleased(
+    new InstantCommand(
+    climber::stopArms,
+    climber));
 
-    // oi.retractArm
-    // .whenHeld(
-    // new InstantCommand(
-    // () -> climber.runArms(true),
-    // climber))
-    // .whenReleased(
-    // new InstantCommand(
-    // climber::stopArms,
-    // climber));
+    oi.retractArm
+    .whenHeld(
+    new InstantCommand(
+    () -> climber.runArms(true),
+    climber))
+    .whenReleased(
+    new InstantCommand(
+    climber::stopArms,
+    climber));
 
     // Shooter
     oi.highShot.whenPressed(
