@@ -49,7 +49,7 @@ public class OI {
  
             // Intake-Hopper-Compressor
             this.runHopper = new JoystickButton(this.xboxController, XboxControllerMap.Button.A);
-            this.reverseIntake = new JoystickButton(this.xboxController, 3); // TODO: UPDATE WITH PROPER PORT
+            this.reverseHopper = new JoystickButton(this.xboxController, 3); // TODO: UPDATE WITH PROPER PORT
             this.toggleCompressor = new JoystickButton(this.xboxController, XboxControllerMap.Button.START);
 
             // Climber
@@ -67,10 +67,12 @@ public class OI {
         } else {
             // Intake
             this.runIntake = new JoystickButton(this.leftStick, JoystickMap.Button.CENTER);
+            this.reverseIntake = new JoystickButton(this.leftStick, 4); // TODO: UPDATE WITH PROPER PORT
             this.actuateIntake = new JoystickButton(this.leftStick, JoystickMap.Button.RIGHT);
 
             // Intake-Hopper-Compressor
             this.runHopper = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER);
+            this.reverseHopper = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER); //TODO: UPDATE WITH PROPER PORT
             this.toggleCompressor = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER);
 
             // Climber
