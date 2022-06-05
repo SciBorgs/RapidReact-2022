@@ -17,10 +17,10 @@ public class OI {
     // Final so we don't forget to map a button.
 
     // Buttons | Intake
-    public final JoystickButton runIntake, actuateIntake;
+    public final JoystickButton runIntake, reverseIntake, actuateIntake;
 
     // Buttons | Hopper-Pneumatics
-    public final JoystickButton runHopper, toggleCompressor;
+    public final JoystickButton runHopper, reverseHopper, toggleCompressor;
 
     // Buttons | Climber
     public final JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
@@ -44,10 +44,12 @@ public class OI {
         if (isXbox) {
             // Intake
             this.runIntake = new JoystickButton(this.xboxController, XboxControllerMap.Button.X);
+            this.reverseIntake = new JoystickButton(this.xboxController, 2); // TODO: UPDATE WITH PROPER PORT
             this.actuateIntake = new JoystickButton(this.xboxController, XboxControllerMap.Button.BACK);
-
+ 
             // Intake-Hopper-Compressor
             this.runHopper = new JoystickButton(this.xboxController, XboxControllerMap.Button.A);
+            this.reverseIntake = new JoystickButton(this.xboxController, 3); // TODO: UPDATE WITH PROPER PORT
             this.toggleCompressor = new JoystickButton(this.xboxController, XboxControllerMap.Button.START);
 
             // Climber
