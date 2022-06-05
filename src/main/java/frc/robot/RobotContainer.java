@@ -151,25 +151,25 @@ public class RobotContainer {
                 hopper));
 
     // Climber
-    // oi.extendTelescope
-    // .whenHeld(
-    // new InstantCommand(
-    // () -> climber.runTelescope(false),
-    // climber))
-    // .whenReleased(
-    // new InstantCommand(
-    // climber::stopTelescope,
-    // climber));
+    oi.extendTelescope
+    .whenHeld(
+    new InstantCommand(
+    () -> climber.runTelescope(false),
+    climber))
+    .whenReleased(
+    new InstantCommand(
+    climber::stopTelescope,
+    climber));
 
-    // oi.retractTelescope
-    // .whenHeld(
-    // new InstantCommand(
-    // () -> climber.runTelescope(true),
-    // climber))
-    // .whenReleased(
-    // new InstantCommand(
-    // climber::stopTelescope,
-    // climber));
+    oi.retractTelescope
+    .whenHeld(
+    new InstantCommand(
+    () -> climber.runTelescope(true),
+    climber))
+    .whenReleased(
+    new InstantCommand(
+    climber::stopTelescope,
+    climber));
 
     // oi.extendArm
     // .whenHeld(

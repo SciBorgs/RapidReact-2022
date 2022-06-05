@@ -12,7 +12,7 @@ import frc.robot.util.Blockable;
 public class ClimberSubsystem implements Subsystem {
     private CANSparkMax telescope, arms;
 
-    private static final double TELESCOPE_SPEED = 0.95;
+    private static final double TELESCOPE_SPEED = 0.6;
     private static final double ARM_SPEED = 0.5;
 
     public ClimberSubsystem() {

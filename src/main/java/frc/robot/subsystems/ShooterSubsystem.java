@@ -102,7 +102,7 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     @Override
     public void periodic() {
         // updating controllers for flywheel
-        System.out.println("Current: " + getCurrentFlywheelSpeed() + "; Target: " + getTargetFlywheelSpeed());
+        // System.out.println("Current: " + getCurrentFlywheelSpeed() + "; Target: " + getTargetFlywheelSpeed());
 
         // System.out.println(flywheelFeedback.getSetpoint() + " " + getTargetFlywheelSpeed());
 
