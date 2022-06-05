@@ -65,16 +65,13 @@ public final class Constants {
             return 40;
         }
         // default shot (tarmac line) TODO set
-        public static final double TARMAC_RPM = 6000;
-        public static final double TARMAC_ANGLE = 0;
+        public static final double TARMAC_SPEED = 0.95;
         // fender shot (low hub)
-        public static final double FENDER_RPM = 4000;
-        public static final double FENDER_ANGLE = 0;
+        public static final double FENDER_SPEED = 0.4;
         // other shot that works i guess
         // 145 in | max power (1) | 0 deg
         public static final double CHANCE_DIST = Units.inchesToMeters(145);
-        public static final double CHANCE_RPM = 5676;
-        public static final double CHANCE_ANGLE = 0;
+        public static final double CHANCE_SPEED = 0.95;
 
         // ball ejection detection
         public static final int DELTA_VELOCITY_THRESHOLD = 20;

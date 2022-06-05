@@ -31,8 +31,7 @@ public class FenderThreeBallAuto extends SequentialCommandGroup {
             new DriveRamsete(drive, "Pos_" + pos + "_2Ball_Fender", true),
             new Turn180(drive),
             new Shoot(
-                () -> ShooterConstants.FENDER_RPM,
-
+                () -> ShooterConstants.FENDER_SPEED,
                 () -> 0,
                 shooter,
                 turret,
@@ -46,8 +45,7 @@ public class FenderThreeBallAuto extends SequentialCommandGroup {
             new DriveRamsete(drive, "Pos_" + pos + "_3Ball_Fender", false),
             new Turn180(drive),
             new Shoot(
-                () -> ShooterConstants.FENDER_RPM,
-
+                () -> ShooterConstants.FENDER_SPEED,
                 () -> 0,
                 shooter,
                 turret,

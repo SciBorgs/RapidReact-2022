@@ -202,7 +202,7 @@ public class RobotContainer {
 
     oi.fenderShot.whenPressed(
         new Shoot(
-            () -> ShooterConstants.FENDER_RPM,
+            () -> ShooterConstants.FENDER_SPEED,
             () -> 0,
             shooter,
             turret,
@@ -225,16 +225,16 @@ public class RobotContainer {
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     // return new Turn180(drive);
-    return new FunctionalCommand(
-      () -> {},
-      () -> {
-        drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds, DriveConstants.driveBackSpeeds);}, 
-      (interrupted) -> {drive.driveRobot(DriveMode.TANK, 0, 0);}, 
-      () -> false,
-      drive).withTimeout(10);
+    // return new FunctionalCommand(
+    //   () -> {},
+    //   () -> {
+    //     drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds, DriveConstants.driveBackSpeeds);}, 
+    //   (interrupted) -> {drive.driveRobot(DriveMode.TANK, 0, 0);}, 
+    //   () -> false,
+    //   drive).withTimeout(10);
     // return new DriveRamsete(drive, autoChooser.getSelected(), true);
     // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
-    // return new FenderOneBallAuto(drive, intake, hopper, shooter, turret);
+    return new FenderOneBallAuto(drive, intake, hopper, shooter, turret);
     // testing shooter
     // return new SequentialCommandGroup(
     // new InstantCommand(() -> hopper.startElevator(0.8), hopper),

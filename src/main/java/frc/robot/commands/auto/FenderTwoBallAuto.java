@@ -31,8 +31,7 @@ public class FenderTwoBallAuto extends SequentialCommandGroup {
             new DriveRamsete(drive, "Pos_" + pos + "_2Ball_Fender", true),
             new Turn180(drive),
             new Shoot(
-                () -> ShooterConstants.FENDER_RPM,
-
+                () -> ShooterConstants.FENDER_SPEED,
                 () -> 0,
                 shooter,
                 turret,
