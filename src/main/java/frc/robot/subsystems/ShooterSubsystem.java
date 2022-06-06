@@ -9,90 +9,139 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
 import frc.robot.util.Blockable;
-import frc.robot.util.SafeBangBangController;
 import frc.robot.util.BallCounter;
 
 @Blockable
 public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
-    private final CANSparkMax lmotor, rmotor;
-    private final RelativeEncoder flywheelEncoder;
+    // hardware
+    private final CANSparkMax hood = new CANSparkMax(PortMap.Shooter.HOOD_SPARK, MotorType.kBrushless);
+    private final CANSparkMax flywheelFollow = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[0], MotorType.kBrushless); // left motor
+    private final CANSparkMax flywheelLead = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[1], MotorType.kBrushless); // right motor
+    private final RelativeEncoder flywheelEncoder = flywheelLead.getEncoder();
+    private final Encoder hoodEncoder = new Encoder(PortMap.Shooter.HOOD_ENCODER_QUADRATURE[0], PortMap.Shooter.HOOD_ENCODER_QUADRATURE[1]);
+    
+    // Hood control
+    private final PIDController hoodFeedback = new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
+    private final SimpleMotorFeedforward hoodFeedforward = new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA);
 
+    // Flywheel control
+    private final PIDController flywheelFeedback = new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD);
+    private final SimpleMotorFeedforward flywheelFeedforward = new SimpleMotorFeedforward(ShooterConstants.fS, ShooterConstants.fV, ShooterConstants.fA);
+    
     private double targetSpeed; // desired speed of the flywheel (rpm)
+    private double targetAngle; // desired angle of the hood (deg)
+    private double lastTime; // time measurement, used for time difference in feedforward
 
-    private ShuffleboardTab mainTab;
-    private SimpleWidget targetFlyweelSpeed;
+    private ShuffleboardTab tab;
 
     // keeping track of ejected balls
     private double previousVelocity;
 
     public ShooterSubsystem() {
+        
+        // shuffleboard
+        tab = Shuffleboard.getTab("Shooter");
+        tab.add(this);
+        tab.add("Flywheel PID", flywheelFeedback);
+        tab.add("Hood PID", hoodFeedback);
+        tab.addNumber("Current Hood Angle", this::getCurrentHoodAngle);
+        tab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
 
-        rmotor = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[1], MotorType.kBrushless);
-        lmotor = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[0], MotorType.kBrushless);
-        lmotor.follow(rmotor, true);
+        hood.setInverted(true);
+        flywheelFollow.follow(flywheelLead, true);
 
-        rmotor.setIdleMode(IdleMode.kCoast);
-        lmotor.setIdleMode(IdleMode.kCoast);
+        flywheelFollow.setIdleMode(IdleMode.kCoast);
+        flywheelLead.setIdleMode(IdleMode.kCoast);
 
-        rmotor.setSmartCurrentLimit(30);
-        lmotor.setSmartCurrentLimit(30);
+        flywheelFollow.burnFlash();
+        flywheelLead.burnFlash();
 
-        rmotor.burnFlash();
-        lmotor.burnFlash();
+        hoodEncoder.setDistancePerPulse(ShooterConstants.DISTANCE_PER_PULSE);
 
-        flywheelEncoder = rmotor.getEncoder();
+        hoodFeedback.setTolerance(0.2);
+        flywheelFeedback.setTolerance(200);
 
         targetSpeed = 0.0;
+        targetAngle = 0.0;
         previousVelocity = 0.0;
-
-        // shuffleboard
-        mainTab = Shuffleboard.getTab("Shooter");
-        // mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
-        // mainTab.addNumber("Ball Count", this::get);
-
-        this.targetFlyweelSpeed = mainTab.add("Target Flywheel Speed", targetSpeed);
-
-        this.targetFlyweelSpeed.getEntry().addListener(event -> {
-            this.setTargetFlywheelSpeed(event.getEntry().getDouble(this.targetSpeed));
-        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
+        lastTime = Timer.getFPGATimestamp();
     }
-
-    // FLYWHEEL
+    
+    // FLYWHEEL SPEED (RPM)
     public void setTargetFlywheelSpeed(double targetSpeed) {
         this.targetSpeed = targetSpeed;
     }
-
+    
     public double getCurrentFlywheelSpeed() {
-        return rmotor.get();
+        return flywheelEncoder.getVelocity();
     }
 
     public double getTargetFlywheelSpeed() {
         return targetSpeed;
     }
 
+    public double getDistanceSpun() {
+        return flywheelEncoder.getPosition();
+    }
+
+    // HOOD ANGLE (DEGREES)
+    public void setTargetHoodAngle(double angle) {
+        targetAngle = MathUtil.clamp(angle, 0, ShooterConstants.MAX_ANGLE);
+    }
+
+    public double getCurrentHoodAngle() {
+        return Units.rotationsToDegrees(hoodEncoder.getDistance() * ShooterConstants.HOOD_GEAR_RATIO);
+    }
+
+    public double getTargetHoodAngle() {
+        return targetAngle;
+    }
+    
+    public void resetDistanceSpun() {
+        flywheelEncoder.setPosition(0);
+    }
+
+    public boolean atTargetAngle() {
+        return hoodFeedback.atSetpoint();
+    }
+
+    public boolean atTargetRPM() {
+        return flywheelFeedback.atSetpoint();
+    }
+    
     @Override
     public void periodic() {
-        // updating controllers for flywheel
-        // System.out.println("Current: " + getCurrentFlywheelSpeed() + "; Target: " + getTargetFlywheelSpeed());
 
-        // System.out.println(flywheelFeedback.getSetpoint() + " " + getTargetFlywheelSpeed());
+        // updating controllers for hood
+        double hoodFB = hoodFeedback.calculate(getCurrentHoodAngle(), targetAngle);
+        double hoodFF = hoodFeedforward.calculate(0);
+        hood.setVoltage(hoodFB + hoodFF);
 
-        rmotor.set(targetSpeed);
+        
+        if (targetSpeed > 0) {
+            // updating controllers for flywheel
+            double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
+            double flywheelFF = flywheelFeedforward.calculate(flywheelEncoder.getVelocity(), targetSpeed, Timer.getFPGATimestamp() - lastTime);
+            flywheelLead.setVoltage(flywheelFB + flywheelFF);
+        } else {
+            flywheelLead.stopMotor();
+        }
 
-        // System.out.println("Current RPM: " + flywheelEncoder.getVelocity());
+        lastTime = Timer.getFPGATimestamp();
 
+        // updating ball count
+        if (flywheelFeedback.getSetpoint() > 0 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VELOCITY_THRESHOLD) {
+            decrement();
+        }
         previousVelocity = flywheelEncoder.getVelocity();
     }
 }
- 
