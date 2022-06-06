@@ -1,89 +1,130 @@
 package frc.robot;
 
+import frc.robot.commands.*;
+import frc.robot.commands.climber.*;
+import frc.robot.commands.hopper.*;
+import frc.robot.commands.intake.*;
+import frc.robot.commands.pneumatics.*;
+import frc.robot.commands.shooter.*;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.util.DPadButton;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.button.*;
 
 import static frc.robot.PortMap.*;
+import static frc.robot.PortMap.Joystick.*;
+import static frc.robot.PortMap.XboxController.*;
 
 public class OI {
     public boolean isXbox;
 
     // Controllers
-    public final Joystick leftStick, rightStick;
-    public final XboxController xboxController;
-
-    // Final so we don't forget to map a button.
+    public Joystick leftStick, rightStick;
+    public XboxController xboxController;
 
     // Buttons | Intake
-    public final JoystickButton runIntake, reverseIntake, actuateIntake;
-
+    public JoystickButton intakeBalls, lowerIntakeArms, retractIntakeArms;
+    
     // Buttons | Hopper-Pneumatics
-    public final JoystickButton runHopper, reverseHopper, toggleCompressor;
+    public JoystickButton startHopper, toggleCompressor;
 
+    // Buttons | Intake + Hopper
+    public JoystickButton intakeHopperGroup;
+    
     // Buttons | Climber
-    public final JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
+    public JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
 
     // Buttons | Shooter
-    public final JoystickButton highShot;
-    public final JoystickButton fenderShot;
+    public JoystickButton aimButton, shootButton;
+    public JoystickButton lowerHoodButton, raiseHoodButton;
 
     public OI(boolean isXbox) {
         this.isXbox = isXbox;
 
-        // Unconditionally initialize the input devices. Not being present is fine, and
-        // it'll make sure we don't forget to init them (ie. the previous behavior was
-        // to only init Xbox if we were using Xbox, but we need joysticks to drive).
+        // Controllers
+        if (isXbox) {
+            this.xboxController = new XboxController(XBOX_CONTROLLER);
+        } else {
+            this.leftStick  = new Joystick(JOYSTICK_LEFT);
+            this.rightStick = new Joystick(JOYSTICK_RIGHT);
+        }
 
-        this.leftStick = new Joystick(InputDevices.JOYSTICK_LEFT);
-        this.rightStick = new Joystick(InputDevices.JOYSTICK_RIGHT);
-
-        this.xboxController = new XboxController(InputDevices.XBOX_CONTROLLER);
+        ////////////////////
+        // INITIALIZATION //
+        ////////////////////
 
         if (isXbox) {
             // Intake
-            this.runIntake = new JoystickButton(this.xboxController, XboxControllerMap.Button.X);
-            this.reverseIntake = new JoystickButton(this.xboxController, 2); // TODO: UPDATE WITH PROPER PORT
-            this.actuateIntake = new JoystickButton(this.xboxController, XboxControllerMap.Button.BACK);
- 
+            this.intakeBalls       = new JoystickButton(this.xboxController, XBOX_B);
+            this.lowerIntakeArms   = new JoystickButton(this.xboxController, XBOX_Y);
+            this.retractIntakeArms = new JoystickButton(this.xboxController, XBOX_BACK);
+
             // Intake-Hopper-Compressor
-            this.runHopper = new JoystickButton(this.xboxController, XboxControllerMap.Button.A);
-            this.reverseHopper = new JoystickButton(this.xboxController, 3); // TODO: UPDATE WITH PROPER PORT
-            this.toggleCompressor = new JoystickButton(this.xboxController, XboxControllerMap.Button.START);
+            this.startHopper       = new JoystickButton(this.xboxController, XBOX_STICK_LEFT_BUTTON);
+            this.intakeHopperGroup = new JoystickButton(this.xboxController, XBOX_STICK_RIGHT_BUTTON);
+            this.toggleCompressor  = new JoystickButton(this.xboxController, XBOX_START);
 
             // Climber
-            this.extendTelescope = new JoystickButton(this.xboxController, XboxControllerMap.Button.Y);
-            this.retractTelescope = new JoystickButton(this.xboxController, XboxControllerMap.Button.B);
-            // TODO: make sure extend and retract are actually forward and backward relative
-            // to the center of the robot
-            // (we probably mixed them up)
-            this.extendArm = new DPadButton(this.xboxController, DPadButton.Direction.LEFT);
-            this.retractArm = new DPadButton(this.xboxController, DPadButton.Direction.RIGHT);
+            this.extendTelescope  = new JoystickButton(this.xboxController, XBOX_TRIGGER_LEFT);
+            this.retractTelescope = new JoystickButton(this.xboxController, XBOX_TRIGGER_RIGHT);
+            this.extendArm  = new JoystickButton(this.xboxController, XBOX_BUMPER_LEFT);
+            this.retractArm = new JoystickButton(this.xboxController, XBOX_BUMPER_RIGHT);
 
             // Shooter
-            this.highShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_RIGHT);
-            this.fenderShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_LEFT);
+            this.aimButton   = new JoystickButton(this.xboxController, XBOX_A);
+            this.shootButton = new JoystickButton(this.xboxController, XBOX_X);
         } else {
             // Intake
-            this.runIntake = new JoystickButton(this.leftStick, JoystickMap.Button.CENTER);
-            this.reverseIntake = new JoystickButton(this.leftStick, 4); // TODO: UPDATE WITH PROPER PORT
-            this.actuateIntake = new JoystickButton(this.leftStick, JoystickMap.Button.RIGHT);
+            this.intakeBalls       = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
+            this.lowerIntakeArms   = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
+            this.retractIntakeArms = new JoystickButton(this.leftStick, JOYSTICK_CENTER_BUTTON);
 
             // Intake-Hopper-Compressor
-            this.runHopper = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER);
-            this.reverseHopper = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER); //TODO: UPDATE WITH PROPER PORT
-            this.toggleCompressor = new JoystickButton(this.rightStick, JoystickMap.Button.CENTER);
+            // this.startHopper       = new JoystickButton(this.leftStick, JOYSTICK_TRIGGER);
+            this.intakeHopperGroup = new JoystickButton(this.leftStick, JOYSTICK_LEFT_BUTTON);
+            this.toggleCompressor  = new JoystickButton(this.leftStick, JOYSTICK_RIGHT_BUTTON);
 
             // Climber
-            this.extendTelescope = new DPadButton(this.rightStick, DPadButton.Direction.UP);
-            this.retractTelescope = new DPadButton(this.rightStick, DPadButton.Direction.DOWN);
-            this.extendArm = new DPadButton(this.rightStick, DPadButton.Direction.LEFT);
-            this.retractArm = new DPadButton(this.rightStick, DPadButton.Direction.RIGHT);
+            this.extendTelescope  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][0]);
+            this.retractTelescope = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[0][1]);
+            this.extendArm  = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][0]);
+            this.retractArm = new JoystickButton(this.rightStick, JOYSTICK_BUTTON_MATRIX_RIGHT[1][1]);
 
             // Shooter
-            this.highShot = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
-            this.fenderShot = new JoystickButton(this.leftStick, JoystickMap.Button.TRIGGER); // TODO possibly change
+            this.aimButton   = new JoystickButton(this.rightStick, JOYSTICK_CENTER_BUTTON);
+            this.shootButton = new JoystickButton(this.rightStick, JOYSTICK_TRIGGER);
+
+            this.lowerHoodButton = new JoystickButton(this.xboxController, XBOX_A);
+            this.raiseHoodButton = new JoystickButton(this.xboxController, XBOX_B);
         }
+
+        //////////////////////
+        // COMMAND BINDINGS //
+        //////////////////////
+
+        // Intake
+        this.intakeBalls.whenPressed(new IntakeBallsCommand().withTimeout(5));
+        this.lowerIntakeArms.whenPressed(new LowerIntakeArmCommand());
+        this.retractIntakeArms.whenPressed(new RetractIntakeArmCommand());
+
+        // Intake-Hopper-Compressor
+        // this.startHopper.whenHeld(new StartHopperCommand());
+        this.intakeHopperGroup.whileHeld(new ParallelDeadlineGroup(new IntakeBallsCommand().withTimeout(5), new StartHopperCommand()));
+        this.toggleCompressor.toggleWhenPressed(new ToggleCompressorCommand());
+
+        // Climber
+        this.extendTelescope.whenHeld(new RunTelescopeCommand(false));
+        this.retractTelescope.whenHeld(new RunTelescopeCommand(true));
+        this.extendArm.whenHeld(new RunArmCommand(false));
+        this.retractArm.whenHeld(new RunArmCommand(true));
+
+        // Shooter
+        this.aimButton.whenPressed(new AimCommandGroup());
+        this.shootButton.whenPressed(new ShootSequence());
+
+        this.lowerHoodButton.whenHeld(new LowerHoodCommand());
+        this.raiseHoodButton.whenHeld(new RaiseHoodCommand());
     }
 }
