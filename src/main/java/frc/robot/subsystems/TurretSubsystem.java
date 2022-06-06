@@ -31,16 +31,17 @@ public class TurretSubsystem extends SubsystemBase {
     private double lastSpeed;
     private double lastTime;
 
-    private ShuffleboardTab mainTab;
+    private ShuffleboardTab tab;
 
     public TurretSubsystem() {
         feedback.setTolerance(0.2);
 
         encoder.setDistancePerPulse(TurretConstants.DISTANCE_PER_PULSE);
 
-        mainTab = Shuffleboard.getTab("turret  ");
-        // mainTab.addNumber("Current Turret Angle ", this::getCurrentAngle);
-        // mainTab.addNumber("Target Turret Angle", this::getTargetAngle);
+        tab = Shuffleboard.getTab("Shooter");
+        tab.add(this);
+        tab.add("Turret Profiled PID Controller", feedback);
+        tab.addNumber("Turret Angle ", this::getCurrentAngle);
 
         turret.setIdleMode(IdleMode.kBrake);
         turret.setSmartCurrentLimit(1);

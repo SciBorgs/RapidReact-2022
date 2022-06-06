@@ -53,8 +53,8 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         tab.add(this);
         tab.add("Flywheel PID", flywheelFeedback);
         tab.add("Hood PID", hoodFeedback);
-        tab.addNumber("Current Hood Angle", this::getCurrentHoodAngle);
-        tab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
+        tab.addNumber("Hood Angle", this::getCurrentHoodAngle);
+        tab.addNumber("Flywheel Speed", this::getCurrentFlywheelSpeed);
 
         hood.setInverted(true);
         flywheelFollow.follow(flywheelLead, true);
