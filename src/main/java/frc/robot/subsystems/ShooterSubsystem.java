@@ -1,127 +1,98 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
-import frc.robot.Robot;
-import frc.robot.sciSensorsActuators.SciAbsoluteEncoder;
-import frc.robot.sciSensorsActuators.SciEncoder;
-import frc.robot.util.PID;
-import frc.robot.util.ShufflePID;
-import frc.robot.util.Util;
+import frc.robot.util.Blockable;
+import frc.robot.util.SafeBangBangController;
+import frc.robot.util.BallCounter;
 
+@Blockable
+public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
-public class ShooterSubsystem extends SubsystemBase {
-    private PID shooterPID;
-    private ShufflePID shooterShufflePID;
+    private final CANSparkMax lmotor, rmotor;
+    private final RelativeEncoder flywheelEncoder;
 
-    private NetworkTableEntry distance, hoodAngle, changeHoodAngle;
-    
-    private CANSparkMax hood, lmotor, rmotor;
-    private SciEncoder flywheelEncoder;
-    private SciAbsoluteEncoder hoodEncoder;
+    private double targetSpeed; // desired speed of the flywheel (rpm)
 
-    private double encoderOffset = 0;
+    private ShuffleboardTab mainTab;
+    private SimpleWidget targetFlyweelSpeed;
 
-    private final double LOWER_LIMIT = 35.5; // add for real measurement
-    private final double UPPER_LIMIT = 9.2;
-    private final double SPEED_LIMIT = 0.1;
-    public final double HEIGHT_DIFF = 2.08534;
-    public final double CAM_MOUNT_ANGLE = 30;
-
-    // hood angle, adjusted by raise and lower hood commands
-    public double HOOD_ANGLE = 15;
+    // keeping track of ejected balls
+    private double previousVelocity;
 
     public ShooterSubsystem() {
-        shooterPID = new PID(6.0/360.0, 0, 0);
-        shooterShufflePID = new ShufflePID("shooter", shooterPID, "big shell");
 
-        hood = new CANSparkMax(PortMap.HOOD_SPARK, MotorType.kBrushless);
-        rmotor = new CANSparkMax(PortMap.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless);
-        lmotor = new CANSparkMax(PortMap.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless);
-        lmotor.follow(rmotor);
+        rmotor = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[1], MotorType.kBrushless);
+        lmotor = new CANSparkMax(PortMap.Shooter.FLYWHEEL_SPARKS[0], MotorType.kBrushless);
+        lmotor.follow(rmotor, true);
 
-        flywheelEncoder = new SciEncoder(Constants.FLYWHEEL_GEAR_RATIO, Constants.WHEEL_CIRCUMFERENCE, rmotor.getEncoder());
-        hoodEncoder = new SciAbsoluteEncoder(PortMap.HOOD_ENCODER, Constants.TOTAL_HOOD_GEAR_RATIO);
-        encoderOffset = getHoodAngle();
-        // hoodEncoder.reset();
+        rmotor.setIdleMode(IdleMode.kCoast);
+        lmotor.setIdleMode(IdleMode.kCoast);
 
-        // Robot.networkTableSubsystem.bind("shooter", "ty", () -> Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE, 0.0);
-        // Robot.networkTableSubsystem.bind("shooter", "distance", this::getDistance, 0.0);
-        // Robot.networkTableSubsystem.bind("shooter", "hoodangle", this::getHoodAngle, 321.3);
-        // Robot.networkTableSubsystem.bind("shooter", "offset", this::getOffset, 321.3);
+        rmotor.setSmartCurrentLimit(30);
+        lmotor.setSmartCurrentLimit(30);
 
-        // Robot.networkTableSubsystem.bind("shooter", "sethood", this::moveHood, getHoodAngle());
-    }
-    
-    public double getDistance() {
-        return HEIGHT_DIFF / Math.tan(Math.toRadians(Robot.limelightSubsystem.getLimelightTableData("ty") + CAM_MOUNT_ANGLE));
-    }
+        rmotor.burnFlash();
+        lmotor.burnFlash();
 
-    public double getOffset() {
-        return encoderOffset;
-    }
+        flywheelEncoder = rmotor.getEncoder();
 
-    public double getHoodAngle() {
-        return hoodEncoder.getAngle();
-    }
+        targetSpeed = 0.0;
+        previousVelocity = 0.0;
 
-    public void runFlywheel(double speed) {
-        rmotor.set(speed);
+        // shuffleboard
+        mainTab = Shuffleboard.getTab("Shooter");
+        // mainTab.addNumber("Current Flywheel Speed", this::getCurrentFlywheelSpeed);
+        // mainTab.addNumber("Ball Count", this::get);
+
+        this.targetFlyweelSpeed = mainTab.add("Target Flywheel Speed", targetSpeed);
+
+        this.targetFlyweelSpeed.getEntry().addListener(event -> {
+            this.setTargetFlywheelSpeed(event.getEntry().getDouble(this.targetSpeed));
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
     }
 
-    public void stopFlywheel() {
-        rmotor.set(0);
-    }
-    
-    public void resetDistanceSpun() {
-        flywheelEncoder.setDistance(0);
+    // FLYWHEEL
+    public void setTargetFlywheelSpeed(double targetSpeed) {
+        this.targetSpeed = targetSpeed;
     }
 
-    public double getDistanceSpun() {
-        return flywheelEncoder.getDistance();
+    public double getCurrentFlywheelSpeed() {
+        return rmotor.get();
     }
 
-    public void setHoodSpeed(double speed) {
-        if (getHoodAngle() < UPPER_LIMIT || getHoodAngle() > LOWER_LIMIT) {
-            speed = 0;
-            System.out.println("BOUNDARY");
-        }
-        hood.set(speed);
+    public double getTargetFlywheelSpeed() {
+        return targetSpeed;
     }
 
-    public void moveHood(double angle) {
-        angle = translate(angle);
-        double move = shooterPID.getOutput(angle, getHoodAngle());
+    @Override
+    public void periodic() {
+        // updating controllers for flywheel
+        // System.out.println("Current: " + getCurrentFlywheelSpeed() + "; Target: " + getTargetFlywheelSpeed());
 
-        System.out.println("ang " + getHoodAngle() + " targ " + angle + " move " + move);
+        // System.out.println(flywheelFeedback.getSetpoint() + " " + getTargetFlywheelSpeed());
 
-        // signs are reversed because the encoder returns negative values
-        if (angle < UPPER_LIMIT || angle > LOWER_LIMIT) {
-            move = 0;
-            System.out.println("BOUNDARY");
-        }
-        hood.set(Util.normalize(move, SPEED_LIMIT));
-    }
+        rmotor.set(targetSpeed);
 
-    // shuffleboard
+        // System.out.println("Current RPM: " + flywheelEncoder.getVelocity());
 
-    public void updateGraphs() {
-        distance.setDouble(getDistance());
-        hoodAngle.setDouble(getHoodAngle());
-    }
-
-    public void update() {
-        shooterShufflePID.update();
-        updateGraphs();
-    }
-
-    // for our encoder, which doesn't completely work
-    private double translate(double encoderVal) {
-        return LOWER_LIMIT - encoderVal;
+        previousVelocity = flywheelEncoder.getVelocity();
     }
 }
+ 
