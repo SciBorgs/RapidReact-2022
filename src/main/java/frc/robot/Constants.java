@@ -66,8 +66,10 @@ public final class Constants {
         }
         // default shot (tarmac line) TODO set
         public static final double TARMAC_SPEED = 0.95;
+        public static final double TARMAC_ANGLE = 0;
         // fender shot (low hub)
         public static final double FENDER_SPEED = 0.4;
+        public static final double FENDER_ANGLE = 0;
         // other shot that works i guess
         // 145 in | max power (1) | 0 deg
         public static final double CHANCE_DIST = Units.inchesToMeters(145);

@@ -8,15 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.Turn180;
 import frc.robot.commands.auto.FenderOneBallAuto;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -29,9 +25,7 @@ import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.Util;
-import frc.robot.commands.DriveRamsete;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -188,7 +182,6 @@ public class RobotContainer {
     climber::stopTelescope,
     climber));
 
-    // TODO
     oi.extendArm
     .whenHeld(
     new InstantCommand(
@@ -213,6 +206,7 @@ public class RobotContainer {
     oi.highShot.whenPressed(
         new Shoot(
             () -> ShooterConstants.getRPM(vision.getDistance()),
+            () -> ShooterConstants.getHoodAngle(vision.getDistance()),
             () -> vision.getXOffset(),
             shooter,
             turret,
@@ -221,6 +215,7 @@ public class RobotContainer {
     oi.fenderShot.whenPressed(
         new Shoot(
             () -> ShooterConstants.FENDER_SPEED,
+            () -> ShooterConstants.FENDER_ANGLE,
             () -> 0,
             shooter,
             turret,

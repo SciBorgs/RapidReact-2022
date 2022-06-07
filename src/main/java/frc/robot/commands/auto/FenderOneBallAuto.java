@@ -1,19 +1,16 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.DriveRamsete;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.Turn180;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.DriveSubsystem.DriveMode;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.ShooterConstants;
 
 public class FenderOneBallAuto extends SequentialCommandGroup {
     public FenderOneBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper,
@@ -21,6 +18,7 @@ public class FenderOneBallAuto extends SequentialCommandGroup {
         addCommands(
                 new Shoot(
                         () -> ShooterConstants.FENDER_SPEED,
+                        () -> ShooterConstants.FENDER_ANGLE,
                         () -> 0,
                         shooter,
                         turret,

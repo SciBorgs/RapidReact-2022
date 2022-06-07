@@ -32,6 +32,7 @@ public class FenderTwoBallAuto extends SequentialCommandGroup {
             new Turn180(drive),
             new Shoot(
                 () -> ShooterConstants.FENDER_SPEED,
+                () -> ShooterConstants.FENDER_ANGLE,
                 () -> 0,
                 shooter,
                 turret,

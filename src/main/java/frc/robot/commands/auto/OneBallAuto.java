@@ -19,6 +19,7 @@ public class OneBallAuto extends SequentialCommandGroup {
         addCommands(
                 new Shoot(
                         () -> ShooterConstants.FENDER_SPEED,
+                        () -> ShooterConstants.FENDER_ANGLE,
                         () -> 0,
                         shooter,
                         turret,
