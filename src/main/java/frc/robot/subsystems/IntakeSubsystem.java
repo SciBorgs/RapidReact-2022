@@ -27,7 +27,7 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
     private double intakeSpeed;
 
-    private ShuffleboardTab mainTab;
+    private ShuffleboardTab tab;
     private SimpleWidget intakeSpeedWidget;
 
     public IntakeSubsystem() {
@@ -40,18 +40,18 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
         this.intakeSpeed = 0;
 
-        
-        // this.mainTab = Shuffleboard.getTab("Intake");
-        // this.mainTab.addNumber("Intake Suck Speed", this::getIntakeSpeed);
-        // this.mainTab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
-        // this.mainTab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
+        this.tab = Shuffleboard.getTab("Intake");
+        this.tab.addNumber("Intake Suck Speed", this::getIntakeSpeed);
+        this.tab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
+        this.tab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
+        this.tab.addNumber("Ball Count", this::get);
 
 
-        // this.intakeSpeedWidget = this.mainTab.add("Intake Suck Set", intakeSpeed);
+        this.intakeSpeedWidget = this.tab.add("Intake Suck Set", intakeSpeed);
 
-        // this.intakeSpeedWidget.getEntry().addListener(event -> {
-        //     this.startSuck(event.getEntry().getDouble(this.intakeSpeed));
-        // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+        this.intakeSpeedWidget.getEntry().addListener(event -> {
+            this.startSuck(event.getEntry().getDouble(this.intakeSpeed));
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
     public void updateBallCounter(){

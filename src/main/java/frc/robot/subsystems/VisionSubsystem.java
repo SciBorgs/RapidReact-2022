@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
+/**
+ * A simple vision subsystem to handle filtering our limelight values.
+ * Require VisionSubsystem in any command that uses the filtered data from this subsystem.
+ */
 public class VisionSubsystem extends SubsystemBase {    
     // filters to smooth x and y difference values
     private final LinearFilter xFilter = LinearFilter.singlePoleIIR(VisionConstants.TIMESCALE, VisionConstants.PERIOD);
@@ -21,13 +25,9 @@ public class VisionSubsystem extends SubsystemBase {
     private double yOffset;
     private boolean visible;
 
-    private ShuffleboardTab mainTab;
-
     public VisionSubsystem() {
         setCameraParams(getTable(), "pipeline", 0);
         reset();
-        this.mainTab = Shuffleboard.getTab("Limelight");
-        // mainTab.addNumber("Limelight Distance", this::getDistance);
     }
 
     // returns limelight network table

@@ -37,8 +37,6 @@ import frc.robot.util.Util;
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
 
-    // private SciPigeon pigeon;
-
     private final SciSpark[] leftSparks = {
             new SciSpark(PortMap.Drivetrain.LEFT_FRONT_SPARK),
             new SciSpark(PortMap.Drivetrain.LEFT_MIDDLE_SPARK),
@@ -84,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase {
         CURVATURE
     }
 
-    private ShuffleboardTab mainTab;
+    private ShuffleboardTab tab;
 
     public DriveSubsystem() {
         lEncoder = leftSparks[0].getEncoder();
@@ -125,10 +123,11 @@ public class DriveSubsystem extends SubsystemBase {
         rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
 
         odometry = new DifferentialDriveOdometry(getRotation());
-        this.mainTab = Shuffleboard.getTab("Drivetrain");
-        mainTab.addNumber("Heading", this::getHeading);
-        mainTab.addNumber("X", this::getX);
-        mainTab.addNumber("Y", this::getY);
+        tab = Shuffleboard.getTab("Drivetrain");
+        tab.add(this);
+        tab.addNumber("Heading", this::getHeading);
+        tab.addNumber("X", this::getX);
+        tab.addNumber("Y", this::getY);
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
