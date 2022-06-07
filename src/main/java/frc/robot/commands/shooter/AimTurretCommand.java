@@ -24,6 +24,7 @@ public class AimTurretCommand extends CommandBase {
 
         if (tv == 1) {
             turret.setTargetAngle(turret.getCurrentAngle() + tx);
+            turret.setNextR(0);
         }
     }
     

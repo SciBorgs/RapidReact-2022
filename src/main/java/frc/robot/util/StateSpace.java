@@ -36,4 +36,7 @@ public class StateSpace {
     public double getU(int num){
         return loop.getU(num);
     }
+    public void setNextR(double nextR){
+        loop.setNextR(VecBuilder.fill(nextR));
+    }
 }

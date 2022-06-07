@@ -15,6 +15,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
 import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.util.Blockable;
+import frc.robot.util.StateSpace;
 
 @Blockable
 public class ShooterSubsystem extends SubsystemBase {
@@ -26,9 +27,11 @@ public class ShooterSubsystem extends SubsystemBase {
     // Hood control
     private final PIDController hoodFeedback = new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD);
     private final SimpleMotorFeedforward hoodFeedforward = new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA);
+    private final StateSpace hoodStateControl = new StateSpace(ShooterConstants.hV, ShooterConstants.hA);
     // Flywheel control
     private final PIDController flywheelFeedback = new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD);
     private final SimpleMotorFeedforward flywheelFeedforward = new SimpleMotorFeedforward(ShooterConstants.fS, ShooterConstants.fV, ShooterConstants.fA);
+    private final StateSpace flyWheelStateSpace= new StateSpace(ShooterConstants.fV, ShooterConstants.fA);
     
     private double targetSpeed; // desired speed of the flywheel
     private double targetAngle; // desired angle of the hood
@@ -100,15 +103,21 @@ public class ShooterSubsystem extends SubsystemBase {
     public boolean isAtTarget() {
         return hoodFeedback.atSetpoint();
     }
+    public void setNextRFly(double a){
+        flyWheelStateSpace.setNextR(a);
+    }
+    public void setNextRHood(double a){
+        hoodStateControl.setNextR(a);
+    }
 
     @Override
     public void periodic() {
-        double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
-        double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
-        rmotor.setVoltage(flywheelFB + flywheelFF);
+       flyWheelStateSpace.correct(flywheelEncoder.getVelocity());
+       flyWheelStateSpace.predict(0.02);
+       rmotor.setVoltage(flyWheelStateSpace.getU(0));
         
-        double hoodFB = hoodFeedback.calculate(hoodEncoder.getAngle(), targetAngle);
-        double hoodFF = hoodFeedforward.calculate(0);
-        hood.setVoltage(hoodFB + hoodFF);
+        hoodStateControl.correct(hoodEncoder.getAbsolutePosition());
+        hoodStateControl.predict(0.0001);
+        hood.setVoltage(hoodStateControl.getU(0));
     }
 }

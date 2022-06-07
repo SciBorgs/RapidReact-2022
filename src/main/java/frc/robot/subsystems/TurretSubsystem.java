@@ -16,6 +16,7 @@ import frc.robot.Constants.TurretConstants;
 import frc.robot.PortMap;
 import frc.robot.sciSensors.SciAbsoluteEncoder;
 import frc.robot.util.Blockable;
+import frc.robot.util.StateSpace;
 
 @Blockable
 public class TurretSubsystem extends SubsystemBase {
@@ -25,7 +26,7 @@ public class TurretSubsystem extends SubsystemBase {
     private final Constraints constraints = new Constraints(TurretConstants.maxV, TurretConstants.maxA);
     private final ProfiledPIDController feedback = new ProfiledPIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, constraints);
     private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(TurretConstants.kS, TurretConstants.kV, TurretConstants.kA);
-
+    private final StateSpace turretStateSpace = new StateSpace(TurretConstants.kV, TurretConstants.kA);
     private double targetAngle;
     // used for calculating acceleration
     private double lastSpeed;
@@ -64,17 +65,17 @@ public class TurretSubsystem extends SubsystemBase {
     public boolean isAtTarget() {
         return feedback.atGoal();
     }
+    public void setNextR(double a){
+        turretStateSpace.setNextR(a);
+    }
 
     @Override
     public void periodic() {
-        double accel = (feedback.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
+        
 
-        double fb = feedback.calculate(getCurrentAngle(), targetAngle);
-        double ff = feedforward.calculate(feedback.getSetpoint().velocity, accel);
+        turretStateSpace.correct(encoder.getAbsolutePosition());
+        turretStateSpace.predict(0.01);
 
-        lastSpeed = feedback.getSetpoint().velocity;
-        lastTime = Timer.getFPGATimestamp();
-
-        turret.setVoltage(fb + ff);
+        turret.setVoltage(turretStateSpace.getU(0));
     }
 }

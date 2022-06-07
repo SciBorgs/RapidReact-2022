@@ -16,13 +16,9 @@ public class AimHoodCommand extends CommandBase {
 
     @Override
     public void execute() {
+        shooter.setNextRHood(shooter.getCurrentHoodAngle());
         shooter.setTargetHoodAngle(ANGLE);
 
-        // for averaging data, if we have time
-        
-        // double distance = Robot.limelightSubsystem.getDistance();
-        // double angle = ShooterData.calcHoodAngle(hoodData, distance);
-        // Robot.shooterSubsystem.moveHood(angle);
     }
 
     @Override
