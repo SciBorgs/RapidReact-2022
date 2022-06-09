@@ -101,13 +101,13 @@ public final class Constants {
         public static final double hI = 0.001;
         public static final double hD = 0.14486;
         // Flywheel FF
-        public static final double fS = 0.07419;
-        public static final double fV = 0.05694;
-        public static final double fA = 0.000833; // formerly 0.016833
+        public static final double fS = 0.13419;
+        public static final double fV = 0.0017823;
+        public static final double fA = 0.00028055;
         // Flywheel PID
-        public static final double fP = 0.012401;
+        public static final double fP = 1.8403E-21;
         public static final double fI = 0;
-        public static final double fD = 0.01;
+        public static final double fD = 0;
     }
 
     public static final class TurretConstants {

@@ -107,6 +107,7 @@
       "/LiveWindow/Ungrouped/Pigeon IMU [42]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/VisionSubsystem": "Subsystem",
+      "/Shuffleboard/Drivetrain/DriveSubsystem": "Subsystem",
       "/Shuffleboard/Shooter/Flywheel PID": "PIDController",
       "/Shuffleboard/Shooter/Hood PID": "PIDController",
       "/Shuffleboard/Shooter/ShooterSubsystem": "Subsystem",

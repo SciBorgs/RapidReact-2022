@@ -39,7 +39,6 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     
     private double targetSpeed; // desired speed of the flywheel (rpm)
     private double targetAngle; // desired angle of the hood (deg)
-    private double lastTime; // time measurement, used for time difference in feedforward
 
     private ShuffleboardTab tab;
 
@@ -73,7 +72,6 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         targetSpeed = 0.0;
         targetAngle = 0.0;
         previousVelocity = 0.0;
-        lastTime = Timer.getFPGATimestamp();
     }
     
     // FLYWHEEL SPEED (RPM)
@@ -130,13 +128,11 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         if (targetSpeed > 0) {
             // updating controllers for flywheel
             double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
-            double flywheelFF = flywheelFeedforward.calculate(flywheelEncoder.getVelocity(), targetSpeed, Timer.getFPGATimestamp() - lastTime);
+            double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
             flywheelLead.setVoltage(flywheelFB + flywheelFF);
         } else {
             flywheelLead.stopMotor();
         }
-
-        lastTime = Timer.getFPGATimestamp();
 
         // updating ball count
         if (flywheelFeedback.getSetpoint() > 0 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VELOCITY_THRESHOLD) {

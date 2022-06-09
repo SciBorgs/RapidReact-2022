@@ -247,7 +247,7 @@ public class RobotContainer {
     //   drive).withTimeout(10);
     // return new DriveRamsete(drive, autoChooser.getSelected(), true);
     // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
-    return new FenderOneBallAuto(drive, intake, hopper, shooter, turret);
+    // return new FenderOneBallAuto(drive, intake, hopper, shooter, turret);
     // testing shooter
     // return new SequentialCommandGroup(
     // new InstantCommand(() -> hopper.startElevator(0.8), hopper),
@@ -256,6 +256,8 @@ public class RobotContainer {
     // new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
     // );
     // return new InstantCommand();
+    return new InstantCommand(
+      () -> shooter.setTargetFlywheelSpeed(3000));
   }
 
   /**
