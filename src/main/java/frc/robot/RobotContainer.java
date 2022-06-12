@@ -123,6 +123,23 @@ public class RobotContainer {
                 },
                 intake,
                 hopper));
+    
+    oi.reverseIntake
+        .whenPressed(
+          new InstantCommand(
+            () -> {
+              intake.reverseSuck();
+              hopper.reverseSuck();
+            },
+            intake,
+            hopper))
+        .whenReleased(
+          new InstantCommand(
+            () -> {
+              intake.stopSuck();
+              hopper.stopSuck();
+            },
+            intake, hopper));
 
     oi.actuateIntake.whenPressed(
         new InstantCommand(

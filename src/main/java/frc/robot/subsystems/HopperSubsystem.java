@@ -61,6 +61,14 @@ public class HopperSubsystem extends SubsystemBase {
         suckSpeed = MathUtil.clamp(newSpeed, -HopperConstants.MAX_SPEED, HopperConstants.MAX_SPEED);
     }
 
+    public void reverseSuck() {
+        suckSpeed = -HopperConstants.SUCK_SPEED;
+    }
+
+    public void reverseSuck(double newSpeed) {
+        suckSpeed = -MathUtil.clamp(newSpeed, -HopperConstants.MAX_SPEED, HopperConstants.MAX_SPEED);
+    }
+
     public void stopSuck() {
         suckSpeed = 0;
     }

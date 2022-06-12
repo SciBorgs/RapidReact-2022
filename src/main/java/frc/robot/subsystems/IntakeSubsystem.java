@@ -82,6 +82,14 @@ public class IntakeSubsystem extends SubsystemBase implements BallCounter {
         this.intakeSpeed = MathUtil.clamp(speed, -1, 1);
     }
 
+    public void reverseSuck() {
+        this.intakeSpeed = -IntakeConstants.INTAKE_SPEED;
+    }
+
+    public void reverseSuck(double speed) {
+        this.intakeSpeed = -MathUtil.clamp(speed, -1, 1);
+    }
+
     public void stopSuck() {
         this.intakeSpeed = 0;
     }
