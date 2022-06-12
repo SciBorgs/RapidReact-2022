@@ -126,21 +126,6 @@
       "/SmartDashboard/traj-yellow": "String Chooser"
     },
     "windows": {
-      "/Shuffleboard/Shooter/Flywheel PID": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/Shuffleboard/Shooter/Hood PID": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Auto Chooser": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Field": {
         "Robot": {
           "arrowColor": [
@@ -257,26 +242,6 @@
           "name": "have fun watching the robot move back and forth for all eternity",
           "visible": true
         }
-      },
-      "/SmartDashboard/Reset Drive": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/traj-blue": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/traj-green": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/traj-white": {
-        "window": {
-          "visible": true
-        }
       }
     }
   },
@@ -290,5 +255,8 @@
       },
       "open": true
     }
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }
