@@ -31,6 +31,7 @@ public class ClimberSubsystem implements Subsystem {
         this.telescope.set(0);
     }
 
+
     public void runArms(boolean reversed) {
         this.arms.set(reversed ? -ARM_SPEED : ARM_SPEED);
     }

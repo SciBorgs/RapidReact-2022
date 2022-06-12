@@ -112,15 +112,11 @@ public class RobotContainer {
     // Intake
     oi.runIntake
         .whenPressed(
-            new InstantCommand(
+            new StartEndCommand(
                 () -> {
                   intake.startSuck();
                   hopper.startSuck();
                 },
-                intake,
-                hopper))
-        .whenReleased(
-            new InstantCommand(
                 () -> {
                   intake.stopSuck();
                   hopper.stopSuck();
@@ -136,14 +132,11 @@ public class RobotContainer {
     // Intake-Hopper-Compressor
     oi.runHopper
         .whenHeld(
-            new InstantCommand(
+            new StartEndCommand(
                 () -> {
                   hopper.startSuck();
                   hopper.startElevator();
                 },
-                hopper))
-        .whenReleased(
-            new InstantCommand(
                 () -> {
                   hopper.stopSuck();
                   hopper.stopElevator();
@@ -152,45 +145,45 @@ public class RobotContainer {
 
     // Climber
     oi.extendTelescope
-    .whenHeld(
-    new InstantCommand(
-    () -> climber.runTelescope(false),
-    climber))
-    .whenReleased(
-    new InstantCommand(
-    climber::stopTelescope,
-    climber));
+        .whenHeld(
+            new InstantCommand(
+                () -> climber.runTelescope(false),
+                climber))
+        .whenReleased(
+            new InstantCommand(
+                climber::stopTelescope,
+                climber));
 
     oi.retractTelescope
-    .whenHeld(
-    new InstantCommand(
-    () -> climber.runTelescope(true),
-    climber))
-    .whenReleased(
-    new InstantCommand(
-    climber::stopTelescope,
-    climber));
+        .whenHeld(
+            new InstantCommand(
+                () -> climber.runTelescope(true),
+                climber))
+        .whenReleased(
+            new InstantCommand(
+                climber::stopTelescope,
+                climber));
 
     // TODO
     oi.extendArm
-    .whenHeld(
-    new InstantCommand(
-    () -> climber.runArms(false),
-    climber))
-    .whenReleased(
-    new InstantCommand(
-    climber::stopArms,
-    climber));
+        .whenHeld(
+            new InstantCommand(
+                () -> climber.runArms(false),
+                climber))
+        .whenReleased(
+            new InstantCommand(
+                climber::stopArms,
+                climber));
 
     oi.retractArm
-    .whenHeld(
-    new InstantCommand(
-    () -> climber.runArms(true),
-    climber))
-    .whenReleased(
-    new InstantCommand(
-    climber::stopArms,
-    climber));
+        .whenHeld(
+            new InstantCommand(
+                () -> climber.runArms(true),
+                climber))
+        .whenReleased(
+            new InstantCommand(
+                climber::stopArms,
+                climber));
 
     // Shooter
     oi.highShot.whenPressed(
@@ -227,16 +220,18 @@ public class RobotContainer {
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     // return new Turn180(drive);
     // return new FunctionalCommand(
-    //   () -> {},
-    //   () -> {
-    //     drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds, DriveConstants.driveBackSpeeds);}, 
-    //   (interrupted) -> {drive.driveRobot(DriveMode.TANK, 0, 0);}, 
-    //   () -> false,
-    //   drive).withTimeout(10);
+    // () -> {},
+    // () -> {
+    // drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds,
+    // DriveConstants.driveBackSpeeds);},
+    // (interrupted) -> {drive.driveRobot(DriveMode.TANK, 0, 0);},
+    // () -> false,
+    // drive).withTimeout(10);
     // return new DriveRamsete(drive, autoChooser.getSelected(), true);
     // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
-    return new FenderOneBallAuto(drive, intake, hopper, shooter, turret);
+    // return new FenderOneBallAuto(drive, intake, hopper, shooter, turret);
     // testing shooter
+    return new Turn180(drive);
     // return new SequentialCommandGroup(
     // new InstantCommand(() -> hopper.startElevator(0.8), hopper),
     // new InstantCommand(() -> shooter.setTargetHoodAngle(12), shooter),

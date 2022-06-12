@@ -14,9 +14,7 @@ public class Turn180 extends PIDCommand {
                 drive::getHeading,
                 Util.normalizeAngle180(drive.getHeading()),
                 // If current heading is less than the desired angle, we spin right. Otherwise, we spin left.
-                output -> drive.driveRobot(DriveMode.TANK,
-                        drive.getHeading() < Util.normalizeAngle180(drive.getHeading()) ? output : -output, 
-                        drive.getHeading() < Util.normalizeAngle180(drive.getHeading()) ? -output : output),
+                output -> drive.driveRobot(DriveMode.TANK, -output, output),
                 drive
             );
 

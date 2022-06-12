@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Turn180;
 import frc.robot.util.TrajectoryRegister;
 import frc.robot.util.Util;
+import edu.wpi.first.cameraserver.CameraServer;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -43,6 +45,7 @@ public class Robot extends TimedRobot {
     TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     System.out.println(Util.getPathPlannerPathNames());
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    CameraServer.startAutomaticCapture();
   }
 
   /**

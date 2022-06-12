@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -16,6 +17,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -24,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
@@ -32,7 +35,6 @@ import frc.robot.sciSensors.SciSpark;
 import frc.robot.util.Blockable;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.Util;
-
 
 @Blockable
 public class DriveSubsystem extends SubsystemBase {
@@ -57,6 +59,9 @@ public class DriveSubsystem extends SubsystemBase {
     private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
     private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
 
+    private double speedLimit = 0.7;
+    private SimpleWidget speedLimitWidget;
+
     private final DifferentialDrive drive = new DifferentialDrive(
             leftGroup,
             rightGroup);
@@ -67,9 +72,11 @@ public class DriveSubsystem extends SubsystemBase {
     public DifferentialDriveOdometry odometry;
     private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
+            DriveConstants.kA);
 
-    private SlewRateLimiter filter1 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for speed in arcade and curvature, left track in tank
+    private SlewRateLimiter filter1 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for speed in arcade and
+                                                                                    // curvature, left track in tank
     private SlewRateLimiter filter2 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for right track in tank
 
     // SIMULATION
@@ -94,7 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
         lEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
         rEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
         rEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
-        
+
         resetEncoders();
 
         for (SciSpark motor : allSparks) {
@@ -118,8 +125,7 @@ public class DriveSubsystem extends SubsystemBase {
                 60.0,
                 Units.inchesToMeters(3),
                 0.7112,
-                VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005)
-        );
+                VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 
         lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
         rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
@@ -129,6 +135,14 @@ public class DriveSubsystem extends SubsystemBase {
         mainTab.addNumber("Heading", this::getHeading);
         mainTab.addNumber("X", this::getX);
         mainTab.addNumber("Y", this::getY);
+
+        mainTab.addNumber("Current Speed Limit", this::getSpeedLimit);
+
+        this.speedLimitWidget = mainTab.add("Target Flywheel Speed", speedLimit);
+
+        this.speedLimitWidget.getEntry().addListener(event -> {
+            this.setSpeedLimit(event.getEntry().getDouble(this.speedLimit));
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -142,6 +156,14 @@ public class DriveSubsystem extends SubsystemBase {
         drive.feed();
     }
 
+    public double getSpeedLimit() {
+        return speedLimit;
+    }
+
+    public void setSpeedLimit(double newLimit) {
+        this.speedLimit = newLimit;
+    }
+
     public void driveBack() {
         driveRobot(DriveMode.TANK, -0.4, -0.4);
     }
@@ -152,15 +174,16 @@ public class DriveSubsystem extends SubsystemBase {
 
     /**
      * Drives the robot according to provided DriveMode
+     * 
      * @param mode
-     * @param first Left input in TANK, speed in ARCADE or CURVATURE
+     * @param first  Left input in TANK, speed in ARCADE or CURVATURE
      * @param second Right input in TANK, rotation in ARCADE or CURVATURE
      */
     public void driveRobot(DriveMode mode, double first, double second) {
         // Controller interface
         switch (mode) {
             case TANK:
-                drive.tankDrive(first, second);
+                drive.tankDrive(MathUtil.clamp(first, -this.speedLimit, this.speedLimit), second);
                 break;
             case ARCADE:
                 drive.arcadeDrive(filter1.calculate(first), second);
@@ -240,7 +263,7 @@ public class DriveSubsystem extends SubsystemBase {
     public double getRightAverageVelocity() {
         return Util.getAverageOfArray(rightSparks, CANSparkMax::get);
     }
-    
+
     public SimpleMotorFeedforward getFeedforward() {
         return feedforward;
     }
@@ -276,12 +299,15 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
-        for(SciSpark s : getAllSparks()) { s.updateFailState(); }
+        for (SciSpark s : getAllSparks()) {
+            s.updateFailState();
+        }
     }
 
     @Override
     public void simulationPeriodic() {
-        // driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
+        // driveSim.setInputs(leftSparks[0].getAppliedOutput(),
+        // rightSparks[0].getAppliedOutput());
         driveSim.setInputs(leftGroup.get(), rightGroup.get());
 
         lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
