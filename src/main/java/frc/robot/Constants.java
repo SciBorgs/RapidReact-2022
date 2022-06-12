@@ -127,8 +127,9 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0.0728;
         // Trapezoidal motion profile constraints
-        public static final double maxA = 20; // acceleration
-        public static final double maxV = 40; // velocity
+        public static final double maxVelocity = 20;
+        public static final double maxAccel = 0.75;
+        public static final double maxVoltage = 12;
     }
 
     public static final class HopperConstants {

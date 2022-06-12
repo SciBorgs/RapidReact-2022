@@ -126,6 +126,16 @@
       "/SmartDashboard/traj-yellow": "String Chooser"
     },
     "windows": {
+      "/Shuffleboard/Shooter/Flywheel PID": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/Shooter/Hood PID": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Auto Chooser": {
         "window": {
           "visible": true

@@ -257,7 +257,7 @@ public class RobotContainer {
     // );
     // return new InstantCommand();
     return new InstantCommand(
-      () -> shooter.setTargetFlywheelSpeed(3000));
+      () -> turret.setTargetAngle(15));
   }
 
   /**
