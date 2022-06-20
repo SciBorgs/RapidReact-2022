@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.Turn180;
 import frc.robot.commands.auto.FenderOneBallAuto;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -75,15 +77,17 @@ public class RobotContainer {
 
   private void configureSubsystemDefaults() {
     // turret auto following
-    // turret.setDefaultCommand(
-    // new RunCommand(
-    // () -> {
-    // if (vision.hasTarget())
-    // turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset());
-    // else
-    // turret.setTargetAngle(0);
-    // },
-    // turret));
+    turret.setDefaultCommand(
+      new ConditionalCommand(
+        new InstantCommand(
+          () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()),
+          turret
+        ),
+        new InstantCommand(
+          () -> turret.setTargetAngle(0),
+          turret
+        ),
+        () -> vision.hasTarget()));
   }
 
   /**
@@ -105,7 +109,7 @@ public class RobotContainer {
 
     // Intake
     oi.runIntake
-        .whenPressed(
+        .whileHeld(
             new StartEndCommand(
                 () -> {
                   intake.startSuck();
@@ -142,7 +146,7 @@ public class RobotContainer {
 
     // Intake-Hopper-Compressor
     oi.runHopper
-        .whenHeld(
+        .whileHeld(
             new StartEndCommand(
                 () -> {
                   hopper.startSuck();
@@ -251,17 +255,12 @@ public class RobotContainer {
     // new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
     // );
     // return new InstantCommand();
-    return new InstantCommand(
-      () -> turret.setTargetAngle(15));
   }
 
   /**
    * sets default commands during teleop
    */
   public void setTeleopCommands() {
-    // why are joysticks 1 to -1. why. why. I AM GOING TO CRY I AM GOING TO CRY I AM
-    // GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING TO CRY I AM GOING
-    // TO CRY
     drive.setDefaultCommand(
         new RunCommand(
             () -> {
