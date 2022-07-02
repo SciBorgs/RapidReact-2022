@@ -16,9 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.PortMap;
-import frc.robot.util.Blockable;
 
-@Blockable
 public class TurretSubsystem extends SubsystemBase {
     private final CANSparkMax turret = new CANSparkMax(PortMap.Turret.TURRET_SPARK, MotorType.kBrushless);
     private final Encoder encoder = new Encoder(PortMap.Turret.TURRET_ENCODER_QUADRATURE[0], PortMap.Turret.TURRET_ENCODER_QUADRATURE[1], true);
@@ -75,12 +73,9 @@ public class TurretSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         double accel = (feedback.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        // System.out.println("target " + targetAngle + "current" + getCurrentAngle());
         double fb = feedback.calculate(getCurrentAngle(), targetAngle);
         double ff = feedforward.calculate(feedback.getSetpoint().velocity, accel);
-        // System.out.println("voltage = " + (fb + ff));
-        // System.out.println("constraints: " + feedforward.maxAchievableVelocity(TurretConstants.maxVoltage, TurretConstants.maxAccel) + " | " + feedforward.maxAchievableAcceleration(TurretConstants.maxVoltage, TurretConstants.maxVelocity));
-        // System.out.println("velocity = " + encoder.getRate());
+        
         lastSpeed = feedback.getSetpoint().velocity;
         lastTime = Timer.getFPGATimestamp();
 

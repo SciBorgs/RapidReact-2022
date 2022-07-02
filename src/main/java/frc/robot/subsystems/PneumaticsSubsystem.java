@@ -5,9 +5,6 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.robot.util.Blockable;
-
-@Blockable
 public class PneumaticsSubsystem implements Subsystem {
     private Compressor compressor;    
     public  ShuffleboardTab mainTab;

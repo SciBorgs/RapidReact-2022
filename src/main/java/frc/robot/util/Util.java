@@ -336,27 +336,27 @@ public class Util {
      * @param subsystems the subsystems to block
      * @return the blocking command, which may be cancelled.
      */
-    public static Command blockSubsystems(Set<Subsystem> subsystems) {
-        Set<@Blockable Subsystem> blockable 
-            = subsystems.stream()
-                        .filter(Util.annotationFilter(Blockable.class))
-                        .collect(Collectors.toUnmodifiableSet());
+    // public static Command blockSubsystems(Set<Subsystem> subsystems) {
+    //     Set<@Blockable Subsystem> blockable 
+    //         = subsystems.stream()
+    //                     .filter(Util.annotationFilter(Blockable.class))
+    //                     .collect(Collectors.toUnmodifiableSet());
 
-        Command blockingCommand = new Command() {
-            @Override
-            public Set<Subsystem> getRequirements() {
-                return blockable;
-            }
+    //     Command blockingCommand = new Command() {
+    //         @Override
+    //         public Set<Subsystem> getRequirements() {
+    //             return blockable;
+    //         }
 
-            @Override
-            public boolean runsWhenDisabled() {
-                return true;
-            }
-        };
+    //         @Override
+    //         public boolean runsWhenDisabled() {
+    //             return true;
+    //         }
+    //     };
         
-        CommandScheduler.getInstance().schedule(false, blockingCommand);
-        return blockingCommand;
-    }
+    //     CommandScheduler.getInstance().schedule(false, blockingCommand);
+    //     return blockingCommand;
+    // }
 
     public static <T> Predicate<T> annotationFilter(Class<? extends Annotation> annotation) {
         return (obj) -> obj.getClass().isAnnotationPresent(annotation);

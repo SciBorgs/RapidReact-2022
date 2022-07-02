@@ -31,11 +31,9 @@ import frc.robot.PortMap;
 import frc.robot.Robot;
 import frc.robot.sciSensors.SciPigeon;
 import frc.robot.sciSensors.SciSpark;
-import frc.robot.util.Blockable;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.Util;
 
-@Blockable
 public class DriveSubsystem extends SubsystemBase {
 
     private final SciSpark[] leftSparks = {
@@ -72,9 +70,9 @@ public class DriveSubsystem extends SubsystemBase {
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
             DriveConstants.kA);
 
-    private SlewRateLimiter filter1 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for speed in arcade and
+    private SlewRateLimiter filter1 = new SlewRateLimiter(DriveConstants.DELTA); // used for speed in arcade and
                                                                                     // curvature, left track in tank
-    private SlewRateLimiter filter2 = new SlewRateLimiter(DriveConstants.MAX_JERK); // used for right track in tank
+    private SlewRateLimiter filter2 = new SlewRateLimiter(DriveConstants.DELTA); // used for right track in tank
 
     // SIMULATION
     private DifferentialDrivetrainSim driveSim;

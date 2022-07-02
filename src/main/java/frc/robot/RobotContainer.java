@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Turn180;
-import frc.robot.commands.auto.FenderOneBallAuto;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -119,20 +118,19 @@ public class RobotContainer {
                   intake.stopSuck();
                   hopper.stopSuck();
                 },
-                intake,
-                hopper));
-    
-    oi.reverseIntake
+                intake, hopper))
         .whenPressed(
           new InstantCommand(
+            intake::toggleArm,
+            intake));
+    
+    oi.reverseIntake
+        .whileHeld(
+          new StartEndCommand(
             () -> {
               intake.reverseSuck();
               hopper.reverseSuck();
             },
-            intake,
-            hopper))
-        .whenReleased(
-          new InstantCommand(
             () -> {
               intake.stopSuck();
               hopper.stopSuck();
@@ -160,44 +158,32 @@ public class RobotContainer {
 
     // Climber
     oi.extendTelescope
-        .whenHeld(
-            new InstantCommand(
-                () -> climber.runTelescope(false),
-                climber))
-        .whenReleased(
-            new InstantCommand(
-                climber::stopTelescope,
-                climber));
+        .whileHeld(
+          new StartEndCommand(
+            climber::extendTelescope,
+            climber::stopTelescope,
+            climber));
 
     oi.retractTelescope
-        .whenHeld(
-            new InstantCommand(
-                () -> climber.runTelescope(true),
-                climber))
-        .whenReleased(
-            new InstantCommand(
-                climber::stopTelescope,
-                climber));
-
+        .whileHeld(
+          new StartEndCommand(
+            climber::retractTelescope,
+            climber::stopTelescope,
+            climber));
+        
     oi.extendArm
-        .whenHeld(
-            new InstantCommand(
-                () -> climber.runArms(false),
-                climber))
-        .whenReleased(
-            new InstantCommand(
-                climber::stopArms,
-                climber));
+        .whileHeld(
+          new StartEndCommand(
+            climber::extendArms,
+            climber::stopArms,
+            climber));
 
     oi.retractArm
-        .whenHeld(
-            new InstantCommand(
-                () -> climber.runArms(true),
-                climber))
-        .whenReleased(
-            new InstantCommand(
-                climber::stopArms,
-                climber));
+        .whileHeld(
+          new StartEndCommand(
+            climber::retractArms,
+            climber::stopArms,
+            climber));
 
     // Shooter
     oi.highShot.whenPressed(

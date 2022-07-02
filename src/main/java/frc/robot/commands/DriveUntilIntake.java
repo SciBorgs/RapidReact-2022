@@ -9,18 +9,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class DriveUntilIntake extends CommandBase {
     private DriveSubsystem drive;
     private IntakeSubsystem intake;
-    private int currentBallCount;
 
     public DriveUntilIntake(DriveSubsystem drive, IntakeSubsystem intake) {
         this.drive = drive;
         this.intake = intake;
-        this.currentBallCount = intake.get();
         addRequirements(drive);
-    }
-
-    @Override
-    public void initialize() {
-        currentBallCount = intake.get();
     }
 
     @Override
@@ -30,7 +23,7 @@ public class DriveUntilIntake extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return intake.get() == currentBallCount+1;
+        return intake.hasBall();
     }
 
     @Override

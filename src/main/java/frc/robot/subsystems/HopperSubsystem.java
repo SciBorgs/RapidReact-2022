@@ -9,9 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.Constants.HopperConstants;
-import frc.robot.util.Blockable;
 
-@Blockable
 public class HopperSubsystem extends SubsystemBase {
 
     private CANSparkMax suck;

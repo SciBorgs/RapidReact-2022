@@ -15,11 +15,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
-import frc.robot.util.BallCounter;
-import frc.robot.util.Blockable;
 
-@Blockable
-public class ShooterSubsystem extends SubsystemBase implements BallCounter {
+public class ShooterSubsystem extends SubsystemBase {
 
     // hardware
     private final CANSparkMax hood = new CANSparkMax(PortMap.Shooter.HOOD_SPARK, MotorType.kBrushless);
@@ -40,9 +37,6 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
     private double targetAngle; // desired angle of the hood (deg)
 
     private ShuffleboardTab tab;
-
-    // keeping track of ejected balls
-    private double previousVelocity;
 
     public ShooterSubsystem() {
         
@@ -70,7 +64,6 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
 
         targetSpeed = 0.0;
         targetAngle = 0.0;
-        previousVelocity = 0.0;
     }
     
     // FLYWHEEL SPEED (RPM)
@@ -132,11 +125,5 @@ public class ShooterSubsystem extends SubsystemBase implements BallCounter {
         } else {
             flywheelLead.stopMotor();
         }
-
-        // updating ball count
-        if (flywheelFeedback.getSetpoint() > 0 && previousVelocity - flywheelEncoder.getVelocity() > ShooterConstants.DELTA_VELOCITY_THRESHOLD) {
-            decrement();
-        }
-        previousVelocity = flywheelEncoder.getVelocity();
     }
 }

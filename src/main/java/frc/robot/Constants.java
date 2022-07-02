@@ -22,7 +22,7 @@ public final class Constants {
         public static final double DUTY_CYCLE_THRESHOLD = 0;
         public static final double VELOCITY_THRESHOLD = 0;
         // for slew rate limiter
-        public static final double MAX_JERK = 0.99;
+        public static final double DELTA = 3;
         // ratios
         public static final double GEAR_RATIO = 1 / 13.7;
         public static final double ROBOT_WIDTH = 0.7398; // (meters)
@@ -140,7 +140,12 @@ public final class Constants {
 
     public static final class IntakeConstants { 
         public static final double INTAKE_SPEED = 0.5;
-        public static final double WAIT_TIME = 1000; // in milliseconds, used for the ball counter 
+        public static final double DEBOUNCE_TIME = 0.5; // (seconds)
+    }
+
+    public static final class ClimberConstants {
+        public static final double TELESCOPE_SPEED = 0.6;
+        public static final double ARM_SPEED = 0.5;
     }
 
     public static final class VisionConstants {
