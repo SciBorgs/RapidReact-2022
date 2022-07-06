@@ -13,10 +13,10 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class FenderTwoBallAuto extends SequentialCommandGroup {
-    public FenderTwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, FlywheelSubsystem shooter, TurretSubsystem turret, String pos) {
+    public FenderTwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, FlywheelSubsystem flywheel, TurretSubsystem turret, String pos) {
         // Init
         addCommands(
-            new InstantCommand(() -> shooter.setTargetFlywheelSpeed(ShooterConstants.FENDER_SPEED), shooter),
+            new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.FENDER_SPEED), flywheel),
             new InstantCommand(intake::toggleArm, intake),
             new InstantCommand(intake::startSuck, intake)
         );
@@ -28,7 +28,7 @@ public class FenderTwoBallAuto extends SequentialCommandGroup {
             new InstantCommand(hopper::startElevator, hopper),
             new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
             new InstantCommand(hopper::stopElevator, hopper),
-            new InstantCommand(shooter::stopFlywheel, shooter)
+            new InstantCommand(flywheel::stopFlywheel, flywheel)
         );
 
         // Drive off tarmac, end
@@ -36,7 +36,7 @@ public class FenderTwoBallAuto extends SequentialCommandGroup {
             new Turn180(drive),
             new DriveRamsete(drive, "DriveOffTarmac", false),
             new InstantCommand(intake::stopSuck),
-            new InstantCommand(shooter::stopFlywheel, shooter)
+            new InstantCommand(flywheel::stopFlywheel, flywheel)
         );
     }
 }

@@ -8,25 +8,22 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.Turn180;
-import frc.robot.commands.VisionAim;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
-import frc.robot.subsystems.FlywheelSubsystem;
-import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Util;
@@ -50,7 +47,7 @@ public class RobotContainer {
   public final PhotonVisionSubsystem photonVision = new PhotonVisionSubsystem();
   public final TurretSubsystem turret = new TurretSubsystem();
   public final HoodSubsystem hood = new HoodSubsystem();
-  public final FlywheelSubsystem shooter = new FlywheelSubsystem();
+  public final FlywheelSubsystem flywheel = new FlywheelSubsystem();
   public final IntakeSubsystem intake = new IntakeSubsystem();
   public final HopperSubsystem hopper = new HopperSubsystem();
   public final PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
@@ -60,7 +57,7 @@ public class RobotContainer {
 
   // private final Set<Subsystem> subsystems = Set.of(
   // drive, vision, photonVision, turret,
-  // shooter, intake, hopper, pneumatics,
+  // flywheel, intake, hopper, pneumatics,
   // climber, monitor, rumble);
 
   // blocker
@@ -198,15 +195,15 @@ public class RobotContainer {
             hopper::stopElevator,
             hopper),
           new InstantCommand(),
-          shooter::atTargetRPM)
+          flywheel::atTargetRPM)
         .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
 
     oi.runFlywheel
       .whileHeld(
         new StartEndCommand(
-          () -> shooter.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
-          shooter::stopFlywheel,
-          shooter));
+          () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
+          flywheel::stopFlywheel,
+          flywheel));
 
   }
 
@@ -234,15 +231,15 @@ public class RobotContainer {
     // () -> false,
     // drive).withTimeout(10);
     // return new DriveRamsete(drive, autoChooser.getSelected(), true);
-    // return new FiveBallAuto(drive, intake, hopper, vision, shooter, turret, "1");
-    // return new FenderOneBallAuto(drive, intake, hopper, shooter, turret);
-    // testing shooter
+    // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
+    // return new FenderOneBallAuto(drive, intake, hopper, flywheel, turret);
+    // testing flywheel
     return new Turn180(drive);
     // return new SequentialCommandGroup(
     // new InstantCommand(() -> hopper.startElevator(0.8), hopper),
-    // new InstantCommand(() -> shooter.setTargetHoodAngle(12), shooter),
+    // new InstantCommand(() -> flywheel.setTargetHoodAngle(12), flywheel),
     // new InstantCommand(() -> turret.setTargetAngle(15), turret),
-    // new InstantCommand(() -> shooter.setTargetFlywheelSpeed(8000), shooter)
+    // new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(8000), flywheel)
     // );
     // return new InstantCommand();
   }
