@@ -26,6 +26,7 @@ import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Util;
@@ -48,6 +49,7 @@ public class RobotContainer {
   public final VisionSubsystem vision = new VisionSubsystem();
   public final PhotonVisionSubsystem photonVision = new PhotonVisionSubsystem();
   public final TurretSubsystem turret = new TurretSubsystem();
+  public final HoodSubsystem hood = new HoodSubsystem();
   public final FlywheelSubsystem shooter = new FlywheelSubsystem();
   public final IntakeSubsystem intake = new IntakeSubsystem();
   public final HopperSubsystem hopper = new HopperSubsystem();
@@ -76,7 +78,19 @@ public class RobotContainer {
     configureSubsystemDefaults();
   }
 
-  private void configureSubsystemDefaults() { }
+  private void configureSubsystemDefaults() {
+    // turret auto aiming
+    turret.setDefaultCommand(
+      new RunCommand(
+        () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()),
+        turret));
+
+    // hood auto aiming
+    hood.setDefaultCommand(
+      new RunCommand(
+        () -> hood.setSetpoint(ShooterConstants.getHoodAngle(vision.getDistance())),
+        hood));
+  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -187,11 +201,10 @@ public class RobotContainer {
           shooter::atTargetRPM)
         .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
 
-    // manually run flywheel
     oi.runFlywheel
       .whileHeld(
         new StartEndCommand(
-          () -> shooter.setTargetFlywheelSpeed(ShooterConstants.TARMAC_SPEED),
+          () -> shooter.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
           shooter::stopFlywheel,
           shooter));
 
@@ -252,6 +265,5 @@ public class RobotContainer {
     // new InstantCommand(rumble::rumble, rumble),
     // new InstantCommand(rumble::stopRumble, rumble),
     // drive::isStalling));
-    CommandScheduler.getInstance().schedule(new VisionAim(shooter, turret, vision));
   }
 }
