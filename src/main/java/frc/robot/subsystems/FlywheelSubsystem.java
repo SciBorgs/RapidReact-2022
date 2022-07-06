@@ -82,9 +82,10 @@ public class FlywheelSubsystem extends SubsystemBase {
     public void periodic() {        
         if (targetSpeed > 0) {
             // updating controllers for flywheel
-            double flywheelFB = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
-            double flywheelFF = flywheelFeedforward.calculate(targetSpeed);
-            motorLead.setVoltage(flywheelFB + flywheelFF);
+            double fb = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
+            double ff = flywheelFeedforward.calculate(targetSpeed);
+            motorLead.setVoltage(fb + ff);
+            System.out.println("voltage: " + (fb + ff));
         } else {
             motorLead.stopMotor();
         }

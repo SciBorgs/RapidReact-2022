@@ -18,7 +18,7 @@ public class FenderThreeBallAuto extends SequentialCommandGroup {
         addCommands(
             new InstantCommand(intake::toggleArm, intake),
             new InstantCommand(intake::startSuck, intake),
-            new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.FENDER_SPEED), flywheel)
+            new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.FENDER_RPM), flywheel)
         );
 
         // Grab second ball, go to fender, shoot

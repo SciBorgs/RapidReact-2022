@@ -8,13 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.Turn180;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -82,12 +80,13 @@ public class RobotContainer {
       new RunCommand(
         () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()),
         turret));
-
+    
     // hood auto aiming
     hood.setDefaultCommand(
       new RunCommand(
         () -> hood.setSetpoint(ShooterConstants.getHoodAngle(vision.getDistance())),
         hood));
+    hood.enable();
   }
 
   /**
@@ -195,7 +194,7 @@ public class RobotContainer {
     oi.runFlywheel
       .whileHeld(
         new StartEndCommand(
-          () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_SPEED),
+          () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM),
           flywheel::stopFlywheel,
           flywheel));
 
@@ -228,7 +227,7 @@ public class RobotContainer {
     // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
     // return new FenderOneBallAuto(drive, intake, hopper, flywheel, turret);
     // testing flywheel
-    return new Turn180(drive);
+    return new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel);
     // return new SequentialCommandGroup(
     // new InstantCommand(() -> hopper.startElevator(0.8), hopper),
     // new InstantCommand(() -> flywheel.setTargetHoodAngle(12), flywheel),

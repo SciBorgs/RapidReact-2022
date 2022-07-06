@@ -51,6 +51,9 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/DriveSubsystem": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/FlywheelSubsystem": "Subsystem",
+      "/LiveWindow/HoodSubsystem": "Subsystem",
+      "/LiveWindow/HoodSubsystem/PID Controller": "PIDController",
       "/LiveWindow/HopperSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/LocalizationSubsystem": "Subsystem",
@@ -109,9 +112,12 @@
       "/LiveWindow/VisionSubsystem": "Subsystem",
       "/Shuffleboard/Drivetrain/DriveSubsystem": "Subsystem",
       "/Shuffleboard/Shooter/Flywheel PID": "PIDController",
+      "/Shuffleboard/Shooter/FlywheelSubsystem": "Subsystem",
       "/Shuffleboard/Shooter/Hood PID": "PIDController",
+      "/Shuffleboard/Shooter/HoodSubsystem": "Subsystem",
       "/Shuffleboard/Shooter/ShooterSubsystem": "Subsystem",
       "/Shuffleboard/Shooter/TurretSubsystem": "Subsystem",
+      "/Shuffleboard/Shooter/test hood": "Command",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Reset Drive": "Command",
@@ -126,6 +132,11 @@
       "/SmartDashboard/traj-yellow": "String Chooser"
     },
     "windows": {
+      "/Shuffleboard/Shooter/HoodSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "Robot": {
           "arrowColor": [
@@ -246,17 +257,11 @@
     }
   },
   "NetworkTables": {
+    "Shuffleboard": {
+      "open": true
+    },
     "SmartDashboard": {
-      "Auto Chooser": {
-        "open": true
-      },
-      "Field": {
-        "open": true
-      },
       "open": true
     }
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }

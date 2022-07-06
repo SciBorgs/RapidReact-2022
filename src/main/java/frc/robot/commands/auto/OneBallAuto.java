@@ -18,7 +18,7 @@ public class OneBallAuto extends SequentialCommandGroup {
     public OneBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper,
             FlywheelSubsystem flywheel, TurretSubsystem turret) {
         addCommands(
-            new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_SPEED), flywheel),
+            new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel),
             new WaitCommand(ShooterConstants.FLYWHEEL_RAMP_TIMEOUT),
             new InstantCommand(hopper::startElevator, hopper),
             new WaitCommand(ShooterConstants.SINGLE_BALL_TIMEOUT),

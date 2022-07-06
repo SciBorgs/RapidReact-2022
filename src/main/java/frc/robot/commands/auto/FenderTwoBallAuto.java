@@ -16,7 +16,7 @@ public class FenderTwoBallAuto extends SequentialCommandGroup {
     public FenderTwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, FlywheelSubsystem flywheel, TurretSubsystem turret, String pos) {
         // Init
         addCommands(
-            new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.FENDER_SPEED), flywheel),
+            new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.FENDER_RPM), flywheel),
             new InstantCommand(intake::toggleArm, intake),
             new InstantCommand(intake::startSuck, intake)
         );

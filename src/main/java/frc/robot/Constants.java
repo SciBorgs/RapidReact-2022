@@ -58,22 +58,18 @@ public final class Constants {
 
         // quartic regressions
         public static final double getHoodAngle(double distance) {
-            return 12;
+            return 0;
         }
 
         public static final double getRPM(double distance) {
-            return 40;
+            return 200;
         }
         // default shot (tarmac line) TODO set
-        public static final double TARMAC_SPEED = 0.95;
+        public static final double TARMAC_RPM = 5676;
         public static final double TARMAC_ANGLE = 0;
         // fender shot (low hub)
-        public static final double FENDER_SPEED = 0.4;
+        public static final double FENDER_RPM = 2750;
         public static final double FENDER_ANGLE = 0;
-        // other shot that works i guess
-        // 145 in | max power (1) | 0 deg
-        public static final double CHANCE_DIST = Units.inchesToMeters(145);
-        public static final double CHANCE_SPEED = 0.95;
 
         // ball ejection detection
         public static final int DELTA_VELOCITY_THRESHOLD = 20;
