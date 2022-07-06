@@ -5,13 +5,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.PortMap.InputDevices;
+import frc.robot.PortMap.XboxControllerMap;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -25,6 +29,7 @@ import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.DPadButton;
 import frc.robot.util.Util;
 
 /**
@@ -37,8 +42,10 @@ import frc.robot.util.Util;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // CONTROLLERS
-  private final OI oi = new OI(true);
+  // OI
+  private final XboxController xbox = new XboxController(PortMap.InputDevices.XBOX_CONTROLLER);
+  private final Joystick leftStick = new Joystick(InputDevices.JOYSTICK_LEFT);
+  private final Joystick rightStick = new Joystick(InputDevices.JOYSTICK_RIGHT);
 
   // SUBSYSTEMS
   public final DriveSubsystem drive = new DriveSubsystem();
@@ -52,15 +59,7 @@ public class RobotContainer {
   public final PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
   public final ClimberSubsystem climber = new ClimberSubsystem();
   public final MonitorSubsystem monitor = new MonitorSubsystem();
-  public final RumbleSubsystem rumble = new RumbleSubsystem(oi.xboxController);
-
-  // private final Set<Subsystem> subsystems = Set.of(
-  // drive, vision, photonVision, turret,
-  // flywheel, intake, hopper, pneumatics,
-  // climber, monitor, rumble);
-
-  // blocker
-  // private final Command block = Util.blockSubsystems(subsystems);
+  public final RumbleSubsystem rumble = new RumbleSubsystem(xbox);
 
   // AUTO CHOOSER
   private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
@@ -99,7 +98,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Compressor
-    oi.toggleCompressor
+    new JoystickButton(xbox, XboxControllerMap.Button.START)
         .toggleWhenPressed(
             new StartEndCommand(
                 pneumatics::start,
@@ -107,7 +106,7 @@ public class RobotContainer {
                 pneumatics));
 
     // Intake
-    oi.runIntake
+    new JoystickButton(xbox, XboxControllerMap.Button.X)
         .whileHeld(
             new StartEndCommand(
                 () -> {
@@ -124,7 +123,7 @@ public class RobotContainer {
             intake::toggleArm,
             intake));
     
-    oi.reverseIntake
+    new JoystickButton(xbox, 2) // TODO update with proper port
         .whileHeld(
           new StartEndCommand(
             () -> {
@@ -137,14 +136,14 @@ public class RobotContainer {
             },
             intake, hopper));
 
-    oi.actuateIntake
+    new JoystickButton(xbox, XboxControllerMap.Button.BACK)
       .whenPressed(
         new InstantCommand(
             intake::toggleArm,
             intake));
 
     // Intake-Hopper-Compressor
-    oi.runHopper
+    new JoystickButton(xbox, XboxControllerMap.Button.A)
         .whileHeld(
             new StartEndCommand(
                 () -> {
@@ -158,28 +157,28 @@ public class RobotContainer {
                 hopper));
 
     // Climber
-    oi.extendTelescope
+    new JoystickButton(xbox, XboxControllerMap.Button.Y)
         .whileHeld(
           new StartEndCommand(
             climber::extendTelescope,
             climber::stopTelescope,
             climber));
 
-    oi.retractTelescope
+    new JoystickButton(xbox, XboxControllerMap.Button.B)
         .whileHeld(
           new StartEndCommand(
             climber::retractTelescope,
             climber::stopTelescope,
             climber));
-        
-    oi.extendArm
+            
+    new DPadButton(xbox, DPadButton.Direction.LEFT)
         .whileHeld(
           new StartEndCommand(
             climber::extendArms,
             climber::stopArms,
             climber));
 
-    oi.retractArm
+    new DPadButton(xbox, DPadButton.Direction.RIGHT)
         .whileHeld(
           new StartEndCommand(
             climber::retractArms,
@@ -187,11 +186,11 @@ public class RobotContainer {
             climber));
 
     // Shooter
-    oi.shoot
+    new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_RIGHT)
       .whenPressed(
         new Shoot(flywheel, hopper, vision));
 
-    oi.runFlywheel
+    new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_LEFT)
       .whileHeld(
         new StartEndCommand(
           () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM),
@@ -246,8 +245,8 @@ public class RobotContainer {
             () -> {
               drive.driveRobot(
                   DriveSubsystem.DriveMode.TANK,
-                  -oi.leftStick.getY(),
-                  -oi.rightStick.getY());
+                  -leftStick.getY(),
+                  -rightStick.getY());
             },
             drive));
     // rumble.setDefaultCommand(
