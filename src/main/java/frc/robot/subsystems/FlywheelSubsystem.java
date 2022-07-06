@@ -85,7 +85,6 @@ public class FlywheelSubsystem extends SubsystemBase {
             double fb = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
             double ff = flywheelFeedforward.calculate(targetSpeed);
             motorLead.setVoltage(fb + ff);
-            System.out.println("voltage: " + (fb + ff));
         } else {
             motorLead.stopMotor();
         }

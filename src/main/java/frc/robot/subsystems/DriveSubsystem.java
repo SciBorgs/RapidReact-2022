@@ -287,7 +287,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public boolean isStalling() {
-        return true;
+        return false;
         // return isLeftStalling() || isRightStalling();
     }
 
@@ -297,6 +297,7 @@ public class DriveSubsystem extends SubsystemBase {
         for (SciSpark s : getAllSparks()) {
             s.updateFailState();
         }
+        field2d.setRobotPose(odometry.getPoseMeters());
     }
 
     @Override
@@ -312,7 +313,6 @@ public class DriveSubsystem extends SubsystemBase {
         pigeonSim.setRawHeading(driveSim.getHeading().getDegrees());
 
         driveSim.update(0.02);
-        field2d.setRobotPose(odometry.getPoseMeters());
     }
 
     public void putTrajectory(Trajectory t, String name) {
@@ -326,8 +326,6 @@ public class DriveSubsystem extends SubsystemBase {
 
         odometry = new DifferentialDriveOdometry(getRotation());
         kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
-
-        feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
 
         driveSim.setPose(odometry.getPoseMeters());
         field2d.setRobotPose(odometry.getPoseMeters());

@@ -17,6 +17,8 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.auto.OneBallAuto;
+import frc.robot.commands.auto.ThreeBallAuto;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -224,15 +226,7 @@ public class RobotContainer {
     // drive).withTimeout(10);
     // return new DriveRamsete(drive, autoChooser.getSelected(), true);
     // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
-    // return new FenderOneBallAuto(drive, intake, hopper, flywheel, turret);
-    // testing flywheel
-    return new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel);
-    // return new SequentialCommandGroup(
-    // new InstantCommand(() -> hopper.startElevator(0.8), hopper),
-    // new InstantCommand(() -> flywheel.setTargetHoodAngle(12), flywheel),
-    // new InstantCommand(() -> turret.setTargetAngle(15), turret),
-    // new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(8000), flywheel)
-    // );
+    return new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
     // return new InstantCommand();
   }
 
