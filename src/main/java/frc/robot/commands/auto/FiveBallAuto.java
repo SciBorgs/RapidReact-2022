@@ -10,13 +10,13 @@ import frc.robot.commands.Turn180;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class FiveBallAuto extends SequentialCommandGroup {
     public FiveBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem vision,
-            ShooterSubsystem shooter, TurretSubsystem turret, String initialPos) {
+            FlywheelSubsystem shooter, TurretSubsystem turret, String initialPos) {
 
         // init
         addCommands(

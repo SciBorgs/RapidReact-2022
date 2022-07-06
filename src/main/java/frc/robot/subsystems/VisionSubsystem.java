@@ -9,6 +9,8 @@ import frc.robot.Constants.VisionConstants;
 
 /**
  * A simple vision subsystem to handle filtering our limelight values.
+ * Limelight networktable methods are static so they can be used independently.
+ * Use an instance of VisionSubsystem for filtering data.
  * Require VisionSubsystem in any command that uses the filtered data from this subsystem.
  */
 public class VisionSubsystem extends SubsystemBase {    
@@ -29,25 +31,25 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     // returns limelight network table
-    public NetworkTable getTable() {
+    public static NetworkTable getTable() {
         return NetworkTableInstance.getDefault().getTable("limelight");
     }
 
     // gets specific value from the limelight's network table
-    public double getLimelightData(String var) {
+    public static double getLimelightData(String var) {
         return getLimelightData(var, 0.0);
     }
 
-    public double getLimelightData(String var, double defaultVal) {
+    public static double getLimelightData(String var, double defaultVal) {
         return getTable().getEntry(var).getDouble(defaultVal);
     }
 
     // sets a camera paramter
-    public void setCameraParams(NetworkTable table, String param, int setting) {
+    public static void setCameraParams(NetworkTable table, String param, int setting) {
         table.getEntry(param).setNumber(setting);
     }
 
-    public void setCameraParams(NetworkTable table, String param, double setting) {
+    public static void setCameraParams(NetworkTable table, String param, double setting) {
         table.getEntry(param).setValue(setting);
     }
 

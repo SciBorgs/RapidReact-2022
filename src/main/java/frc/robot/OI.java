@@ -26,8 +26,8 @@ public class OI {
     public final JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
 
     // Buttons | Shooter
-    public final JoystickButton highShot;
-    public final JoystickButton fenderShot;
+    public final JoystickButton hopperShoot;
+    public final JoystickButton runFlywheel;
 
     public OI(boolean isXbox) {
         this.isXbox = isXbox;
@@ -62,8 +62,8 @@ public class OI {
             this.retractArm = new DPadButton(this.xboxController, DPadButton.Direction.RIGHT);
 
             // Shooter
-            this.highShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_RIGHT);
-            this.fenderShot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_LEFT);
+            this.hopperShoot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_RIGHT);
+            this.runFlywheel = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_LEFT);
         } else {
             // Intake
             this.runIntake = new JoystickButton(this.leftStick, JoystickMap.Button.CENTER);
@@ -82,8 +82,8 @@ public class OI {
             this.retractArm = new DPadButton(this.rightStick, DPadButton.Direction.RIGHT);
 
             // Shooter
-            this.highShot = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
-            this.fenderShot = new JoystickButton(this.leftStick, JoystickMap.Button.TRIGGER); // TODO possibly change
+            this.hopperShoot = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
+            this.runFlywheel = new JoystickButton(this.leftStick, JoystickMap.Button.TRIGGER); // TODO possibly change
         }
     }
 }

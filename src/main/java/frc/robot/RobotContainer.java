@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Turn180;
+import frc.robot.commands.VisionAim;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -23,7 +25,7 @@ import frc.robot.subsystems.MonitorSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Util;
@@ -46,7 +48,7 @@ public class RobotContainer {
   public final VisionSubsystem vision = new VisionSubsystem();
   public final PhotonVisionSubsystem photonVision = new PhotonVisionSubsystem();
   public final TurretSubsystem turret = new TurretSubsystem();
-  public final ShooterSubsystem shooter = new ShooterSubsystem();
+  public final FlywheelSubsystem shooter = new FlywheelSubsystem();
   public final IntakeSubsystem intake = new IntakeSubsystem();
   public final HopperSubsystem hopper = new HopperSubsystem();
   public final PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
@@ -74,20 +76,7 @@ public class RobotContainer {
     configureSubsystemDefaults();
   }
 
-  private void configureSubsystemDefaults() {
-    // turret auto following
-    turret.setDefaultCommand(
-      new ConditionalCommand(
-        new InstantCommand(
-          () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()),
-          turret
-        ),
-        new InstantCommand(
-          () -> turret.setTargetAngle(0),
-          turret
-        ),
-        () -> vision.hasTarget()));
-  }
+  private void configureSubsystemDefaults() { }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -137,7 +126,8 @@ public class RobotContainer {
             },
             intake, hopper));
 
-    oi.actuateIntake.whenPressed(
+    oi.actuateIntake
+      .whenPressed(
         new InstantCommand(
             intake::toggleArm,
             intake));
@@ -186,23 +176,24 @@ public class RobotContainer {
             climber));
 
     // Shooter
-    oi.highShot.whenPressed(
-        new Shoot(
-            () -> ShooterConstants.getRPM(vision.getDistance()),
-            () -> ShooterConstants.getHoodAngle(vision.getDistance()),
-            () -> vision.getXOffset(),
-            shooter,
-            turret,
-            hopper));
+    oi.hopperShoot
+      .whenPressed(
+        new ConditionalCommand(
+          new StartEndCommand(
+            hopper::startElevator,
+            hopper::stopElevator,
+            hopper),
+          new InstantCommand(),
+          shooter::atTargetRPM)
+        .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
 
-    oi.fenderShot.whenPressed(
-        new Shoot(
-            () -> ShooterConstants.FENDER_SPEED,
-            () -> ShooterConstants.FENDER_ANGLE,
-            () -> 0,
-            shooter,
-            turret,
-            hopper));
+    // manually run flywheel
+    oi.runFlywheel
+      .whileHeld(
+        new StartEndCommand(
+          () -> shooter.setTargetFlywheelSpeed(ShooterConstants.TARMAC_SPEED),
+          shooter::stopFlywheel,
+          shooter));
 
   }
 
@@ -261,5 +252,6 @@ public class RobotContainer {
     // new InstantCommand(rumble::rumble, rumble),
     // new InstantCommand(rumble::stopRumble, rumble),
     // drive::isStalling));
+    CommandScheduler.getInstance().schedule(new VisionAim(shooter, turret, vision));
   }
 }
