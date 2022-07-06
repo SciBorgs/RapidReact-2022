@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.Turn180;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -187,21 +188,14 @@ public class RobotContainer {
             climber));
 
     // Shooter
-    oi.hopperShoot
+    oi.shoot
       .whenPressed(
-        new ConditionalCommand(
-          new StartEndCommand(
-            hopper::startElevator,
-            hopper::stopElevator,
-            hopper),
-          new InstantCommand(),
-          flywheel::atTargetRPM)
-        .withTimeout(ShooterConstants.DOUBLE_BALL_TIMEOUT));
+        new Shoot(flywheel, hopper, vision));
 
     oi.runFlywheel
       .whileHeld(
         new StartEndCommand(
-          () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
+          () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_SPEED),
           flywheel::stopFlywheel,
           flywheel));
 

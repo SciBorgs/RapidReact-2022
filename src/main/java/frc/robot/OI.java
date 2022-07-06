@@ -26,7 +26,7 @@ public class OI {
     public final JoystickButton extendTelescope, retractTelescope, extendArm, retractArm;
 
     // Buttons | Shooter
-    public final JoystickButton hopperShoot;
+    public final JoystickButton shoot;
     public final JoystickButton runFlywheel;
 
     public OI(boolean isXbox) {
@@ -62,7 +62,7 @@ public class OI {
             this.retractArm = new DPadButton(this.xboxController, DPadButton.Direction.RIGHT);
 
             // Shooter
-            this.hopperShoot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_RIGHT);
+            this.shoot = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_RIGHT);
             this.runFlywheel = new JoystickButton(this.xboxController, XboxControllerMap.Button.BUMPER_LEFT);
         } else {
             // Intake
@@ -82,7 +82,7 @@ public class OI {
             this.retractArm = new DPadButton(this.rightStick, DPadButton.Direction.RIGHT);
 
             // Shooter
-            this.hopperShoot = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
+            this.shoot = new JoystickButton(this.rightStick, JoystickMap.Button.TRIGGER);
             this.runFlywheel = new JoystickButton(this.leftStick, JoystickMap.Button.TRIGGER); // TODO possibly change
         }
     }
