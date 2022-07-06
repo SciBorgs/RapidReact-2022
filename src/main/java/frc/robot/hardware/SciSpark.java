@@ -1,4 +1,4 @@
-package frc.robot.sciSensors;
+package frc.robot.hardware;
 
 import com.revrobotics.CANSparkMax;
 

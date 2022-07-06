@@ -11,9 +11,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.PortMap;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.PortMap;
 
 public class HoodSubsystem extends PIDSubsystem {
 
