@@ -303,7 +303,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void simulationPeriodic() {
         // driveSim.setInputs(leftSparks[0].getAppliedOutput(),
         // rightSparks[0].getAppliedOutput());
-        driveSim.setInputs(leftGroup.get(), rightGroup.get());
+        driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
 
         lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
         lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());

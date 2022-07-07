@@ -226,8 +226,8 @@ public class RobotContainer {
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
-    // return new DriveRamsete(drive, autoChooser.getSelected(), true);
-    return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
+    return new DriveRamsete(drive, "Pos1_5Ball_Stage1", true);
+    // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
     // return new InstantCommand();
   }
 
