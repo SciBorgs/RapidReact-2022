@@ -140,13 +140,12 @@
       "/SmartDashboard/Field": {
         "Robot": {
           "arrowColor": [
-            0.30801689624786377,
-            0.2963200509548187,
-            0.0,
+            0.35960716009140015,
+            0.34851980209350586,
+            0.7254902124404907,
             255.0
           ],
           "arrowSize": 100,
-          "arrows": false,
           "color": [
             1.0,
             1.0,
@@ -155,8 +154,7 @@
           ],
           "image": "./PathWeaver/robot.png",
           "length": 0.7110000252723694,
-          "selectable": false,
-          "style": "Box/Image",
+          "style": "Track",
           "weight": 10.0,
           "width": 0.5580000281333923
         },
@@ -257,10 +255,10 @@
     }
   },
   "NetworkTables": {
-    "Shuffleboard": {
-      "open": true
-    },
     "SmartDashboard": {
+      "Field": {
+        "open": true
+      },
       "open": true
     }
   }

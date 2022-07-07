@@ -31,14 +31,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    setNetworkTablesFlushEnabled(true);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    SmartDashboard.putData("Field", m_robotContainer.drive.field2d);
+    
     SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
-    SmartDashboard.putData("Reset Drive", new InstantCommand(() -> m_robotContainer.drive.reset()));
-    TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
-    System.out.println(Util.getPathPlannerPathNames());
+    // TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
+    // System.out.println(Util.getPathPlannerPathNames());
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     CameraServer.startAutomaticCapture();
   }
@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
-    m_robotContainer.drive.reset();
+    // m_robotContainer.drive.reset();
     CommandScheduler.getInstance().cancelAll();
   }
 

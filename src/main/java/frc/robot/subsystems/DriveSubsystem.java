@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
@@ -32,6 +33,7 @@ import frc.robot.Robot;
 import frc.robot.hardware.SciPigeon;
 import frc.robot.hardware.SciSpark;
 import frc.robot.util.EncoderSim;
+import frc.robot.util.TrajectoryRegister;
 import frc.robot.util.Util;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -48,7 +50,7 @@ public class DriveSubsystem extends SubsystemBase {
             new SciSpark(PortMap.Drivetrain.RIGHT_BACK_SPARK)
     };
 
-    private SciPigeon pigeon;
+    private SciPigeon pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
 
     private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
     private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
@@ -61,8 +63,8 @@ public class DriveSubsystem extends SubsystemBase {
             leftGroup,
             rightGroup);
 
-    private final RelativeEncoder lEncoder;
-    private final RelativeEncoder rEncoder;
+    private final RelativeEncoder lEncoder = leftSparks[0].getEncoder();
+    private final RelativeEncoder rEncoder = rightSparks[0].getEncoder();
 
     public DifferentialDriveOdometry odometry;
     private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
@@ -75,9 +77,17 @@ public class DriveSubsystem extends SubsystemBase {
     private SlewRateLimiter filter2 = new SlewRateLimiter(DriveConstants.DELTA); // used for right track in tank
 
     // SIMULATION
-    private DifferentialDrivetrainSim driveSim;
-    private BasePigeonSimCollection pigeonSim;
-    private EncoderSim lEncoderSim, rEncoderSim;
+    private DifferentialDrivetrainSim driveSim = new DifferentialDrivetrainSim(
+        DCMotor.getNEO(2),
+        7.29,
+        7.5,
+        60.0,
+        Units.inchesToMeters(3),
+        0.7112,
+        VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
+    private BasePigeonSimCollection pigeonSim = pigeon.getSimCollection();
+    private EncoderSim lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
+    private EncoderSim rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
     public Field2d field2d = new Field2d();
 
     public enum DriveMode {
@@ -89,9 +99,6 @@ public class DriveSubsystem extends SubsystemBase {
     private ShuffleboardTab tab;
 
     public DriveSubsystem() {
-        lEncoder = leftSparks[0].getEncoder();
-        rEncoder = rightSparks[0].getEncoder();
-        System.out.println(lEncoder.getCountsPerRevolution() + " | " + rEncoder.getCountsPerRevolution());
         lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
         lEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
         rEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
@@ -110,22 +117,8 @@ public class DriveSubsystem extends SubsystemBase {
         for (SciSpark motor : allSparks) {
             motor.burnFlash();
         }
-        pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
-        pigeonSim = pigeon.getSimCollection();
-
-        driveSim = new DifferentialDrivetrainSim(
-                DCMotor.getNEO(2),
-                7.29,
-                7.5,
-                60.0,
-                Units.inchesToMeters(3),
-                0.7112,
-                VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
-
-        lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
-        rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
-
-        odometry = new DifferentialDriveOdometry(getRotation());
+        
+        odometry = new DifferentialDriveOdometry(getRotation(), new Pose2d(10, 4, getRotation()));
         this.tab = Shuffleboard.getTab("Drivetrain");
         tab.addNumber("Heading", this::getHeading);
         tab.addNumber("X", this::getX);
@@ -138,6 +131,9 @@ public class DriveSubsystem extends SubsystemBase {
         this.speedLimitWidget.getEntry().addListener(event -> {
             this.setSpeedLimit(event.getEntry().getDouble(this.speedLimit));
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+        SmartDashboard.putData("Field", field2d);
+        TrajectoryRegister.setField2d(field2d);
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -178,7 +174,7 @@ public class DriveSubsystem extends SubsystemBase {
         // Controller interface
         switch (mode) {
             case TANK:
-                drive.tankDrive(MathUtil.clamp(first, -this.speedLimit, this.speedLimit), second);
+                drive.tankDrive(filter1.calculate(first), filter2.calculate(second));
                 break;
             case ARCADE:
                 drive.arcadeDrive(filter1.calculate(first), second);
@@ -225,7 +221,10 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(getLeftAverageVelocity(), getRightAverageVelocity());
+        if (Robot.isReal()) {
+            return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
+        }
+        return new DifferentialDriveWheelSpeeds(lEncoderSim.getVelocity(), rEncoderSim.getVelocity());
     }
 
     public void updateOdometry() {

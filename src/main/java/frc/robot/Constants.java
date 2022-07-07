@@ -20,7 +20,7 @@ public final class Constants {
         public static final double DUTY_CYCLE_THRESHOLD = 0;
         public static final double VELOCITY_THRESHOLD = 0;
         // for slew rate limiter
-        public static final double DELTA = 3;
+        public static final double DELTA = 3.5;
         // ratios
         public static final double GEAR_RATIO = 1 / 13.7;
         public static final double ROBOT_WIDTH = 0.7398; // (meters)

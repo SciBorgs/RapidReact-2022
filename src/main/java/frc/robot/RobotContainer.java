@@ -4,19 +4,30 @@
 
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
+import frc.robot.commands.DriveRamsete;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.auto.FiveBallAuto;
 import frc.robot.commands.auto.OneBallAuto;
 import frc.robot.commands.auto.ThreeBallAuto;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -31,6 +42,7 @@ import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.DPadButton;
 import frc.robot.util.Util;
 
@@ -50,18 +62,18 @@ public class RobotContainer {
   private final Joystick rightStick = new Joystick(InputDevices.JOYSTICK_RIGHT);
 
   // SUBSYSTEMS
-  public final DriveSubsystem drive = new DriveSubsystem();
-  public final VisionSubsystem vision = new VisionSubsystem();
-  public final PhotonVisionSubsystem photonVision = new PhotonVisionSubsystem();
-  public final TurretSubsystem turret = new TurretSubsystem();
-  public final HoodSubsystem hood = new HoodSubsystem();
-  public final FlywheelSubsystem flywheel = new FlywheelSubsystem();
-  public final IntakeSubsystem intake = new IntakeSubsystem();
-  public final HopperSubsystem hopper = new HopperSubsystem();
-  public final PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
-  public final ClimberSubsystem climber = new ClimberSubsystem();
-  public final MonitorSubsystem monitor = new MonitorSubsystem();
-  public final RumbleSubsystem rumble = new RumbleSubsystem(xbox);
+  private final DriveSubsystem drive = new DriveSubsystem();
+  private final VisionSubsystem vision = new VisionSubsystem();
+  private final PhotonVisionSubsystem photonVision = new PhotonVisionSubsystem();
+  private final TurretSubsystem turret = new TurretSubsystem();
+  private final HoodSubsystem hood = new HoodSubsystem();
+  private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
+  private final HopperSubsystem hopper = new HopperSubsystem();
+  private final PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
+  private final ClimberSubsystem climber = new ClimberSubsystem();
+  private final MonitorSubsystem monitor = new MonitorSubsystem();
+  private final RumbleSubsystem rumble = new RumbleSubsystem(xbox);
 
   // AUTO CHOOSER
   private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
@@ -211,22 +223,11 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    // return new TurnToAngle(180, drive);
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    // return new Turn180(drive);
-    // return new FunctionalCommand(
-    // () -> {},
-    // () -> {
-    // drive.driveRobot(DriveMode.TANK, DriveConstants.driveBackSpeeds,
-    // DriveConstants.driveBackSpeeds);},
-    // (interrupted) -> {drive.driveRobot(DriveMode.TANK, 0, 0);},
-    // () -> false,
-    // drive).withTimeout(10);
+    // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
     // return new DriveRamsete(drive, autoChooser.getSelected(), true);
-    // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
-    return new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
+    return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
     // return new InstantCommand();
   }
 
@@ -239,10 +240,11 @@ public class RobotContainer {
             () -> {
               drive.driveRobot(
                   DriveSubsystem.DriveMode.TANK,
-                  -leftStick.getY(),
-                  -rightStick.getY());
+                  leftStick.getY(),
+                  rightStick.getY());
             },
             drive));
+            
     // rumble.setDefaultCommand(
     // new ConditionalCommand(
     // new InstantCommand(rumble::rumble, rumble),
