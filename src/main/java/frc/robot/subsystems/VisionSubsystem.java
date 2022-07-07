@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.networktables.NetworkTable;
@@ -13,7 +17,9 @@ import frc.robot.Constants.VisionConstants;
  * Use an instance of VisionSubsystem for filtering data.
  * Require VisionSubsystem in any command that uses the filtered data from this subsystem.
  */
-public class VisionSubsystem extends SubsystemBase {    
+public class VisionSubsystem extends SubsystemBase {
+    private static final PhotonCamera photonVision = new PhotonCamera("photonvision");
+
     // filters to smooth x and y difference values
     private final LinearFilter xFilter = LinearFilter.singlePoleIIR(VisionConstants.TIMESCALE, VisionConstants.PERIOD);
     private final LinearFilter yFilter = LinearFilter.singlePoleIIR(VisionConstants.TIMESCALE, VisionConstants.PERIOD);
@@ -30,6 +36,7 @@ public class VisionSubsystem extends SubsystemBase {
         reset();
     }
 
+    // LIMELIGHT
     // returns limelight network table
     public static NetworkTable getTable() {
         return NetworkTableInstance.getDefault().getTable("limelight");
@@ -51,6 +58,23 @@ public class VisionSubsystem extends SubsystemBase {
 
     public static void setCameraParams(NetworkTable table, String param, double setting) {
         table.getEntry(param).setValue(setting);
+    }
+
+    // PHOTONVISION
+    public static PhotonPipelineResult getResult() {
+        return photonVision.getLatestResult();
+    }
+
+    public static PhotonTrackedTarget getTarget() {
+        return getResult().getBestTarget();
+    }
+
+    public static PhotonTrackedTarget getSpecificTarget(int index) {
+        return getResult().getTargets().get(index);
+    }
+
+    public static void setPipeline(int index){
+        photonVision.setPipelineIndex(index);
     }
 
     public double getXOffset() {

@@ -4,32 +4,20 @@
 
 package frc.robot;
 
-import java.util.List;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
 import frc.robot.commands.DriveRamsete;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.auto.FiveBallAuto;
-import frc.robot.commands.auto.OneBallAuto;
-import frc.robot.commands.auto.ThreeBallAuto;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -37,12 +25,10 @@ import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
-import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.DPadButton;
 import frc.robot.util.Util;
 
@@ -64,7 +50,6 @@ public class RobotContainer {
   // SUBSYSTEMS
   private final DriveSubsystem drive = new DriveSubsystem();
   private final VisionSubsystem vision = new VisionSubsystem();
-  private final PhotonVisionSubsystem photonVision = new PhotonVisionSubsystem();
   private final TurretSubsystem turret = new TurretSubsystem();
   private final HoodSubsystem hood = new HoodSubsystem();
   private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
