@@ -18,7 +18,6 @@ public class HoodSubsystem extends PIDSubsystem {
 
     private final CANSparkMax motor = new CANSparkMax(PortMap.Shooter.HOOD_SPARK, MotorType.kBrushless);
     private final Encoder encoder = new Encoder(PortMap.Shooter.HOOD_ENCODER_QUADRATURE[0], PortMap.Shooter.HOOD_ENCODER_QUADRATURE[1]);
-    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ShooterConstants.hS, ShooterConstants.hV, ShooterConstants.hA);
 
     private ShuffleboardTab tab;
 
@@ -38,9 +37,7 @@ public class HoodSubsystem extends PIDSubsystem {
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        // ff setpoint only used for velocity, 0 here for static gain
-        double ff = feedforward.calculate(0);
-        motor.setVoltage(output + ff);
+        motor.setVoltage(output);
     }
 
     @Override

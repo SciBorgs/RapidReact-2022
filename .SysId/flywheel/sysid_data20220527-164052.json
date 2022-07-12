@@ -43515,6 +43515,6 @@
   ],
   "sysid": true,
   "test": "Simple",
-  "units": "Rotations",
-  "unitsPerRotation": 1.0
+  "units": "Meters",
+  "unitsPerRotation": 60.0
 }
