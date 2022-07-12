@@ -1,28 +1,23 @@
 package frc.robot.subsystems;
-import frc.robot.PortMap;
 
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.PortMap;
+import frc.robot.util.Blockable;
+
+@Blockable
 public class ClimberSubsystem implements Subsystem {
     private CANSparkMax telescope, arms;
 
-    // private SciEncoder telescopeEncoder;
-    // private SciEncoder armsEncoder;  
-    
-    // private ShuffleboardTab tab;
-    // private NetworkTableEntry rotations, armEntry, armsEntry;
-    private static final double TELESCOPE_SPEED = 0.5;
-    private static final double ARM_SPEED = 0.2;
+    private static final double TELESCOPE_SPEED = 0.6;
+    private static final double ARM_SPEED = 0.5;
 
     public ClimberSubsystem() {
-        this.telescope = new CANSparkMax(PortMap.CLIMBER_TELESCOPE, MotorType.kBrushless);
-        this.arms = new CANSparkMax(PortMap.CLIMBER_ARMS, MotorType.kBrushless);
+        this.telescope = new CANSparkMax(PortMap.Climber.TELESCOPE_SPARK, MotorType.kBrushless);
+        this.arms = new CANSparkMax(PortMap.Climber.ARMS_SPARK, MotorType.kBrushless);
 
         this.telescope.setIdleMode(IdleMode.kBrake);
         this.arms.setIdleMode(IdleMode.kBrake);

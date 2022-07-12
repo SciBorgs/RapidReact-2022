@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch TestCommand",
+      "request": "launch",
+      "mainClass": "frc.robot.commands.TestCommand",
+      "projectName": "RapidReact-2022"
+    },
+    {
+      "type": "java",
+      "name": "Launch Test",
+      "request": "launch",
+      "mainClass": "frc.robot.commands.shooter.Test",
+      "projectName": "RapidReact-2022"
+    },
+    {
+      "type": "java",
       "name": "Launch Main",
       "request": "launch",
       "mainClass": "frc.robot.Main",

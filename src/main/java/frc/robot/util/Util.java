@@ -1,19 +1,28 @@
 package frc.robot.util;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.DoubleUnaryOperator;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class Util {
-    public static double normalize(double v) {
-        return Math.min(Math.max(-1, v), 1);
-    }
-
-    public static double normalize(double v, double absmax) {
-        return Math.min(Math.max(-absmax, v), absmax);
-    }
 
     public static double distanceSquared(Point a, Point b) {
         return Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2);
@@ -33,6 +42,18 @@ public class Util {
 
     public static Point displacementVector(Point from, Point to) {
         return new Point(to.x - from.x, to.y - from.y);
+    }
+
+    public static Point displacementVector(Point from, Pose2d to) {
+        return new Point(to.getX() - from.x, to.getY() - from.y);
+    }
+
+    public static Point displacementVector(Pose2d from, Point to) {
+        return new Point(to.x - from.getX(), to.y - from.getY());
+    }
+
+    public static Point displacementVector(Pose2d from, Pose2d to) {
+        return new Point(to.getX() - from.getX(), to.getY() - from.getY());
     }
 
     public static Point add(Point... ps) {
@@ -275,80 +296,216 @@ public class Util {
         }
     }
 
-    // Uses a list of data points (formatted as { angle, distance } for each point) and calculates
-    public static double calcHoodAngle(double[][] data, double distance) {
-        int entry1 = findClosest(data, distance);
-        int entry2;
 
-        if(distance < data[entry1][1]) {
-            if(entry1 == 0) { // Special case for distances lower than the lowest logged distance
-                entry2=entry1+1;
-            }
-            else {
-                entry2 = entry1-1;
-            }
-        }
-        else {
-            if(entry1 == data.length-1) { // Special case for distances larger than the largest logged distance
-                entry2 = entry1-1;
-                
-                // swapping entry points so initial value isn't incorrect (only for special case when a distance greater than last element in data array)
-                int temp = entry1;
-                entry1 = entry2;
-                entry2 = temp;
-
-            } 
-            else {
-                entry2 = entry1+1;
-            }
-        }
-
-        return (data[entry1][0] - data[entry2][0]) / (data[entry1][1] - data[entry2][1]) + data[entry1][0];
+    // Calculates the heading exactly 180 degrees away from current heading and normalizes it between the bounds of the gyroscope
+    public static double normalizeAngle180(double angle) {
+        return angle-180 > -180 ? angle-180 : angle+180;
     }
 
-    // Helper function. Grabs index of the closest entry based on inputted distance value
-    public static int findClosest(double arr[][], double target) {
-        int n = arr.length;
+    // Testing util
 
-        if (target <= arr[0][1])
-            return 0;
-        if (target >= arr[n - 1][1])
-            return n - 1;
+    /**
+     * Sam's proposal for blocking subsystems.
+     * <p>
+     * Prevents any commands requiring the specified subsystems from being run.
+     * This state persists even if the robot is disabled and then reenabled.
+     * <p>
+     * This method returns the blocking command, so if you wish to stop blocking
+     * the specified subsystems, you may call cancel() on the returned command.
+     * <pre>
+     * // Blocking subsystem example
+     *  void robotInit() {
+     *      Command block = Util.blockSubsystems(shooter);
+     * 
+     *      Command shoot = new ShootCommand(shooter); // requires shooter
+     *      shoot.schedule();
+     *      System.out.println(shoot.isScheduled()); // should return false
+     * 
+     *      block.cancel();
+     *      shoot.schedule();
+     *      System.out.println(shoot.isScheduled()); // should return true
+     *  }
+     * </pre>
+     * <p>
+     * <b>Note: Calling end() will do nothing. Call cancel() instead. </b>
+     * <p>
+     * Because of the mechanism used to block subsystems, if the subsystems
+     * argument includes an already blocked/required subsystem, this method
+     * does nothing.
+     * 
+     * @param subsystems the subsystems to block
+     * @return the blocking command, which may be cancelled.
+     */
+    public static Command blockSubsystems(Set<Subsystem> subsystems) {
+        Set<@Blockable Subsystem> blockable 
+            = subsystems.stream()
+                        .filter(Util.annotationFilter(Blockable.class))
+                        .collect(Collectors.toUnmodifiableSet());
 
-        int i = 0, j = n, mid = 0;
-        while (i < j) {
-            mid = (i + j) / 2;
-
-            if (arr[mid][1] == target)
-                return mid;
-
-            if (target < arr[mid][1]) {
-
-                if (mid > 0 && target > arr[mid - 1][1])
-                    return getClosest(mid - 1,
-                            mid, target, arr);
-
-                j = mid;
+        Command blockingCommand = new Command() {
+            @Override
+            public Set<Subsystem> getRequirements() {
+                return blockable;
             }
 
-            else {
-                if (mid < n - 1 && target < arr[mid + 1][1])
-                    return getClosest(mid,
-                            mid + 1, target, arr);
-                i = mid + 1;
+            @Override
+            public boolean runsWhenDisabled() {
+                return true;
             }
+        };
+        
+        CommandScheduler.getInstance().schedule(false, blockingCommand);
+        return blockingCommand;
+    }
+
+    public static <T> Predicate<T> annotationFilter(Class<? extends Annotation> annotation) {
+        return (obj) -> obj.getClass().isAnnotationPresent(annotation);
+    }
+
+    // Important
+    public static <T> Iterator<T> arrayIterator(T[] arr) {
+        return new Iterator<T>() {
+            private int index = 0;
+            @Override
+            public boolean hasNext() {
+                return index < arr.length;
+            }
+            @Override
+            public T next() {
+                T val = arr[index];
+                index++;
+                return val;
+            }
+        };
+    }
+
+    public static <T> double getAverageOfArray(T[] array, java.util.function.ToDoubleFunction<? super T> arg0) {
+        return Arrays.stream(array).mapToDouble(arg0).average().orElse(Double.NaN);
+    }
+
+    @SafeVarargs
+    public static <T> Iterable<T> concat(T[]... arrs) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+                    private int arrI = 0, index = 0;
+					@Override
+					public boolean hasNext() {
+						return arrI < arrs.length;
+					}
+					@Override
+					public T next() {
+						T[] arr = arrs[arrI];
+                        T val = arr[index];
+                        index++;
+                        if (index == arr.length) {
+                            index = 0;
+                            arrI++;
+                        }
+                        return val;
+					}
+                };
+			}
+        };
+    }
+
+    @SafeVarargs
+    public static <T> Iterable<T> concat(Iterable<T>... iterables) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+                    private int iterI = 0;
+                    private Iterator<T> currIter = iterables[0].iterator();
+					@Override
+					public boolean hasNext() {
+						return iterI < iterables.length;
+					}
+					@Override
+					public T next() {
+                        T val = currIter.next();
+                        if (!currIter.hasNext()) {
+                            iterI++;
+                            if (iterI < iterables.length) {
+                                currIter = iterables[iterI].iterator();
+                            }
+                        }
+                        return val;
+					}
+                };
+			}
+        };
+    }
+
+    @SafeVarargs
+    public static <T> Iterable<T> concat(Object... objs) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+                    private int iterI = 0;
+                    private Iterator<T> currIter = getIterator(objs[0]);
+					@Override
+					public boolean hasNext() {
+						return iterI < objs.length;
+					}
+					@Override
+					public T next() {
+                        T val = currIter.next();
+                        if (!currIter.hasNext()) {
+                            iterI++;
+                            if (iterI < objs.length) {
+                                currIter = getIterator(objs[iterI]);
+                            }
+                        }
+                        return val;
+					}
+                    @SuppressWarnings("unchecked")
+                    private Iterator<T> getIterator(Object obj) {
+                        if (obj instanceof Iterator<?>) {
+                            return (Iterator<T>) obj;
+                        } else if (obj instanceof Iterable<?>) {
+                            return ((Iterable<T>) obj).iterator();
+                        } else if (obj instanceof Stream<?>) {
+                            return ((Stream<T>) obj).iterator();
+                        } else {
+                            T[] arr = (T[]) obj;
+                            return arrayIterator(arr);
+                        }
+                    }
+                };
+			}
+        };
+    }
+
+    public static List<String> getPathPlannerPathNames() {
+        try (Stream<java.nio.file.Path> walk 
+                = Files.walk(Filesystem.getDeployDirectory()
+                                       .toPath()
+                                       .resolve("pathplanner/"))) {
+            return walk.filter(p -> !Files.isDirectory(p))
+                       .map(p -> p.toString().split("(\\\\|/)"))
+                       .map(arr -> arr[arr.length-1])
+                       .filter(f -> f.endsWith(".path"))
+                       .map(p -> p.substring(0, p.length() - 5))
+                       .collect(Collectors.toList());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            DriverStation.reportError("Could not load path names!", true);
+            return List.of();
         }
-
-        return mid;
     }
 
-    // Helper function for findClosest
-    public static int getClosest(int val1, int val2, double target, double[][] data) {
-        if (target - data[val1][1] >= data[val2][1] - target)
-            return val2;
-        else
-            return val1;
+    public static SendableChooser<String> getPathTestChooser() {
+        List<String> names = getPathPlannerPathNames();
+        SendableChooser<String> chooser = new SendableChooser<>();
+        for (String name : names) {
+            chooser.addOption(name, name);
+        }
+        if (names.size() > 0) {
+            chooser.setDefaultOption(names.get(0), names.get(0));
+        }
+        return chooser;
     }
-
-
 }

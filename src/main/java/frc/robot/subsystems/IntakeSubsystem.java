@@ -1,80 +1,106 @@
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
-import com.revrobotics.CANSparkMax;
-
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.PortMap;
-import frc.robot.Robot;
+import frc.robot.util.BallCounter;
+import frc.robot.util.Blockable;
 
-public class IntakeSubsystem implements Subsystem {
+@Blockable
+public class IntakeSubsystem extends SubsystemBase implements BallCounter {
 
     private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
     private CANSparkMax suckSpark; // motor used for intaking balls
-    private boolean lastLimit = false;
 
-    public DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
-    public int amountOfBalls = 0;
-    public final int WAIT_TIME = 1000; //in miliseconds
-    public long lastActivated = 0;
-    
-    private final double INTAKE_SPEED = 0.5;
+    private DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
+    private boolean lastLimit;
+    private long lastFallingEdge;
+
+    private double intakeSpeed;
+
+    private ShuffleboardTab mainTab;
+    private SimpleWidget intakeSpeedWidget;
 
     public IntakeSubsystem() {
-        this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL); 
-        this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
+        this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.Intake.ARM_CHANNELS[0], PortMap.Intake.ARM_CHANNELS[1]); 
+        this.suckSpark = new CANSparkMax(PortMap.Intake.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
         // this.suckSpark.setInverted(true); // invert the motor
-        this.limitSwitch = new DigitalInput(PortMap.LIMIT_SWITCH_INTAKE);
+        this.limitSwitch = new DigitalInput(PortMap.Intake.LIMIT_SWITCH);
+
+        this.armSolenoid.set(DoubleSolenoid.Value.kForward);
+
+        this.intakeSpeed = 0;
+
         
+        // this.mainTab = Shuffleboard.getTab("Intake");
+        // this.mainTab.addNumber("Intake Suck Speed", this::getIntakeSpeed);
+        // this.mainTab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
+        // this.mainTab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
+
+
+        // this.intakeSpeedWidget = this.mainTab.add("Intake Suck Set", intakeSpeed);
+
+        // this.intakeSpeedWidget.getEntry().addListener(event -> {
+        //     this.startSuck(event.getEntry().getDouble(this.intakeSpeed));
+        // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
-    // ONLY WORKS IF LIMIT SWITCH IS IN INTAKE AND NOT HOPPER balsucker//
+
     public void updateBallCounter(){
 
-        // // Should also work
-        // if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end (falling edge = turning off)
-        //     lastFallingEdge = System.currentTimeMillis();
+        if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end (falling edge = turning off)
+            lastFallingEdge = System.currentTimeMillis();
 
-        // if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
-        //     if(System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) //so we know ball did not shake around in intake
-        //         amountOfBalls += 1;
+        if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
+            if(System.currentTimeMillis() - lastFallingEdge > IntakeConstants.WAIT_TIME) //so we know ball did not shake around in intake
+            increment();
 
-        // lastLimit = this.getLimitSwitchState();
-        
-
-        if (this.getLimitSwitchState()) {
-            if (System.currentTimeMillis() - lastActivated > WAIT_TIME) {
-                amountOfBalls++;
-            }
-            lastActivated = System.currentTimeMillis();
-        }
+        lastLimit = this.getLimitSwitchState();
     }
 
     public boolean getLimitSwitchState(){
         return limitSwitch.get();
     }
 
-    public void extendArm() { 
-        this.armSolenoid.set(DoubleSolenoid.Value.kForward);
-    }
-    
-    public void retractArm() {
-        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+    public void toggleArm() { 
+        this.armSolenoid.toggle();
     }
 
     public void startSuck() {
-        this.suckSpark.set(this.INTAKE_SPEED);
+        this.intakeSpeed = IntakeConstants.INTAKE_SPEED;
+    }
+
+    public void startSuck(double speed) {
+        this.intakeSpeed = MathUtil.clamp(speed, -1, 1);
+    }
+
+    public void reverseSuck() {
+        this.intakeSpeed = -IntakeConstants.INTAKE_SPEED;
+    }
+
+    public void reverseSuck(double speed) {
+        this.intakeSpeed = -MathUtil.clamp(speed, -1, 1);
     }
 
     public void stopSuck() {
-        this.suckSpark.set(0);
+        this.intakeSpeed = 0;
     }
 
     public double getIntakeSpeed() {
         return this.suckSpark.get();
     }
-    
+
+    @Override
+    public void periodic() {
+        suckSpark.set(intakeSpeed);
+        updateBallCounter();
+    }
 }
