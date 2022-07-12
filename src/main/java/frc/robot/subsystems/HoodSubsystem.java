@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import frc.robot.Constants.HoodConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
 
@@ -23,7 +24,7 @@ public class HoodSubsystem extends PIDSubsystem {
 
     // Hood (DEG)
     public HoodSubsystem() {
-        super(new PIDController(ShooterConstants.hP, ShooterConstants.hI, ShooterConstants.hD));
+        super(new PIDController(HoodConstants.hP, HoodConstants.hI, HoodConstants.hD));
         getController().setTolerance(0.2);
         motor.setInverted(true);
         encoder.setDistancePerPulse(ShooterConstants.DISTANCE_PER_PULSE);
