@@ -73,6 +73,17 @@ public class RobotContainer {
   }
 
   private void configureSubsystemDefaults() {
+    // drive
+    drive.setDefaultCommand(
+        new RunCommand(
+            () -> {
+              drive.driveRobot(
+                  DriveSubsystem.DriveMode.TANK,
+                  leftStick.getY(),
+                  rightStick.getY());
+            },
+            drive));
+
     // turret auto aiming
     turret.setDefaultCommand(
       new RunCommand(
@@ -84,6 +95,7 @@ public class RobotContainer {
       new RunCommand(
         () -> hood.setSetpoint(ShooterConstants.getHoodAngle(vision.getDistance())),
         hood));
+        
     hood.enable();
   }
 
@@ -214,26 +226,5 @@ public class RobotContainer {
     return new DriveRamsete(drive, "Pos1_5Ball_Stage1", true);
     // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
     // return new InstantCommand();
-  }
-
-  /**
-   * sets default commands during teleop
-   */
-  public void setTeleopCommands() {
-    drive.setDefaultCommand(
-        new RunCommand(
-            () -> {
-              drive.driveRobot(
-                  DriveSubsystem.DriveMode.TANK,
-                  leftStick.getY(),
-                  rightStick.getY());
-            },
-            drive));
-            
-    // rumble.setDefaultCommand(
-    // new ConditionalCommand(
-    // new InstantCommand(rumble::rumble, rumble),
-    // new InstantCommand(rumble::stopRumble, rumble),
-    // drive::isStalling));
   }
 }

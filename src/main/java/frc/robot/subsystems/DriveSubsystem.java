@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.RelativeEncoder;
@@ -29,7 +30,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
-import frc.robot.hardware.SciPigeon;
 import frc.robot.hardware.SciSpark;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.TrajectoryRegister;
@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
             new SciSpark(PortMap.Drivetrain.RIGHT_BACK_SPARK)
     };
 
-    private SciPigeon pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
+    private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(PortMap.Drivetrain.PIGEON);
 
     private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
     private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
