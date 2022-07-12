@@ -1,80 +1,81 @@
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
-import com.revrobotics.CANSparkMax;
-
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.PortMap;
-import frc.robot.Robot;
 
-public class IntakeSubsystem implements Subsystem {
+public class IntakeSubsystem extends SubsystemBase {
 
-    private DoubleSolenoid armSolenoid; // solenoid used for extending and retracting intake arm
-    private CANSparkMax suckSpark; // motor used for intaking balls
-    private boolean lastLimit = false;
+    private DoubleSolenoid armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.Intake.ARM_CHANNELS[0], PortMap.Intake.ARM_CHANNELS[1]);
+    private CANSparkMax suckSpark = new CANSparkMax(PortMap.Intake.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
 
-    public DigitalInput limitSwitch; // limit switch used for detecting when ball in intake
-    public int amountOfBalls = 0;
-    public final int WAIT_TIME = 1000; //in miliseconds
-    public long lastActivated = 0;
-    
-    private final double INTAKE_SPEED = 0.5;
+    // detecting when ball is in intake
+    private DigitalInput limitSwitch = new DigitalInput(PortMap.Intake.LIMIT_SWITCH);
+    private Debouncer ballFilter = new Debouncer(IntakeConstants.DEBOUNCE_TIME, DebounceType.kFalling);
+    private boolean hasBall = false;
+
+    private ShuffleboardTab tab;
+    private SimpleWidget intakeSpeedWidget;
 
     public IntakeSubsystem() {
-        this.armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortMap.INTAKE_ARM_FORWARD_CHANNEL, PortMap.INTAKE_ARM_REVERSE_CHANNEL); 
-        this.suckSpark = new CANSparkMax(PortMap.INTAKE_SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
-        // this.suckSpark.setInverted(true); // invert the motor
-        this.limitSwitch = new DigitalInput(PortMap.LIMIT_SWITCH_INTAKE);
-        
-    }
-    // ONLY WORKS IF LIMIT SWITCH IS IN INTAKE AND NOT HOPPER balsucker//
-    public void updateBallCounter(){
-
-        // // Should also work
-        // if(lastLimit && !this.getLimitSwitchState()) //if on falling edge, note and end (falling edge = turning off)
-        //     lastFallingEdge = System.currentTimeMillis();
-
-        // if(!lastLimit && this.getLimitSwitchState()) //if on rising edge, measure time from last rising edge (rising edge = turning on)
-        //     if(System.currentTimeMillis() - lastFallingEdge > WAIT_TIME) //so we know ball did not shake around in intake
-        //         amountOfBalls += 1;
-
-        // lastLimit = this.getLimitSwitchState();
-        
-
-        if (this.getLimitSwitchState()) {
-            if (System.currentTimeMillis() - lastActivated > WAIT_TIME) {
-                amountOfBalls++;
-            }
-            lastActivated = System.currentTimeMillis();
-        }
-    }
-
-    public boolean getLimitSwitchState(){
-        return limitSwitch.get();
-    }
-
-    public void extendArm() { 
         this.armSolenoid.set(DoubleSolenoid.Value.kForward);
+
+        this.tab = Shuffleboard.getTab("Intake");
+        this.tab.addNumber("Intake Suck Speed", this::getIntakeSpeed);
+        this.tab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
+        this.tab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
+
+        // this.intakeSpeedWidget = this.tab.add("Intake Suck Set", intakeSpeed);
+
+        // this.intakeSpeedWidget.getEntry().addListener(event -> {
+        //     this.startSuck(event.getEntry().getDouble(this.intakeSpeed));
+        // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
-    
-    public void retractArm() {
-        this.armSolenoid.set(DoubleSolenoid.Value.kReverse);
+
+    public void toggleArm() { 
+        this.armSolenoid.toggle();
     }
 
     public void startSuck() {
-        this.suckSpark.set(this.INTAKE_SPEED);
+        startSuck(IntakeConstants.INTAKE_SPEED);
+    }
+
+    public void startSuck(double speed) {
+        suckSpark.set(MathUtil.clamp(speed, -1, 1));
+    }
+
+    public void reverseSuck() {
+        reverseSuck(-IntakeConstants.INTAKE_SPEED);
+    }
+
+    public void reverseSuck(double speed) {
+        suckSpark.set(MathUtil.clamp(speed, -1, 1));
     }
 
     public void stopSuck() {
-        this.suckSpark.set(0);
+        suckSpark.stopMotor();
     }
 
     public double getIntakeSpeed() {
         return this.suckSpark.get();
     }
-    
+
+    public boolean hasBall() {
+        return hasBall;
+    }
+
+    @Override
+    public void periodic() {
+        hasBall = ballFilter.calculate(limitSwitch.get());
+    }
 }
