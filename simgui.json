@@ -132,11 +132,6 @@
       "/SmartDashboard/traj-yellow": "String Chooser"
     },
     "windows": {
-      "/Shuffleboard/Shooter/HoodSubsystem": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Field": {
         "Robot": {
           "arrowColor": [

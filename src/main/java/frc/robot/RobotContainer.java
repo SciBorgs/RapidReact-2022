@@ -18,6 +18,7 @@ import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
 import frc.robot.commands.DriveRamsete;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.Turn180;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -48,7 +49,7 @@ public class RobotContainer {
   private final Joystick rightStick = new Joystick(InputDevices.JOYSTICK_RIGHT);
 
   // SUBSYSTEMS
-  private final DriveSubsystem drive = new DriveSubsystem();
+  public final DriveSubsystem drive = new DriveSubsystem();
   private final VisionSubsystem vision = new VisionSubsystem();
   private final TurretSubsystem turret = new TurretSubsystem();
   private final HoodSubsystem hood = new HoodSubsystem();
@@ -134,18 +135,18 @@ public class RobotContainer {
             intake::toggleArm,
             intake));
     
-    new JoystickButton(xbox, 2) // TODO update with proper port
-        .whileHeld(
-          new StartEndCommand(
-            () -> {
-              intake.reverseSuck();
-              hopper.reverseSuck();
-            },
-            () -> {
-              intake.stopSuck();
-              hopper.stopSuck();
-            },
-            intake, hopper));
+    // new JoystickButton(xbox, 2) // TODO update with proper port
+    //     .whileHeld(
+    //       new StartEndCommand(
+    //         () -> {
+    //           intake.reverseSuck();
+    //           hopper.reverseSuck();
+    //         },
+    //         () -> {
+    //           intake.stopSuck();
+    //           hopper.stopSuck();
+    //         },
+    //         intake, hopper));
 
     new JoystickButton(xbox, XboxControllerMap.Button.BACK)
       .whenPressed(
@@ -222,8 +223,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
+    // // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
     return new DriveRamsete(drive, "Pos1_5Ball_Stage1", true);
+    // return new Turn180(drive);
     // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
     // return new InstantCommand();
   }

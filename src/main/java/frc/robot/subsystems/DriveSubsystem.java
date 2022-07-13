@@ -237,8 +237,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        // pigeon.setAngle(pose.getRotation().getDegrees());
+        System.out.println("heading change: "  + pose.getRotation().getDegrees());
         odometry.resetPosition(pose, getRotation());
+        System.out.println("current heading: " + pigeon.getRotation2d().getDegrees());
     }
 
     public double getLeftCurrentAmps() {

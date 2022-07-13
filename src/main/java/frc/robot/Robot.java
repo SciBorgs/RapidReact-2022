@@ -6,6 +6,8 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,7 +40,7 @@ public class Robot extends TimedRobot {
     // TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     // System.out.println(Util.getPathPlannerPathNames());
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
   }
 
   /**
@@ -94,7 +96,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is first started up. */
   @Override
   public void simulationInit() {
-    // m_robotContainer.driveSubsystem.resetOdometry(new Pose2d(10.89, 6.12, new Rotation2d(-2.8773498048)));
+    m_robotContainer.drive.resetOdometry(new Pose2d(10.89, 6.12, new Rotation2d(2.8)));
   } 
 
   /** This function is called periodically whilst in simulation. */
