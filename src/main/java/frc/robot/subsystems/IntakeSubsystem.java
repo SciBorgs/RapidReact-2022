@@ -7,6 +7,7 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
@@ -43,7 +44,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void toggleArm() { 
-        this.armSolenoid.toggle();
+        armSolenoid.toggle();
+    }
+
+    public void activateArm() {
+        armSolenoid.set(Value.kForward);
     }
 
     public void startSuck() {

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
@@ -71,6 +72,7 @@ public class RobotContainer {
     vision.reset();
     configureButtonBindings();
     configureSubsystemDefaults();
+    hood.enable();
   }
 
   private void configureSubsystemDefaults() {
@@ -96,8 +98,6 @@ public class RobotContainer {
       new RunCommand(
         () -> hood.setSetpoint(ShooterConstants.getHoodAngle(vision.getDistance())),
         hood));
-        
-    hood.enable();
   }
 
   /**
@@ -109,6 +109,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // Shoot trigger for when conditions are met
+    new Trigger(() -> (
+        vision.hasTarget()
+        && flywheel.atTargetRPM()
+        && flywheel.getTargetFlywheelSpeed() != 0 
+        && hood.atSetpoint()
+        && turret.atTarget()))
+      .debounce(0.2)
+      .whenActive(hopper::startElevator, hopper)
+      .whenInactive(hopper::stopElevator, hopper);
+
     // Compressor
     new JoystickButton(xbox, XboxControllerMap.Button.START)
         .toggleWhenPressed(
@@ -117,98 +128,72 @@ public class RobotContainer {
                 pneumatics::stop,
                 pneumatics));
 
-    // Intake
+    // Intake balls
     new JoystickButton(xbox, XboxControllerMap.Button.X)
-        .whileHeld(
-            new StartEndCommand(
-                () -> {
-                  intake.startSuck();
-                  hopper.startSuck();
-                },
-                () -> {
-                  intake.stopSuck();
-                  hopper.stopSuck();
-                },
-                intake, hopper))
-        .whenPressed(
-          new InstantCommand(
-            intake::toggleArm,
-            intake));
+        .whenPressed(intake::activateArm, intake)
+        .whileHeld(() -> {
+          intake.startSuck();
+          hopper.startSuck();
+        }, intake, hopper)
+        .whenReleased(() -> {
+          intake.stopSuck();
+          hopper.stopSuck();
+        }, intake, hopper);
     
-    // new JoystickButton(xbox, 2) // TODO update with proper port
-    //     .whileHeld(
-    //       new StartEndCommand(
-    //         () -> {
-    //           intake.reverseSuck();
-    //           hopper.reverseSuck();
-    //         },
-    //         () -> {
-    //           intake.stopSuck();
-    //           hopper.stopSuck();
-    //         },
-    //         intake, hopper));
-
+    // Reverse intake
+    new JoystickButton(xbox, 2) // TODO update with proper port
+        .whenPressed(() -> {
+          intake.reverseSuck();
+          hopper.reverseSuck();
+        }, intake, hopper)
+        .whenReleased(() -> {
+          intake.stopSuck();
+          hopper.stopSuck();
+        }, intake, hopper)
+        
+    // Toggle arm
     new JoystickButton(xbox, XboxControllerMap.Button.BACK)
-      .whenPressed(
-        new InstantCommand(
-            intake::toggleArm,
-            intake));
+        .whenPressed(intake::toggleArm, intake);
 
-    // Intake-Hopper-Compressor
+    // Run hopper
     new JoystickButton(xbox, XboxControllerMap.Button.A)
-        .whileHeld(
-            new StartEndCommand(
-                () -> {
-                  hopper.startSuck();
-                  hopper.startElevator();
-                },
-                () -> {
-                  hopper.stopSuck();
-                  hopper.stopElevator();
-                },
-                hopper));
+        .whenPressed(() -> {
+          hopper.startSuck();
+          hopper.startElevator();
+        }, hopper)
+        .whenReleased(() -> {
+          hopper.stopSuck();
+          hopper.stopElevator();
+        }, hopper);
 
     // Climber
     new JoystickButton(xbox, XboxControllerMap.Button.Y)
-        .whileHeld(
-          new StartEndCommand(
-            climber::extendTelescope,
-            climber::stopTelescope,
-            climber));
+        .whenPressed(climber::extendTelescope, climber)
+        .whenReleased(climber::stopTelescope, climber);
 
     new JoystickButton(xbox, XboxControllerMap.Button.B)
-        .whileHeld(
-          new StartEndCommand(
-            climber::retractTelescope,
-            climber::stopTelescope,
-            climber));
+        .whenPressed(climber::retractTelescope, climber)
+        .whenReleased(climber::stopTelescope, climber);
             
     new DPadButton(xbox, DPadButton.Direction.LEFT)
-        .whileHeld(
-          new StartEndCommand(
-            climber::extendArms,
-            climber::stopArms,
-            climber));
+        .whenPressed(climber::extendArms, climber)
+        .whenReleased(climber::stopArms, climber);
 
     new DPadButton(xbox, DPadButton.Direction.RIGHT)
-        .whileHeld(
-          new StartEndCommand(
-            climber::retractArms,
-            climber::stopArms,
-            climber));
+        .whenPressed(climber::retractArms, climber)
+        .whenReleased(climber::stopArms, climber);
 
-    // Shooter
+    // Run flywheel at variable speed
     new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_RIGHT)
-      .whenPressed(
-        new Shoot(flywheel, hopper, vision));
-
-    new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_LEFT)
       .whileHeld(
-        new StartEndCommand(
-          () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM),
-          flywheel::stopFlywheel,
-          flywheel));
+        () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
+        flywheel)
+      .whenReleased(flywheel::stopFlywheel, flywheel);
 
+    // Run flywheel at set speed
+    new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_LEFT)
+      .whenPressed(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel)
+      .whenReleased(flywheel::stopFlywheel, flywheel);
   }
 
   public SendableChooser<String> getAutoChooser() {
