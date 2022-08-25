@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -18,8 +17,6 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
 import frc.robot.commands.DriveRamsete;
-import frc.robot.commands.Shoot;
-import frc.robot.commands.Turn180;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -149,7 +146,7 @@ public class RobotContainer {
         .whenReleased(() -> {
           intake.stopSuck();
           hopper.stopSuck();
-        }, intake, hopper)
+        }, intake, hopper);
         
     // Toggle arm
     new JoystickButton(xbox, XboxControllerMap.Button.BACK)

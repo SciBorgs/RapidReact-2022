@@ -18,9 +18,7 @@ public class Shoot extends SequentialCommandGroup {
                 new RunCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())), flywheel),
                 new WaitUntilCommand(flywheel::atTargetRPM)
             ),
-            new InstantCommand(hopper::startElevator, hopper),
             new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
-            new InstantCommand(hopper::stopElevator, hopper),
             new InstantCommand(flywheel::stopFlywheel, flywheel)
         );
     }
