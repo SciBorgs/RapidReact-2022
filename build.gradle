@@ -3,6 +3,7 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2022.4.1"
+    id 'com.diffplug.spotless' version '6.1.0'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -66,7 +67,7 @@ dependencies {
     nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
-    
+
     compileOnly 'edu.wpi.first.shuffleboard:api:2020.+'
     compileOnly 'edu.wpi.first.shuffleboard.plugin:networktables:2020.+'
 
@@ -87,7 +88,7 @@ jar {
 }
 
 test {
-   useJUnit()
+    useJUnit()
 }
 
 // Configure jar and deploy tasks
@@ -96,6 +97,50 @@ wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
 
 repositories {
-   mavenCentral()
-   maven{ url "https://frcmaven.wpi.edu:443/artifactory/release" }
+    mavenCentral()
+    maven{ url "https://frcmaven.wpi.edu:443/artifactory/release" }
+}
+
+// Code formatting
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        toggleOffOn()
+        googleJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    groovyGradle {
+        target fileTree('.') {
+            include '**/*.gradle'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        greclipse()
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format 'xml', {
+        target fileTree('.') {
+            include '**/*.xml'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        eclipseWtp('xml')
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    format 'misc', {
+        target fileTree('.') {
+            include '**/*.md', '**/.gitignore'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
 }

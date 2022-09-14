@@ -13,19 +13,23 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class TwoBallAuto extends SequentialCommandGroup {
-    public TwoBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem vision, FlywheelSubsystem flywheel, TurretSubsystem turret) {
-        // init
-        addCommands(
-            new InstantCommand(intake::toggleArm, intake),
-            new InstantCommand(intake::startSuck, intake)
-        );
-        
-        // intake second ball, shoot, end
-        addCommands(
-            new DriveUntilIntake(drive, intake),
-            new Turn180(drive),
-            new Shoot(flywheel, hopper, vision),
-            new InstantCommand(intake::stopSuck, intake)
-        );
-    }
+  public TwoBallAuto(
+      DriveSubsystem drive,
+      IntakeSubsystem intake,
+      HopperSubsystem hopper,
+      VisionSubsystem vision,
+      FlywheelSubsystem flywheel,
+      TurretSubsystem turret) {
+    // init
+    addCommands(
+        new InstantCommand(intake::toggleArm, intake),
+        new InstantCommand(intake::startSuck, intake));
+
+    // intake second ball, shoot, end
+    addCommands(
+        new DriveUntilIntake(drive, intake),
+        new Turn180(drive),
+        new Shoot(flywheel, hopper, vision),
+        new InstantCommand(intake::stopSuck, intake));
+  }
 }

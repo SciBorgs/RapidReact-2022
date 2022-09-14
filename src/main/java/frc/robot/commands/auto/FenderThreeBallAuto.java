@@ -13,39 +13,42 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class FenderThreeBallAuto extends SequentialCommandGroup {
-    public FenderThreeBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, FlywheelSubsystem flywheel, TurretSubsystem turret, String pos) {
-        // start actions
-        addCommands(
-            new InstantCommand(intake::toggleArm, intake),
-            new InstantCommand(intake::startSuck, intake),
-            new InstantCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.FENDER_RPM), flywheel)
-        );
+  public FenderThreeBallAuto(
+      DriveSubsystem drive,
+      IntakeSubsystem intake,
+      HopperSubsystem hopper,
+      FlywheelSubsystem flywheel,
+      TurretSubsystem turret,
+      String pos) {
+    // start actions
+    addCommands(
+        new InstantCommand(intake::toggleArm, intake),
+        new InstantCommand(intake::startSuck, intake),
+        new InstantCommand(
+            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.FENDER_RPM), flywheel));
 
-        // Grab second ball, go to fender, shoot
-        addCommands(
-            new DriveRamsete(drive, "Pos_" + pos + "_2Ball_Fender", true),
-            new Turn180(drive),
-            new InstantCommand(hopper::startElevator, hopper),
-            new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
-            new InstantCommand(hopper::stopElevator, hopper)
-        );
+    // Grab second ball, go to fender, shoot
+    addCommands(
+        new DriveRamsete(drive, "Pos_" + pos + "_2Ball_Fender", true),
+        new Turn180(drive),
+        new InstantCommand(hopper::startElevator, hopper),
+        new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
+        new InstantCommand(hopper::stopElevator, hopper));
 
-        // Get third ball, shoot
-        addCommands(
-            new Turn180(drive),
-            new DriveRamsete(drive, "Pos_" + pos + "_3Ball_Fender", false),
-            new Turn180(drive),
-            new InstantCommand(hopper::startElevator, hopper),
-            new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
-            new InstantCommand(hopper::stopElevator, hopper)
-        );
+    // Get third ball, shoot
+    addCommands(
+        new Turn180(drive),
+        new DriveRamsete(drive, "Pos_" + pos + "_3Ball_Fender", false),
+        new Turn180(drive),
+        new InstantCommand(hopper::startElevator, hopper),
+        new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
+        new InstantCommand(hopper::stopElevator, hopper));
 
-        // Drive off tarmac, end
-        addCommands(
-            new Turn180(drive),
-            new DriveRamsete(drive, "DriveOffTarmac", false),
-            new InstantCommand(intake::stopSuck, intake),
-            new InstantCommand(flywheel::stopFlywheel, flywheel)
-        );
-    }
+    // Drive off tarmac, end
+    addCommands(
+        new Turn180(drive),
+        new DriveRamsete(drive, "DriveOffTarmac", false),
+        new InstantCommand(intake::stopSuck, intake),
+        new InstantCommand(flywheel::stopFlywheel, flywheel));
+  }
 }

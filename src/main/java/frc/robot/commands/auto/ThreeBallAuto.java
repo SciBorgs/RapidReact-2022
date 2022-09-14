@@ -14,26 +14,30 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class ThreeBallAuto extends SequentialCommandGroup {
-    public ThreeBallAuto(DriveSubsystem drive, IntakeSubsystem intake, HopperSubsystem hopper, VisionSubsystem vision, FlywheelSubsystem flywheel, TurretSubsystem turret, String initialPos) {
-        
-        addCommands(
-            new InstantCommand(intake::toggleArm, intake),
-            new InstantCommand(intake::startSuck, intake)
-        );
+  public ThreeBallAuto(
+      DriveSubsystem drive,
+      IntakeSubsystem intake,
+      HopperSubsystem hopper,
+      VisionSubsystem vision,
+      FlywheelSubsystem flywheel,
+      TurretSubsystem turret,
+      String initialPos) {
 
-        addCommands(
-            new Shoot(flywheel, hopper, vision),
-            new Turn180(drive),
-            new DriveUntilIntake(drive, intake)
-        );
+    addCommands(
+        new InstantCommand(intake::toggleArm, intake),
+        new InstantCommand(intake::startSuck, intake));
 
-        if(initialPos == "2") addCommands(new Turn180(drive));
-        
-        addCommands(
-            new DriveRamsete(drive, "Pos" + initialPos + "_3Ball", true),
-            new Turn180(drive),
-            new Shoot(flywheel, hopper, vision),
-            new InstantCommand(intake::stopSuck, intake)
-        );
-    }
+    addCommands(
+        new Shoot(flywheel, hopper, vision),
+        new Turn180(drive),
+        new DriveUntilIntake(drive, intake));
+
+    if (initialPos == "2") addCommands(new Turn180(drive));
+
+    addCommands(
+        new DriveRamsete(drive, "Pos" + initialPos + "_3Ball", true),
+        new Turn180(drive),
+        new Shoot(flywheel, hopper, vision),
+        new InstantCommand(intake::stopSuck, intake));
+  }
 }

@@ -11,15 +11,16 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class Shoot extends SequentialCommandGroup {
-    public Shoot(FlywheelSubsystem flywheel, HopperSubsystem hopper, VisionSubsystem vision) {
-        vision.reset();
-        addCommands(
-            parallel(
-                new RunCommand(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())), flywheel),
-                new WaitUntilCommand(flywheel::atTargetRPM)
-            ),
-            new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
-            new InstantCommand(flywheel::stopFlywheel, flywheel)
-        );
-    }
+  public Shoot(FlywheelSubsystem flywheel, HopperSubsystem hopper, VisionSubsystem vision) {
+    vision.reset();
+    addCommands(
+        parallel(
+            new RunCommand(
+                () ->
+                    flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
+                flywheel),
+            new WaitUntilCommand(flywheel::atTargetRPM)),
+        new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
+        new InstantCommand(flywheel::stopFlywheel, flywheel));
+  }
 }
