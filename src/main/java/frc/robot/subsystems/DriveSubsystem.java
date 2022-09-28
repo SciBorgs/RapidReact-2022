@@ -125,6 +125,8 @@ public class DriveSubsystem extends SubsystemBase {
     tab.addNumber("Heading", this::getHeading);
     tab.addNumber("X", this::getX);
     tab.addNumber("Y", this::getY);
+    tab.addNumber("RPM diff", () -> (getLeftAverageVelocity() - getRightAverageVelocity()));
+    tab.addNumber("Amp diff", () -> (getLeftCurrentAmps() - getRightCurrentAmps()));
 
     tab.addNumber("Current Speed Limit", this::getSpeedLimit);
 
