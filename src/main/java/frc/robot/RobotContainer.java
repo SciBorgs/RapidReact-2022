@@ -112,7 +112,7 @@ public class RobotContainer {
 
     // Intake balls
     new JoystickButton(xbox, XboxControllerMap.Button.X)
-        .whenPressed(intake::activateArm, intake)
+        .whenPressed(intake::extendArm, intake)
         .whileHeld(
             () -> {
               intake.startSuck();
@@ -124,6 +124,7 @@ public class RobotContainer {
             () -> {
               intake.stopSuck();
               hopper.stopSuck();
+              intake.retractArm();
             },
             intake,
             hopper);

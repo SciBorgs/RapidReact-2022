@@ -53,7 +53,11 @@ public class IntakeSubsystem extends SubsystemBase {
     armSolenoid.toggle();
   }
 
-  public void activateArm() {
+  public void extendArm() {
+    armSolenoid.set(Value.kReverse);
+  }
+
+  public void retractArm() {
     armSolenoid.set(Value.kForward);
   }
 
