@@ -3,19 +3,27 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.PortMap;
 
-public class ClimberSubsystem implements Subsystem {
+public class ClimberSubsystem extends SubsystemBase {
   private CANSparkMax telescope, arms;
 
-  public ClimberSubsystem() {
-    this.telescope = new CANSparkMax(PortMap.Climber.TELESCOPE_SPARK, MotorType.kBrushless);
-    this.arms = new CANSparkMax(PortMap.Climber.ARMS_SPARK, MotorType.kBrushless);
+  private ShuffleboardTab tab;
 
-    this.telescope.setIdleMode(IdleMode.kBrake);
-    this.arms.setIdleMode(IdleMode.kBrake);
+  public ClimberSubsystem() {
+    telescope = new CANSparkMax(PortMap.Climber.TELESCOPE_SPARK, MotorType.kBrushless);
+    arms = new CANSparkMax(PortMap.Climber.ARMS_SPARK, MotorType.kBrushless);
+
+    telescope.setIdleMode(IdleMode.kBrake);
+    arms.setIdleMode(IdleMode.kBrake);
+
+    tab = Shuffleboard.getTab("Climber");
+    tab.add(this);
   }
 
   public void extendTelescope() {

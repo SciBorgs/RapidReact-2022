@@ -12,21 +12,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
 import frc.robot.commands.DriveRamsete;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.FlywheelSubsystem;
-import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.DPadButton;
 import frc.robot.util.Util;
@@ -46,9 +41,9 @@ public class RobotContainer {
   // SUBSYSTEMS
   public final DriveSubsystem drive = new DriveSubsystem();
   private final VisionSubsystem vision = new VisionSubsystem();
-  private final TurretSubsystem turret = new TurretSubsystem();
-  private final HoodSubsystem hood = new HoodSubsystem();
-  private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
+  // private final TurretSubsystem turret = new TurretSubsystem();
+  // private final HoodSubsystem hood = new HoodSubsystem();
+  // private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final HopperSubsystem hopper = new HopperSubsystem();
   private final PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
@@ -64,7 +59,7 @@ public class RobotContainer {
     vision.reset();
     configureButtonBindings();
     configureSubsystemDefaults();
-    hood.enable();
+    // hood.enable();
   }
 
   private void configureSubsystemDefaults() {
@@ -72,19 +67,20 @@ public class RobotContainer {
     drive.setDefaultCommand(
         new RunCommand(
             () -> {
-              drive.driveRobot(DriveSubsystem.DriveMode.TANK, leftStick.getY(), rightStick.getY());
+              drive.driveRobot(DriveSubsystem.DriveMode.TANK, rightStick.getY(), leftStick.getY());
             },
             drive));
 
     // turret auto aiming
-    turret.setDefaultCommand(
-        new RunCommand(
-            () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()), turret));
+    // turret.setDefaultCommand(
+    //     new RunCommand(
+    //         () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()),
+    // turret));
 
     // hood auto aiming
-    hood.setDefaultCommand(
-        new RunCommand(
-            () -> hood.setSetpoint(ShooterConstants.getHoodAngle(vision.getDistance())), hood));
+    // hood.setDefaultCommand(
+    //     new RunCommand(
+    //         () -> hood.setSetpoint(ShooterConstants.getHoodAngle(vision.getDistance())), hood));
   }
 
   /**
@@ -95,16 +91,16 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Shoot trigger for when conditions are met
-    new Trigger(
-            () ->
-                (vision.hasTarget()
-                    && flywheel.atTargetRPM()
-                    && flywheel.getTargetFlywheelSpeed() != 0
-                    && hood.atSetpoint()
-                    && turret.atTarget()))
-        .debounce(0.2)
-        .whenActive(hopper::startElevator, hopper)
-        .whenInactive(hopper::stopElevator, hopper);
+    // new Trigger(
+    //         () ->
+    //             (vision.hasTarget()
+    //                 && flywheel.atTargetRPM()
+    //                 && flywheel.getTargetFlywheelSpeed() != 0
+    //                 && hood.atSetpoint()
+    //                 && turret.atTarget()))
+    //     .debounce(0.2)
+    //     .whenActive(hopper::startElevator, hopper)
+    //     .whenInactive(hopper::stopElevator, hopper);
 
     // Compressor
     new JoystickButton(xbox, XboxControllerMap.Button.START)
@@ -130,7 +126,7 @@ public class RobotContainer {
             hopper);
 
     // Reverse intake
-    new JoystickButton(xbox, 2) // TODO update with proper port
+    new JoystickButton(xbox, XboxControllerMap.Button.A)
         .whenPressed(
             () -> {
               intake.reverseSuck();
@@ -182,16 +178,17 @@ public class RobotContainer {
         .whenReleased(climber::stopArms, climber);
 
     // Run flywheel at variable speed
-    new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_RIGHT)
-        .whileHeld(
-            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
-            flywheel)
-        .whenReleased(flywheel::stopFlywheel, flywheel);
+    // new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_RIGHT)
+    //     .whileHeld(
+    //         () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
+    //         flywheel)
+    //     .whenReleased(flywheel::stopFlywheel, flywheel);
 
     // Run flywheel at set speed
-    new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_LEFT)
-        .whenPressed(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel)
-        .whenReleased(flywheel::stopFlywheel, flywheel);
+    // new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_LEFT)
+    //     .whenPressed(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM),
+    // flywheel)
+    //     .whenReleased(flywheel::stopFlywheel, flywheel);
   }
 
   public SendableChooser<String> getAutoChooser() {
