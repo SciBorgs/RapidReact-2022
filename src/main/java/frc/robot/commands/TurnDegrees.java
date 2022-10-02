@@ -16,14 +16,14 @@ public class TurnDegrees extends CommandBase {
     this.degrees = degrees;
     turnController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     turnController.enableContinuousInput(-180, 180);
-    turnController.setTolerance(2.0);
+    turnController.setTolerance(2);
 
     addRequirements(drive);
   }
 
   @Override
   public void initialize() {
-    turnController.setSetpoint(Util.normalizeAngle180(drive.getHeading() + degrees));
+    turnController.setSetpoint(Util.normalizeAngle180(drive.getHeading() + degrees, 360));
   }
 
   @Override

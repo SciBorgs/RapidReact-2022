@@ -59,9 +59,6 @@ public class Util {
 
   // there is no such thing as a "gaussioid" (in the way i'm using it). i mean
   // that this samples a 2D normal distribution (hence the name) using the
-  // Box-Muller transform
-  // there is no such thing as a "gaussioid" (in the way i'm using it). i mean
-  // that this samples a 2D normal distribution (hence the name) using the
   // Box-Muller transform:
   // https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
   public static double[] sampleGaussioid(double[] stddev, double[] mean) {
@@ -102,10 +99,9 @@ public class Util {
     }
   }
 
-  // Calculates the heading exactly 180 degrees away from current heading and normalizes it between
-  // the bounds of the gyroscope
-  public static double normalizeAngle180(double angle) {
-    return angle - 180 > -180 ? angle - 180 : angle + 180;
+  // Returns an angle within -180 - 180 degrees
+  public static double normalizeAngle180(double heading, double desiredAngle) {
+    return Math.IEEEremainder(heading + desiredAngle, 360);
   }
 
   // Testing util

@@ -49,6 +49,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/ClimberSubsystem": "Subsystem",
       "/LiveWindow/DriveSubsystem": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
       "/LiveWindow/FlywheelSubsystem": "Subsystem",
@@ -110,6 +111,7 @@
       "/LiveWindow/Ungrouped/Pigeon IMU [42]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/VisionSubsystem": "Subsystem",
+      "/Shuffleboard/Climber/ClimberSubsystem": "Subsystem",
       "/Shuffleboard/Drivetrain/DriveSubsystem": "Subsystem",
       "/Shuffleboard/Shooter/Flywheel PID": "PIDController",
       "/Shuffleboard/Shooter/FlywheelSubsystem": "Subsystem",
