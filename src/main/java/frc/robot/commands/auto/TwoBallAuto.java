@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveUntilIntake;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.Turn180;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -28,7 +28,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
     // intake second ball, shoot, end
     addCommands(
         new DriveUntilIntake(drive, intake),
-        new Turn180(drive),
+        new TurnDegrees(180, drive),
         new Shoot(flywheel, hopper, vision),
         new InstantCommand(intake::stopSuck, intake));
   }

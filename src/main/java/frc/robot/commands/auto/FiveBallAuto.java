@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveRamsete;
 import frc.robot.commands.DriveUntilIntake;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.Turn180;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -31,19 +31,19 @@ public class FiveBallAuto extends SequentialCommandGroup {
     // shoot from tarmac
     addCommands(
         new Shoot(flywheel, hopper, vision),
-        new Turn180(drive),
+        new TurnDegrees(180, drive),
         new DriveUntilIntake(drive, intake));
 
     addCommands(
-        new Turn180(drive),
+        new TurnDegrees(180, drive),
         new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage1", true),
         new Shoot(flywheel, hopper, vision));
 
-    if (initialPos == "2") addCommands(new Turn180(drive));
+    if (initialPos == "2") addCommands(new TurnDegrees(180, drive));
 
     addCommands(
         new DriveRamsete(drive, "Pos" + initialPos + "_5Ball_Stage2", false),
-        new Turn180(drive),
+        new TurnDegrees(180, drive),
         new Shoot(flywheel, hopper, vision),
         new InstantCommand(intake::stopSuck, intake));
   }

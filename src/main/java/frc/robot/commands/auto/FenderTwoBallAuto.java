@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DriveRamsete;
-import frc.robot.commands.Turn180;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -30,7 +30,7 @@ public class FenderTwoBallAuto extends SequentialCommandGroup {
     // Grab second ball, go to fender, shoot
     addCommands(
         new DriveRamsete(drive, "Pos_" + pos + "_2Ball_Fender", true),
-        new Turn180(drive),
+        new TurnDegrees(180, drive),
         new InstantCommand(hopper::startElevator, hopper),
         new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),
         new InstantCommand(hopper::stopElevator, hopper),
@@ -38,7 +38,7 @@ public class FenderTwoBallAuto extends SequentialCommandGroup {
 
     // Drive off tarmac, end
     addCommands(
-        new Turn180(drive),
+        new TurnDegrees(180, drive),
         new DriveRamsete(drive, "DriveOffTarmac", false),
         new InstantCommand(intake::stopSuck),
         new InstantCommand(flywheel::stopFlywheel, flywheel));
