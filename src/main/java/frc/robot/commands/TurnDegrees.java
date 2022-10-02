@@ -4,36 +4,39 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+
 import frc.robot.util.Util;
 
-public class Turn180 extends CommandBase {
+public class TurnDegrees extends CommandBase {
   private DriveSubsystem drive;
+  private double degrees;
   PIDController turnController;
 
-  public Turn180(DriveSubsystem drive) {
+  public TurnDegrees(double degrees, DriveSubsystem drive) {
     this.drive = drive;
-    addRequirements(drive);
+    this.degrees = degrees;
     turnController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
     turnController.enableContinuousInput(-180, 180);
     turnController.setTolerance(2.0);
+
+    addRequirements(drive);
   }
 
   @Override
   public void initialize() {
-    turnController.reset();
-    turnController.setSetpoint(Util.normalizeAngle180(drive.getHeading()));
-    System.out.println("Setpoint:" + Util.normalizeAngle180(drive.getHeading()));
-    // turnController.setIntegratorRange(-0.1, 0.1);
-
+    turnController.setSetpoint(Util.normalizeAngle180(drive.getHeading() + degrees));
   }
 
   @Override
   public void execute() {
-    drive.tankDriveVolts(
-        -turnController.calculate(drive.getHeading()),
-        turnController.calculate(drive.getHeading()));
-    System.out.println(
-        "Current angle: " + drive.getHeading() + " | At setpoint: " + turnController.atSetpoint());
+    double voltage = turnController.calculate(drive.getHeading());
+    drive.tankDriveVolts(-voltage, voltage);
+  }
+
+
+  @Override
+  public void end(boolean interrupted) {
+    drive.tankDriveVolts(0, 0);
   }
 
   @Override
@@ -41,7 +44,4 @@ public class Turn180 extends CommandBase {
     return turnController.atSetpoint();
   }
 
-  public void end(boolean interrupted) {
-    drive.tankDriveVolts(0, 0);
-  }
 }
