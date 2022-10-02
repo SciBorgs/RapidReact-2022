@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
-
 import frc.robot.util.Util;
 
 public class TurnDegrees extends CommandBase {
@@ -33,7 +32,6 @@ public class TurnDegrees extends CommandBase {
     drive.tankDriveVolts(-voltage, voltage);
   }
 
-
   @Override
   public void end(boolean interrupted) {
     drive.tankDriveVolts(0, 0);
@@ -43,5 +41,4 @@ public class TurnDegrees extends CommandBase {
   public boolean isFinished() {
     return turnController.atSetpoint();
   }
-
 }
