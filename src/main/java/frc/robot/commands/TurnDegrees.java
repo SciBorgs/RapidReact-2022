@@ -9,7 +9,7 @@ import frc.robot.util.Util;
 public class TurnDegrees extends CommandBase {
   private DriveSubsystem drive;
   private double degrees;
-  PIDController turnController;
+  private PIDController turnController;
 
   public TurnDegrees(double degrees, DriveSubsystem drive) {
     this.drive = drive;
@@ -23,7 +23,7 @@ public class TurnDegrees extends CommandBase {
 
   @Override
   public void initialize() {
-    turnController.setSetpoint(Util.normalizeAngle180(drive.getHeading() + degrees, 360));
+    turnController.setSetpoint(Util.normalizeAngle180(drive.getHeading(), drive.getHeading()+degrees));
   }
 
   @Override
