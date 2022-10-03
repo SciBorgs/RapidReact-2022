@@ -23,7 +23,8 @@ public class TurnDegrees extends CommandBase {
 
   @Override
   public void initialize() {
-    turnController.setSetpoint(Util.normalizeAngle180(drive.getHeading(), drive.getHeading()+degrees));
+    turnController.setSetpoint(
+        Util.normalizeAngle180(drive.getHeading(), drive.getHeading() + degrees));
   }
 
   @Override
