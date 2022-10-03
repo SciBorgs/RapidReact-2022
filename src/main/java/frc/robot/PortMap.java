@@ -12,12 +12,12 @@ public final class PortMap {
   }
 
   public static final class Drivetrain {
-    public static final int LEFT_FRONT_SPARK = 22;
-    public static final int LEFT_MIDDLE_SPARK = 21;
-    public static final int LEFT_BACK_SPARK = 7;
-    public static final int RIGHT_FRONT_SPARK = 14;
-    public static final int RIGHT_MIDDLE_SPARK = 26;
-    public static final int RIGHT_BACK_SPARK = 10;
+    public static final int LEFT_FRONT_SPARK = 14;
+    public static final int LEFT_MIDDLE_SPARK = 26;
+    public static final int LEFT_BACK_SPARK = 10;
+    public static final int RIGHT_FRONT_SPARK = 22;
+    public static final int RIGHT_MIDDLE_SPARK = 21;
+    public static final int RIGHT_BACK_SPARK = 7;
 
     public static final int PIGEON = 42;
   }
