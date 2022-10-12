@@ -1,4 +1,43 @@
 {
+  "NetworkTables": {
+    "LiveWindow": {
+      "open": true
+    },
+    "Usage": {
+      "Client": {
+        "Dashboard": {
+          "open": true
+        },
+        "open": true
+      },
+      "open": true
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/DigitalInput[6]": "Digital Input",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/Pigeon IMU [42]": "Gyro",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/Shuffleboard/Climber/ClimberSubsystem": "Subsystem",
+      "/SmartDashboard/Auto Chooser": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/traj-blue": "String Chooser",
+      "/SmartDashboard/traj-green": "String Chooser",
+      "/SmartDashboard/traj-orange": "String Chooser",
+      "/SmartDashboard/traj-purple": "String Chooser",
+      "/SmartDashboard/traj-red": "String Chooser",
+      "/SmartDashboard/traj-white": "String Chooser",
+      "/SmartDashboard/traj-yellow": "String Chooser"
+    },
+    "windows": {
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
   "NetworkTables Settings": {
     "mode": "Client",
     "serverTeam": "1155"

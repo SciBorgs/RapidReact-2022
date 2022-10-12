@@ -67,7 +67,7 @@ public class RobotContainer {
     drive.setDefaultCommand(
         new RunCommand(
             () -> {
-              drive.driveRobot(DriveSubsystem.DriveMode.TANK, leftStick.getY(), rightStick.getY());
+              drive.driveRobot(DriveSubsystem.DriveMode.TANK, -leftStick.getY(), -rightStick.getY());
             },
             drive));
 

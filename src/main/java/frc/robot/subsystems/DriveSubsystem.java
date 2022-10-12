@@ -113,7 +113,7 @@ public class DriveSubsystem extends SubsystemBase {
       motor.setSmartCurrentLimit(20);
     }
 
-    // rightGroup.setInverted(true);
+    leftGroup.setInverted(true);
     drive.setDeadband(0.05);
 
     for (SciSpark motor : allSparks) {
