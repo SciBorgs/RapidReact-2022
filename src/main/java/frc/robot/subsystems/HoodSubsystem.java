@@ -35,6 +35,8 @@ public class HoodSubsystem extends PIDSubsystem {
     tab.add(this);
     tab.add("Hood PID", getController());
     tab.addNumber("Hood Angle", encoder::getDistance);
+
+    enable();
   }
 
   @Override
