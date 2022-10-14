@@ -229,10 +229,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    if (Robot.isReal()) {
-      return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
-    }
-    return new DifferentialDriveWheelSpeeds(lEncoderSim.getVelocity(), rEncoderSim.getVelocity());
+    return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
   }
 
   public void updateOdometry() {

@@ -71,7 +71,8 @@ public class RobotContainer {
     drive.setDefaultCommand(
         new RunCommand(
             () -> {
-              drive.driveRobot(DriveSubsystem.DriveMode.TANK, -leftStick.getY(), -rightStick.getY());
+              drive.driveRobot(
+                  DriveSubsystem.DriveMode.TANK, -leftStick.getY(), -rightStick.getY());
             },
             drive));
 
@@ -94,8 +95,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Shoot trigger for when conditions are met
-    new Trigger(vision::hasTarget)
-        .and(new Trigger(flywheel::atTargetRPM))
+    new Trigger(flywheel::atTargetRPM)
         .and(new Trigger(() -> flywheel.getTargetFlywheelSpeed() != 0))
         .and(new Trigger(hood::atSetpoint))
         .and(new Trigger(turret::atTarget))
