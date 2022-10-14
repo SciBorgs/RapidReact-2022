@@ -25,7 +25,6 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
-import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.DPadButton;
@@ -54,7 +53,6 @@ public class RobotContainer {
   private final PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
   private final ClimberSubsystem climber = new ClimberSubsystem();
   private final MonitorSubsystem monitor = new MonitorSubsystem();
-  private final RumbleSubsystem rumble = new RumbleSubsystem(xbox);
 
   // AUTO CHOOSER
   private final SendableChooser<String> autoChooser = Util.getPathTestChooser();

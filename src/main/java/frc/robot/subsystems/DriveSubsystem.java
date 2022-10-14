@@ -4,6 +4,7 @@ import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -16,12 +17,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,33 +28,32 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
-import frc.robot.hardware.SciSpark;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.TrajectoryRegister;
 import frc.robot.util.Util;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  private final SciSpark[] leftSparks = {
-    new SciSpark(PortMap.Drivetrain.LEFT_FRONT_SPARK),
-    new SciSpark(PortMap.Drivetrain.LEFT_MIDDLE_SPARK),
-    new SciSpark(PortMap.Drivetrain.LEFT_BACK_SPARK)
+  private final CANSparkMax[] leftSparks = {
+    new CANSparkMax(PortMap.Drivetrain.LEFT_FRONT_SPARK, MotorType.kBrushless),
+    new CANSparkMax(PortMap.Drivetrain.LEFT_MIDDLE_SPARK, MotorType.kBrushless),
+    new CANSparkMax(PortMap.Drivetrain.LEFT_BACK_SPARK, MotorType.kBrushless)
   };
 
-  private final SciSpark[] rightSparks = {
-    new SciSpark(PortMap.Drivetrain.RIGHT_FRONT_SPARK),
-    new SciSpark(PortMap.Drivetrain.RIGHT_MIDDLE_SPARK),
-    new SciSpark(PortMap.Drivetrain.RIGHT_BACK_SPARK)
+  private final CANSparkMax[] rightSparks = {
+    new CANSparkMax(PortMap.Drivetrain.RIGHT_FRONT_SPARK, MotorType.kBrushless),
+    new CANSparkMax(PortMap.Drivetrain.RIGHT_MIDDLE_SPARK, MotorType.kBrushless),
+    new CANSparkMax(PortMap.Drivetrain.RIGHT_BACK_SPARK, MotorType.kBrushless)
   };
 
   private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(PortMap.Drivetrain.PIGEON);
 
   private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
   private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
-  private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
+  private final Iterable<CANSparkMax> allSparks = Util.concat(leftSparks, rightSparks);
 
-  private double speedLimit = 0.7;
-  private SimpleWidget speedLimitWidget;
+  // private double speedLimit = 0.7;
+  // private SimpleWidget speedLimitWidget;
 
   private final DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
 
@@ -108,7 +106,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     resetEncoders();
 
-    for (SciSpark motor : allSparks) {
+    for (CANSparkMax motor : allSparks) {
       motor.setIdleMode(IdleMode.kBrake);
       motor.setSmartCurrentLimit(20);
     }
@@ -116,7 +114,7 @@ public class DriveSubsystem extends SubsystemBase {
     leftGroup.setInverted(true);
     drive.setDeadband(0.05);
 
-    for (SciSpark motor : allSparks) {
+    for (CANSparkMax motor : allSparks) {
       motor.burnFlash();
     }
 
@@ -128,17 +126,17 @@ public class DriveSubsystem extends SubsystemBase {
     tab.addNumber("RPM diff", () -> (getLeftAverageVelocity() - getRightAverageVelocity()));
     tab.addNumber("Amp diff", () -> (getLeftCurrentAmps() - getRightCurrentAmps()));
 
-    tab.addNumber("Current Speed Limit", this::getSpeedLimit);
+    // tab.addNumber("Current Speed Limit", this::getSpeedLimit);
 
-    this.speedLimitWidget = tab.add("Target Flywheel Speed", speedLimit);
+    // this.speedLimitWidget = tab.add("Target Flywheel Speed", speedLimit);
 
-    this.speedLimitWidget
-        .getEntry()
-        .addListener(
-            event -> {
-              this.setSpeedLimit(event.getEntry().getDouble(this.speedLimit));
-            },
-            EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+    // this.speedLimitWidget
+    //     .getEntry()
+    //     .addListener(
+    //         event -> {
+    //           this.setSpeedLimit(event.getEntry().getDouble(this.speedLimit));
+    //         },
+    //         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
     SmartDashboard.putData("Field", field2d);
     TrajectoryRegister.setField2d(field2d);
@@ -155,21 +153,13 @@ public class DriveSubsystem extends SubsystemBase {
     drive.feed();
   }
 
-  public double getSpeedLimit() {
-    return speedLimit;
-  }
+  // public double getSpeedLimit() {
+  //   return speedLimit;
+  // }
 
-  public void setSpeedLimit(double newLimit) {
-    this.speedLimit = newLimit;
-  }
-
-  public void driveBack() {
-    driveRobot(DriveMode.TANK, -0.4, -0.4);
-  }
-
-  public void stopRobot() {
-    driveRobot(DriveMode.TANK, 0, 0);
-  }
+  // public void setSpeedLimit(double newLimit) {
+  //   this.speedLimit = newLimit;
+  // }
 
   /**
    * Drives the robot according to provided DriveMode
@@ -190,19 +180,6 @@ public class DriveSubsystem extends SubsystemBase {
       case CURVATURE:
         drive.curvatureDrive(filter1.calculate(first), second, true);
         break;
-    }
-  }
-
-  public void failureWatchdog() {
-    for (int i = 0; i < leftSparks.length; i++) {
-      if (leftSparks[i].updateFailState()) {
-        rightSparks[i].forceFailState(true);
-      }
-    }
-    for (int i = 0; i < rightSparks.length; i++) {
-      if (rightSparks[i].updateFailState()) {
-        leftSparks[i].forceFailState(true);
-      }
     }
   }
 
@@ -272,36 +249,13 @@ public class DriveSubsystem extends SubsystemBase {
     return kinematics;
   }
 
-  public Iterable<SciSpark> getAllSparks() {
+  public Iterable<CANSparkMax> getAllSparks() {
     return allSparks;
-  }
-
-  // thanks stuy
-  public boolean isLeftStalling() {
-    boolean current = getLeftCurrentAmps() > DriveConstants.CURRENT_THRESHOLD;
-    boolean output = Math.abs(getLeftAverageVelocity()) > DriveConstants.DUTY_CYCLE_THRESHOLD;
-    boolean velocity = Math.abs(lEncoder.getVelocity()) < DriveConstants.VELOCITY_THRESHOLD;
-    return (current || output) && velocity;
-  }
-
-  public boolean isRightStalling() {
-    boolean current = getRightCurrentAmps() > DriveConstants.CURRENT_THRESHOLD;
-    boolean output = Math.abs(getRightAverageVelocity()) > DriveConstants.DUTY_CYCLE_THRESHOLD;
-    boolean velocity = Math.abs(rEncoder.getVelocity()) < DriveConstants.VELOCITY_THRESHOLD;
-    return (current || output) && velocity;
-  }
-
-  public boolean isStalling() {
-    return false;
-    // return isLeftStalling() || isRightStalling();
   }
 
   @Override
   public void periodic() {
     updateOdometry();
-    for (SciSpark s : getAllSparks()) {
-      s.updateFailState();
-    }
     field2d.setRobotPose(odometry.getPoseMeters());
   }
 
