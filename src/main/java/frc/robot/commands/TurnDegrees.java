@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.Util;
 
 public class TurnDegrees extends CommandBase {
@@ -30,12 +31,12 @@ public class TurnDegrees extends CommandBase {
   @Override
   public void execute() {
     double voltage = turnController.calculate(drive.getHeading());
-    drive.tankDriveVolts(-voltage, voltage);
+    drive.driveRobot(DriveMode.TANK, -voltage, voltage);
   }
 
   @Override
   public void end(boolean interrupted) {
-    drive.tankDriveVolts(0, 0);
+    drive.driveRobot(DriveMode.TANK, 0, 0);
   }
 
   @Override
