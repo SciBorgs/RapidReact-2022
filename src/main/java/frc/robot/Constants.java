@@ -38,8 +38,8 @@ public final class Constants {
     public static final double kA = 1;
 
     // Path Following
-    public static final int maxVel = 7;
-    public static final int maxAccel = 4;
+    public static final int maxVel = 4;
+    public static final int maxAccel = 2;
 
     // misc
     public static final double driveBackSpeeds = -0.4;
