@@ -1,30 +1,39 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.revrobotics.CANSparkMax;
 import edu.wpi.first.hal.HAL;
 import frc.robot.Constants;
+import frc.robot.PortMap;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.util.EncoderSim;
 import org.junit.jupiter.api.*;
 
 public class IntakeTest {
   IntakeSubsystem intake;
-  CANSparkMax motor;
+  private EncoderSim suckEncoder;
 
   @BeforeEach
-  public void setupSubsystem() {
+  public void setup() {
     assert HAL.initialize(500, 0);
     intake = new IntakeSubsystem();
+    suckEncoder = new EncoderSim(PortMap.Intake.SUCK_SPARK);
   }
 
   @AfterEach
-  public void destroySubsystem() throws Exception {
+  public void shutdown() throws Exception {
     intake.close();
   }
 
-  @DisplayName("blegh")
   @Test
-  public void set_motors() {
+  public void forwardSuckTest() {
     intake.startSuck();
-    assertEquals(Constants.IntakeConstants.INTAKE_SPEED, intake.getIntakeSpeed(), 1e-2);
+    System.out.println(suckEncoder.getVelocity());
+    assertEquals(IntakeConstants.INTAKE_SPEED, suckEncoder.getVelocity(), Constants.MARGIN_OF_ERROR);
   }
+
+  // @Test
+  // public void reverseSuckTest() {
+  //   intake.reverseSuck();
+  //   assertEquals(-IntakeConstants.INTAKE_SPEED, suckEncoder.getVelocity(), Constants.MARGIN_OF_ERROR);
+  // }
 }

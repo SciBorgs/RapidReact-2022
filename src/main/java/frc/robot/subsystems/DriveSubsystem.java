@@ -270,6 +270,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    System.out.println(lEncoder.getVelocity() * 10 + " | " + lEncoderSim.getVelocity() * 10);
     updateOdometry();
     field2d.setRobotPose(odometry.getPoseMeters());
   }

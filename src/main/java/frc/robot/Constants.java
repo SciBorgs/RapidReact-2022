@@ -14,6 +14,8 @@ package frc.robot;
  */
 public final class Constants {
 
+  public static final double MARGIN_OF_ERROR = 1e-2;
+
   public static final class DriveConstants {
     // for stalling detection
     public static final double CURRENT_THRESHOLD = 0;

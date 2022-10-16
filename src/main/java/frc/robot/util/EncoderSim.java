@@ -19,7 +19,15 @@ public class EncoderSim {
     velocity.set(v);
   }
 
+  public double getVelocity() {
+    return velocity.get();
+  }
+
   public void setPosition(double pos) {
     position.set(pos);
+  }
+
+  public double getPosition() {
+    return position.get();
   }
 }

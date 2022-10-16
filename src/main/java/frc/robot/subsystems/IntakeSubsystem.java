@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -62,19 +61,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void startSuck() {
-    startSuck(IntakeConstants.INTAKE_SPEED);
-  }
-
-  public void startSuck(double speed) {
-    suckSpark.set(MathUtil.clamp(speed, -1, 1));
+    suckSpark.set(IntakeConstants.INTAKE_SPEED);
   }
 
   public void reverseSuck() {
-    reverseSuck(-IntakeConstants.INTAKE_SPEED);
-  }
-
-  public void reverseSuck(double speed) {
-    suckSpark.set(MathUtil.clamp(speed, -1, 1));
+    suckSpark.set(-IntakeConstants.INTAKE_SPEED);
   }
 
   public void stopSuck() {
