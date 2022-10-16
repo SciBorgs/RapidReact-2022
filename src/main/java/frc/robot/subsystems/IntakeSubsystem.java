@@ -89,6 +89,10 @@ public class IntakeSubsystem extends SubsystemBase {
     return hasBall;
   }
 
+  public void close() throws Exception {
+    suckSpark.close();
+  }
+
   @Override
   public void periodic() {
     hasBall = ballFilter.calculate(limitSwitch.get());
