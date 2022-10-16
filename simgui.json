@@ -149,9 +149,9 @@
             1.0,
             255.0
           ],
-          "image": "./PathWeaver/robot.png",
+          "image": "/home/asa/Projects/RapidReact-2022/PathWeaver/jeremy.png",
           "length": 0.7110000252723694,
-          "style": "Track",
+          "style": "Box/Image",
           "weight": 10.0,
           "width": 0.5580000281333923
         },
@@ -245,7 +245,7 @@
         },
         "width": 16.459199905395508,
         "window": {
-          "name": "have fun watching the robot move back and forth for all eternity",
+          "name": "jeremy doing auto sequences",
           "visible": true
         }
       }
