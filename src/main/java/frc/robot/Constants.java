@@ -37,6 +37,9 @@ public final class Constants {
     public static final double kV = 0;
     public static final double kA = 0;
 
+    // Turning pid
+    public static final double tP = 1;
+
     // Path Following
     public static final int maxVel = 4;
     public static final int maxAccel = 2;

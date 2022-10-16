@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -11,14 +11,11 @@ public class TurnDegrees extends CommandBase {
   private DriveSubsystem drive;
   private double degrees;
   private PIDController turnController;
-  private SimpleMotorFeedforward feedforward;
 
   public TurnDegrees(double degrees, DriveSubsystem drive) {
     this.drive = drive;
     this.degrees = degrees;
-    turnController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
-    feedforward =
-        new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
+    turnController = new PIDController(DriveConstants.tP, 0, 0);
     addRequirements(drive);
   }
 
@@ -31,10 +28,8 @@ public class TurnDegrees extends CommandBase {
 
   @Override
   public void execute() {
-    double fb = turnController.calculate(drive.getHeading());
-    double ff = feedforward.calculate(drive.getHeading());
-    double voltage = fb + ff;
-    drive.setMotorGroups(-voltage, voltage);
+    double speed = turnController.calculate(drive.getHeading());
+    drive.setSpeeds(new DifferentialDriveWheelSpeeds(-speed, speed));
   }
 
   @Override

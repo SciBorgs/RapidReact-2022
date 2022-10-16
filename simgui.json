@@ -252,11 +252,16 @@
     }
   },
   "NetworkTables": {
-    "SmartDashboard": {
-      "Field": {
+    "Shuffleboard": {
+      "Shooter": {
         "open": true
       },
       "open": true
+    },
+    "SmartDashboard": {
+      "Field": {
+        "open": true
+      }
     }
   }
 }

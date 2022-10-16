@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -66,6 +67,11 @@ public class DriveSubsystem extends SubsystemBase {
   private SimpleMotorFeedforward feedforward =
       new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
 
+  private PIDController lPID =
+      new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+  private PIDController rPID =
+      new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+
   private SlewRateLimiter filter1 =
       new SlewRateLimiter(DriveConstants.DELTA); // used for speed in arcade and
   // curvature, left track in tank
@@ -124,6 +130,8 @@ public class DriveSubsystem extends SubsystemBase {
     tab.addNumber("Y", this::getY);
     tab.addNumber("RPM diff", () -> (getLeftAverageVelocity() - getRightAverageVelocity()));
     tab.addNumber("Amp diff", () -> (getLeftCurrentAmps() - getRightCurrentAmps()));
+    tab.addNumber("Left speed", leftGroup::get);
+    tab.addNumber("Right speed", rightGroup::get);
 
     // tab.addNumber("Current Speed Limit", this::getSpeedLimit);
 
@@ -144,13 +152,23 @@ public class DriveSubsystem extends SubsystemBase {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftGroup.setVoltage(leftVolts);
     rightGroup.setVoltage(rightVolts);
-    // if (Robot.isReal()) {
-
-    // } else { // sim workaround
-    //   leftSparks[0].setVoltage(leftVolts);
-    //   rightSparks[0].setVoltage(rightVolts);
-    // }
     drive.feed();
+  }
+
+  public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    final double lFF = feedforward.calculate(speeds.leftMetersPerSecond);
+    final double rFF = feedforward.calculate(speeds.rightMetersPerSecond);
+
+    final double lFB = lPID.calculate(lEncoder.getVelocity(), speeds.leftMetersPerSecond);
+    final double rFB = rPID.calculate(rEncoder.getVelocity(), speeds.rightMetersPerSecond);
+    leftGroup.setVoltage(lFB + lFF);
+    rightGroup.setVoltage(rFB + rFF);
+  }
+
+  // Directly sets speed for left and right motor groups
+  public void setMotorGroups(double left, double right) {
+    leftGroup.setVoltage(left);
+    rightGroup.setVoltage(right);
   }
 
   // public double getSpeedLimit() {
@@ -181,12 +199,6 @@ public class DriveSubsystem extends SubsystemBase {
         drive.curvatureDrive(filter1.calculate(first), second, true);
         break;
     }
-  }
-
-  // Directly sets speed for left and right motor groups
-  public void setMotorGroups(double left, double right) {
-    leftGroup.setVoltage(left);
-    rightGroup.setVoltage(right);
   }
 
   public Rotation2d getRotation() {
