@@ -5,6 +5,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -31,13 +33,25 @@ public class TrajectoryRegister {
               "traj-green",
               "traj-orange",
               "traj-purple"));
-  private static final Trajectory EMPTY_TRAJECTORY = new Trajectory();
+  private static final Trajectory EMPTY_TRAJECTORY;
   private static Map<String, FieldObject2d> fieldObjects; // slot -> field object
   private static Map<String, SendableChooser<Trajectory>> choosers; // slot -> chooser
+  private static Map<String, Trajectory> trajectories;
 
   static {
     fieldObjects = new HashMap<>();
     choosers = new HashMap<>();
+
+    trajectories = new HashMap<>();
+    List<String> names = Util.getPathPlannerPathNames();
+    // pretty jank but this is a quick and dirty way to remove a trajectory from the screen
+    EMPTY_TRAJECTORY = PathPlanner.loadPath(names.get(0), 0, 0)
+                                  .transformBy(new Transform2d(new Translation2d(100, 100), new Rotation2d()));
+    for (String name : names) {
+      trajectories.put(
+          name, PathPlanner.loadPath(name, DriveConstants.maxVel, DriveConstants.maxAccel));
+    }
+
     putChoosers();
   }
 
@@ -58,14 +72,9 @@ public class TrajectoryRegister {
 
   private static SendableChooser<Trajectory> getTrajectoryChooser() {
     SendableChooser<Trajectory> chooser = new SendableChooser<>();
-    List<String> names = Util.getPathPlannerPathNames();
-    chooser.setDefaultOption(
-        "None",
-        PathPlanner.loadPath(names.get(0), 0, 0)
-            .transformBy(new Transform2d(new Translation2d(100, 100), new Rotation2d())));
-    for (String name : names) {
-      chooser.addOption(
-          name, PathPlanner.loadPath(name, DriveConstants.maxVel, DriveConstants.maxAccel));
+    chooser.setDefaultOption("None", EMPTY_TRAJECTORY);
+    for (Map.Entry<String, Trajectory> entry : trajectories.entrySet()) {
+      chooser.addOption(entry.getKey(), entry.getValue());
     }
     return chooser;
   }
@@ -76,13 +85,7 @@ public class TrajectoryRegister {
       SendableChooser<Trajectory> chooser = getTrajectoryChooser();
       choosers.put(slot, chooser);
       SmartDashboard.putData(slot, chooser);
-    }
-  }
-
-  /** Updates the TrajectoryRegister */
-  public static void update() {
-    for (String slot : slots) {
-      setTrajectory(slot, choosers.get(slot).getSelected());
+      Util.addSendableChooserListener(chooser, e -> setTrajectory(slot, choosers.get(slot).getSelected()));
     }
   }
 }
