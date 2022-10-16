@@ -97,7 +97,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is first started up. */
   @Override
   public void simulationInit() {
-    m_robotContainer.drive.resetOdometry(new Pose2d(10.89, 6.12, new Rotation2d(2.8)));
+    // m_robotContainer.drive.resetOdometry(new Pose2d(10.89, 6.12, new Rotation2d(2.8)));
   }
 
   /** This function is called periodically whilst in simulation. */

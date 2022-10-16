@@ -101,6 +101,7 @@ public class Util {
 
   // Returns an angle within -180 - 180 degrees
   public static double normalizeAngle180(double heading, double desiredAngle) {
+    System.out.println(Math.IEEEremainder(heading + desiredAngle, 360));
     return Math.IEEEremainder(heading + desiredAngle, 360);
   }
 

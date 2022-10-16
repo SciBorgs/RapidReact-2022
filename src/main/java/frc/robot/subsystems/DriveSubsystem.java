@@ -118,7 +118,7 @@ public class DriveSubsystem extends SubsystemBase {
       motor.burnFlash();
     }
 
-    odometry = new DifferentialDriveOdometry(getRotation(), new Pose2d(10, 4, getRotation()));
+    odometry = new DifferentialDriveOdometry(getRotation(), new Pose2d(0, 0, getRotation()));
     this.tab = Shuffleboard.getTab("Drivetrain");
     tab.addNumber("Heading", this::getHeading);
     tab.addNumber("X", this::getX);
@@ -220,9 +220,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
-    System.out.println("heading change: " + pose.getRotation().getDegrees());
     odometry.resetPosition(pose, getRotation());
-    System.out.println("current heading: " + pigeon.getRotation2d().getDegrees());
   }
 
   public double getLeftCurrentAmps() {
@@ -261,9 +259,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    // driveSim.setInputs(leftSparks[0].getAppliedOutput(),
-    // rightSparks[0].getAppliedOutput());
-    driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
+    // System.out.println(getHeading());
+    // System.out.println(leftGroup.get());
+    driveSim.setInputs(leftGroup.get(), rightGroup.get());
 
     lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
     lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());

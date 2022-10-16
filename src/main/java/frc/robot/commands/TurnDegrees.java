@@ -16,28 +16,29 @@ public class TurnDegrees extends CommandBase {
     this.drive = drive;
     this.degrees = degrees;
     turnController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
-    turnController.enableContinuousInput(-180, 180);
-    turnController.setTolerance(2);
-
     addRequirements(drive);
   }
 
   @Override
   public void initialize() {
+    turnController.enableContinuousInput(-180, 180);
+    turnController.setTolerance(0.2);
     turnController.setSetpoint(
-        Util.normalizeAngle180(drive.getHeading(), drive.getHeading() + degrees));
+        Util.normalizeAngle180(drive.getHeading(), degrees));
   }
 
   @Override
   public void execute() {
     double voltage = turnController.calculate(drive.getHeading());
+    // System.out.println(voltage);
     drive.driveRobot(DriveMode.TANK, -voltage, voltage);
   }
 
-  @Override
-  public void end(boolean interrupted) {
-    drive.driveRobot(DriveMode.TANK, 0, 0);
-  }
+  // @Override
+  // public void end(boolean interrupted) {
+  //   System.out.println("yea");
+  //   drive.driveRobot(DriveMode.TANK, 0, 0);
+  // }
 
   @Override
   public boolean isFinished() {
