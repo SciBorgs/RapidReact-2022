@@ -2,7 +2,6 @@ package frc.robot.util;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.EntryNotification;
-import edu.wpi.first.networktables.NTSendableBuilder;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -272,11 +271,14 @@ public class Util {
   }
 
   @SuppressWarnings("unchecked")
-  public static void addSendableChooserListener(SendableChooser<?> chooser, Consumer<EntryNotification> listener) {
+  public static void addSendableChooserListener(
+      SendableChooser<?> chooser, Consumer<EntryNotification> listener) {
     try {
       var f = SendableChooser.class.getDeclaredField("m_activeEntries");
       f.setAccessible(true);
-      ((List<NetworkTableEntry>) f.get(chooser)).get(0).addListener(listener, EntryListenerFlags.kUpdate);
+      ((List<NetworkTableEntry>) f.get(chooser))
+          .get(0)
+          .addListener(listener, EntryListenerFlags.kUpdate);
     } catch (Exception ex) {
       ex.printStackTrace();
     }

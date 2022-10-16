@@ -5,8 +5,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -45,8 +43,9 @@ public class TrajectoryRegister {
     trajectories = new HashMap<>();
     List<String> names = Util.getPathPlannerPathNames();
     // pretty jank but this is a quick and dirty way to remove a trajectory from the screen
-    EMPTY_TRAJECTORY = PathPlanner.loadPath(names.get(0), 0, 0)
-                                  .transformBy(new Transform2d(new Translation2d(100, 100), new Rotation2d()));
+    EMPTY_TRAJECTORY =
+        PathPlanner.loadPath(names.get(0), 0, 0)
+            .transformBy(new Transform2d(new Translation2d(100, 100), new Rotation2d()));
     for (String name : names) {
       trajectories.put(
           name, PathPlanner.loadPath(name, DriveConstants.maxVel, DriveConstants.maxAccel));
@@ -85,7 +84,8 @@ public class TrajectoryRegister {
       SendableChooser<Trajectory> chooser = getTrajectoryChooser();
       choosers.put(slot, chooser);
       SmartDashboard.putData(slot, chooser);
-      Util.addSendableChooserListener(chooser, e -> setTrajectory(slot, choosers.get(slot).getSelected()));
+      Util.addSendableChooserListener(
+          chooser, e -> setTrajectory(slot, choosers.get(slot).getSelected()));
     }
   }
 }
