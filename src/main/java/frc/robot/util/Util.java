@@ -1,5 +1,8 @@
 package frc.robot.util;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.EntryNotification;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -9,6 +12,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -264,5 +268,19 @@ public class Util {
       chooser.setDefaultOption(names.get(0), names.get(0));
     }
     return chooser;
+  }
+
+  @SuppressWarnings("unchecked")
+  public static void addSendableChooserListener(
+      SendableChooser<?> chooser, Consumer<EntryNotification> listener) {
+    try {
+      var f = SendableChooser.class.getDeclaredField("m_activeEntries");
+      f.setAccessible(true);
+      ((List<NetworkTableEntry>) f.get(chooser))
+          .get(0)
+          .addListener(listener, EntryListenerFlags.kUpdate);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
 }

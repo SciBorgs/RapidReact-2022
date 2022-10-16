@@ -124,23 +124,6 @@ public class RobotContainer {
             intake,
             hopper);
 
-    // Reverse intake
-    new JoystickButton(xbox, XboxControllerMap.Button.A)
-        .whenPressed(
-            () -> {
-              intake.reverseSuck();
-              hopper.reverseSuck();
-            },
-            intake,
-            hopper)
-        .whenReleased(
-            () -> {
-              intake.stopSuck();
-              hopper.stopSuck();
-            },
-            intake,
-            hopper);
-
     // Toggle arm
     new JoystickButton(xbox, XboxControllerMap.Button.BACK).whenPressed(intake::toggleArm, intake);
 

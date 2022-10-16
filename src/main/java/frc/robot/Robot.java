@@ -4,13 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.util.TrajectoryRegister;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -58,7 +59,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    TrajectoryRegister.update();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is first started up. */
   @Override
   public void simulationInit() {
-    // m_robotContainer.drive.resetOdometry(new Pose2d(10.89, 6.12, new Rotation2d(2.8)));
+    m_robotContainer.drive.resetOdometry(new Pose2d(10.89, 6.12, new Rotation2d(0)));
   }
 
   /** This function is called periodically whilst in simulation. */
