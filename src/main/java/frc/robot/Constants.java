@@ -33,9 +33,9 @@ public final class Constants {
     public static final double kD = 0;
 
     // Feedforward
-    public static final double kS = 1;
-    public static final double kV = 1;
-    public static final double kA = 1;
+    public static final double kS = 0;
+    public static final double kV = 0;
+    public static final double kA = 0;
 
     // Path Following
     public static final int maxVel = 4;

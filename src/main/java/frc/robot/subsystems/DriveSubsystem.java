@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
-import frc.robot.Robot;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.TrajectoryRegister;
 import frc.robot.util.Util;
@@ -143,8 +142,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-      leftGroup.setVoltage(leftVolts);
-      rightGroup.setVoltage(rightVolts);
+    leftGroup.setVoltage(leftVolts);
+    rightGroup.setVoltage(rightVolts);
     // if (Robot.isReal()) {
 
     // } else { // sim workaround
@@ -186,8 +185,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Directly sets speed for left and right motor groups
   public void setMotorGroups(double left, double right) {
-    leftGroup.set(left);
-    rightGroup.set(right);
+    leftGroup.setVoltage(left);
+    rightGroup.setVoltage(right);
   }
 
   public Rotation2d getRotation() {
