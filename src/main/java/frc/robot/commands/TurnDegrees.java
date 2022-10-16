@@ -30,15 +30,14 @@ public class TurnDegrees extends CommandBase {
   @Override
   public void execute() {
     double voltage = turnController.calculate(drive.getHeading());
-    // System.out.println(voltage);
-    drive.driveRobot(DriveMode.TANK, -voltage, voltage);
+    // drive.driveRobot(DriveMode.TANK, -voltage, voltage);
+    drive.setMotorGroups(-voltage, voltage);
   }
 
-  // @Override
-  // public void end(boolean interrupted) {
-  //   System.out.println("yea");
-  //   drive.driveRobot(DriveMode.TANK, 0, 0);
-  // }
+  @Override
+  public void end(boolean interrupted) {
+    drive.setMotorGroups(0, 0);
+  }
 
   @Override
   public boolean isFinished() {

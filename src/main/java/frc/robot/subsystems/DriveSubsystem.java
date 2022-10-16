@@ -143,13 +143,14 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    if (Robot.isReal()) {
       leftGroup.setVoltage(leftVolts);
       rightGroup.setVoltage(rightVolts);
-    } else { // sim workaround
-      leftSparks[0].setVoltage(leftVolts);
-      rightSparks[0].setVoltage(rightVolts);
-    }
+    // if (Robot.isReal()) {
+
+    // } else { // sim workaround
+    //   leftSparks[0].setVoltage(leftVolts);
+    //   rightSparks[0].setVoltage(rightVolts);
+    // }
     drive.feed();
   }
 
@@ -183,9 +184,14 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
+  // Directly sets speed for left and right motor groups
+  public void setMotorGroups(double left, double right) {
+    leftGroup.set(left);
+    rightGroup.set(right);
+  }
+
   public Rotation2d getRotation() {
     return pigeon.getRotation2d();
-    // return Rotation2d.fromDegrees(0);
   }
 
   public Pose2d getPose() {
@@ -259,8 +265,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    // System.out.println(getHeading());
-    // System.out.println(leftGroup.get());
+
     driveSim.setInputs(leftGroup.get(), rightGroup.get());
 
     lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
