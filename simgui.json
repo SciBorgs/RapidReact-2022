@@ -149,7 +149,7 @@
             1.0,
             255.0
           ],
-          "image": "/home/asa/Projects/RapidReact-2022/PathWeaver/jeremy.png",
+          "image": "./PathWeaver/jeremy.png",
           "length": 0.7110000252723694,
           "style": "Box/Image",
           "weight": 10.0,
