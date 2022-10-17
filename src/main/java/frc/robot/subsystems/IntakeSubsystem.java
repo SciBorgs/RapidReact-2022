@@ -37,7 +37,7 @@ public class IntakeSubsystem extends SubsystemBase {
     this.armSolenoid.set(DoubleSolenoid.Value.kForward);
 
     this.tab = Shuffleboard.getTab("Intake");
-    this.tab.addNumber("Intake Suck Speed", this::getIntakeSpeed);
+    this.tab.addNumber("Intake Suck Speed", this::getSuckSpeed);
     this.tab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
     this.tab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
 
@@ -72,8 +72,8 @@ public class IntakeSubsystem extends SubsystemBase {
     suckSpark.stopMotor();
   }
 
-  public double getIntakeSpeed() {
-    return this.suckSpark.get();
+  public double getSuckSpeed() {
+    return suckSpark.get();
   }
 
   public boolean hasBall() {
