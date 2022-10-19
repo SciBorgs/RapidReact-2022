@@ -34,12 +34,12 @@ public class IntakeSubsystem extends SubsystemBase {
   private SimpleWidget intakeSpeedWidget;
 
   public IntakeSubsystem() {
-    this.armSolenoid.set(DoubleSolenoid.Value.kForward);
+    armSolenoid.set(DoubleSolenoid.Value.kForward);
 
-    this.tab = Shuffleboard.getTab("Intake");
-    this.tab.addNumber("Intake Suck Speed", this::getSuckSpeed);
-    this.tab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
-    this.tab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
+    tab = Shuffleboard.getTab("Intake");
+    tab.addNumber("Intake Suck Speed", this::getSuckSpeed);
+    tab.addNumber("Intake Suck Applied Output", this.suckSpark::getAppliedOutput);
+    tab.addNumber("Intake Suck RPM", this.suckSpark.getEncoder()::getVelocity);
 
     // this.intakeSpeedWidget = this.tab.add("Intake Suck Set", intakeSpeed);
 
@@ -78,10 +78,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public boolean hasBall() {
     return hasBall;
-  }
-
-  public void close() throws Exception {
-    suckSpark.close();
   }
 
   @Override
