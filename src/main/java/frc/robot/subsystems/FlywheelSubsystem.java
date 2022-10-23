@@ -21,9 +21,9 @@ public class FlywheelSubsystem extends SubsystemBase {
   private final RelativeEncoder flywheelEncoder = motorLead.getEncoder();
 
   // Flywheel control
-  private final PIDController flywheelFeedback =
+  private final PIDController feedback =
       new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD);
-  private final SimpleMotorFeedforward flywheelFeedforward =
+  private final SimpleMotorFeedforward feedfordward =
       new SimpleMotorFeedforward(ShooterConstants.fS, ShooterConstants.fV, ShooterConstants.fA);
 
   private double targetSpeed; // desired speed of the flywheel (rpm)
@@ -34,7 +34,7 @@ public class FlywheelSubsystem extends SubsystemBase {
     // shuffleboard
     tab = Shuffleboard.getTab("Shooter");
     tab.add(this);
-    tab.add("Flywheel PID", flywheelFeedback);
+    tab.add("Flywheel PID", feedback);
     tab.addNumber("Flywheel Speed", this::getCurrentFlywheelSpeed);
 
     // motor config
@@ -46,7 +46,7 @@ public class FlywheelSubsystem extends SubsystemBase {
     motorFollow.burnFlash();
     motorLead.burnFlash();
 
-    flywheelFeedback.setTolerance(200);
+    feedback.setTolerance(200);
 
     targetSpeed = 0.0;
   }
@@ -78,15 +78,15 @@ public class FlywheelSubsystem extends SubsystemBase {
   }
 
   public boolean atTargetRPM() {
-    return flywheelFeedback.atSetpoint();
+    return feedback.atSetpoint();
   }
 
   @Override
   public void periodic() {
     if (targetSpeed > 0) {
       // updating controllers for flywheel
-      double fb = flywheelFeedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
-      double ff = flywheelFeedforward.calculate(targetSpeed);
+      double fb = feedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
+      double ff = feedfordward.calculate(targetSpeed);
       motorLead.setVoltage(fb + ff);
     } else {
       motorLead.stopMotor();

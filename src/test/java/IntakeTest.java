@@ -14,7 +14,6 @@ import edu.wpi.first.hal.HAL;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,23 +29,18 @@ public class IntakeTest {
     // encoder = new EncoderSim(PortMap.Intake.SUCK_SPARK);
   }
 
-  @AfterEach
-  public void shutdown() throws Exception {
-    // intake.reset();
-  }
-
   @Test
   public void runTests() {
     forwardSuckTest();
     reverseSuckTest();
   }
 
-  public void forwardSuckTest() {
+  private void forwardSuckTest() {
     intake.startSuck();
     assertEquals(IntakeConstants.INTAKE_SPEED, intake.getSuckSpeed(), Constants.MARGIN_OF_ERROR);
   }
 
-  public void reverseSuckTest() {
+  private void reverseSuckTest() {
     intake.reverseSuck();
     assertEquals(-IntakeConstants.INTAKE_SPEED, intake.getSuckSpeed(), Constants.MARGIN_OF_ERROR);
   }
