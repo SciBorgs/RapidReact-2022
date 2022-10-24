@@ -12,23 +12,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.wpi.first.hal.HAL;
 import frc.robot.Constants;
+import frc.robot.PortMap;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.util.EncoderSim;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class IntakeTest {
   IntakeSubsystem intake;
-  // EncoderSim encoder;
+  EncoderSim encoder; // not the wpilib encoder sim
 
   @BeforeEach
   public void setup() {
     assert HAL.initialize(500, 0);
     intake = new IntakeSubsystem();
     // intake = new IntakeSubsystem();
-    // encoder = new EncoderSim(PortMap.Intake.SUCK_SPARK);
+    encoder = new EncoderSim(PortMap.Intake.SUCK_SPARK);
   }
 
+  // only one test is used to avoid the network table problems
   @Test
   public void runTests() {
     forwardSuckTest();
@@ -38,6 +42,10 @@ public class IntakeTest {
   private void forwardSuckTest() {
     intake.startSuck();
     assertEquals(IntakeConstants.INTAKE_SPEED, intake.getSuckSpeed(), Constants.MARGIN_OF_ERROR);
+    // assertEquals(IntakeConstants.INTAKE_SPEED, encoder.getVelocity(), Constants.MARGIN_OF_ERROR);
+    // ^ doesn't work because encoder.getVelocity() = 0
+    // keep in mind, we have extensively tested that any properly constructed EncoderSim.getVelocity()
+    // will return its expected value in sim GUI
   }
 
   private void reverseSuckTest() {
