@@ -10,14 +10,18 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.auto.*;
 
 public class Util {
 
@@ -267,6 +271,15 @@ public class Util {
     if (names.size() > 0) {
       chooser.setDefaultOption(names.get(0), names.get(0));
     }
+    return chooser;
+  }
+
+  public static SendableChooser<SequentialCommandGroup> getAutoChooser(HashMap<String, SequentialCommandGroup> autoCommands) {
+    SendableChooser<SequentialCommandGroup> chooser = new SendableChooser<>();
+    for(Map.Entry<String, SequentialCommandGroup> command : autoCommands.entrySet()) {
+      chooser.addOption(command.getKey(), command.getValue());
+    }
+
     return chooser;
   }
 

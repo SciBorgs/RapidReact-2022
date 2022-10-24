@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -29,6 +30,9 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.DPadButton;
 import frc.robot.util.Util;
+import frc.robot.commands.auto.*;
+import java.util.HashMap;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -56,6 +60,24 @@ public class RobotContainer {
 
   // AUTO CHOOSER
   private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
+
+  // i am so sorry for whoever needs to read this :rofl:
+  private final HashMap<String, SequentialCommandGroup> autoCommands = new HashMap<String, SequentialCommandGroup>() {{
+    put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
+    put("Two Ball", new TwoBallAuto(drive, intake, hopper, vision, flywheel, turret));
+    put("Three Ball", new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
+    put("Four Ball", new FourBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
+    put("Five Ball", new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
+    put("Fender Two Ball", new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+    put("Fender Three Ball", new FenderThreeBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+  }};
+
+  //   
+  //   new TwoBallAuto(drive, intake, hopper, vision, flywheel, turret),
+  //   ,
+  //   new FourBallAuto(drive, intake, hopper, vision, flywheel, turret, "2"),
+  //   new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1")
+  //  };
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
