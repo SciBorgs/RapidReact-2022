@@ -276,9 +276,16 @@ public class Util {
 
   public static SendableChooser<SequentialCommandGroup> getAutoChooser(HashMap<String, SequentialCommandGroup> autoCommands) {
     SendableChooser<SequentialCommandGroup> chooser = new SendableChooser<>();
+    boolean isFirst = true; // Set default option
+
     for(Map.Entry<String, SequentialCommandGroup> command : autoCommands.entrySet()) {
+      if(isFirst) {
+        chooser.setDefaultOption(command.getKey(), command.getValue());
+        isFirst = false;
+      }
       chooser.addOption(command.getKey(), command.getValue());
     }
+
 
     return chooser;
   }

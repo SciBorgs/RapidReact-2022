@@ -58,10 +58,7 @@ public class RobotContainer {
   private final ClimberSubsystem climber = new ClimberSubsystem();
   private final MonitorSubsystem monitor = new MonitorSubsystem();
 
-  // AUTO CHOOSER
-  private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
-
-  // i am so sorry for whoever needs to read this :rofl:
+  // Auto Commands (i am so sorry for whoever needs to read this :rofl:)
   private final HashMap<String, SequentialCommandGroup> autoCommands = new HashMap<String, SequentialCommandGroup>() {{
     put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
     put("Two Ball", new TwoBallAuto(drive, intake, hopper, vision, flywheel, turret));
@@ -72,12 +69,10 @@ public class RobotContainer {
     put("Fender Three Ball", new FenderThreeBallAuto(drive, intake, hopper, flywheel, turret, "1"));
   }};
 
-  //   
-  //   new TwoBallAuto(drive, intake, hopper, vision, flywheel, turret),
-  //   ,
-  //   new FourBallAuto(drive, intake, hopper, vision, flywheel, turret, "2"),
-  //   new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1")
-  //  };
+  // AUTO CHOOSER
+  private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
+  private final SendableChooser<SequentialCommandGroup> autoCommandChooser = Util.getAutoChooser(autoCommands);
+ 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -196,6 +191,10 @@ public class RobotContainer {
 
   public SendableChooser<String> getAutoChooser() {
     return this.autoChooser;
+  }
+
+  public SendableChooser<SequentialCommandGroup> getAutoCommandChooser() {
+    return this.autoCommandChooser;
   }
 
   /**
