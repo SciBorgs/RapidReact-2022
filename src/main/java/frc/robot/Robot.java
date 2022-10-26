@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.Util;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -38,9 +39,13 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
+    // SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
+    SmartDashboard.putData("Auto Command Chooser", m_robotContainer.getAutoCommandChooser());
     // TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     // System.out.println(Util.getPathPlannerPathNames());
+    Util.addSendableChooserListener(
+        m_robotContainer.getAutoCommandChooser(),
+        event -> m_autonomousCommand = m_robotContainer.getAutonomousCommand());
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // CameraServer.startAutomaticCapture();
   }

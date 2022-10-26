@@ -12,11 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.wpi.first.hal.HAL;
 import frc.robot.Constants;
-import frc.robot.PortMap;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.PortMap;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.EncoderSim;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +43,8 @@ public class IntakeTest {
     assertEquals(IntakeConstants.INTAKE_SPEED, intake.getSuckSpeed(), Constants.MARGIN_OF_ERROR);
     // assertEquals(IntakeConstants.INTAKE_SPEED, encoder.getVelocity(), Constants.MARGIN_OF_ERROR);
     // ^ doesn't work because encoder.getVelocity() = 0
-    // keep in mind, we have extensively tested that any properly constructed EncoderSim.getVelocity()
+    // keep in mind, we have extensively tested that any properly constructed
+    // EncoderSim.getVelocity()
     // will return its expected value in sim GUI
   }
 

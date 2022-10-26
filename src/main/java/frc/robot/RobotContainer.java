@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
-import frc.robot.commands.TurnDegrees;
+import frc.robot.commands.auto.*;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -30,9 +30,7 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.DPadButton;
 import frc.robot.util.Util;
-import frc.robot.commands.auto.*;
 import java.util.HashMap;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -59,20 +57,29 @@ public class RobotContainer {
   private final MonitorSubsystem monitor = new MonitorSubsystem();
 
   // Auto Commands (i am so sorry for whoever needs to read this :rofl:)
-  private final HashMap<String, SequentialCommandGroup> autoCommands = new HashMap<String, SequentialCommandGroup>() {{
-    put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
-    put("Two Ball", new TwoBallAuto(drive, intake, hopper, vision, flywheel, turret));
-    put("Three Ball", new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
-    put("Four Ball", new FourBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
-    put("Five Ball", new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
-    put("Fender Two Ball", new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
-    put("Fender Three Ball", new FenderThreeBallAuto(drive, intake, hopper, flywheel, turret, "1"));
-  }};
+  private final HashMap<String, SequentialCommandGroup> autoCommands =
+      new HashMap<String, SequentialCommandGroup>() {
+        {
+          put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
+          put("Two Ball", new TwoBallAuto(drive, intake, hopper, vision, flywheel, turret));
+          put(
+              "Three Ball",
+              new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "2"));
+          put("Four Ball", new FourBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
+          put("Five Ball", new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
+          put(
+              "Fender Two Ball",
+              new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+          put(
+              "Fender Three Ball",
+              new FenderThreeBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+        }
+      };
 
   // AUTO CHOOSER
   private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
-  private final SendableChooser<SequentialCommandGroup> autoCommandChooser = Util.getAutoChooser(autoCommands);
- 
+  private final SendableChooser<SequentialCommandGroup> autoCommandChooser =
+      Util.getAutoChooser(autoCommands);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -206,8 +213,10 @@ public class RobotContainer {
     // String pathName = "paths/output/Test-Circle.wpilb.json";
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     // // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
-    // return new DriveRamsete(drive, "Pos2_5Ball_Stage2", true);
-    return new TurnDegrees(240, drive);
+    // return new DriveRamsete(drive, "Pos2_3Ball", true);
+    return autoCommandChooser.getSelected();
+    // return new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "2");
+    // return new TurnDegrees(240, drive);
     // return new Turn180(drive);
     // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
     // return new InstantCommand();

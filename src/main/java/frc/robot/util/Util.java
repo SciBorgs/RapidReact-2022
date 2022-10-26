@@ -6,6 +6,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.auto.*;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Files;
@@ -20,8 +22,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.auto.*;
 
 public class Util {
 
@@ -274,18 +274,18 @@ public class Util {
     return chooser;
   }
 
-  public static SendableChooser<SequentialCommandGroup> getAutoChooser(HashMap<String, SequentialCommandGroup> autoCommands) {
+  public static SendableChooser<SequentialCommandGroup> getAutoChooser(
+      HashMap<String, SequentialCommandGroup> autoCommands) {
     SendableChooser<SequentialCommandGroup> chooser = new SendableChooser<>();
     boolean isFirst = true; // Set default option
 
-    for(Map.Entry<String, SequentialCommandGroup> command : autoCommands.entrySet()) {
-      if(isFirst) {
+    for (Map.Entry<String, SequentialCommandGroup> command : autoCommands.entrySet()) {
+      if (isFirst) {
         chooser.setDefaultOption(command.getKey(), command.getValue());
         isFirst = false;
       }
       chooser.addOption(command.getKey(), command.getValue());
     }
-
 
     return chooser;
   }
