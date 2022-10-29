@@ -10,14 +10,12 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 public class TwoBallAuto extends SequentialCommandGroup {
   public TwoBallAuto(
       DriveSubsystem drive,
       IntakeSubsystem intake,
       HopperSubsystem hopper,
-      VisionSubsystem vision,
       FlywheelSubsystem flywheel,
       TurretSubsystem turret) {
     // init
@@ -29,7 +27,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
     addCommands(
         new DriveUntilIntake(drive, intake),
         new TurnDegrees(180, drive),
-        new Shoot(flywheel, hopper, vision),
+        new Shoot(flywheel, hopper),
         new InstantCommand(intake::stopSuck, intake));
   }
 }

@@ -8,16 +8,15 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.VisionFilter;
 
 public class Shoot extends SequentialCommandGroup {
-  public Shoot(FlywheelSubsystem flywheel, HopperSubsystem hopper, VisionSubsystem vision) {
-    vision.reset();
+  public Shoot(FlywheelSubsystem flywheel, HopperSubsystem hopper) {
+    VisionFilter vf = new VisionFilter();
     addCommands(
         parallel(
             new RunCommand(
-                () ->
-                    flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
+                () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vf.getDistance())),
                 flywheel),
             new WaitUntilCommand(flywheel::atTargetRPM)),
         new WaitCommand(ShooterConstants.DOUBLE_BALL_TIMEOUT),

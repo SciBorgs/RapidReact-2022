@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.PortMap;
+import frc.robot.Ports;
 
 public class ClimberSubsystem extends SubsystemBase {
   private CANSparkMax telescope, arms;
@@ -15,8 +15,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private ShuffleboardTab tab;
 
   public ClimberSubsystem() {
-    telescope = new CANSparkMax(PortMap.Climber.TELESCOPE_SPARK, MotorType.kBrushless);
-    arms = new CANSparkMax(PortMap.Climber.ARMS_SPARK, MotorType.kBrushless);
+    telescope = new CANSparkMax(Ports.Climber.TELESCOPE_SPARK, MotorType.kBrushless);
+    arms = new CANSparkMax(Ports.Climber.ARMS_SPARK, MotorType.kBrushless);
 
     telescope.setIdleMode(IdleMode.kBrake);
     arms.setIdleMode(IdleMode.kBrake);

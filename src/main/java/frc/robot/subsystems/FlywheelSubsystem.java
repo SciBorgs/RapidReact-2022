@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.PortMap;
+import frc.robot.Ports;
 
 public class FlywheelSubsystem extends SubsystemBase {
 
   private final CANSparkMax motorFollow =
-      new CANSparkMax(PortMap.Shooter.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless); // left motor
+      new CANSparkMax(Ports.Shooter.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless); // left motor
   private final CANSparkMax motorLead =
-      new CANSparkMax(PortMap.Shooter.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless); // right motor
+      new CANSparkMax(Ports.Shooter.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless); // right motor
   private final RelativeEncoder flywheelEncoder = motorLead.getEncoder();
 
   // Flywheel control

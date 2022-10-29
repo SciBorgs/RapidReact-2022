@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HopperConstants;
-import frc.robot.PortMap;
+import frc.robot.Ports;
 
 public class HopperSubsystem extends SubsystemBase {
 
@@ -22,9 +22,8 @@ public class HopperSubsystem extends SubsystemBase {
   private SimpleWidget hopperElevatorSpeed;
 
   public HopperSubsystem() {
-    this.suck = new CANSparkMax(PortMap.Hopper.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
-    this.elevator =
-        new CANSparkMax(PortMap.Hopper.ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
+    this.suck = new CANSparkMax(Ports.Hopper.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
+    this.elevator = new CANSparkMax(Ports.Hopper.ELEVATOR_SPARK, CANSparkMax.MotorType.kBrushless);
     // this.elevator.setInverted(true);
 
     suckSpeed = 0;

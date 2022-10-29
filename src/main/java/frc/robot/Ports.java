@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
-public final class PortMap {
+public final class Ports {
 
   public static final class InputDevices {
     public static final int JOYSTICK_LEFT = 0;

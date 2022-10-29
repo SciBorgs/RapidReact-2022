@@ -11,14 +11,12 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 public class FourBallAuto extends SequentialCommandGroup {
   public FourBallAuto(
       DriveSubsystem drive,
       IntakeSubsystem intake,
       HopperSubsystem hopper,
-      VisionSubsystem vision,
       FlywheelSubsystem flywheel,
       TurretSubsystem turret,
       String initialPos) {
@@ -30,14 +28,14 @@ public class FourBallAuto extends SequentialCommandGroup {
     addCommands(
         new DriveUntilIntake(drive, intake),
         new TurnDegrees(180, drive),
-        new Shoot(flywheel, hopper, vision));
+        new Shoot(flywheel, hopper));
 
     if (initialPos == "1") addCommands(new TurnDegrees(180, drive));
 
     addCommands(
         new DriveRamsete(drive, "Pos" + initialPos + "_4Ball", true),
         new TurnDegrees(180, drive),
-        new Shoot(flywheel, hopper, vision),
+        new Shoot(flywheel, hopper),
         new InstantCommand(intake::stopSuck, intake));
   }
 }

@@ -12,20 +12,18 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.PortMap;
+import frc.robot.Ports;
 
 public class IntakeSubsystem extends SubsystemBase {
 
   private DoubleSolenoid armSolenoid =
       new DoubleSolenoid(
-          PneumaticsModuleType.CTREPCM,
-          PortMap.Intake.ARM_CHANNELS[0],
-          PortMap.Intake.ARM_CHANNELS[1]);
+          PneumaticsModuleType.CTREPCM, Ports.Intake.ARM_CHANNELS[0], Ports.Intake.ARM_CHANNELS[1]);
   private CANSparkMax suckSpark =
-      new CANSparkMax(PortMap.Intake.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
+      new CANSparkMax(Ports.Intake.SUCK_SPARK, CANSparkMax.MotorType.kBrushless);
 
   // detecting when ball is in intake
-  private DigitalInput limitSwitch = new DigitalInput(PortMap.Intake.LIMIT_SWITCH);
+  private DigitalInput limitSwitch = new DigitalInput(Ports.Intake.LIMIT_SWITCH);
   private Debouncer ballFilter =
       new Debouncer(IntakeConstants.DEBOUNCE_TIME, DebounceType.kFalling);
   private boolean hasBall = false;

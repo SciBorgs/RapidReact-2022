@@ -9,15 +9,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.PortMap;
+import frc.robot.Ports;
 
 public class HoodSubsystem extends PIDSubsystem {
 
-  private final CANSparkMax motor =
-      new CANSparkMax(PortMap.Shooter.HOOD_SPARK, MotorType.kBrushless);
+  private final CANSparkMax motor = new CANSparkMax(Ports.Shooter.HOOD_SPARK, MotorType.kBrushless);
   private final Encoder encoder =
       new Encoder(
-          PortMap.Shooter.HOOD_ENCODER_QUADRATURE[0], PortMap.Shooter.HOOD_ENCODER_QUADRATURE[1]);
+          Ports.Shooter.HOOD_ENCODER_QUADRATURE[0], Ports.Shooter.HOOD_ENCODER_QUADRATURE[1]);
 
   private ShuffleboardTab tab;
 

@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.PortMap;
+import frc.robot.Ports;
 import frc.robot.Robot;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.TrajectoryRegister;
@@ -36,18 +36,18 @@ import frc.robot.util.Util;
 public class DriveSubsystem extends SubsystemBase {
 
   private final CANSparkMax[] leftSparks = {
-    new CANSparkMax(PortMap.Drivetrain.LEFT_FRONT_SPARK, MotorType.kBrushless),
-    new CANSparkMax(PortMap.Drivetrain.LEFT_MIDDLE_SPARK, MotorType.kBrushless),
-    new CANSparkMax(PortMap.Drivetrain.LEFT_BACK_SPARK, MotorType.kBrushless)
+    new CANSparkMax(Ports.Drivetrain.LEFT_FRONT_SPARK, MotorType.kBrushless),
+    new CANSparkMax(Ports.Drivetrain.LEFT_MIDDLE_SPARK, MotorType.kBrushless),
+    new CANSparkMax(Ports.Drivetrain.LEFT_BACK_SPARK, MotorType.kBrushless)
   };
 
   private final CANSparkMax[] rightSparks = {
-    new CANSparkMax(PortMap.Drivetrain.RIGHT_FRONT_SPARK, MotorType.kBrushless),
-    new CANSparkMax(PortMap.Drivetrain.RIGHT_MIDDLE_SPARK, MotorType.kBrushless),
-    new CANSparkMax(PortMap.Drivetrain.RIGHT_BACK_SPARK, MotorType.kBrushless)
+    new CANSparkMax(Ports.Drivetrain.RIGHT_FRONT_SPARK, MotorType.kBrushless),
+    new CANSparkMax(Ports.Drivetrain.RIGHT_MIDDLE_SPARK, MotorType.kBrushless),
+    new CANSparkMax(Ports.Drivetrain.RIGHT_BACK_SPARK, MotorType.kBrushless)
   };
 
-  private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(PortMap.Drivetrain.PIGEON);
+  private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(Ports.Drivetrain.PIGEON);
 
   private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
   private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
@@ -87,8 +87,8 @@ public class DriveSubsystem extends SubsystemBase {
           0.7112,
           VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
   private BasePigeonSimCollection pigeonSim = pigeon.getSimCollection();
-  private EncoderSim lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
-  private EncoderSim rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
+  private EncoderSim lEncoderSim = new EncoderSim(Ports.Drivetrain.LEFT_FRONT_SPARK);
+  private EncoderSim rEncoderSim = new EncoderSim(Ports.Drivetrain.RIGHT_FRONT_SPARK);
   public Field2d field2d = new Field2d();
 
   public enum DriveMode {
@@ -298,8 +298,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   // reset everything
   public void reset() {
-    lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
-    rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
+    lEncoderSim = new EncoderSim(Ports.Drivetrain.LEFT_FRONT_SPARK);
+    rEncoderSim = new EncoderSim(Ports.Drivetrain.RIGHT_FRONT_SPARK);
 
     odometry = new DifferentialDriveOdometry(getRotation());
     kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);

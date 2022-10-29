@@ -13,15 +13,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.PortMap;
+import frc.robot.Ports;
 
 public class TurretSubsystem extends SubsystemBase {
   private final CANSparkMax turret =
-      new CANSparkMax(PortMap.Turret.TURRET_SPARK, MotorType.kBrushless);
+      new CANSparkMax(Ports.Turret.TURRET_SPARK, MotorType.kBrushless);
   private final Encoder encoder =
       new Encoder(
-          PortMap.Turret.TURRET_ENCODER_QUADRATURE[0],
-          PortMap.Turret.TURRET_ENCODER_QUADRATURE[1],
+          Ports.Turret.TURRET_ENCODER_QUADRATURE[0],
+          Ports.Turret.TURRET_ENCODER_QUADRATURE[1],
           true);
   private final SimpleMotorFeedforward feedforward = ShooterConstants.turretFF.get();
   private final ProfiledPIDController feedback = ShooterConstants.turretProfiledPID.get();

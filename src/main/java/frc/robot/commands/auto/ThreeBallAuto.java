@@ -11,14 +11,12 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 public class ThreeBallAuto extends SequentialCommandGroup {
   public ThreeBallAuto(
       DriveSubsystem drive,
       IntakeSubsystem intake,
       HopperSubsystem hopper,
-      VisionSubsystem vision,
       FlywheelSubsystem flywheel,
       TurretSubsystem turret,
       String initialPos) {
@@ -28,7 +26,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         new InstantCommand(intake::startSuck, intake));
 
     addCommands(
-        new Shoot(flywheel, hopper, vision),
+        new Shoot(flywheel, hopper),
         new TurnDegrees(180, drive),
         new DriveUntilIntake(drive, intake));
 
@@ -37,7 +35,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     addCommands(
         new DriveRamsete(drive, "Pos" + initialPos + "_3Ball", true),
         new TurnDegrees(180, drive),
-        new Shoot(flywheel, hopper, vision),
+        new Shoot(flywheel, hopper),
         new InstantCommand(intake::stopSuck, intake));
   }
 }

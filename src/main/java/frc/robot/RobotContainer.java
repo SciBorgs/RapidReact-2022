@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.PortMap.InputDevices;
-import frc.robot.PortMap.XboxControllerMap;
+import frc.robot.Ports.InputDevices;
+import frc.robot.Ports.XboxControllerMap;
 import frc.robot.commands.TurnDegrees;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -28,9 +28,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.MonitorSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.DPadButton;
 import frc.robot.util.Util;
+import frc.robot.util.VisionFilter;
 import java.util.HashMap;
 
 /**
@@ -41,13 +41,12 @@ import java.util.HashMap;
  */
 public class RobotContainer {
   // OI
-  private final XboxController xbox = new XboxController(PortMap.InputDevices.XBOX_CONTROLLER);
+  private final XboxController xbox = new XboxController(Ports.InputDevices.XBOX_CONTROLLER);
   private final Joystick leftStick = new Joystick(InputDevices.JOYSTICK_LEFT);
   private final Joystick rightStick = new Joystick(InputDevices.JOYSTICK_RIGHT);
 
   // SUBSYSTEMS
   public final DriveSubsystem drive = new DriveSubsystem();
-  private final VisionSubsystem vision = new VisionSubsystem();
   private final TurretSubsystem turret = new TurretSubsystem();
   private final HoodSubsystem hood = new HoodSubsystem();
   private final FlywheelSubsystem flywheel = new FlywheelSubsystem();
@@ -57,17 +56,17 @@ public class RobotContainer {
   private final ClimberSubsystem climber = new ClimberSubsystem();
   private final MonitorSubsystem monitor = new MonitorSubsystem();
 
+  private final VisionFilter vf = new VisionFilter();
+
   // Auto Commands (i am so sorry for whoever needs to read this :rofl:)
   private final HashMap<String, SequentialCommandGroup> autoCommands =
       new HashMap<String, SequentialCommandGroup>() {
         {
           put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
-          put("Two Ball", new TwoBallAuto(drive, intake, hopper, vision, flywheel, turret));
-          put(
-              "Three Ball",
-              new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "2"));
-          put("Four Ball", new FourBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
-          put("Five Ball", new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1"));
+          put("Two Ball", new TwoBallAuto(drive, intake, hopper, flywheel, turret));
+          put("Three Ball", new ThreeBallAuto(drive, intake, hopper, flywheel, turret, "2"));
+          put("Four Ball", new FourBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+          put("Five Ball", new FiveBallAuto(drive, intake, hopper, flywheel, turret, "1"));
           put(
               "Fender Two Ball",
               new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
@@ -84,7 +83,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    vision.reset();
     configureButtonBindings();
     configureSubsystemDefaults();
   }
@@ -102,12 +100,12 @@ public class RobotContainer {
     // turret auto aiming
     turret.setDefaultCommand(
         new RunCommand(
-            () -> turret.setTargetAngle(turret.getCurrentAngle() + vision.getXOffset()), turret));
+            () -> turret.setTargetAngle(turret.getCurrentAngle() + vf.getXOffset()), turret));
 
     // hood auto aiming
     hood.setDefaultCommand(
         new RunCommand(
-            () -> hood.setSetpoint(ShooterConstants.getHoodAngle(vision.getDistance())), hood));
+            () -> hood.setSetpoint(ShooterConstants.getHoodAngle(vf.getDistance())), hood));
   }
 
   /**
@@ -187,7 +185,7 @@ public class RobotContainer {
     // Run flywheel at variable speed
     new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_RIGHT)
         .whileHeld(
-            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vision.getDistance())),
+            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vf.getDistance())),
             flywheel)
         .whenReleased(flywheel::stopFlywheel, flywheel);
 
