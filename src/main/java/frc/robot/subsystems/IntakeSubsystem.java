@@ -84,4 +84,12 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     hasBall = ballFilter.calculate(limitSwitch.get());
   }
+
+  public CANSparkMax getSuckSpark() {
+    return suckSpark;
+  }
+
+  public DoubleSolenoid getArmSolenoid() {
+    return armSolenoid;
+  }
 }
