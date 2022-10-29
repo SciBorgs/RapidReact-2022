@@ -30,11 +30,7 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_RADIUS * 2 * Math.PI;
 
     // PID (for left and motor groups)
-<<<<<<< HEAD
-    public static final double kP = 0.1;
-=======
     public static final double kP = 1;
->>>>>>> a7ef183108eefa2f0d6628bf2f0881702829dcd3
     public static final double kI = 0;
     public static final double kD = 0;
 
