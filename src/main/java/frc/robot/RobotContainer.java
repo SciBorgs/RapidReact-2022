@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap.InputDevices;
 import frc.robot.PortMap.XboxControllerMap;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -214,7 +215,8 @@ public class RobotContainer {
     // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
     // // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
     // return new DriveRamsete(drive, "Pos2_3Ball", true);
-    return autoCommandChooser.getSelected();
+    // return autoCommandChooser.getSelected();
+    return new TurnDegrees(100, drive);
     // return new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "2");
     // return new TurnDegrees(240, drive);
     // return new Turn180(drive);

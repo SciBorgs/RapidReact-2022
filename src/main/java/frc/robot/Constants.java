@@ -40,7 +40,7 @@ public final class Constants {
     public static final double kA = 1;
 
     // Turning pid
-    public static final double tP = 1;
+    public static final double tP = 0.1;
 
     // Path Following
     public static final int maxVel = 4;

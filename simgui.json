@@ -11,21 +11,6 @@
           "open": true
         }
       },
-      "Pigeon IMU[42]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [19]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [30]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [3]": {
         "header": {
           "open": true
@@ -40,9 +25,6 @@
         "header": {
           "open": true
         }
-      },
-      "window": {
-        "visible": false
       }
     }
   },
@@ -101,6 +83,7 @@
       "/LiveWindow/Ungrouped/PIDController[38]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[39]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[40]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",

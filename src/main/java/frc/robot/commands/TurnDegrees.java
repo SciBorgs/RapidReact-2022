@@ -34,7 +34,7 @@ public class TurnDegrees extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    drive.setMotorGroups(0, 0);
+    drive.setSpeeds(new DifferentialDriveWheelSpeeds());
   }
 
   @Override
