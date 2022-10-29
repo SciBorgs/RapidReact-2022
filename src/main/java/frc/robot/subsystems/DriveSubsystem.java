@@ -65,18 +65,15 @@ public class DriveSubsystem extends SubsystemBase {
   private DifferentialDriveKinematics kinematics =
       new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
-  private SimpleMotorFeedforward feedforward =
-      new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
+  private final SimpleMotorFeedforward feedforward = DriveConstants.driveFF.get();
 
-  private PIDController lPID =
-      new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
-  private PIDController rPID =
-      new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+  private final PIDController lPID = DriveConstants.drivePID.get();
+  private final PIDController rPID = DriveConstants.drivePID.get();
 
-  private SlewRateLimiter filter1 =
+  private final SlewRateLimiter filter1 =
       new SlewRateLimiter(DriveConstants.DELTA); // used for speed in arcade and
   // curvature, left track in tank
-  private SlewRateLimiter filter2 =
+  private final SlewRateLimiter filter2 =
       new SlewRateLimiter(DriveConstants.DELTA); // used for right track in tank
 
   // SIMULATION

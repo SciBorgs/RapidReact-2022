@@ -21,10 +21,8 @@ public class FlywheelSubsystem extends SubsystemBase {
   private final RelativeEncoder flywheelEncoder = motorLead.getEncoder();
 
   // Flywheel control
-  private final PIDController feedback =
-      new PIDController(ShooterConstants.fP, ShooterConstants.fI, ShooterConstants.fD);
-  private final SimpleMotorFeedforward feedfordward =
-      new SimpleMotorFeedforward(ShooterConstants.fS, ShooterConstants.fV, ShooterConstants.fA);
+  private final PIDController feedback = ShooterConstants.flywheelPID.get();
+  private final SimpleMotorFeedforward feedfordward = ShooterConstants.flywheelFF.get();
 
   private double targetSpeed; // desired speed of the flywheel (rpm)
 

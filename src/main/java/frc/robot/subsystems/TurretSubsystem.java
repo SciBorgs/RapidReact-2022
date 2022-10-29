@@ -6,14 +6,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.TurretConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.PortMap;
 
 public class TurretSubsystem extends SubsystemBase {
@@ -24,19 +23,8 @@ public class TurretSubsystem extends SubsystemBase {
           PortMap.Turret.TURRET_ENCODER_QUADRATURE[0],
           PortMap.Turret.TURRET_ENCODER_QUADRATURE[1],
           true);
-  private final SimpleMotorFeedforward feedforward =
-      new SimpleMotorFeedforward(TurretConstants.kS, TurretConstants.kV, TurretConstants.kA);
-  // private final Constraints constraints = new Constraints(TurretConstants.maxVelocity,
-  // feedforward.maxAchievableAcceleration(TurretConstants.maxVoltage,
-  // TurretConstants.maxVelocity));
-  private final TrapezoidProfile.Constraints constraints =
-      new TrapezoidProfile.Constraints(
-          TurretConstants.maxVelocity,
-          feedforward.maxAchievableAcceleration(
-              TurretConstants.maxVoltage, TurretConstants.maxVelocity));
-  private final ProfiledPIDController feedback =
-      new ProfiledPIDController(
-          TurretConstants.kP, TurretConstants.kI, TurretConstants.kD, constraints);
+  private final SimpleMotorFeedforward feedforward = ShooterConstants.turretFF.get();
+  private final ProfiledPIDController feedback = ShooterConstants.turretProfiledPID.get();
 
   private double targetAngle;
   // used for calculating acceleration
@@ -48,7 +36,8 @@ public class TurretSubsystem extends SubsystemBase {
   public TurretSubsystem() {
     feedback.setTolerance(0.2);
 
-    encoder.setDistancePerPulse(TurretConstants.DISTANCE_PER_PULSE * TurretConstants.GEAR_RATIO);
+    encoder.setDistancePerPulse(
+        ShooterConstants.DISTANCE_PER_PULSE * ShooterConstants.TURRET_GEAR_RATIO);
 
     tab = Shuffleboard.getTab("Shooter");
     tab.add(this);
@@ -68,7 +57,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void setTargetAngle(double targetAngle) {
-    this.targetAngle = MathUtil.clamp(targetAngle, -TurretConstants.LIMIT, TurretConstants.LIMIT);
+    this.targetAngle =
+        MathUtil.clamp(targetAngle, -ShooterConstants.TURRET_LIMIT, ShooterConstants.TURRET_LIMIT);
   }
 
   public double getCurrentAngle() {

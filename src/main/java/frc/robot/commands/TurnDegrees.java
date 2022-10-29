@@ -15,7 +15,7 @@ public class TurnDegrees extends CommandBase {
   public TurnDegrees(double degrees, DriveSubsystem drive) {
     this.drive = drive;
     this.degrees = degrees;
-    turnController = new PIDController(DriveConstants.tP, 0, 0);
+    turnController = DriveConstants.turnPID.get();
     addRequirements(drive);
   }
 

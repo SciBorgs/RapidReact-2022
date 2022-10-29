@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import com.pathplanner.lib.PathPlanner;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -22,8 +21,8 @@ public class DriveRamsete extends RamseteCommand {
         drive.getFeedforward(),
         drive.getKinematics(),
         drive::getWheelSpeeds,
-        new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
-        new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD),
+        DriveConstants.drivePID.get(),
+        DriveConstants.drivePID.get(),
         drive::tankDriveVolts,
         drive);
 
