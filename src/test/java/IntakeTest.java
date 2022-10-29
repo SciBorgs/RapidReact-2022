@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.wpi.first.hal.HAL;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.PortMap;
 import frc.robot.subsystems.IntakeSubsystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

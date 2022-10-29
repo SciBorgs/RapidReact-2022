@@ -6,12 +6,16 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.auto.*;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Predicate;
@@ -267,6 +271,22 @@ public class Util {
     if (names.size() > 0) {
       chooser.setDefaultOption(names.get(0), names.get(0));
     }
+    return chooser;
+  }
+
+  public static SendableChooser<SequentialCommandGroup> getAutoChooser(
+      HashMap<String, SequentialCommandGroup> autoCommands) {
+    SendableChooser<SequentialCommandGroup> chooser = new SendableChooser<>();
+    boolean isFirst = true; // Set default option
+
+    for (Map.Entry<String, SequentialCommandGroup> command : autoCommands.entrySet()) {
+      if (isFirst) {
+        chooser.setDefaultOption(command.getKey(), command.getValue());
+        isFirst = false;
+      }
+      chooser.addOption(command.getKey(), command.getValue());
+    }
+
     return chooser;
   }
 

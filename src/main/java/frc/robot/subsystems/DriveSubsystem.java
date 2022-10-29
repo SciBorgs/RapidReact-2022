@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.PortMap;
+import frc.robot.Robot;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.TrajectoryRegister;
 import frc.robot.util.Util;
@@ -152,6 +153,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftGroup.setVoltage(leftVolts);
     rightGroup.setVoltage(rightVolts);
+    if (!Robot.isReal()) {
+      leftSparks[0].setVoltage(leftVolts);
+      rightSparks[0].setVoltage(rightVolts);
+    }
     drive.feed();
   }
 
@@ -278,7 +283,8 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
 
-    driveSim.setInputs(leftGroup.get(), rightGroup.get());
+    // driveSim.setInputs(leftGroup.get(), rightGroup.get());
+    driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
 
     lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
     lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
