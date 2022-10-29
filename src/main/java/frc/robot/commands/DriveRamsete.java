@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
+/** Ramsete command wrapper, based of 694's implementation */
 public class DriveRamsete extends RamseteCommand {
   private DriveSubsystem driveSubsystem;
   private Trajectory trajectory;
@@ -47,6 +48,7 @@ public class DriveRamsete extends RamseteCommand {
 
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     driveSubsystem.tankDriveVolts(0, 0);
   }
 }

@@ -283,8 +283,8 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
 
-    // driveSim.setInputs(leftGroup.get(), rightGroup.get());
-    driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
+    driveSim.setInputs(leftGroup.get(), rightGroup.get());
+    // driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
 
     lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
     lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());

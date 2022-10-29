@@ -258,6 +258,9 @@
     }
   },
   "NetworkTables": {
+    "FMSInfo": {
+      "open": true
+    },
     "Shuffleboard": {
       "Shooter": {
         "open": true

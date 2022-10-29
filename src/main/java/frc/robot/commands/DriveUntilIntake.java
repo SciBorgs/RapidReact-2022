@@ -5,7 +5,9 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.subsystems.IntakeSubsystem;
 
+@Deprecated
 // Meant to be called at the beginning of Auto in front of ball. Has not been tested yet.
+// Jank - do not use
 public class DriveUntilIntake extends CommandBase {
   private DriveSubsystem drive;
   private IntakeSubsystem intake;
