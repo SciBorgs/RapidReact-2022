@@ -130,6 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
     tab.addNumber("Amp diff", () -> (getLeftCurrentAmps() - getRightCurrentAmps()));
     tab.addNumber("Left speed", leftGroup::get);
     tab.addNumber("Right speed", rightGroup::get);
+    tab.addNumber("Pose angle", this::getPoseDegrees);
 
     // tab.addNumber("Current Speed Limit", this::getSpeedLimit);
 
@@ -203,12 +204,16 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
-  public Rotation2d getRotation() {
+  public Rotation2d  getRotation() {
     return pigeon.getRotation2d();
   }
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();
+  }
+
+  public double getPoseDegrees() {
+    return getPose().getRotation().getDegrees();
   }
 
   // just for testing
@@ -221,7 +226,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getHeading() {
-    return getRotation().getDegrees();
+    return Util.normalizeAngle360(getRotation().getDegrees());
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
