@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.Util;
 
 public class TurnDegrees extends CommandBase {
@@ -22,19 +23,23 @@ public class TurnDegrees extends CommandBase {
   @Override
   public void initialize() {
     turnController.enableContinuousInput(-180, 180);
-    turnController.setTolerance(0.2);
-    turnController.setSetpoint(Util.normalizeAngle180(drive.getHeading(), degrees));
+    turnController.setTolerance(2);
+    turnController.setSetpoint(drive.getHeading() + 180);
   }
 
   @Override
   public void execute() {
     double speed = turnController.calculate(drive.getHeading());
-    drive.setSpeeds(new DifferentialDriveWheelSpeeds(-speed, speed));
+    drive.driveRobot(DriveMode.TANK, -speed, speed);
+    System.out.println("Current heading (auto): " + drive.getHeading());
+    System.out.println("Desired heading: " + turnController.getSetpoint());
+    // drive.setSpeeds(new DifferentialDriveWheelSpeeds(-speed, speed));
   }
 
   @Override
   public void end(boolean interrupted) {
-    drive.setSpeeds(new DifferentialDriveWheelSpeeds());
+    drive.driveRobot(DriveMode.TANK, 0, 0);
+    // drive.setSpeeds(new DifferentialDriveWheelSpeeds());
   }
 
   @Override

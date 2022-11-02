@@ -214,7 +214,7 @@ public class RobotContainer {
     // // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
     // return new DriveRamsete(drive, "Pos2_3Ball", true);
     // return autoCommandChooser.getSelected();
-    return new TurnDegrees(100, drive);
+    return new TurnDegrees(5, drive);
     // return new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "2");
     // return new TurnDegrees(240, drive);
     // return new Turn180(drive);
