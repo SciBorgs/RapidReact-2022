@@ -57,26 +57,42 @@ public class RobotContainer {
 
   private final VisionFilter vf = new VisionFilter();
 
-  // Auto Commands (i am so sorry for whoever needs to read this :rofl:)
+  // AUTO POSITION CHOOSER
+  private final SendableChooser<String> positionChooser = Util.getPositionChooser();
+  private String currentAutonPositon = "1";
+
+  public void setCurrentAutonPosition(String pos) {
+    currentAutonPositon = pos;
+  }
+
+  // Auto commands
   private final HashMap<String, SequentialCommandGroup> autoCommands =
       new HashMap<String, SequentialCommandGroup>() {
         {
           put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
-          put("Two Ball", new TwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
-          put("Three Ball", new ThreeBallAuto(drive, intake, hopper, flywheel, turret, "2"));
-          put("Four Ball", new FourBallAuto(drive, intake, hopper, flywheel, turret, "1"));
-          put("Five Ball", new FiveBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+          put(
+              "Two Ball",
+              new TwoBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
+          put(
+              "Three Ball",
+              new ThreeBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
+          put(
+              "Four Ball",
+              new FourBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
+          put(
+              "Five Ball",
+              new FiveBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
           put(
               "Fender Two Ball",
-              new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+              new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
           put(
               "Fender Three Ball",
-              new FenderThreeBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+              new FenderThreeBallAuto(
+                  drive, intake, hopper, flywheel, turret, currentAutonPositon));
         }
       };
 
-  // AUTO CHOOSER
-  private final SendableChooser<String> autoChooser = Util.getPathTestChooser();
+  // AUTO COMMAND CHOOSER
   private final SendableChooser<SequentialCommandGroup> autoCommandChooser =
       Util.getAutoChooser(autoCommands);
 
@@ -194,12 +210,12 @@ public class RobotContainer {
         .whenReleased(flywheel::stopFlywheel, flywheel);
   }
 
-  public SendableChooser<String> getAutoChooser() {
-    return this.autoChooser;
-  }
-
   public SendableChooser<SequentialCommandGroup> getAutoCommandChooser() {
     return this.autoCommandChooser;
+  }
+
+  public SendableChooser<String> getPositionChooser() {
+    return this.positionChooser;
   }
 
   /**

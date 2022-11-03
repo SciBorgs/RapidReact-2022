@@ -204,7 +204,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
-  public Rotation2d  getRotation() {
+  public Rotation2d getRotation() {
     return pigeon.getRotation2d();
   }
 

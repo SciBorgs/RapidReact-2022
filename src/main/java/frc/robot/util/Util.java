@@ -290,6 +290,15 @@ public class Util {
     return chooser;
   }
 
+  public static SendableChooser<String> getPositionChooser() {
+    SendableChooser<String> chooser = new SendableChooser<>();
+    chooser.setDefaultOption("1", "1");
+    chooser.addOption("2", "2");
+    chooser.addOption("3", "3");
+
+    return chooser;
+  }
+
   @SuppressWarnings("unchecked")
   public static void addSendableChooserListener(
       SendableChooser<?> chooser, Consumer<EntryNotification> listener) {

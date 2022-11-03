@@ -41,12 +41,21 @@ public class Robot extends TimedRobot {
 
     // SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
     SmartDashboard.putData("Auto Command Chooser", m_robotContainer.getAutoCommandChooser());
+    SmartDashboard.putData("Auto Position Chooser", m_robotContainer.getPositionChooser());
     // TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     // System.out.println(Util.getPathPlannerPathNames());
     Util.addSendableChooserListener(
         m_robotContainer.getAutoCommandChooser(),
         event -> m_autonomousCommand = m_robotContainer.getAutonomousCommand());
+
+    Util.addSendableChooserListener(
+        m_robotContainer.getPositionChooser(),
+        event ->
+            m_robotContainer.setCurrentAutonPosition(
+                m_robotContainer.getPositionChooser().getSelected()));
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
     // CameraServer.startAutomaticCapture();
   }
 

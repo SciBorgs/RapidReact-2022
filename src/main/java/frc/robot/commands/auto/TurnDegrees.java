@@ -1,14 +1,12 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.Util;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class TurnDegrees extends CommandBase {
   private DriveSubsystem drive;
@@ -26,8 +24,9 @@ public class TurnDegrees extends CommandBase {
   @Override
   public void initialize() {
     turnController.enableContinuousInput(0, 359);
-    turnController.setTolerance(2);;
-    turnController.setSetpoint(Util.normalizeAngle360(drive.getHeading()+degrees));
+    turnController.setTolerance(2);
+    ;
+    turnController.setSetpoint(Util.normalizeAngle360(drive.getHeading() + degrees));
     // turnController.setSetpoint(drive.getHeading()+180);
     System.out.println("Desired angle: " + turnController.getSetpoint());
   }
