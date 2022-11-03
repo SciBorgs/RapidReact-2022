@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.math.controller.RamseteController;

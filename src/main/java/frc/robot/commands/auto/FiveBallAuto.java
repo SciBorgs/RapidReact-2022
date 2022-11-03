@@ -2,10 +2,8 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.DriveRamsete;
 import frc.robot.commands.DriveUntilIntake;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
