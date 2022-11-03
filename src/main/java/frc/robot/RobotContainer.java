@@ -63,7 +63,7 @@ public class RobotContainer {
       new HashMap<String, SequentialCommandGroup>() {
         {
           put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
-          put("Two Ball", new TwoBallAuto(drive, intake, hopper, flywheel, turret));
+          put("Two Ball", new TwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
           put("Three Ball", new ThreeBallAuto(drive, intake, hopper, flywheel, turret, "2"));
           put("Four Ball", new FourBallAuto(drive, intake, hopper, flywheel, turret, "1"));
           put("Five Ball", new FiveBallAuto(drive, intake, hopper, flywheel, turret, "1"));
