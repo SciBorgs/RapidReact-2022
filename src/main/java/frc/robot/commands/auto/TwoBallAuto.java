@@ -18,14 +18,6 @@ public class TwoBallAuto extends SequentialCommandGroup {
       TurretSubsystem turret,
       String initialPos) {
     addCommands(
-        // Drive to ball
-        new DriveRamsete(drive, "Pos" + initialPos + "_2Ball", true),
-        // Drop intake on ball
-        new InstantCommand(intake::startSuck, intake),
-        new InstantCommand(intake::toggleArm, intake),
-        // Turn around and shoot
-        new TurnDegrees(180, drive),
-        new Shoot(flywheel, hopper),
-        new InstantCommand(intake::stopSuck, intake));
+      new InstantCommand());
   }
 }

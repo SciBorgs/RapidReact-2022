@@ -97,7 +97,7 @@ public final class Constants {
     public static final PIDConstants drivePID = new PIDConstants(1);
     public static final FFConstants driveFF = new FFConstants(0.1, 0.1, 0.1);
 
-    public static final PIDConstants turnPID = new PIDConstants(0.05);
+    public static final PIDConstants turnPID = new PIDConstants(0.09);
 
     // Path Following
     public static final int maxVel = 4;

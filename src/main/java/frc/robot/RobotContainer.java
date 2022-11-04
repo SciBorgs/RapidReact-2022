@@ -72,23 +72,23 @@ public class RobotContainer {
           put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
           put(
               "Two Ball",
-              new TwoBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
+              new TwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
           put(
               "Three Ball",
-              new ThreeBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
+              new ThreeBallAuto(drive, intake, hopper, flywheel, turret, "1"));
           put(
               "Four Ball",
-              new FourBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
+              new FourBallAuto(drive, intake, hopper, flywheel, turret, "1"));
           put(
               "Five Ball",
-              new FiveBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
+              new FiveBallAuto(drive, intake, hopper, flywheel, turret, "1"));
           put(
               "Fender Two Ball",
-              new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
+              new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
           put(
               "Fender Three Ball",
               new FenderThreeBallAuto(
-                  drive, intake, hopper, flywheel, turret, currentAutonPositon));
+                  drive, intake, hopper, flywheel, turret, "1"));
         }
       };
 
@@ -200,13 +200,13 @@ public class RobotContainer {
     // Run flywheel at variable speed
     new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_RIGHT)
         .whileHeld(
-            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vf.getDistance())),
+            () -> flywheel.setTargetFlywheelSpeed(-ShooterConstants.getRPM(vf.getDistance())),
             flywheel)
         .whenReleased(flywheel::stopFlywheel, flywheel);
 
     // Run flywheel at set speed
     new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_LEFT)
-        .whenPressed(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel)
+        .whenPressed(() -> flywheel.setTargetFlywheelSpeed(-ShooterConstants.TARMAC_RPM), flywheel)
         .whenReleased(flywheel::stopFlywheel, flywheel);
   }
 
@@ -229,7 +229,7 @@ public class RobotContainer {
     // // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
     // return new DriveRamsete(drive, "Pos2_3Ball", true);
     // return autoCommandChooser.getSelected();
-    return new TurnDegrees(5, drive);
+    return new TurnDegrees(180, drive);
     // return new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "2");
     // return new TurnDegrees(240, drive);
     // return new Turn180(drive);

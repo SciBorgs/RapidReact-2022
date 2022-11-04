@@ -130,7 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
     tab.addNumber("Amp diff", () -> (getLeftCurrentAmps() - getRightCurrentAmps()));
     tab.addNumber("Left speed", leftGroup::get);
     tab.addNumber("Right speed", rightGroup::get);
-    tab.addNumber("Pose angle", this::getPoseDegrees);
+    tab.addNumber("Pose angle (janky??)", this::getPoseDegrees);
 
     // tab.addNumber("Current Speed Limit", this::getSpeedLimit);
 
@@ -226,7 +226,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getHeading() {
-    return Util.normalizeAngle360(getRotation().getDegrees());
+    // Util.normalizeAngle360(getRotation().getDegrees();)
+    return getRotation().getDegrees();
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {

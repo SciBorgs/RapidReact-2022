@@ -113,6 +113,10 @@ public class Util {
     return raw < 0 ? raw + 360 : raw;
   }
 
+  public static double normalizeAngle180(double heading) {
+    return Math.IEEEremainder(heading, 360);
+  }
+
   // Testing util
 
   public static <T> Predicate<T> annotationFilter(Class<? extends Annotation> annotation) {
