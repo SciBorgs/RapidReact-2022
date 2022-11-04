@@ -72,23 +72,23 @@ public class RobotContainer {
           put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
           put(
               "Two Ball",
-              new TwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+              new TwoBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
           put(
               "Three Ball",
-              new ThreeBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+              new ThreeBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
           put(
               "Four Ball",
-              new FourBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+              new FourBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
           put(
               "Five Ball",
-              new FiveBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+              new FiveBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
           put(
               "Fender Two Ball",
-              new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, "1"));
+              new FenderTwoBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
           put(
               "Fender Three Ball",
               new FenderThreeBallAuto(
-                  drive, intake, hopper, flywheel, turret, "1"));
+                  drive, intake, hopper, flywheel, turret, currentAutonPositon));
         }
       };
 

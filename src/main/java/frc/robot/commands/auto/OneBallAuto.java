@@ -22,28 +22,27 @@ public class OneBallAuto extends SequentialCommandGroup {
       FlywheelSubsystem flywheel,
       TurretSubsystem turret) {
     addCommands(
-        // new InstantCommand(
-        //     () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel),
-        // new WaitCommand(ShooterConstants.FLYWHEEL_RAMP_TIMEOUT),
-        // new InstantCommand(hopper::startElevator, hopper),
-        // new WaitCommand(ShooterConstants.SINGLE_BALL_TIMEOUT),
-        // new InstantCommand(hopper::stopElevator, hopper),
-        // new InstantCommand(flywheel::stopFlywheel, flywheel),
-        // new FunctionalCommand(
-        //         () -> {},
-        //         () -> {
-        //           drive.driveRobot(
-        //               DriveMode.TANK,
-        //               DriveConstants.driveBackSpeeds,
-        //               DriveConstants.driveBackSpeeds);
-        //         },
-        //         (interrupted) -> {
-        //           drive.driveRobot(DriveMode.TANK, 0, 0);
-        //         },
-        //         () -> false,
-        //         drive)
-        //     .withTimeout(10),
-        // new InstantCommand(flywheel::stopFlywheel, flywheel));
-        new InstantCommand());
+        new InstantCommand(
+            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel),
+        new WaitCommand(ShooterConstants.FLYWHEEL_RAMP_TIMEOUT),
+        new InstantCommand(hopper::startElevator, hopper),
+        new WaitCommand(ShooterConstants.SINGLE_BALL_TIMEOUT),
+        new InstantCommand(hopper::stopElevator, hopper),
+        new InstantCommand(flywheel::stopFlywheel, flywheel),
+        new FunctionalCommand(
+                () -> {},
+                () -> {
+                  drive.driveRobot(
+                      DriveMode.TANK,
+                      DriveConstants.driveBackSpeeds,
+                      DriveConstants.driveBackSpeeds);
+                },
+                (interrupted) -> {
+                  drive.driveRobot(DriveMode.TANK, 0, 0);
+                },
+                () -> false,
+                drive)
+            .withTimeout(10),
+        new InstantCommand(flywheel::stopFlywheel, flywheel));
   }
 }

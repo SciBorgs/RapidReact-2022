@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.DriveSubsystem.DriveMode;
 import frc.robot.util.Util;
 
 public class TurnDegrees extends CommandBase {
@@ -13,8 +12,6 @@ public class TurnDegrees extends CommandBase {
   private double degrees;
   private PIDController turnController;
   private ShuffleboardTab tab;
-
-  
 
   public TurnDegrees(double degrees, DriveSubsystem drive) {
     this.drive = drive;
