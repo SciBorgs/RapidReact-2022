@@ -11,7 +11,22 @@
           "open": true
         }
       },
+      "SPARK MAX [24]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [30]": {
+        "header": {
+          "open": true
+        }
+      },
       "SPARK MAX [3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [5]": {
         "header": {
           "open": true
         }
@@ -246,6 +261,12 @@
   },
   "NetworkTables": {
     "FMSInfo": {
+      "open": true
+    },
+    "LiveWindow": {
+      "FlywheelSubsystem": {
+        "open": true
+      },
       "open": true
     },
     "Shuffleboard": {

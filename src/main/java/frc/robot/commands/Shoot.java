@@ -14,7 +14,7 @@ public class Shoot extends SequentialCommandGroup {
   public Shoot(FlywheelSubsystem flywheel, HopperSubsystem hopper) {
     VisionFilter vf = new VisionFilter();
     addCommands(
-        parallel(
+        race(
             new RunCommand(
                 () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vf.getDistance())),
                 flywheel),

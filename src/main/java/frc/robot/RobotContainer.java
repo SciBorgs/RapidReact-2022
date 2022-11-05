@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Ports.InputDevices;
 import frc.robot.Ports.XboxControllerMap;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -200,7 +201,7 @@ public class RobotContainer {
     // Run flywheel at variable speed
     new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_RIGHT)
         .whileHeld(
-            () -> flywheel.setTargetFlywheelSpeed(-ShooterConstants.getRPM(vf.getDistance())),
+            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vf.getDistance())),
             flywheel)
         .whenReleased(flywheel::stopFlywheel, flywheel);
 
@@ -229,7 +230,8 @@ public class RobotContainer {
     // // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
     // return new DriveRamsete(drive, "Pos2_3Ball", true);
     // return autoCommandChooser.getSelected();
-    return new TurnDegrees(180, drive);
+    // return new TurnDegrees(180, drive);
+    return new Shoot(flywheel, hopper);
     // return new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "2");
     // return new TurnDegrees(240, drive);
     // return new Turn180(drive);
