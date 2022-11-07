@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -42,6 +43,9 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData("Auto Chooser", m_robotContainer.getAutoChooser());
     SmartDashboard.putData("Auto Command Chooser", m_robotContainer.getAutoCommandChooser());
     SmartDashboard.putData("Auto Position Chooser", m_robotContainer.getPositionChooser());
+
+    var vf = m_robotContainer.getVF();
+    Shuffleboard.getTab("main").addNumber("Distance to hub", vf::getDistance);
     // TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     // System.out.println(Util.getPathPlannerPathNames());
     Util.addSendableChooserListener(

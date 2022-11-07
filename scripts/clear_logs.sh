@@ -1,3 +1,3 @@
 #!/bin/bash
-echo "test"
 rm *.wpilog
+echo "logs cleared"

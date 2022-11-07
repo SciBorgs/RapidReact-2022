@@ -24,8 +24,8 @@ public final class Ports {
 
   public static final class Shooter {
     public static final int HOOD_SPARK = 4;
-    public static final int FLYWHEEL_LEFT_SPARK = 30;
-    public static final int FLYWHEEL_RIGHT_SPARK = 5;
+    public static final int FLYWHEEL_LEFT_SPARK = 6;
+    public static final int FLYWHEEL_RIGHT_SPARK = 3;
 
     public static final int[] HOOD_ENCODER_QUADRATURE = {0, 1};
   }

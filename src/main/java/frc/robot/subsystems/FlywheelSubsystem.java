@@ -14,10 +14,10 @@ import frc.robot.Ports;
 
 public class FlywheelSubsystem extends SubsystemBase {
 
-  private final CANSparkMax motorFollow =
-      new CANSparkMax(Ports.Shooter.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless); // left motor
   private final CANSparkMax motorLead =
-      new CANSparkMax(Ports.Shooter.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless); // right motor
+      new CANSparkMax(Ports.Shooter.FLYWHEEL_RIGHT_SPARK, MotorType.kBrushless); // right motor
+  private final CANSparkMax motorFollow =
+      new CANSparkMax(Ports.Shooter.FLYWHEEL_LEFT_SPARK, MotorType.kBrushless); // left motor
   private final RelativeEncoder flywheelEncoder = motorLead.getEncoder();
 
   // Flywheel control
@@ -36,13 +36,14 @@ public class FlywheelSubsystem extends SubsystemBase {
     tab.addNumber("Flywheel Speed", this::getCurrentFlywheelSpeed);
 
     // motor config
+    motorLead.setInverted(true);
     motorFollow.follow(motorLead, true);
 
-    motorFollow.setIdleMode(IdleMode.kCoast);
     motorLead.setIdleMode(IdleMode.kCoast);
+    motorFollow.setIdleMode(IdleMode.kCoast);
 
-    motorFollow.burnFlash();
     motorLead.burnFlash();
+    motorFollow.burnFlash();
 
     feedback.setTolerance(200);
 
@@ -81,14 +82,14 @@ public class FlywheelSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // if (targetSpeed != 0) {
+    if (targetSpeed != 0) {
     // updating controllers for flywheel
-    double fb = feedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
-    double ff = feedfordward.calculate(targetSpeed);
-    motorLead.setVoltage(fb + ff);
-    // } else {
-    //   motorLead.stopMotor();
-    // }
+      double fb = feedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
+      double ff = feedfordward.calculate(targetSpeed);
+      motorLead.setVoltage(fb + ff);
+    } else {
+      motorLead.stopMotor();
+    }
   }
 
   public CANSparkMax getSpark() {
