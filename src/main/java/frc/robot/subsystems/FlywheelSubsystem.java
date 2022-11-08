@@ -36,6 +36,9 @@ public class FlywheelSubsystem extends SubsystemBase {
     tab.addNumber("Flywheel Speed", this::getCurrentFlywheelSpeed);
 
     // motor config
+    motorLead.restoreFactoryDefaults();
+    motorFollow.restoreFactoryDefaults();
+
     motorLead.setInverted(true);
     motorFollow.follow(motorLead, true);
 
@@ -45,6 +48,7 @@ public class FlywheelSubsystem extends SubsystemBase {
     motorLead.burnFlash();
     motorFollow.burnFlash();
 
+    // control
     feedback.setTolerance(200);
 
     targetSpeed = 0.0;
