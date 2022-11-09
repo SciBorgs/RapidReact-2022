@@ -57,7 +57,8 @@ public class VisionFilter {
   }
 
   public double getYOffset() {
-    return yOffset;
+    // return yOffset;
+    return getLimelightData("tx");
   }
 
   public boolean hasTarget() {

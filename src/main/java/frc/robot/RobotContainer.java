@@ -199,9 +199,10 @@ public class RobotContainer {
 
     // Run flywheel at variable speed
     new JoystickButton(xbox, XboxControllerMap.Button.BUMPER_RIGHT)
-        .whileHeld(
-            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vf.getDistance())),
-            flywheel)
+        // .whileHeld(
+        //     () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.getRPM(vf.getDistance())),
+        //     flywheel)
+        .whenPressed(() -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM))
         .whenReleased(flywheel::stopFlywheel, flywheel);
 
     // Run flywheel at set speed

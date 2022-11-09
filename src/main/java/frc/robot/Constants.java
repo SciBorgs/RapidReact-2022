@@ -126,7 +126,7 @@ public final class Constants {
     }
 
     // default shot (tarmac line) TODO set
-    public static final double TARMAC_RPM = 5676;
+    public static final double TARMAC_RPM = 4800;
     public static final double TARMAC_ANGLE = 0;
     // fender shot (low hub)
     public static final double FENDER_RPM = 2750;
@@ -148,7 +148,7 @@ public final class Constants {
     // relative to its current position
 
     public static final FFConstants flywheelFF = new FFConstants(0.13419, 0.0017823, 0.00028074);
-    public static final PIDConstants flywheelPID = new PIDConstants(0.011322);
+    public static final PIDConstants flywheelPID = new PIDConstants(0.003, 0.001, 0);
 
     public static final FFConstants turretFF = new FFConstants(0.13273, 0.038686, 0.012488);
     public static final PIDConstants turretPID = new PIDConstants(0.1461, 0, 0.0728);

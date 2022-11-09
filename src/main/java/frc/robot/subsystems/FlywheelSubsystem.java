@@ -39,7 +39,7 @@ public class FlywheelSubsystem extends SubsystemBase {
     motorLead.restoreFactoryDefaults();
     motorFollow.restoreFactoryDefaults();
 
-    motorLead.setInverted(true);
+    // motorLead.setInverted(true);
     motorFollow.follow(motorLead, true);
 
     motorLead.setIdleMode(IdleMode.kCoast);
@@ -86,14 +86,10 @@ public class FlywheelSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (targetSpeed != 0) {
     // updating controllers for flywheel
       double fb = feedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
       double ff = feedfordward.calculate(targetSpeed);
       motorLead.setVoltage(fb + ff);
-    } else {
-      motorLead.stopMotor();
-    }
   }
 
   public CANSparkMax getSpark() {
