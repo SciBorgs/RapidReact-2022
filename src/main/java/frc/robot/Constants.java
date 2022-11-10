@@ -133,7 +133,7 @@ public final class Constants {
     public static final double FENDER_ANGLE = 0;
 
     // timeouts
-    public static final int FLYWHEEL_RAMP_TIMEOUT = 2;
+    public static final int FLYWHEEL_RAMP_TIMEOUT = 4;
     public static final int SINGLE_BALL_TIMEOUT = 2;
     public static final int DOUBLE_BALL_TIMEOUT = 6;
 

@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Ports.InputDevices;
 import frc.robot.Ports.XboxControllerMap;
+import frc.robot.commands.SimpleAutos;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -66,10 +66,10 @@ public class RobotContainer {
   }
 
   // Auto commands
-  private final HashMap<String, SequentialCommandGroup> autoCommands =
-      new HashMap<String, SequentialCommandGroup>() {
+  private final HashMap<String, Command> autoCommands =
+      new HashMap<String, Command>() {
         {
-          put("One Ball", new OneBallAuto(drive, intake, hopper, flywheel, turret));
+          put("One Ball", SimpleAutos.shootThenDriveBack(drive, flywheel));
           put(
               "Two Ball",
               new TwoBallAuto(drive, intake, hopper, flywheel, turret, currentAutonPositon));
@@ -93,8 +93,7 @@ public class RobotContainer {
       };
 
   // AUTO COMMAND CHOOSER
-  private final SendableChooser<SequentialCommandGroup> autoCommandChooser =
-      Util.getAutoChooser(autoCommands);
+  private final SendableChooser<Command> autoCommandChooser = Util.getAutoChooser(autoCommands);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -211,7 +210,7 @@ public class RobotContainer {
         .whenReleased(flywheel::stopFlywheel, flywheel);
   }
 
-  public SendableChooser<SequentialCommandGroup> getAutoCommandChooser() {
+  public SendableChooser<Command> getAutoCommandChooser() {
     return this.autoCommandChooser;
   }
 
@@ -225,17 +224,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // String pathName = "paths/output/Test-Circle.wpilb.json";
-    // Trajectory path = TrajectoryUtil.fromPathweaverJson(pathName);
-    // // return new RunCommand(() -> drive.driveRobot(DriveMode.TANK, 0.7, 0.7), drive);
-    // return new DriveRamsete(drive, "Pos2_3Ball", true);
-    // return autoCommandChooser.getSelected();
-    return new TurnDegrees(20, drive);
-    // return new Shoot(flywheel, hopper);
-    // return new ThreeBallAuto(drive, intake, hopper, vision, flywheel, turret, "2");
-    // return new TurnDegrees(240, drive);
-    // return new Turn180(drive);
-    // return new FiveBallAuto(drive, intake, hopper, vision, flywheel, turret, "1");
-    // return new InstantCommand();
+    return SimpleAutos.shootThenDriveBack(drive, flywheel);
   }
 }

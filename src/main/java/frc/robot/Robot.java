@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     m_robotContainer.vf.update();
-    System.out.println("Robot heading: " + m_robotContainer.drive.getHeading());
+    // System.out.println("Robot heading: " + m_robotContainer.drive.getHeading());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
