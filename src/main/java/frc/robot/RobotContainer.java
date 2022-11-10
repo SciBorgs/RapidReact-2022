@@ -55,7 +55,7 @@ public class RobotContainer {
   private final ClimberSubsystem climber = new ClimberSubsystem();
   private final MonitorSubsystem monitor = new MonitorSubsystem();
 
-  private final VisionFilter vf = new VisionFilter();
+  public final VisionFilter vf = new VisionFilter();
 
   // AUTO POSITION CHOOSER
   private final SendableChooser<String> positionChooser = Util.getPositionChooser();
@@ -133,7 +133,7 @@ public class RobotContainer {
     // Shoot trigger for when conditions are met
     new Trigger(flywheel::atTargetRPM)
         .and(new Trigger(() -> flywheel.getTargetFlywheelSpeed() != 0))
-        .and(new Trigger(hood::atSetpoint))
+        // .and(new Trigger(hood::atSetpoint))
         .and(new Trigger(turret::atTarget))
         .debounce(0.2)
         .whenActive(hopper::startElevator, hopper)
@@ -217,10 +217,6 @@ public class RobotContainer {
 
   public SendableChooser<String> getPositionChooser() {
     return this.positionChooser;
-  }
-
-  public VisionFilter getVF() {
-    return this.vf;
   }
 
   /**

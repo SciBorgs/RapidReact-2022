@@ -44,8 +44,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto Command Chooser", m_robotContainer.getAutoCommandChooser());
     SmartDashboard.putData("Auto Position Chooser", m_robotContainer.getPositionChooser());
 
-    var vf = m_robotContainer.getVF();
-    Shuffleboard.getTab("main").addNumber("Distance to hub", vf::getDistance);
+    Shuffleboard.getTab("main").addNumber("Distance to hub", m_robotContainer.vf::getDistance);
     // TrajectoryRegister.setField2d(m_robotContainer.drive.field2d);
     // System.out.println(Util.getPathPlannerPathNames());
     Util.addSendableChooserListener(
@@ -77,7 +76,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    // System.out.println("Robot heading: " + m_robotContainer.drive.getHeading());
+    m_robotContainer.vf.update();
+    System.out.println("Robot heading: " + m_robotContainer.drive.getHeading());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

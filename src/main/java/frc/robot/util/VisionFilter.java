@@ -53,12 +53,12 @@ public class VisionFilter {
   }
 
   public double getXOffset() {
-    return xOffset;
+    // return xOffset;
+    return 10;
   }
 
   public double getYOffset() {
-    // return yOffset;
-    return getLimelightData("tx");
+    return yOffset;
   }
 
   public boolean hasTarget() {

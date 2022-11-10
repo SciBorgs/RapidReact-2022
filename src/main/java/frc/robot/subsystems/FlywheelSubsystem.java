@@ -87,9 +87,13 @@ public class FlywheelSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // updating controllers for flywheel
+    if (targetSpeed != 0) {
       double fb = feedback.calculate(flywheelEncoder.getVelocity(), targetSpeed);
       double ff = feedfordward.calculate(targetSpeed);
       motorLead.setVoltage(fb + ff);
+    } else {
+      motorLead.stopMotor();
+    }
   }
 
   public CANSparkMax getSpark() {

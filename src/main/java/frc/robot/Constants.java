@@ -152,7 +152,7 @@ public final class Constants {
 
     public static final FFConstants turretFF = new FFConstants(0.13273, 0.038686, 0.012488);
     public static final PIDConstants turretPID = new PIDConstants(0.1461, 0, 0.0728);
-    public static final Constraints turretConstraints = new Constraints(20, 0.75);
+    public static final Constraints turretConstraints = new Constraints(20, 2);
     public static final ProfiledPIDConstants turretProfiledPID =
         new ProfiledPIDConstants(turretPID, turretConstraints);
 
