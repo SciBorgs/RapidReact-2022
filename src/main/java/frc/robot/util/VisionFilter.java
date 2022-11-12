@@ -54,7 +54,7 @@ public class VisionFilter {
 
   public double getXOffset() {
     // return xOffset;
-    return 10;
+    return xOffset;
   }
 
   public double getYOffset() {

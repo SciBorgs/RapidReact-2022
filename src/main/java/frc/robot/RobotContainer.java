@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -112,9 +113,9 @@ public class RobotContainer {
             drive));
 
     // turret auto aiming
-    turret.setDefaultCommand(
-        new RunCommand(
-            () -> turret.setTargetAngle(turret.getCurrentAngle() + vf.getXOffset()), turret));
+    // turret.setDefaultCommand(
+    //     new RunCommand(
+    //         () -> turret.setTargetAngle(turret.getCurrentAngle() + vf.getXOffset()), turret));
 
     // hood auto aiming
     hood.setDefaultCommand(
@@ -134,7 +135,7 @@ public class RobotContainer {
         .and(new Trigger(() -> flywheel.getTargetFlywheelSpeed() != 0))
         // .and(new Trigger(hood::atSetpoint))
         .and(new Trigger(turret::atTarget))
-        .debounce(0.2)
+        .debounce(0.3, DebounceType.kFalling)
         .whenActive(hopper::startElevator, hopper)
         .whenInactive(hopper::stopElevator, hopper);
 

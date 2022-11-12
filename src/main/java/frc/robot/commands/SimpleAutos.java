@@ -15,7 +15,7 @@ public final class SimpleAutos {
   public static Command shootThenDriveBack(DriveSubsystem drive, FlywheelSubsystem flywheel) {
     return new SequentialCommandGroup(
         new InstantCommand(
-            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.FENDER_RPM), flywheel),
+            () -> flywheel.setTargetFlywheelSpeed(ShooterConstants.TARMAC_RPM), flywheel),
         new WaitCommand(ShooterConstants.FLYWHEEL_RAMP_TIMEOUT),
         new InstantCommand(flywheel::stopFlywheel, flywheel),
         // new RunCommand(() -> drive.setMotorGroups(DriveConstants.driveBackSpeeds,

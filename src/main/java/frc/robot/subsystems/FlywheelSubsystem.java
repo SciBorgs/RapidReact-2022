@@ -49,7 +49,7 @@ public class FlywheelSubsystem extends SubsystemBase {
     motorFollow.burnFlash();
 
     // control
-    feedback.setTolerance(200);
+    feedback.setTolerance(300);
 
     targetSpeed = 0.0;
   }

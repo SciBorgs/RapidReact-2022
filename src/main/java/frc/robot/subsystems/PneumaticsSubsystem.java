@@ -14,6 +14,7 @@ public class PneumaticsSubsystem implements Subsystem {
     this.compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     mainTab = Shuffleboard.getTab("Main");
     mainTab.addBoolean("Compressor Running", this::getStatus);
+    stop();
   }
 
   public void start() {

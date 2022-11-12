@@ -126,7 +126,7 @@ public final class Constants {
     }
 
     // default shot (tarmac line) TODO set
-    public static final double TARMAC_RPM = 4800;
+    public static final double TARMAC_RPM = 4680;
     public static final double TARMAC_ANGLE = 0;
     // fender shot (low hub)
     public static final double FENDER_RPM = 2750;
@@ -160,7 +160,7 @@ public final class Constants {
   }
 
   public static final class HopperConstants {
-    public static final double SUCK_SPEED = 0.35;
+    public static final double SUCK_SPEED = 0.6;
     public static final double ELEVATOR_SPEED = 0.65;
     public static final double MAX_SPEED = 0.8;
   }
@@ -171,7 +171,7 @@ public final class Constants {
   }
 
   public static final class ClimberConstants {
-    public static final double TELESCOPE_SPEED = 0.6;
+    public static final double TELESCOPE_SPEED = 0.9;
     public static final double ARM_SPEED = 0.5;
   }
 
