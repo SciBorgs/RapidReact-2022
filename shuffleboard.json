@@ -94,17 +94,6 @@
               1
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Reset Drive",
-              "_title": "Reset Drive"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/traj-red",
               "_title": "traj-red"
@@ -136,94 +125,12 @@
               "Layout/Label position": "BOTTOM",
               "_children": [
                 {
-                  "_type": "Encoder",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Encoder[1]",
-                  "_title": "Encoder[1]"
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[1]",
-                  "_title": "PIDController[1]"
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[2]",
-                  "_title": "PIDController[2]"
-                },
-                {
-                  "_type": "Gyro",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Pigeon IMU [42]",
-                  "_title": "Pigeon IMU [42]",
-                  "Visuals/Major tick spacing": 45.0,
-                  "Visuals/Starting angle": 180.0,
-                  "Visuals/Show tick mark ring": true,
-                  "Visuals/Counter clockwise": false
-                },
-                {
-                  "_type": "Encoder",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Encoder[0]",
-                  "_title": "Encoder[0]"
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[3]",
-                  "_title": "PIDController[3]"
-                },
-                {
                   "_type": "Differential Drivebase",
                   "_source0": "network_table:///LiveWindow/Ungrouped/DifferentialDrive[1]",
                   "_title": "DifferentialDrive[1]",
                   "Wheels/Number of wheels": 4,
                   "Wheels/Wheel diameter": 80.0,
                   "Visuals/Show velocity vectors": true
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DigitalInput[6]/Value",
-                  "_title": "DigitalInput[6]/Value",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[0,0]/Value",
-                  "_title": "DoubleSolenoid[0,0]/Value"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/TotalCurrent",
-                  "_title": "PowerDistribution[0]/TotalCurrent"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Compressor[0]/Enabled",
-                  "_title": "Compressor[0]/Enabled",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/SwitchableChannel",
-                  "_title": "PowerDistribution[0]/SwitchableChannel",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Voltage",
-                  "_title": "PowerDistribution[0]/Voltage"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Compressor[0]/Pressure switch",
-                  "_title": "Compressor[0]/Pressure switch",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan10",
-                  "_title": "PowerDistribution[0]/Chan10"
                 },
                 {
                   "_type": "Text View",
@@ -237,11 +144,6 @@
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan13",
-                  "_title": "PowerDistribution[0]/Chan13"
-                },
-                {
-                  "_type": "Text View",
                   "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan16",
                   "_title": "PowerDistribution[0]/Chan16"
                 },
@@ -252,8 +154,8 @@
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan17",
-                  "_title": "PowerDistribution[0]/Chan17"
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan14",
+                  "_title": "PowerDistribution[0]/Chan14"
                 },
                 {
                   "_type": "Text View",
@@ -267,8 +169,13 @@
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan14",
-                  "_title": "PowerDistribution[0]/Chan14"
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan17",
+                  "_title": "PowerDistribution[0]/Chan17"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan13",
+                  "_title": "PowerDistribution[0]/Chan13"
                 },
                 {
                   "_type": "Text View",
@@ -294,6 +201,11 @@
                   "_type": "Text View",
                   "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan0",
                   "_title": "PowerDistribution[0]/Chan0"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan1",
+                  "_title": "PowerDistribution[0]/Chan1"
                 },
                 {
                   "_type": "Text View",
@@ -332,11 +244,6 @@
                 },
                 {
                   "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan1",
-                  "_title": "PowerDistribution[0]/Chan1"
-                },
-                {
-                  "_type": "Text View",
                   "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan8",
                   "_title": "PowerDistribution[0]/Chan8"
                 }
@@ -363,26 +270,13 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/PhotonVisionSubsystem",
-              "_title": "PhotonVisionSubsystem",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "6,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
               "_source0": "network_table:///LiveWindow/TurretSubsystem",
               "_title": "TurretSubsystem",
               "Layout/Label position": "BOTTOM",
               "_children": []
             }
           },
-          "8,0": {
+          "6,0": {
             "size": [
               2,
               4
@@ -395,6 +289,19 @@
               "_children": []
             }
           },
+          "8,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/HopperSubsystem",
+              "_title": "HopperSubsystem",
+              "Layout/Label position": "BOTTOM",
+              "_children": []
+            }
+          },
           "10,0": {
             "size": [
               2,
@@ -402,10 +309,209 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/RumbleSubsystem",
-              "_title": "RumbleSubsystem",
+              "_source0": "network_table:///LiveWindow/ClimberSubsystem",
+              "_title": "ClimberSubsystem",
               "Layout/Label position": "BOTTOM",
               "_children": []
+            }
+          },
+          "10,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "PID Controller",
+              "_source0": "network_table:///LiveWindow/HoodSubsystem/PID Controller",
+              "_title": "HoodSubsystem/PID Controller"
+            }
+          },
+          "0,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Encoder",
+              "_source0": "network_table:///LiveWindow/Ungrouped/Encoder[1]",
+              "_title": "Encoder[1]"
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "PID Controller",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[1]",
+              "_title": "PIDController[1]"
+            }
+          },
+          "12,2": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "PID Controller",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[2]",
+              "_title": "PIDController[2]"
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "PID Controller",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[6]",
+              "_title": "PIDController[6]"
+            }
+          },
+          "3,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///LiveWindow/Ungrouped/Pigeon IMU [42]",
+              "_title": "Pigeon IMU [42]",
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
+            }
+          },
+          "5,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Encoder",
+              "_source0": "network_table:///LiveWindow/Ungrouped/Encoder[0]",
+              "_title": "Encoder[0]"
+            }
+          },
+          "7,4": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "PID Controller",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[5]",
+              "_title": "PIDController[5]"
+            }
+          },
+          "8,4": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "PID Controller",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[3]",
+              "_title": "PIDController[3]"
+            }
+          },
+          "9,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///LiveWindow/Ungrouped/DigitalInput[6]/Value",
+              "_title": "DigitalInput[6]/Value",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "12,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[0,0]/Value",
+              "_title": "DoubleSolenoid[0,0]/Value"
+            }
+          },
+          "0,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/TotalCurrent",
+              "_title": "PowerDistribution[0]/TotalCurrent"
+            }
+          },
+          "1,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///LiveWindow/Ungrouped/Compressor[0]/Enabled",
+              "_title": "Compressor[0]/Enabled",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/SwitchableChannel",
+              "_title": "PowerDistribution[0]/SwitchableChannel",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Voltage",
+              "_title": "PowerDistribution[0]/Voltage"
+            }
+          },
+          "9,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///LiveWindow/Ungrouped/Compressor[0]/Pressure switch",
+              "_title": "Compressor[0]/Pressure switch",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "12,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistribution[0]/Chan10",
+              "_title": "PowerDistribution[0]/Chan10"
             }
           }
         }

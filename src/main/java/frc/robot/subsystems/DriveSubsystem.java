@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,317 +18,299 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.PortMap;
+import frc.robot.Ports;
 import frc.robot.Robot;
-import frc.robot.hardware.SciPigeon;
-import frc.robot.hardware.SciSpark;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.TrajectoryRegister;
 import frc.robot.util.Util;
 
 public class DriveSubsystem extends SubsystemBase {
 
-    private final SciSpark[] leftSparks = {
-            new SciSpark(PortMap.Drivetrain.LEFT_FRONT_SPARK),
-            new SciSpark(PortMap.Drivetrain.LEFT_MIDDLE_SPARK),
-            new SciSpark(PortMap.Drivetrain.LEFT_BACK_SPARK)
-    };
+  private final CANSparkMax[] leftSparks = {
+    new CANSparkMax(Ports.Drivetrain.LEFT_FRONT_SPARK, MotorType.kBrushless),
+    new CANSparkMax(Ports.Drivetrain.LEFT_MIDDLE_SPARK, MotorType.kBrushless),
+    new CANSparkMax(Ports.Drivetrain.LEFT_BACK_SPARK, MotorType.kBrushless)
+  };
 
-    private final SciSpark[] rightSparks = {
-            new SciSpark(PortMap.Drivetrain.RIGHT_FRONT_SPARK),
-            new SciSpark(PortMap.Drivetrain.RIGHT_MIDDLE_SPARK),
-            new SciSpark(PortMap.Drivetrain.RIGHT_BACK_SPARK)
-    };
+  private final CANSparkMax[] rightSparks = {
+    new CANSparkMax(Ports.Drivetrain.RIGHT_FRONT_SPARK, MotorType.kBrushless),
+    new CANSparkMax(Ports.Drivetrain.RIGHT_MIDDLE_SPARK, MotorType.kBrushless),
+    new CANSparkMax(Ports.Drivetrain.RIGHT_BACK_SPARK, MotorType.kBrushless)
+  };
 
-    private SciPigeon pigeon = new SciPigeon(PortMap.Drivetrain.PIGEON);
+  private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(Ports.Drivetrain.PIGEON);
 
-    private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
-    private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
-    private final Iterable<SciSpark> allSparks = Util.concat(leftSparks, rightSparks);
+  private final MotorControllerGroup leftGroup = new MotorControllerGroup(leftSparks);
+  private final MotorControllerGroup rightGroup = new MotorControllerGroup(rightSparks);
+  private final Iterable<CANSparkMax> allSparks = Util.concat(leftSparks, rightSparks);
 
-    private double speedLimit = 0.7;
-    private SimpleWidget speedLimitWidget;
+  // private double speedLimit = 0.7;
+  // private SimpleWidget speedLimitWidget;
 
-    private final DifferentialDrive drive = new DifferentialDrive(
-            leftGroup,
-            rightGroup);
+  private final DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
 
-    private final RelativeEncoder lEncoder = leftSparks[0].getEncoder();
-    private final RelativeEncoder rEncoder = rightSparks[0].getEncoder();
+  private final RelativeEncoder lEncoder = leftSparks[0].getEncoder();
+  private final RelativeEncoder rEncoder = rightSparks[0].getEncoder();
 
-    public DifferentialDriveOdometry odometry;
-    private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
+  public DifferentialDriveOdometry odometry;
+  private DifferentialDriveKinematics kinematics =
+      new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV,
-            DriveConstants.kA);
+  private final SimpleMotorFeedforward feedforward = DriveConstants.driveFF.get();
 
-    private SlewRateLimiter filter1 = new SlewRateLimiter(DriveConstants.DELTA); // used for speed in arcade and
-                                                                                    // curvature, left track in tank
-    private SlewRateLimiter filter2 = new SlewRateLimiter(DriveConstants.DELTA); // used for right track in tank
+  private final PIDController lPID = DriveConstants.drivePID.get();
+  private final PIDController rPID = DriveConstants.drivePID.get();
 
-    // SIMULATION
-    private DifferentialDrivetrainSim driveSim = new DifferentialDrivetrainSim(
-        DCMotor.getNEO(2),
-        7.29,
-        7.5,
-        60.0,
-        Units.inchesToMeters(3),
-        0.7112,
-        VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
-    private BasePigeonSimCollection pigeonSim = pigeon.getSimCollection();
-    private EncoderSim lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
-    private EncoderSim rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
-    public Field2d field2d = new Field2d();
+  private final SlewRateLimiter filter1 =
+      new SlewRateLimiter(DriveConstants.DELTA); // used for speed in arcade and
+  // curvature, left track in tank
+  private final SlewRateLimiter filter2 =
+      new SlewRateLimiter(DriveConstants.DELTA); // used for right track in tank
 
-    public enum DriveMode {
-        TANK,
-        ARCADE,
-        CURVATURE
+  // SIMULATION
+  private DifferentialDrivetrainSim driveSim =
+      new DifferentialDrivetrainSim(
+          DCMotor.getNEO(2),
+          7.29,
+          7.5,
+          60.0,
+          Units.inchesToMeters(3),
+          0.7112,
+          VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
+  private BasePigeonSimCollection pigeonSim = pigeon.getSimCollection();
+  private EncoderSim lEncoderSim = new EncoderSim(Ports.Drivetrain.LEFT_FRONT_SPARK);
+  private EncoderSim rEncoderSim = new EncoderSim(Ports.Drivetrain.RIGHT_FRONT_SPARK);
+  public Field2d field2d = new Field2d();
+
+  public enum DriveMode {
+    TANK,
+    ARCADE,
+    CURVATURE
+  }
+
+  private ShuffleboardTab tab;
+
+  public DriveSubsystem() {
+    lEncoder.setPositionConversionFactor(
+        DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
+    lEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
+    rEncoder.setPositionConversionFactor(
+        DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
+    rEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
+
+    resetEncoders();
+
+    for (CANSparkMax motor : allSparks) {
+      motor.setIdleMode(IdleMode.kBrake);
+      motor.setSmartCurrentLimit(20);
     }
 
-    private ShuffleboardTab tab;
+    leftGroup.setInverted(true);
+    drive.setDeadband(0.05);
 
-    public DriveSubsystem() {
-        lEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
-        lEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
-        rEncoder.setPositionConversionFactor(DriveConstants.WHEEL_CIRCUMFERENCE * DriveConstants.GEAR_RATIO);
-        rEncoder.setVelocityConversionFactor(DriveConstants.GEAR_RATIO);
-
-        resetEncoders();
-
-        for (SciSpark motor : allSparks) {
-            motor.setIdleMode(IdleMode.kBrake);
-            motor.setSmartCurrentLimit(20);
-        }
-
-        leftGroup.setInverted(true);
-        drive.setDeadband(0.05);
-
-        for (SciSpark motor : allSparks) {
-            motor.burnFlash();
-        }
-        
-        odometry = new DifferentialDriveOdometry(getRotation(), new Pose2d(10, 4, getRotation()));
-        this.tab = Shuffleboard.getTab("Drivetrain");
-        tab.addNumber("Heading", this::getHeading);
-        tab.addNumber("X", this::getX);
-        tab.addNumber("Y", this::getY);
-
-        tab.addNumber("Current Speed Limit", this::getSpeedLimit);
-
-        this.speedLimitWidget = tab.add("Target Flywheel Speed", speedLimit);
-
-        this.speedLimitWidget.getEntry().addListener(event -> {
-            this.setSpeedLimit(event.getEntry().getDouble(this.speedLimit));
-        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
-        SmartDashboard.putData("Field", field2d);
-        TrajectoryRegister.setField2d(field2d);
+    for (CANSparkMax motor : allSparks) {
+      motor.burnFlash();
     }
 
-    public void tankDriveVolts(double leftVolts, double rightVolts) {
-        if (Robot.isReal()) {
-            leftGroup.setVoltage(leftVolts);
-            rightGroup.setVoltage(rightVolts);
-        } else { // sim workaround
-            leftSparks[0].setVoltage(leftVolts);
-            rightSparks[0].setVoltage(rightVolts);
-        }
-        drive.feed();
+    odometry = new DifferentialDriveOdometry(getRotation(), new Pose2d(0, 0, getRotation()));
+    this.tab = Shuffleboard.getTab("Drivetrain");
+    tab.addNumber("Heading", this::getHeading);
+    tab.addNumber("X", this::getX);
+    tab.addNumber("Y", this::getY);
+    tab.addNumber("RPM diff", () -> (getLeftAverageVelocity() - getRightAverageVelocity()));
+    tab.addNumber("Amp diff", () -> (getLeftCurrentAmps() - getRightCurrentAmps()));
+    tab.addNumber("Left speed", leftGroup::get);
+    tab.addNumber("Right speed", rightGroup::get);
+    tab.addNumber("Pose angle (janky??)", this::getPoseDegrees);
+
+    // tab.addNumber("Current Speed Limit", this::getSpeedLimit);
+
+    // this.speedLimitWidget = tab.add("Target Flywheel Speed", speedLimit);
+
+    // this.speedLimitWidget
+    //     .getEntry()
+    //     .addListener(
+    //         event -> {
+    //           this.setSpeedLimit(event.getEntry().getDouble(this.speedLimit));
+    //         },
+    //         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+    SmartDashboard.putData("Field", field2d);
+    TrajectoryRegister.setField2d(field2d);
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftGroup.setVoltage(leftVolts);
+    rightGroup.setVoltage(rightVolts);
+    if (!Robot.isReal()) {
+      leftSparks[0].setVoltage(leftVolts);
+      rightSparks[0].setVoltage(rightVolts);
     }
+    drive.feed();
+  }
 
-    public double getSpeedLimit() {
-        return speedLimit;
+  public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    final double lFF = feedforward.calculate(speeds.leftMetersPerSecond);
+    final double rFF = feedforward.calculate(speeds.rightMetersPerSecond);
+
+    final double lFB = lPID.calculate(lEncoder.getVelocity(), speeds.leftMetersPerSecond);
+    final double rFB = rPID.calculate(rEncoder.getVelocity(), speeds.rightMetersPerSecond);
+    leftGroup.setVoltage(lFB + lFF);
+    rightGroup.setVoltage(rFB + rFF);
+  }
+
+  // Directly sets speed for left and right motor groups
+  public void setMotorGroups(double left, double right) {
+    leftGroup.setVoltage(left);
+    rightGroup.setVoltage(right);
+  }
+
+  // public double getSpeedLimit() {
+  //   return speedLimit;
+  // }
+
+  // public void setSpeedLimit(double newLimit) {
+  //   this.speedLimit = newLimit;
+  // }
+
+  /**
+   * Drives the robot according to provided DriveMode
+   *
+   * @param mode
+   * @param first Left input in TANK, speed in ARCADE or CURVATURE
+   * @param second Right input in TANK, rotation in ARCADE or CURVATURE
+   */
+  public void driveRobot(DriveMode mode, double first, double second) {
+    // Controller interface
+    switch (mode) {
+      case TANK:
+        drive.tankDrive(filter1.calculate(first), filter2.calculate(second));
+        break;
+      case ARCADE:
+        drive.arcadeDrive(filter1.calculate(first), second);
+        break;
+      case CURVATURE:
+        drive.curvatureDrive(filter1.calculate(first), second, true);
+        break;
     }
+  }
 
-    public void setSpeedLimit(double newLimit) {
-        this.speedLimit = newLimit;
-    }
+  public Rotation2d getRotation() {
+    return pigeon.getRotation2d();
+  }
 
-    public void driveBack() {
-        driveRobot(DriveMode.TANK, -0.4, -0.4);
-    }
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
 
-    public void stopRobot() {
-        driveRobot(DriveMode.TANK, 0, 0);
-    }
+  public double getPoseDegrees() {
+    return getPose().getRotation().getDegrees();
+  }
 
-    /**
-     * Drives the robot according to provided DriveMode
-     * 
-     * @param mode
-     * @param first  Left input in TANK, speed in ARCADE or CURVATURE
-     * @param second Right input in TANK, rotation in ARCADE or CURVATURE
-     */
-    public void driveRobot(DriveMode mode, double first, double second) {
-        // Controller interface
-        switch (mode) {
-            case TANK:
-                drive.tankDrive(filter1.calculate(first), filter2.calculate(second));
-                break;
-            case ARCADE:
-                drive.arcadeDrive(filter1.calculate(first), second);
-                break;
-            case CURVATURE:
-                drive.curvatureDrive(filter1.calculate(first), second, true);
-                break;
-        }
-    }
+  // just for testing
+  public double getX() {
+    return getPose().getX();
+  }
 
-    public void failureWatchdog() {
-        for (int i = 0; i < leftSparks.length; i++) {
-            if (leftSparks[i].updateFailState()) {
-                rightSparks[i].forceFailState(true);
-            }
-        }
-        for (int i = 0; i < rightSparks.length; i++) {
-            if (rightSparks[i].updateFailState()) {
-                leftSparks[i].forceFailState(true);
-            }
-        }
-    }
+  public double getY() {
+    return getPose().getY();
+  }
 
-    public Rotation2d getRotation() {
-        return pigeon.getRotation2d();
-        // return Rotation2d.fromDegrees(0);
-    }
+  public double getHeading() {
+    // Util.normalizeAngle360(getRotation().getDegrees();)
+    return getRotation().getDegrees();
+  }
 
-    public Pose2d getPose() {
-        return odometry.getPoseMeters();
-    }
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
+  }
 
-    // just for testing
-    public double getX() {
-        return getPose().getX();
-    }
+  public void updateOdometry() {
+    odometry.update(getRotation(), lEncoder.getPosition(), rEncoder.getPosition());
+  }
 
-    public double getY() {
-        return getPose().getY();
-    }
+  public void resetEncoders() {
+    lEncoder.setPosition(0);
+    rEncoder.setPosition(0);
+  }
 
-    public double getHeading() {
-        return getRotation().getDegrees();
-    }
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    odometry.resetPosition(pose, getRotation());
+  }
 
-    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        if (Robot.isReal()) {
-            return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
-        }
-        return new DifferentialDriveWheelSpeeds(lEncoderSim.getVelocity(), rEncoderSim.getVelocity());
-    }
+  public double getLeftCurrentAmps() {
+    return Util.getAverageOfArray(leftSparks, CANSparkMax::getOutputCurrent);
+  }
 
-    public void updateOdometry() {
-        odometry.update(getRotation(), lEncoder.getPosition(), rEncoder.getPosition());
-    }
+  public double getRightCurrentAmps() {
+    return Util.getAverageOfArray(rightSparks, CANSparkMax::getOutputCurrent);
+  }
 
-    public void resetEncoders() {
-        lEncoder.setPosition(0);
-        rEncoder.setPosition(0);
-    }
+  public double getLeftAverageVelocity() {
+    return Util.getAverageOfArray(leftSparks, CANSparkMax::get);
+  }
 
-    public void resetOdometry(Pose2d pose) {
-        resetEncoders();
-        // pigeon.setAngle(pose.getRotation().getDegrees());
-        odometry.resetPosition(pose, getRotation());
-    }
+  public double getRightAverageVelocity() {
+    return Util.getAverageOfArray(rightSparks, CANSparkMax::get);
+  }
 
-    public double getLeftCurrentAmps() {
-        return Util.getAverageOfArray(leftSparks, CANSparkMax::getOutputCurrent);
-    }
+  public SimpleMotorFeedforward getFeedforward() {
+    return feedforward;
+  }
 
-    public double getRightCurrentAmps() {
-        return Util.getAverageOfArray(rightSparks, CANSparkMax::getOutputCurrent);
-    }
+  public DifferentialDriveKinematics getKinematics() {
+    return kinematics;
+  }
 
-    public double getLeftAverageVelocity() {
-        return Util.getAverageOfArray(leftSparks, CANSparkMax::get);
-    }
+  public Iterable<CANSparkMax> getAllSparks() {
+    return allSparks;
+  }
 
-    public double getRightAverageVelocity() {
-        return Util.getAverageOfArray(rightSparks, CANSparkMax::get);
-    }
+  @Override
+  public void periodic() {
+    // System.out.println(lEncoder.getVelocity() * 10 + " | " + lEncoderSim.getVelocity() * 10);
+    updateOdometry();
+    field2d.setRobotPose(odometry.getPoseMeters());
+  }
 
-    public SimpleMotorFeedforward getFeedforward() {
-        return feedforward;
-    }
+  @Override
+  public void simulationPeriodic() {
 
-    public DifferentialDriveKinematics getKinematics() {
-        return kinematics;
-    }
+    driveSim.setInputs(leftGroup.get(), rightGroup.get());
+    // driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
 
-    public Iterable<SciSpark> getAllSparks() {
-        return allSparks;
-    }
+    lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
+    lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
+    rEncoderSim.setPosition(driveSim.getRightPositionMeters());
+    rEncoderSim.setVelocity(driveSim.getRightVelocityMetersPerSecond());
+    pigeonSim.setRawHeading(driveSim.getHeading().getDegrees());
 
-    // thanks stuy
-    public boolean isLeftStalling() {
-        boolean current = getLeftCurrentAmps() > DriveConstants.CURRENT_THRESHOLD;
-        boolean output = Math.abs(getLeftAverageVelocity()) > DriveConstants.DUTY_CYCLE_THRESHOLD;
-        boolean velocity = Math.abs(lEncoder.getVelocity()) < DriveConstants.VELOCITY_THRESHOLD;
-        return (current || output) && velocity;
-    }
+    driveSim.update(0.02);
+  }
 
-    public boolean isRightStalling() {
-        boolean current = getRightCurrentAmps() > DriveConstants.CURRENT_THRESHOLD;
-        boolean output = Math.abs(getRightAverageVelocity()) > DriveConstants.DUTY_CYCLE_THRESHOLD;
-        boolean velocity = Math.abs(rEncoder.getVelocity()) < DriveConstants.VELOCITY_THRESHOLD;
-        return (current || output) && velocity;
-    }
+  public void putTrajectory(Trajectory t, String name) {
+    field2d.getObject("Trajectory").setTrajectory(t);
+  }
 
-    public boolean isStalling() {
-        return false;
-        // return isLeftStalling() || isRightStalling();
-    }
+  // reset everything
+  public void reset() {
+    lEncoderSim = new EncoderSim(Ports.Drivetrain.LEFT_FRONT_SPARK);
+    rEncoderSim = new EncoderSim(Ports.Drivetrain.RIGHT_FRONT_SPARK);
 
-    @Override
-    public void periodic() {
-        updateOdometry();
-        for (SciSpark s : getAllSparks()) {
-            s.updateFailState();
-        }
-        field2d.setRobotPose(odometry.getPoseMeters());
-    }
+    odometry = new DifferentialDriveOdometry(getRotation());
+    kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
 
-    @Override
-    public void simulationPeriodic() {
-        // driveSim.setInputs(leftSparks[0].getAppliedOutput(),
-        // rightSparks[0].getAppliedOutput());
-        driveSim.setInputs(leftSparks[0].getAppliedOutput(), rightSparks[0].getAppliedOutput());
-
-        lEncoderSim.setPosition(driveSim.getLeftPositionMeters());
-        lEncoderSim.setVelocity(driveSim.getLeftVelocityMetersPerSecond());
-        rEncoderSim.setPosition(driveSim.getRightPositionMeters());
-        rEncoderSim.setVelocity(driveSim.getRightVelocityMetersPerSecond());
-        pigeonSim.setRawHeading(driveSim.getHeading().getDegrees());
-
-        driveSim.update(0.02);
-    }
-
-    public void putTrajectory(Trajectory t, String name) {
-        field2d.getObject("Trajectory").setTrajectory(t);
-    }
-
-    // reset everything
-    public void reset() {
-        lEncoderSim = new EncoderSim(PortMap.Drivetrain.LEFT_FRONT_SPARK);
-        rEncoderSim = new EncoderSim(PortMap.Drivetrain.RIGHT_FRONT_SPARK);
-
-        odometry = new DifferentialDriveOdometry(getRotation());
-        kinematics = new DifferentialDriveKinematics(DriveConstants.ROBOT_WIDTH);
-
-        driveSim.setPose(odometry.getPoseMeters());
-        field2d.setRobotPose(odometry.getPoseMeters());
-    }
-
+    driveSim.setPose(odometry.getPoseMeters());
+    field2d.setRobotPose(odometry.getPoseMeters());
+  }
 }
