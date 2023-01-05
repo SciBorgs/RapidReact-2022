@@ -108,7 +108,7 @@ public class RobotContainer {
         new RunCommand(
             () -> {
               drive.driveRobot(
-                  DriveSubsystem.DriveMode.TANK, -leftStick.getY(), -rightStick.getY());
+                  DriveSubsystem.DriveMode.CRACK, -leftStick.getY(), -rightStick.getY());
             },
             drive));
 
@@ -225,6 +225,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return SimpleAutos.shootThenDriveBack(drive, flywheel);
+    return new DriveRamsete(drive, "Testing", true);
   }
 }

@@ -32,6 +32,7 @@ import frc.robot.Robot;
 import frc.robot.util.EncoderSim;
 import frc.robot.util.TrajectoryRegister;
 import frc.robot.util.Util;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -94,7 +95,8 @@ public class DriveSubsystem extends SubsystemBase {
   public enum DriveMode {
     TANK,
     ARCADE,
-    CURVATURE
+    CURVATURE,
+    CRACK
   }
 
   private ShuffleboardTab tab;
@@ -168,6 +170,10 @@ public class DriveSubsystem extends SubsystemBase {
     rightGroup.setVoltage(rFB + rFF);
   }
 
+  // public void newDrive(double x, double rot) {
+  //   var wheelSpeeds = kinematics.toChassisSpeeds(new ChassisSpeeds())
+  // }
+
   // Directly sets speed for left and right motor groups
   public void setMotorGroups(double left, double right) {
     leftGroup.setVoltage(left);
@@ -200,6 +206,9 @@ public class DriveSubsystem extends SubsystemBase {
         break;
       case CURVATURE:
         drive.curvatureDrive(filter1.calculate(first), second, true);
+        break;
+      case CRACK:
+        drive.tankDrive(first, second);
         break;
     }
   }

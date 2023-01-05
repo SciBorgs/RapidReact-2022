@@ -94,14 +94,14 @@ public final class Constants {
     public static final double WHEEL_RADIUS = 0.0766; // (meters)
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_RADIUS * 2 * Math.PI;
 
-    public static final PIDConstants drivePID = new PIDConstants(1);
-    public static final FFConstants driveFF = new FFConstants(0.1, 0.1, 0.1);
+    public static final PIDConstants drivePID = new PIDConstants(1.4);
+    public static final FFConstants driveFF = new FFConstants(0.6, 0.4, 0.1);
 
     public static final PIDConstants turnPID = new PIDConstants(0.01);
 
     // Path Following
-    public static final int maxVel = 4;
-    public static final int maxAccel = 2;
+    public static final int maxVel = 7;
+    public static final int maxAccel = 4;
 
     // misc
     public static final double driveBackSpeeds = -0.4;

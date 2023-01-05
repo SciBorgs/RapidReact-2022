@@ -11,7 +11,6 @@ public class TurnDegrees extends CommandBase {
   private DriveSubsystem drive;
   private double degrees;
   private PIDController turnController;
-  private ShuffleboardTab tab;
 
   public TurnDegrees(double degrees, DriveSubsystem drive) {
     this.drive = drive;
